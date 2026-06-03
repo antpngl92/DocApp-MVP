@@ -10,26 +10,26 @@ Do not implement TypeScript code while doing documentation-only update tasks.
 
 ## Phase 1 - Project Setup
 
-- [ ] Commit initial documentation foundation on `main`.
-- [ ] Create a dedicated setup branch for the Next.js app.
-- [ ] Create the real DocApp application project.
-- [ ] Initialize source control.
-- [ ] Add baseline `.gitignore`.
-- [ ] Keep local `.env` values and Google credential JSON files available for development while excluding them from Git.
-- [ ] Add `.env.example` documenting required variables without real values.
-- [ ] Carry forward useful prototype environment variable names.
-- [ ] Carry forward useful prototype scripts, especially Google refresh-token helper scripts, after reviewing them.
-- [ ] Add formatter and linting setup.
-- [ ] Add TypeScript strictness settings.
-- [ ] Add local development, build, lint, typecheck, and test commands.
-- [ ] Add React Testing Library setup.
-- [ ] Add a smoke/example test.
-- [ ] Add a health check or smoke route.
-- [ ] Keep `@fullcalendar/*` dependencies available for MVP calendar workflows.
-- [ ] Do not migrate Radix/shadcn dependencies unless explicitly re-approved later.
-- [ ] Do not migrate prototype reusable UI/components or Radix/shadcn wrappers.
-- [ ] Do not add ads anywhere in the app.
-- [ ] Add basic CI for lint, typecheck, tests, and build.
+- [x] Commit initial documentation foundation on `main`.
+- [x] Create a dedicated setup branch for the Next.js app.
+- [x] Create the real DocApp application project.
+- [x] Initialize source control.
+- [x] Add baseline `.gitignore`.
+- [x] Keep local `.env` values and Google credential JSON files available for development while excluding them from Git.
+- [x] Add `.env.example` documenting required variables without real values.
+- [x] Carry forward useful prototype environment variable names.
+- [x] Carry forward useful prototype scripts, especially Google refresh-token helper scripts, after reviewing them.
+- [x] Add formatter and linting setup.
+- [x] Add TypeScript strictness settings.
+- [x] Add local development, build, lint, typecheck, and test commands.
+- [x] Add React Testing Library setup.
+- [x] Add a smoke/example test.
+- [x] Add a health check or smoke route.
+- [x] Keep `@fullcalendar/*` dependencies available for MVP calendar workflows.
+- [x] Do not migrate Radix/shadcn dependencies unless explicitly re-approved later.
+- [x] Do not migrate prototype reusable UI/components or Radix/shadcn wrappers.
+- [x] Do not add ads anywhere in the app.
+- [x] Add basic CI for lint, typecheck, tests, and build.
 
 ## Phase 2 - Documentation Setup
 

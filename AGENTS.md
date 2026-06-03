@@ -70,6 +70,8 @@ When commands exist, run:
 
 If a command does not exist yet, state that clearly instead of inventing one.
 
+If a local development server is started for verification, stop that server before handoff unless the user explicitly asks to keep it running. Do not leave localhost servers running after checks.
+
 ## Handoff format
 
 At the end of each task, summarize:
@@ -79,6 +81,7 @@ At the end of each task, summarize:
 - commands run
 - docs updated
 - risks or TODOs
+- confirmation that any local dev server started by Codex was stopped
 
 ## Development workflow
 

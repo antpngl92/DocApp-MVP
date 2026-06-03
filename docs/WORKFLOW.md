@@ -64,8 +64,9 @@ When using Codex:
 3. Review the plan.
 4. Let Codex implement only the approved scope.
 5. Ask Codex to run available checks.
-6. Review the diff manually.
-7. Commit and push only after review.
+6. If Codex starts a local development server for checks, Codex must stop that server before handoff unless the user explicitly asks to keep it running.
+7. Review the diff manually.
+8. Commit and push only after review.
 
 Codex should not make broad unrelated changes.
 
@@ -189,6 +190,7 @@ Before merging a branch, check:
 - Are feature-specific hooks kept inside the relevant feature folder?
 - Does the branch stay scoped to the approved task without overbuilding unrelated product UI?
 - Did lint/typecheck/tests/build run where available?
+- If a local development server was started, was it stopped before handoff?
 
 ## Main Branch Rule
 

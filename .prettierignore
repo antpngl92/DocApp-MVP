@@ -1,0 +1,10 @@
+.next/
+coverage/
+node_modules/
+package-lock.json
+docs/
+*.zip
+.env
+.env.*
+Google Calendar API Credentials.json
+*Credentials.json
