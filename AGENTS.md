@@ -116,6 +116,7 @@ For feature-specific work, also read the relevant project documentation:
 - `docs/project-documentation/ui-direction.md`
 - `docs/project-documentation/superdesign-integration.md`
 - `docs/project-documentation/superdesign-prompts.md`
+- `docs/project-documentation/superdesign-review.md`
 - `docs/project-documentation/demo-data.md`
 - `docs/project-documentation/testing-strategy.md`
 - `docs/project-documentation/project-structure.md`

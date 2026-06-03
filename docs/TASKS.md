@@ -45,8 +45,8 @@ Do not implement TypeScript code while doing documentation-only update tasks.
 ## Phase 3 - UI Direction And SuperDesign Design Exploration
 
 - [x] Document SuperDesign CLI/agent integration workflow for the project.
-- [ ] Use SuperDesign for reviewed UI exploration before implementing important booking/admin/patient screens.
-- [ ] Create SuperDesign explorations for public booking, slot hold states, checkout status pages, patient dashboard, daily agenda, clinic dashboard, appointment details, and failed calendar sync.
+- [x] Use SuperDesign for reviewed UI exploration before implementing important booking/admin/patient screens.
+- [x] Create SuperDesign explorations for public booking, slot hold states, checkout status pages, patient dashboard, daily agenda, clinic dashboard, appointment details, and failed calendar sync.
 - [x] Apply calm clinic-focused visual direction.
 - [x] Keep patient booking flow mobile-friendly.
 - [x] Keep patient account area simple and appointment-focused.

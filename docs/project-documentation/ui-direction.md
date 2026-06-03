@@ -117,6 +117,20 @@ Patients should register or log in before final booking submission and Checkout 
 
 Mobile booking should show fewer days and fewer time columns. Desktop can show a wider weekly view when useful.
 
+The public booking wizard should visually use three main steps:
+
+- Service
+- Time
+- Details
+
+Service and Time must be separate wizard pages or must visually behave like separate pages in a one-page wizard. Do not combine service selection and time selection into one screen.
+
+Use the accepted Details page header direction across public booking steps: clinic logo/name, plus simple `Services` and `About` navigation. Do not replace this with a phone-number header unless explicitly approved later.
+
+For the booking Time step, desktop should show the current week as seven day columns from Monday to Sunday, with arrow icon buttons to move to the previous or next week. Each day column should list all available slots as clickable time-slot buttons.
+
+For mobile, the Time step should show exactly three day columns: today, tomorrow, and the day after tomorrow. Each column should list available slot buttons for that day.
+
 ## Slot Hold UI States
 
 The booking UI should clearly represent:
