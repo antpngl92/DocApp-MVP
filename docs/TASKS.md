@@ -33,14 +33,14 @@ Do not implement TypeScript code while doing documentation-only update tasks.
 
 ## Phase 2 - Documentation Setup
 
-- [ ] Keep `docs/MVP.md` as the source of product scope.
-- [ ] Keep `docs/DECISIONS.md` as the source of architecture and product decisions.
-- [ ] Keep `docs/TASKS.md` as the source of implementation phases.
-- [ ] Keep `docs/WORKFLOW.md` as the source of branch and review workflow.
-- [ ] Keep `AGENTS.md` aligned with current docs.
-- [ ] Maintain `docs/project-documentation/`.
-- [ ] Create and maintain `docs/project-documentation/patient-account.md`.
-- [ ] Add a rule that major implementation work updates relevant docs before or alongside code.
+- [x] Keep `docs/MVP.md` as the source of product scope.
+- [x] Keep `docs/DECISIONS.md` as the source of architecture and product decisions.
+- [x] Keep `docs/TASKS.md` as the source of implementation phases.
+- [x] Keep `docs/WORKFLOW.md` as the source of branch and review workflow.
+- [x] Keep `AGENTS.md` aligned with current docs.
+- [x] Maintain `docs/project-documentation/`.
+- [x] Create and maintain `docs/project-documentation/patient-account.md`.
+- [x] Add a rule that major implementation work updates relevant docs before or alongside code.
 
 ## Phase 3 - App Foundation
 
