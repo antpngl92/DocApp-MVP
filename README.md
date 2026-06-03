@@ -29,6 +29,7 @@ Feature-specific documentation lives in `docs/project-documentation/`:
 - `ui-direction.md`
 - `superdesign-integration.md`
 - `superdesign-prompts.md`
+- `superdesign-review.md`
 - `demo-data.md`
 - `testing-strategy.md`
 - `project-structure.md`

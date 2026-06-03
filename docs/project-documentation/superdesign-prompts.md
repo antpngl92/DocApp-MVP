@@ -29,8 +29,8 @@ Create a mobile-first public booking flow for DocApp using the approved calm cli
 
 Screens/states to include:
 1. Clinic-branded booking page
-2. Service selection
-3. Doctor/resource selection when applicable
+2. Service selection where the patient chooses the service
+3. Doctor/resource selection where the patient chooses a doctor/provider or resource that can perform the selected service
 4. Date/time slot selection
 5. Slot selected by current patient
 6. Slot held by another patient
@@ -43,6 +43,40 @@ Screens/states to include:
 
 Constraints:
 Do not include medical records, symptoms, diagnosis fields, or ads. The optional note must be clearly non-sensitive. Use fewer day/time columns on mobile and more context on desktop.
+```
+
+## Booking Time Slot Picker Prompt
+
+```txt
+Create the Service and Time steps for the DocApp public booking flow.
+
+Step 1 - Service:
+The patient chooses a service, then chooses a doctor/provider or resource assigned to that service. Service cards should show duration, full appointment price, deposit due now, remaining balance at clinic, and assigned doctors/resources.
+
+Step 2 - Time:
+Create a calendar-style slot picker.
+
+Step 1 and Step 2 must be separate wizard pages or must visually behave like separate wizard pages in a one-page wizard. Do not combine service selection and time selection into one screen.
+
+Keep the public booking wizard stepper consistent with the accepted Details page direction:
+
+- Service
+- Time
+- Details
+
+Keep the booking header consistent with the accepted Details page direction: clinic logo/name plus simple `Services` and `About` navigation.
+
+Desktop:
+Show the current week. The first row is the days of the week from Monday to Sunday. Add arrow icon buttons on the left and right to move to previous/next week. Each day is a column. Under each day column, list all available slots as clickable slot buttons with the time text inside the slot.
+
+Mobile:
+Show exactly 3 columns instead of 7. The first column is today, the second is tomorrow, and the third is the day after tomorrow. Each column lists available slot buttons.
+
+Slot states:
+available, selected by current patient, held by another patient, current hold expiring soon, hold expired, no slots available.
+
+Constraints:
+Do not include booking fee, processing fee, platform fee, refund request, medical records, symptoms, diagnosis fields, chat, file uploads, ads, or rescheduling.
 ```
 
 ## Checkout Status Prompt
