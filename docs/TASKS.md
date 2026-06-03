@@ -44,22 +44,23 @@ Do not implement TypeScript code while doing documentation-only update tasks.
 
 ## Phase 3 - UI Direction And SuperDesign Design Exploration
 
+- [x] Document SuperDesign CLI/agent integration workflow for the project.
 - [ ] Use SuperDesign for reviewed UI exploration before implementing important booking/admin/patient screens.
 - [ ] Create SuperDesign explorations for public booking, slot hold states, checkout status pages, patient dashboard, daily agenda, clinic dashboard, appointment details, and failed calendar sync.
-- [ ] Apply calm clinic-focused visual direction.
-- [ ] Keep patient booking flow mobile-friendly.
-- [ ] Keep patient account area simple and appointment-focused.
-- [ ] Keep admin dashboard desktop-friendly.
-- [ ] Add clear empty/loading/error states.
-- [ ] Add clear payment and sync status badges.
-- [ ] Add clear slot hold states and hold expiry warnings.
-- [ ] Add clear copy for deposit and remaining balance.
-- [ ] Add clear copy that deposits are non-refundable by default when the patient does not attend.
-- [ ] Add pilot dashboard cards for today's bookings, upcoming bookings, pending payments, active slot holds, failed syncs, paid deposits, cancellations, and no-shows.
-- [ ] Remove/disable ads from every app surface.
+- [x] Apply calm clinic-focused visual direction.
+- [x] Keep patient booking flow mobile-friendly.
+- [x] Keep patient account area simple and appointment-focused.
+- [x] Keep admin dashboard desktop-friendly.
+- [x] Add clear empty/loading/error states.
+- [x] Add clear payment and sync status badges.
+- [x] Add clear slot hold states and hold expiry warnings.
+- [x] Add clear copy for deposit and remaining balance.
+- [x] Add clear copy that deposits are non-refundable by default when the patient does not attend.
+- [x] Add pilot dashboard cards for today's bookings, upcoming bookings, pending payments, active slot holds, failed syncs, paid deposits, cancellations, and no-shows.
+- [x] Remove/disable ads from every app surface.
 - [ ] Add demo/seed data for local testing.
-- [ ] Add first pilot setup checklist.
-- [ ] Add admin handoff notes for pilot clinic.
+- [x] Add first pilot setup checklist.
+- [x] Add admin handoff notes for pilot clinic.
 - [ ] Add basic support/contact route or email.
 
 ## Phase 4 - App Foundation
