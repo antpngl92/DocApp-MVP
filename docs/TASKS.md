@@ -58,10 +58,8 @@ Do not implement TypeScript code while doing documentation-only update tasks.
 - [x] Add clear copy that deposits are non-refundable by default when the patient does not attend.
 - [x] Add pilot dashboard cards for today's bookings, upcoming bookings, pending payments, active slot holds, failed syncs, paid deposits, cancellations, and no-shows.
 - [x] Remove/disable ads from every app surface.
-- [ ] Add demo/seed data for local testing.
 - [x] Add first pilot setup checklist.
 - [x] Add admin handoff notes for pilot clinic.
-- [ ] Add basic support/contact route or email.
 
 ## Phase 4 - App Foundation
 
@@ -77,6 +75,7 @@ Do not implement TypeScript code while doing documentation-only update tasks.
 - [ ] Add centralized error boundary behavior.
 - [ ] Add loading and empty states.
 - [ ] Add global notification/toast container.
+- [ ] Add basic support/contact route or email.
 - [ ] Add server-state caching foundation for fetched app data.
 - [ ] Add a small client-side UI state store only if needed.
 - [ ] Do not create a large Redux store for clinic/booking/payment data.
@@ -142,6 +141,7 @@ Do not implement TypeScript code while doing documentation-only update tasks.
 - [ ] Model audit/event records.
 - [ ] Add indexes for organization, patient, doctor, resource, appointment date/time, appointment status, order status, hold status/expiry, and timestamps.
 - [ ] Add ownership constraints wherever practical.
+- [ ] Add demo/seed data for local testing.
 
 ## Phase 8 - Google Calendar Integration Foundation
 
