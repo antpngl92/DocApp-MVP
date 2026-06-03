@@ -50,14 +50,17 @@ Avoid:
 
 Use SuperDesign (`https://app.superdesign.dev/`) for Phase 3 design exploration before Phase 4 app screens are implemented.
 
-Based on SuperDesign documentation, the workflow should be:
+Follow `docs/project-documentation/superdesign-integration.md` for project-level CLI/agent setup.
+
+Based on SuperDesign documentation, the design workflow should be:
 
 1. Start with a style prompt to lock the DocApp visual direction.
-2. Generate multiple variations for the key screen group.
+2. Use Branch to generate and compare multiple variations for the key screen group.
 3. Review variations against product, payment, privacy, and accessibility rules.
 4. Once visual direction is approved, use SuperDesign Flow for connected user journeys.
-5. Export or copy HTML only as design reference, not as unquestioned production code.
-6. Translate approved designs into maintainable Next.js components that follow `project-structure.md` and `code-style.md`.
+5. Export or copy implementation handoff prompts/HTML only after review.
+6. Treat generated HTML as design reference, not unquestioned production code.
+7. Translate approved designs into maintainable Next.js components that follow `project-structure.md` and `code-style.md`.
 
 SuperDesign output must not override:
 

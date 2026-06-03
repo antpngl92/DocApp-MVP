@@ -41,6 +41,7 @@ Do not add production complexity before the MVP scope is clear, but build the pa
 - Do not use `calendar_sync_failed` as an appointment status. Keep appointment lifecycle and calendar sync lifecycle separate.
 - Keep rescheduling out of scope unless a later decision explicitly adds it.
 - SuperDesign may be used for UI exploration, but approved project docs remain the source of truth and generated designs require review before implementation.
+- Use the documented SuperDesign CLI/agent workflow for project UI exploration before implementing important booking, patient, and admin screens.
 - Do not migrate the prototype Radix/shadcn UI setup or reusable UI/components. New UI should be guided by approved SuperDesign explorations.
 - Keep FullCalendar available for MVP calendar workflows.
 - Do not add ads anywhere in the app.
@@ -113,6 +114,9 @@ For feature-specific work, also read the relevant project documentation:
 - `docs/project-documentation/google-calendar-flow.md`
 - `docs/project-documentation/security-privacy.md`
 - `docs/project-documentation/ui-direction.md`
+- `docs/project-documentation/superdesign-integration.md`
+- `docs/project-documentation/superdesign-prompts.md`
+- `docs/project-documentation/demo-data.md`
 - `docs/project-documentation/testing-strategy.md`
 - `docs/project-documentation/project-structure.md`
 - `docs/project-documentation/code-style.md`
