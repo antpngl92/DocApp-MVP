@@ -42,7 +42,27 @@ Do not implement TypeScript code while doing documentation-only update tasks.
 - [x] Create and maintain `docs/project-documentation/patient-account.md`.
 - [x] Add a rule that major implementation work updates relevant docs before or alongside code.
 
-## Phase 3 - App Foundation
+## Phase 3 - UI Direction And SuperDesign Design Exploration
+
+- [ ] Use SuperDesign for reviewed UI exploration before implementing important booking/admin/patient screens.
+- [ ] Create SuperDesign explorations for public booking, slot hold states, checkout status pages, patient dashboard, daily agenda, clinic dashboard, appointment details, and failed calendar sync.
+- [ ] Apply calm clinic-focused visual direction.
+- [ ] Keep patient booking flow mobile-friendly.
+- [ ] Keep patient account area simple and appointment-focused.
+- [ ] Keep admin dashboard desktop-friendly.
+- [ ] Add clear empty/loading/error states.
+- [ ] Add clear payment and sync status badges.
+- [ ] Add clear slot hold states and hold expiry warnings.
+- [ ] Add clear copy for deposit and remaining balance.
+- [ ] Add clear copy that deposits are non-refundable by default when the patient does not attend.
+- [ ] Add pilot dashboard cards for today's bookings, upcoming bookings, pending payments, active slot holds, failed syncs, paid deposits, cancellations, and no-shows.
+- [ ] Remove/disable ads from every app surface.
+- [ ] Add demo/seed data for local testing.
+- [ ] Add first pilot setup checklist.
+- [ ] Add admin handoff notes for pilot clinic.
+- [ ] Add basic support/contact route or email.
+
+## Phase 4 - App Foundation
 
 - [ ] Create the base app shell.
 - [ ] Create public marketing/home route.
@@ -61,7 +81,7 @@ Do not implement TypeScript code while doing documentation-only update tasks.
 - [ ] Do not create a large Redux store for clinic/booking/payment data.
 - [ ] Verify Bulgarian text encoding before reusing prototype copy.
 
-## Phase 4 - Authentication And Registration Foundation
+## Phase 5 - Authentication And Registration Foundation
 
 - [ ] Implement clinic owner/admin registration.
 - [ ] Implement clinic/admin login.
@@ -80,7 +100,7 @@ Do not implement TypeScript code while doing documentation-only update tasks.
 - [ ] Add local user lookup helper.
 - [ ] Add route-level auth boundaries for public, admin, staff, and patient surfaces.
 
-## Phase 5 - User Roles And Organization/Clinic Scoping
+## Phase 6 - User Roles And Organization/Clinic Scoping
 
 - [ ] Model and enforce roles: owner, manager, receptionist, doctor, patient.
 - [ ] Add organization/clinic membership checks.
@@ -93,7 +113,7 @@ Do not implement TypeScript code while doing documentation-only update tasks.
 - [ ] Add audit events for sensitive role/access changes.
 - [ ] Risk: access control must be enforced on the server, not only hidden in the UI.
 
-## Phase 6 - Core Database And Prisma Model
+## Phase 7 - Core Database And Prisma Model
 
 - [ ] Add database connection configuration.
 - [ ] Add Prisma setup.
@@ -122,7 +142,7 @@ Do not implement TypeScript code while doing documentation-only update tasks.
 - [ ] Add indexes for organization, patient, doctor, resource, appointment date/time, appointment status, order status, hold status/expiry, and timestamps.
 - [ ] Add ownership constraints wherever practical.
 
-## Phase 7 - Google Calendar Integration Foundation
+## Phase 8 - Google Calendar Integration Foundation
 
 - [ ] Add Google Calendar API client/server helpers.
 - [ ] Choose and document required Google OAuth scopes before implementing the Google Calendar OAuth/connection flow.
@@ -134,7 +154,7 @@ Do not implement TypeScript code while doing documentation-only update tasks.
 - [ ] Keep Google Calendar as a sync target, not the source of truth.
 - [ ] Keep local database appointments as product source of truth.
 
-## Phase 8 - Clinic Admin Setup
+## Phase 9 - Clinic Admin Setup
 
 - [ ] Build admin dashboard shell.
 - [ ] Build clinic settings page.
@@ -160,7 +180,7 @@ Do not implement TypeScript code while doing documentation-only update tasks.
 - [ ] Build blocked time/holiday configuration.
 - [ ] Add validation on frontend and backend.
 
-## Phase 9 - Patient Account Foundation
+## Phase 10 - Patient Account Foundation
 
 - [ ] Build patient account shell.
 - [ ] Build patient profile/contact details page.
@@ -174,7 +194,7 @@ Do not implement TypeScript code while doing documentation-only update tasks.
 - [ ] Show request-cancellation option when clinic policy allows it.
 - [ ] Ensure patient account does not expose medical records, prescriptions, treatment notes, insurance workflows, chat, or file uploads.
 
-## Phase 10 - Availability Rules And Slot Generation
+## Phase 11 - Availability Rules And Slot Generation
 
 - [ ] Implement server-side availability generation.
 - [ ] Generate slots from weekday rules.
@@ -190,7 +210,7 @@ Do not implement TypeScript code while doing documentation-only update tasks.
 - [ ] Add transaction-safe booking creation checks where practical.
 - [ ] Add tests for slot generation, buffer behavior, timezone boundaries, hold exclusion, and pending lock exclusion.
 
-## Phase 11 - Temporary Slot Holds And Pending Appointment Locks
+## Phase 12 - Temporary Slot Holds And Pending Appointment Locks
 
 - [ ] Implement temporary slot hold creation when a patient selects a slot.
 - [ ] Start MVP slot hold visibility with polling every few seconds.
@@ -208,7 +228,7 @@ Do not implement TypeScript code while doing documentation-only update tasks.
 - [ ] Research and choose cleanup mechanism: Vercel Cron, database scheduled job, protected cleanup route, or background worker later.
 - [ ] Add abuse prevention for one user/session/IP holding many slots at once.
 
-## Phase 12 - Public/Patient Booking Flow
+## Phase 13 - Public/Patient Booking Flow
 
 - [ ] Build clinic-branded public booking page.
 - [ ] Let patients browse available services and slots publicly.
@@ -230,7 +250,7 @@ Do not implement TypeScript code while doing documentation-only update tasks.
 - [ ] Add user-readable errors for unavailable slot, inactive service, invalid hold, and payment setup failure.
 - [ ] Do not prioritize guest booking in MVP; document guest booking only as optional/later if needed.
 
-## Phase 13 - Stripe Checkout And Webhook Payment Finalization
+## Phase 14 - Stripe Checkout And Webhook Payment Finalization
 
 - [ ] Add Stripe server client.
 - [ ] Add environment validation for Stripe keys.
@@ -254,7 +274,7 @@ Do not implement TypeScript code while doing documentation-only update tasks.
 - [ ] Ensure status pages do not expose arbitrary appointments or cross-clinic data.
 - [ ] Strengthen Stripe Connect warning before multi-clinic money movement.
 
-## Phase 14 - Post-Payment Google Calendar Event Creation And Retry
+## Phase 15 - Post-Payment Google Calendar Event Creation And Retry
 
 - [ ] Create Google Calendar event only after webhook-confirmed payment or authorized manual confirmation.
 - [ ] Map appointment to safe Google Calendar payload.
@@ -270,7 +290,7 @@ Do not implement TypeScript code while doing documentation-only update tasks.
 - [ ] Ensure retry is idempotent and does not duplicate calendar events.
 - [ ] Add tests for calendar payload mapping and sync failure state transitions.
 
-## Phase 15 - Notifications And Email Idempotency
+## Phase 16 - Notifications And Email Idempotency
 
 - [ ] Configure email provider.
 - [ ] Send patient booking confirmation after webhook-confirmed payment.
@@ -286,7 +306,7 @@ Do not implement TypeScript code while doing documentation-only update tasks.
 - [ ] Avoid exposing sensitive medical data in emails.
 - [ ] Research whether SMS is required for the first pilot.
 
-## Phase 16 - Admin Appointment Management
+## Phase 17 - Admin Appointment Management
 
 - [ ] Build appointments overview page.
 - [ ] Build operational daily agenda view.
@@ -319,7 +339,7 @@ Do not implement TypeScript code while doing documentation-only update tasks.
 - [ ] Track no-show and cancellation counts for dashboard reporting.
 - [ ] Add audit logs for status changes.
 
-## Phase 17 - Patient Appointment Dashboard
+## Phase 18 - Patient Appointment Dashboard
 
 - [ ] Build patient dashboard page.
 - [ ] Show upcoming appointments.
@@ -332,7 +352,7 @@ Do not implement TypeScript code while doing documentation-only update tasks.
 - [ ] Prevent cross-patient appointment access.
 - [ ] Do not show clinic admin-only payment internals.
 
-## Phase 18 - Patient Cancellation Request Flow
+## Phase 19 - Patient Cancellation Request Flow
 
 - [ ] Configure patient cancellation request policy per clinic.
 - [ ] Support request cancellation only N days/hours before appointment.
@@ -344,7 +364,7 @@ Do not implement TypeScript code while doing documentation-only update tasks.
 - [ ] Notify patient of request outcome if implemented.
 - [ ] Keep rescheduling out of scope unless explicitly added later.
 
-## Phase 19 - Refund Handling
+## Phase 20 - Refund Handling
 
 - [ ] Ensure patients cannot request or self-initiate refunds.
 - [ ] Add admin-only refund review/issue/record workflow.
@@ -355,7 +375,7 @@ Do not implement TypeScript code while doing documentation-only update tasks.
 - [ ] Confirm owner/admin refund permissions.
 - [ ] Confirm receptionist and doctor cannot issue money refunds by default.
 
-## Phase 20 - Privacy, Security, Legal, And Abuse Prevention
+## Phase 21 - Privacy, Security, Legal, And Abuse Prevention
 
 - [ ] Verify all clinic data queries are scoped by organization/clinic ownership.
 - [ ] Verify admins cannot access another clinic's appointments.
@@ -374,26 +394,6 @@ Do not implement TypeScript code while doing documentation-only update tasks.
 - [ ] Optionally add CAPTCHA later if abuse appears.
 - [ ] Add privacy policy, terms of use, cancellation policy, refund policy, and cookie policy pages.
 - [ ] Research production logging and alerting approach.
-
-## Phase 21 - UI Direction And SuperDesign Design Exploration
-
-- [ ] Use SuperDesign for reviewed UI exploration before implementing important booking/admin/patient screens.
-- [ ] Create SuperDesign explorations for public booking, slot hold states, checkout status pages, patient dashboard, daily agenda, clinic dashboard, appointment details, and failed calendar sync.
-- [ ] Apply calm clinic-focused visual direction.
-- [ ] Keep patient booking flow mobile-friendly.
-- [ ] Keep patient account area simple and appointment-focused.
-- [ ] Keep admin dashboard desktop-friendly.
-- [ ] Add clear empty/loading/error states.
-- [ ] Add clear payment and sync status badges.
-- [ ] Add clear slot hold states and hold expiry warnings.
-- [ ] Add clear copy for deposit and remaining balance.
-- [ ] Add clear copy that deposits are non-refundable by default when the patient does not attend.
-- [ ] Add pilot dashboard cards for today's bookings, upcoming bookings, pending payments, active slot holds, failed syncs, paid deposits, cancellations, and no-shows.
-- [ ] Remove/disable ads from every app surface.
-- [ ] Add demo/seed data for local testing.
-- [ ] Add first pilot setup checklist.
-- [ ] Add admin handoff notes for pilot clinic.
-- [ ] Add basic support/contact route or email.
 
 ## Phase 22 - Testing Strategy And Pilot Hardening
 
