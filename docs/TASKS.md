@@ -8,6 +8,8 @@ Only mark tasks complete when the implementation exists in the current branch, c
 
 Do not implement TypeScript code while doing documentation-only update tasks.
 
+Complete tasks from top to bottom and one approved task/branch at a time. Do not begin a task until its prerequisite models, authorization, services, or integrations exist. Every implementation task must add or update focused tests for the component or logic it changes; Phase 22 audits and extends that coverage rather than postponing tests until the end.
+
 ## Phase 1 - Project Setup
 
 - [x] Commit initial documentation foundation on `main`.
@@ -84,46 +86,53 @@ Do not implement TypeScript code while doing documentation-only update tasks.
 
 ## Phase 5 - Authentication And Registration Foundation
 
-- [ ] Implement clinic owner/admin registration.
-- [ ] Implement clinic/admin login.
-- [ ] Implement staff user registration or invitation.
-- [ ] Implement doctor user registration or invitation.
-- [ ] Implement receptionist user registration or invitation.
-- [ ] Ensure staff cannot self-register into arbitrary clinics without invitation or owner/admin approval.
+- [x] Define clinic owner/admin account provisioning as Clerk Dashboard or controlled database provisioning only; do not expose public owner/admin registration.
+- [ ] Configure Clerk authentication foundation: `ClerkProvider`, middleware/proxy, environment validation, and public/private route definitions.
+- [ ] Implement Clerk login for privately provisioned clinic owner/admin accounts.
 - [ ] Implement patient registration.
 - [ ] Implement patient login.
 - [ ] Implement logout.
 - [ ] Implement session management.
-- [ ] Implement Clerk webhook user sync into local `User` table.
-- [ ] Protect admin routes.
-- [ ] Protect patient account routes.
-- [ ] Add current-user helper.
+- [ ] Add Clerk signed-in boundaries for private admin and patient route groups.
+- [ ] Keep public marketing, booking discovery, support, and public-safe checkout status routes accessible without login.
+
+## Phase 6 - Identity Database, Provisioning, Roles, And Clinic Scoping
+
+- [ ] Add database connection configuration.
+- [ ] Add Prisma setup.
+- [ ] Model users synced from Clerk with unique `User.clerkUserId`.
+- [ ] Model organizations/clinics.
+- [ ] Keep each organization/clinic as the local tenant and product source of truth; do not model the clinic itself as a Google account.
+- [ ] Model organization members, membership status, and roles.
+- [ ] Model minimal patient profile/contact details.
+- [ ] Model audit/event records needed for identity, membership, and role changes.
+- [ ] Add identity and membership indexes and ownership constraints wherever practical.
+- [ ] Implement idempotent Clerk webhook user sync and map each Clerk identity to the local `User` table through unique `User.clerkUserId`.
+- [ ] Add current-authenticated-user helper.
 - [ ] Add local user lookup helper.
-- [ ] Add route-level auth boundaries for public, admin, staff, and patient surfaces.
-
-## Phase 6 - User Roles And Organization/Clinic Scoping
-
-- [ ] Model and enforce roles: owner, manager, receptionist, doctor, patient.
+- [ ] Implement trusted clinic owner/admin local provisioning and link it to a trusted Clerk identity.
+- [ ] Implement staff user registration or invitation.
+- [ ] Implement doctor user registration or invitation.
+- [ ] Implement receptionist user registration or invitation.
+- [ ] Ensure staff cannot self-register into arbitrary clinics without invitation or owner/admin approval.
+- [ ] Model and enforce roles: owner, admin, manager, receptionist, doctor, patient.
 - [ ] Add organization/clinic membership checks.
 - [ ] Add current-organization/current-clinic helper.
 - [ ] Add admin/staff authorization guards.
 - [ ] Add patient ownership authorization guards.
+- [ ] Protect admin routes with authenticated local user, active clinic membership, and an authorized clinic-side role.
+- [ ] Protect patient account routes with authenticated local user and patient ownership checks.
+- [ ] Add route-level authorization boundaries for public, admin, staff, and patient surfaces.
 - [ ] Ensure patients can access only their own appointments/profile.
 - [ ] Ensure clinic users can access only their clinic-scoped records.
 - [ ] Ensure webhook processing cannot mutate unrelated clinic/order records.
 - [ ] Add audit events for sensitive role/access changes.
 - [ ] Risk: access control must be enforced on the server, not only hidden in the UI.
 
-## Phase 7 - Core Database And Prisma Model
+## Phase 7 - Core Operational Database And Prisma Model
 
-- [ ] Add database connection configuration.
-- [ ] Add Prisma setup.
 - [ ] Review prototype Prisma models and map old `Calendar`, `CalendarEvent`, and `EventOrder` concepts to the new MVP schema.
-- [ ] Model users synced from Clerk.
-- [ ] Model organizations/clinics.
 - [ ] Model clinic settings.
-- [ ] Model organization members and roles.
-- [ ] Model patient profile/contact details.
 - [ ] Model doctors/staff.
 - [ ] Model cabinets/rooms/resources.
 - [ ] Model services.
@@ -136,23 +145,27 @@ Do not implement TypeScript code while doing documentation-only update tasks.
 - [ ] Model appointment orders.
 - [ ] Model pending appointment expiration.
 - [ ] Model Stripe metadata fields.
-- [ ] Model Google Calendar integrations.
+- [ ] Model the clinic-owned Google account connection separately from individual doctor/resource calendar mappings.
+- [ ] Model doctor/resource calendar mappings through `CalendarIntegration`, `CalendarMapping`, or equivalent records.
 - [ ] Model Google Calendar sync attempts/status.
 - [ ] Model notification logs with idempotency keys where needed.
-- [ ] Model audit/event records.
-- [ ] Add indexes for organization, patient, doctor, resource, appointment date/time, appointment status, order status, hold status/expiry, and timestamps.
+- [ ] Extend indexes for patient, doctor, resource, appointment date/time, appointment status, order status, hold status/expiry, and timestamps.
 - [ ] Add ownership constraints wherever practical.
 - [ ] Add demo/seed data for local testing.
 
 ## Phase 8 - Google Calendar Integration Foundation
 
-- [ ] Add Google Calendar API client/server helpers.
 - [ ] Choose and document required Google OAuth scopes before implementing the Google Calendar OAuth/connection flow.
-- [ ] Store Google Calendar configuration in `CalendarIntegration` or equivalent mapping records.
-- [ ] Define how clinic, doctor, and resource/cabinet records map to Google Calendar IDs through the integration layer.
-- [ ] Build calendar/resource mapping data foundation early.
+- [ ] Define the credential/token storage and refresh strategy for a clinic-owned Google account connection.
+- [ ] Add Google Calendar API client/server helpers.
+- [ ] Implement the server-side Google Calendar OAuth/connection foundation for an existing authorized organization.
+- [ ] Support one active connected Google account per clinic for MVP while keeping the integration model extensible.
+- [ ] Discover/list calendars from the clinic's connected Google account.
+- [ ] Store the connected Google account in a clinic-scoped connection record and discovered calendar references/mappings in `CalendarIntegration`, `CalendarMapping`, or equivalent records.
+- [ ] Define and implement how existing local doctor and resource/cabinet records map to discovered Google Calendar IDs.
+- [ ] Keep doctor, resource, service, availability, and booking settings local even when they are mapped to Google calendars.
 - [ ] Design availability/reference behavior with Google Calendar in mind.
-- [ ] Do not create final Google Calendar appointment events before payment confirmation.
+- [ ] Do not create final Google Calendar appointment events before webhook-confirmed payment or authorized manual confirmation.
 - [ ] Keep Google Calendar as a sync target, not the source of truth.
 - [ ] Keep local database appointments as product source of truth.
 
@@ -160,9 +173,6 @@ Do not implement TypeScript code while doing documentation-only update tasks.
 
 - [ ] Build admin dashboard shell.
 - [ ] Build clinic settings page.
-- [ ] Build admin UI to connect/configure Google Calendar.
-- [ ] Build admin UI to create/edit doctor/resource calendar mappings.
-- [ ] Map doctors/resources to calendars from the admin area.
 - [ ] Support booking page slug.
 - [ ] Support clinic timezone.
 - [ ] Support default currency.
@@ -176,7 +186,12 @@ Do not implement TypeScript code while doing documentation-only update tasks.
 - [ ] Build cabinet/room/resource list and create/edit forms.
 - [ ] Build service list and create/edit forms.
 - [ ] Support service duration, full price, deposit, currency, and active/inactive state.
-- [ ] Build service assignment management.
+- [ ] Build admin UI to connect/configure Google Calendar after local doctors/resources can be created.
+- [ ] Allow only authorized owner/admin roles to connect, disconnect, or replace the clinic Google account.
+- [ ] Build admin UI to create/edit doctor/resource calendar mappings.
+- [ ] Map existing local doctors/resources to discovered calendars from the admin area.
+- [ ] Build owner/admin-only doctor/resource calendar settings pages for booking configuration.
+- [ ] Build service assignment management after doctors/resources and required calendar mappings exist.
 - [ ] Require each active service to have at least one valid bookable assignment.
 - [ ] Build weekday availability configuration.
 - [ ] Build blocked time/holiday configuration.
@@ -186,14 +201,7 @@ Do not implement TypeScript code while doing documentation-only update tasks.
 
 - [ ] Build patient account shell.
 - [ ] Build patient profile/contact details page.
-- [ ] Build patient appointment list.
-- [ ] Build patient appointment detail view.
-- [ ] Show upcoming appointments.
-- [ ] Show past appointments.
-- [ ] Show payment/deposit status.
-- [ ] Show remaining balance.
-- [ ] Show cancellation policy.
-- [ ] Show request-cancellation option when clinic policy allows it.
+- [ ] Add patient account navigation and protected placeholder states for the later appointment dashboard.
 - [ ] Ensure patient account does not expose medical records, prescriptions, treatment notes, insurance workflows, chat, or file uploads.
 
 ## Phase 11 - Availability Rules And Slot Generation
@@ -210,6 +218,7 @@ Do not implement TypeScript code while doing documentation-only update tasks.
 - [ ] Exclude blocked time and holidays.
 - [ ] Treat expired holds and expired pending appointments as available again.
 - [ ] Add transaction-safe booking creation checks where practical.
+- [ ] Confirm availability reads persisted active hold and pending-payment records without depending on the later public hold UI.
 - [ ] Add tests for slot generation, buffer behavior, timezone boundaries, hold exclusion, and pending lock exclusion.
 
 ## Phase 12 - Temporary Slot Holds And Pending Appointment Locks
@@ -228,7 +237,9 @@ Do not implement TypeScript code while doing documentation-only update tasks.
 - [ ] Use longer checkout/payment lock duration, with sensible default such as 15-30 minutes.
 - [ ] Expire abandoned pending-payment appointments automatically.
 - [ ] Research and choose cleanup mechanism: Vercel Cron, database scheduled job, protected cleanup route, or background worker later.
+- [ ] Implement the chosen scheduled cleanup mechanism for expired holds and pending-payment appointments.
 - [ ] Add abuse prevention for one user/session/IP holding many slots at once.
+- [ ] Rate-limit public slot hold creation.
 
 ## Phase 13 - Public/Patient Booking Flow
 
@@ -248,7 +259,8 @@ Do not implement TypeScript code while doing documentation-only update tasks.
 - [ ] Show full price, deposit due now, and remaining balance.
 - [ ] Show cancellation/refund policy text.
 - [ ] Server re-checks price, availability, active service, active doctor/resource, and valid hold before Checkout.
-- [ ] Redirect browser to Stripe Checkout.
+- [ ] Create the validated pending-payment appointment/order handoff required before Stripe Checkout Session creation.
+- [ ] Rate-limit public booking form submission.
 - [ ] Add user-readable errors for unavailable slot, inactive service, invalid hold, and payment setup failure.
 - [ ] Do not prioritize guest booking in MVP; document guest booking only as optional/later if needed.
 
@@ -258,6 +270,8 @@ Do not implement TypeScript code while doing documentation-only update tasks.
 - [ ] Add environment validation for Stripe keys.
 - [ ] Create Checkout Session with metadata including `appointmentOrderId`.
 - [ ] Store Stripe Checkout Session ID locally when created.
+- [ ] Rate-limit Checkout Session creation.
+- [ ] Redirect browser to Stripe Checkout only after the server creates and stores a valid Checkout Session.
 - [ ] Ensure success/cancel/status pages never create calendar events or mark orders paid.
 - [ ] Implement `/api/stripe/webhook` route.
 - [ ] Verify Stripe webhook signatures using raw request body.
@@ -297,6 +311,7 @@ Do not implement TypeScript code while doing documentation-only update tasks.
 - [ ] Configure email provider.
 - [ ] Send patient booking confirmation after webhook-confirmed payment.
 - [ ] Include non-refundable deposit policy in patient confirmation email.
+- [ ] Reuse the scheduled-job foundation for time-based notifications.
 - [ ] Send 24-hour email reminder before appointments.
 - [ ] Send patient cancellation email if cancellation is implemented.
 - [ ] Send refund notification only when an authorized admin issues or records a refund.
@@ -356,7 +371,7 @@ Do not implement TypeScript code while doing documentation-only update tasks.
 
 ## Phase 19 - Patient Cancellation Request Flow
 
-- [ ] Configure patient cancellation request policy per clinic.
+- [ ] Implement patient cancellation-request evaluation using the policy already stored through clinic settings; do not introduce a second policy source.
 - [ ] Support request cancellation only N days/hours before appointment.
 - [ ] Support request cancellation anytime.
 - [ ] Support patient cancellation requests disabled.
@@ -389,47 +404,22 @@ Do not implement TypeScript code while doing documentation-only update tasks.
 - [ ] Verify optional notes discourage sensitive data.
 - [ ] Verify Google Calendar event titles/descriptions avoid sensitive medical data.
 - [ ] Verify audit logs do not expose sensitive data unnecessarily.
-- [ ] Rate-limit slot hold creation.
-- [ ] Rate-limit booking form submission.
-- [ ] Rate-limit Checkout Session creation.
-- [ ] Prevent one user/session/IP from holding many slots at once.
+- [ ] Verify slot hold creation, booking submission, and Checkout Session creation rate limits implemented in their owning phases.
+- [ ] Verify one user/session/IP cannot hold many slots at once.
 - [ ] Optionally add CAPTCHA later if abuse appears.
 - [ ] Add privacy policy, terms of use, cancellation policy, refund policy, and cookie policy pages.
 - [ ] Research production logging and alerting approach.
 
-## Phase 22 - Testing Strategy And Pilot Hardening
+## Phase 22 - Integration Testing, Coverage Audit, And Pilot Hardening
 
-- [ ] Add tests for clinic owner registration.
-- [ ] Add tests for staff invitation/approved assignment.
-- [ ] Add tests that staff cannot join a clinic without invitation or owner/admin approval.
-- [ ] Add tests for doctor/receptionist role access.
-- [ ] Add tests for patient registration and login.
-- [ ] Add tests for patient appointment ownership.
-- [ ] Add tests for authenticated admin access.
-- [ ] Add tests for authenticated patient dashboard access.
-- [ ] Add tests for cross-patient access prevention.
-- [ ] Add tests for cross-clinic access prevention.
-- [ ] Add tests for SlotHold creation, expiry, token/session mismatch, and conversion to pending appointment.
-- [ ] Add tests for pre-login SlotHold survival through registration/login and safe attachment to the authenticated patient.
-- [ ] Add tests for active holds hidden from availability.
-- [ ] Add tests for pending payment appointments hidden from availability.
-- [ ] Add tests for expired holds/pending appointments becoming available again.
-- [ ] Add tests for server-side availability recheck before Checkout.
-- [ ] Add tests for double-booking prevention.
-- [ ] Add tests for Stripe webhook idempotency.
-- [ ] Add tests that duplicate webhook does not duplicate Google Calendar event.
-- [ ] Add tests that duplicate webhook does not duplicate emails.
-- [ ] Add tests that Google Calendar sync failure does not cancel paid appointment.
-- [ ] Add tests for Google Calendar retry.
-- [ ] Add tests for timezone boundaries.
-- [ ] Add tests for patient cancellation without automatic refund.
-- [ ] Add tests for admin refund flow.
-- [ ] Add tests for manual admin booking with existing patient account.
-- [ ] Add tests for manual admin booking with entered patient contact details and no account.
-- [ ] Add tests that manual bookings respect availability by default.
-- [ ] Add tests for authorized manual override if allowed.
-- [ ] Add tests that manual booking payment state stays separate from appointment state.
-- [ ] Add tests for rate limiting or abuse prevention where practical.
+Focused component and logic tests must already have been added with every implementation task. This phase closes cross-feature coverage gaps, adds integration/E2E coverage, and performs pilot hardening.
+
+- [ ] Audit focused test coverage from earlier phases and close any documented gaps.
+- [ ] Add cross-feature integration coverage for authentication, clinic scoping, patient ownership, and staff permissions.
+- [ ] Add cross-feature integration coverage for holds, availability, pending-payment conversion, cleanup, and double-booking prevention.
+- [ ] Add cross-feature integration coverage for Stripe webhook idempotency, Google Calendar sync/retry, and notification idempotency.
+- [ ] Add cross-feature integration coverage for manual bookings, cancellation requests, refunds, and payment/appointment state separation.
+- [ ] Add cross-feature integration coverage for rate limiting and abuse prevention where practical.
 - [ ] Add manual end-to-end test plan using Stripe test mode and test Google Calendar.
 
 ## Phase 23 - Pre-Pilot Checklist
@@ -437,7 +427,7 @@ Do not implement TypeScript code while doing documentation-only update tasks.
 - [ ] Confirm MVP scope matches `docs/MVP.md`.
 - [ ] Confirm decisions in `docs/DECISIONS.md` are implemented or intentionally deferred.
 - [ ] Confirm no out-of-scope features slipped into the MVP.
-- [ ] Confirm all main registration flows work.
+- [ ] Confirm patient registration, invited/approved staff onboarding, and privately provisioned owner/admin login flows work; confirm no public owner/admin registration exists.
 - [ ] Confirm patient accounts are appointment-management only.
 - [ ] Confirm payment finalization happens only from Stripe webhooks.
 - [ ] Confirm success/cancel/status pages do not mutate payment/order state.

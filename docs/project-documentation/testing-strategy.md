@@ -6,6 +6,8 @@ DocApp should use focused tests for business-critical logic and lightweight comp
 
 The highest-risk areas are availability generation, slot locking, payment webhook fulfillment, Google Calendar sync, authorization, and state transitions.
 
+Focused tests must be added in the same task/branch as each new or changed component or unit of application/business logic. The final testing phase is for coverage auditing, cross-feature integration testing, manual E2E validation, and pilot hardening; it must not be used to defer feature tests.
+
 ## Unit Tests
 
 Add unit tests for:
@@ -44,6 +46,9 @@ Add unit tests for:
 - notification idempotency
 - Google Calendar payload mapping
 - Google Calendar sync failure handling
+- clinic Google account connection and organization ownership validation
+- discovered calendar mapping to existing local doctor/resource records
+- Google disconnect/reconnect without deleting local clinic records
 - access-control helpers
 - cross-patient data access denial
 - public-safe status token/reference validation
@@ -87,32 +92,35 @@ Before a pilot, manually test:
 1. Create clinic.
 2. Create doctor.
 3. Create cabinet/resource.
-4. Create service with full price and deposit.
-5. Configure weekday availability.
-6. Open public booking page.
-7. Select service/time.
-8. Confirm short slot hold blocks the slot in another tab.
-9. Register/log in as patient and confirm the selected hold survives the redirect.
-10. Pay with Stripe test card.
-11. Confirm webhook marks order paid.
-12. Confirm appointment becomes confirmed.
-13. Confirm Google Calendar event is created.
-14. Confirm patient email is sent once.
-15. Confirm patient account shows appointment/payment status.
-16. Confirm admin can see payment/sync status.
-17. Simulate failed Google Calendar sync and retry.
-18. Simulate abandoned Checkout and pending expiry.
-19. Confirm slot becomes available after expiry.
-20. Confirm double booking is prevented.
-21. Confirm patient cancellation request follows clinic policy and does not trigger refund.
-22. Confirm admin-only refund flow.
-23. Confirm cancel/no-show/admin flows.
-24. Create manual booking from admin panel for an existing patient account.
-25. Create manual booking from admin panel with entered patient contact details and no account.
-26. Confirm manual bookings respect availability by default.
-27. Confirm manual override requires authorized role and audit reason if enabled.
-28. Confirm manual pay-at-clinic or paid-externally booking does not require Stripe Checkout.
-29. Confirm manual confirmed booking creates or updates Google Calendar event.
+4. Connect the clinic Google account as an authorized owner/admin.
+5. Discover calendars and map them to the existing doctor/resource.
+6. Create service with full price and deposit.
+7. Configure weekday availability.
+8. Open public booking page.
+9. Select service/time.
+10. Confirm short slot hold blocks the slot in another tab.
+11. Register/log in as patient and confirm the selected hold survives the redirect.
+12. Pay with Stripe test card.
+13. Confirm webhook marks order paid.
+14. Confirm appointment becomes confirmed.
+15. Confirm Google Calendar event is created.
+16. Confirm patient email is sent once.
+17. Confirm patient account shows appointment/payment status.
+18. Confirm admin can see payment/sync status.
+19. Simulate failed Google Calendar sync and retry.
+20. Simulate abandoned Checkout and pending expiry.
+21. Confirm slot becomes available after expiry.
+22. Confirm double booking is prevented.
+23. Confirm patient cancellation request follows clinic policy and does not trigger refund.
+24. Confirm admin-only refund flow.
+25. Confirm cancel/no-show/admin flows.
+26. Create manual booking from admin panel for an existing patient account.
+27. Create manual booking from admin panel with entered patient contact details and no account.
+28. Confirm manual bookings respect availability by default.
+29. Confirm manual override requires authorized role and audit reason if enabled.
+30. Confirm manual pay-at-clinic or paid-externally booking does not require Stripe Checkout.
+31. Confirm manual confirmed booking creates or updates Google Calendar event.
+32. Disconnect/reconnect the Google account and confirm local clinic records remain intact.
 
 ## Test Data
 

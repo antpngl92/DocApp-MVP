@@ -70,6 +70,8 @@ Suggested fields:
 
 Organization can keep simple default fields, but operational behavior should be centralized in clinic settings as it grows.
 
+An organization is the local clinic tenant and product source of truth. It does not represent a Google account. An existing organization may connect a Google account through integration records after authorized membership, doctor, and resource records exist.
+
 ### User
 
 Local user synced from Clerk.
@@ -386,22 +388,43 @@ failed
 
 ## Google Calendar Sync
 
-### CalendarIntegration
+### GoogleAccountConnection
 
-Stores Google Calendar configuration for an organization/resource/doctor.
+Stores the clinic-owned Google account connection and server-side authorization state.
 
 Suggested fields:
 
 - id
 - organizationId
+- provider
+- providerAccountId
+- credential/token reference or encrypted token fields
+- grantedScopes
+- connectionStatus
+- lastRefreshedAt
+- createdAt
+- updatedAt
+
+For MVP, one organization may have one active connected Google account. Keep provider credentials/tokens server-side. The model should remain extensible so a clinic can reconnect or support additional provider accounts later.
+
+### CalendarIntegration / CalendarMapping
+
+Stores an individual discovered Google Calendar reference and its optional mapping to an organization/resource/doctor.
+
+Suggested fields:
+
+- id
+- organizationId
+- googleAccountConnectionId
 - doctorId
 - resourceId
 - googleCalendarId
-- providerAccountId
 - displayName
 - isActive
 - createdAt
 - updatedAt
+
+Each discovered calendar may be mapped to a local doctor, a local resource/cabinet, or an explicitly documented clinic-default purpose. Keep calendar mappings separate from local doctor/resource settings. Disconnecting or replacing a Google account must not delete the organization, doctors, resources, services, availability rules, appointments, or booking policies.
 
 ### CalendarSyncRecord
 

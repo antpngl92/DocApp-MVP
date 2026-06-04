@@ -133,6 +133,29 @@ Examples:
 
 Client components must not import these modules.
 
+## Authentication Dependency Order
+
+Clerk identity/session setup comes before local database authorization. The minimum Prisma identity foundation (`User`, `Organization`, `OrganizationMember`, and `PatientProfile`) must exist before implementing Clerk webhook user sync, trusted owner/admin provisioning, staff invitations, clinic membership checks, role authorization, or patient ownership authorization.
+
+Clerk route protection proves that a request is signed in. Local database authorization determines whether that signed-in user may access a clinic, staff action, patient profile, or appointment.
+
+## Clinic And Google Calendar Dependency Order
+
+An `Organization` is the local clinic tenant and must exist before Google Calendar can be connected. The organization is not a Google account. For MVP, an existing authorized clinic may connect one active Google account, then discover and map that account's calendars to existing local `Doctor` and `Resource` records.
+
+The dependency order is:
+
+```txt
+Organization and authorized membership
+Doctor and resource records
+Calendar integration/mapping records
+Google account connection and calendar discovery
+Doctor/resource calendar mappings
+Owner/admin booking settings UI
+```
+
+Doctor, resource, service, availability, and booking policy settings remain local. Disconnecting or replacing the Google account must not remove the clinic or its operational records.
+
 ## Source Of Truth
 
 DocApp database is the source of truth for:
@@ -165,6 +188,8 @@ External side effects should be idempotent where practical:
 Persist external IDs and sync attempt state for traceability.
 
 Expired short holds and pending-payment locks need a concrete cleanup mechanism, such as a cron/job/service plus webhook handling for `checkout.session.expired`.
+
+The same scheduled-job foundation may be reused for time-based notifications such as appointment reminders.
 
 ## MVP Deployment Shape
 

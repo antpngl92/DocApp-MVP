@@ -230,8 +230,10 @@ Do not use `calendar_sync_failed` as an appointment status. A booking can be `co
 
 The MVP should support:
 
-- connecting/configuring Google Calendar identifiers server-side
-- configuring Google Calendar mappings early in the foundation
+- connecting one active clinic-owned Google account per local organization for MVP
+- discovering multiple calendars from the connected Google account
+- mapping discovered calendars to existing local doctors/resources
+- keeping clinic, doctor, resource, service, availability, and booking settings local rather than treating Google Calendar as their source of truth
 - creating a Google Calendar event after payment is confirmed
 - storing the Google Calendar event ID locally
 - storing sync status and sync errors locally
@@ -241,12 +243,14 @@ The MVP should support:
 
 Google Calendar should be treated as an external sync target, not the source of truth.
 
+The local organization/clinic is not the Google account. Disconnecting or replacing the Google connection must not delete or invalidate local clinic records.
+
 ## Admin Features
 
 The MVP should allow an admin to:
 
 - sign in through Clerk
-- register as a clinic owner/admin
+- use an owner/admin account provisioned through the Clerk Dashboard or a controlled database process
 - invite or register staff users
 - view a dashboard overview
 - manage clinic settings
