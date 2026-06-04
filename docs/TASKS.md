@@ -63,23 +63,24 @@ Do not implement TypeScript code while doing documentation-only update tasks.
 
 ## Phase 4 - App Foundation
 
-- [ ] Create the base app shell.
-- [ ] Create public marketing/home route.
-- [ ] Create public booking route group.
-- [ ] Create checkout success, cancel, expired, and status routes.
-- [ ] Create authenticated admin route group.
-- [ ] Create authenticated patient account route group.
-- [ ] Confirm whether a `/services` informational route is in MVP scope or should stay out.
-- [ ] Add shared layout structure for admin pages.
-- [ ] Add shared layout structure for patient account pages.
-- [ ] Add centralized error boundary behavior.
-- [ ] Add loading and empty states.
-- [ ] Add global notification/toast container.
-- [ ] Add basic support/contact route or email.
-- [ ] Add server-state caching foundation for fetched app data.
-- [ ] Add a small client-side UI state store only if needed.
-- [ ] Do not create a large Redux store for clinic/booking/payment data.
-- [ ] Verify Bulgarian text encoding before reusing prototype copy.
+- [x] Create the base app shell.
+- [x] Create public marketing/home route.
+- [x] Create public booking route group.
+- [x] Create checkout success, cancel, expired, and status routes.
+- [x] Create admin route group prepared for authentication.
+- [x] Create patient account route group prepared for authentication.
+- [x] Confirm whether a `/services` informational route is in MVP scope or should stay out.
+- [x] Add shared layout structure for admin pages.
+- [x] Add shared layout structure for patient account pages.
+- [x] Add centralized error boundary behavior.
+- [x] Add loading and empty states.
+- [x] Add global notification/toast container.
+- [x] Add basic support/contact route or email.
+- [x] Add server-state caching foundation for fetched app data.
+- [x] Confirm no client-side UI state store is needed yet.
+- [x] Do not create a large Redux store for clinic/booking/payment data.
+- [x] Verify Bulgarian text encoding before reusing prototype copy.
+- [x] Add internationalization with Bulgarian, English, Spanish, German, French, and Italian, including a persistent navigation language selector.
 
 ## Phase 5 - Authentication And Registration Foundation
 

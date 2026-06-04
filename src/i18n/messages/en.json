@@ -1,0 +1,160 @@
+{
+  "metadata": {
+    "title": "DocApp",
+    "description": "Deposit-based appointment booking for small clinics."
+  },
+  "navigation": {
+    "primaryLabel": "Primary navigation",
+    "booking": "Booking",
+    "support": "Support",
+    "overview": "Overview",
+    "appointments": "Appointments",
+    "adminContext": "Clinic administration",
+    "patientContext": "Patient appointments"
+  },
+  "languageSelector": {
+    "label": "Language"
+  },
+  "feedback": {
+    "loading": "Loading DocApp",
+    "errorTitle": "We could not load this page",
+    "errorDescription": "Try again. If the problem continues, contact clinic support.",
+    "retry": "Try again"
+  },
+  "home": {
+    "eyebrow": "Clinic booking foundation",
+    "title": "Booking that clinics can trust",
+    "description": "A focused foundation for clinic booking, appointment deposits, and recoverable Google Calendar sync.",
+    "panels": {
+      "patients": {
+        "title": "For patients",
+        "description": "Book with a clinic and keep appointment details in one place.",
+        "item1": "Choose a service and available appointment time",
+        "item2": "See the deposit due now and remaining clinic balance",
+        "item3": "Manage appointments without medical-record features"
+      },
+      "clinics": {
+        "title": "For clinics",
+        "description": "Create a calmer operational layer around clinic calendars.",
+        "item1": "Configure services, doctors, rooms, and availability",
+        "item2": "Track deposits, no-shows, and remaining balances",
+        "item3": "Keep Google Calendar sync visible and recoverable"
+      }
+    }
+  },
+  "booking": {
+    "eyebrow": "Public booking",
+    "title": "Book an appointment",
+    "description": "The accepted three-step booking wizard is now represented as a route foundation. Availability and booking behavior arrive in later phases.",
+    "panels": {
+      "service": {
+        "title": "Service",
+        "description": "Choose the appointment type and provider.",
+        "item1": "Separate wizard step",
+        "item2": "Clinic-assigned providers",
+        "item3": "Clear pricing"
+      },
+      "time": {
+        "title": "Time",
+        "description": "Choose from clinic-generated availability.",
+        "item1": "Weekly desktop view",
+        "item2": "Three-day mobile view",
+        "item3": "Visible slot states"
+      },
+      "details": {
+        "title": "Details",
+        "description": "Confirm contact details and review the deposit.",
+        "item1": "Minimal patient details",
+        "item2": "Deposit summary",
+        "item3": "Secure Checkout handoff"
+      }
+    }
+  },
+  "admin": {
+    "eyebrow": "Clinic administration",
+    "title": "Operational overview",
+    "description": "The clinic administration shell is ready for organization-scoped operational features.",
+    "panels": {
+      "operations": {
+        "title": "Operational overview",
+        "description": "The admin surface will focus on clinic work, not marketing.",
+        "item1": "Today's bookings",
+        "item2": "Pending payments",
+        "item3": "Failed calendar syncs"
+      },
+      "configuration": {
+        "title": "Clinic configuration",
+        "description": "Settings will stay organization-scoped and role-protected.",
+        "item1": "Services and resources",
+        "item2": "Availability rules",
+        "item3": "Staff permissions"
+      }
+    }
+  },
+  "patient": {
+    "eyebrow": "Patient account",
+    "title": "Your appointments",
+    "description": "The patient shell is ready for appointment ownership, status, and cancellation-request features.",
+    "panels": {
+      "appointments": {
+        "title": "Appointments",
+        "description": "The patient area is appointment-management only.",
+        "item1": "Upcoming and past appointments",
+        "item2": "Deposit and balance status",
+        "item3": "Cancellation policy"
+      },
+      "privacy": {
+        "title": "Privacy boundary",
+        "description": "Medical-record-like features remain outside the MVP.",
+        "item1": "No diagnoses or treatment notes",
+        "item2": "No file uploads",
+        "item3": "No insurance workflows"
+      }
+    }
+  },
+  "support": {
+    "eyebrow": "Support",
+    "title": "Get the right help",
+    "description": "The support route is ready for clinic and patient contact details when those settings are connected.",
+    "panels": {
+      "booking": {
+        "title": "Clinic booking support",
+        "description": "Patients should contact the clinic about appointment questions.",
+        "item1": "Booking access questions",
+        "item2": "Cancellation policy questions",
+        "item3": "Payment status questions"
+      },
+      "product": {
+        "title": "DocApp support",
+        "description": "Clinic staff can contact DocApp for product assistance.",
+        "item1": "Account access",
+        "item2": "Calendar sync troubleshooting",
+        "item3": "Pilot support"
+      }
+    }
+  },
+  "checkout": {
+    "eyebrow": "Read-only checkout status",
+    "foundationTitle": "Foundation rules",
+    "foundationDescription": "The real order and appointment state will be loaded from the database in the payment phase.",
+    "item1": "Status pages never mark orders paid",
+    "item2": "Stripe webhooks are the payment source of truth",
+    "item3": "Calendar creation happens only after confirmed payment",
+    "success": {
+      "title": "Appointment payment received",
+      "description": "This read-only status page will show webhook-confirmed appointment and payment state."
+    },
+    "pending": {
+      "title": "Payment is still processing",
+      "description": "This read-only status page will refresh from local order state without finalizing payment."
+    },
+    "cancelled": {
+      "title": "Checkout was cancelled",
+      "description": "The appointment remains subject to server-side expiry and cleanup rules."
+    },
+    "expired": {
+      "title": "Checkout has expired",
+      "description": "Expired pending appointments will become available again through server-side rules."
+    }
+  }
+}

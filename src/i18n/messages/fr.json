@@ -1,0 +1,158 @@
+{
+  "metadata": {
+    "title": "DocApp",
+    "description": "Réservation de rendez-vous avec acompte pour petites cliniques."
+  },
+  "navigation": {
+    "primaryLabel": "Navigation principale",
+    "booking": "Réservation",
+    "support": "Assistance",
+    "overview": "Vue d’ensemble",
+    "appointments": "Rendez-vous",
+    "adminContext": "Administration de la clinique",
+    "patientContext": "Rendez-vous du patient"
+  },
+  "languageSelector": { "label": "Langue" },
+  "feedback": {
+    "loading": "Chargement de DocApp",
+    "errorTitle": "Impossible de charger cette page",
+    "errorDescription": "Réessayez. Si le problème persiste, contactez l’assistance de la clinique.",
+    "retry": "Réessayer"
+  },
+  "home": {
+    "eyebrow": "Base de réservation clinique",
+    "title": "Des réservations fiables pour les cliniques",
+    "description": "Une base ciblée pour les réservations, les acomptes et une synchronisation Google Agenda récupérable.",
+    "panels": {
+      "patients": {
+        "title": "Pour les patients",
+        "description": "Réservez auprès d’une clinique et gardez les détails du rendez-vous au même endroit.",
+        "item1": "Choisir un service et un horaire disponible",
+        "item2": "Voir l’acompte dû et le solde restant à la clinique",
+        "item3": "Gérer les rendez-vous sans fonctions de dossier médical"
+      },
+      "clinics": {
+        "title": "Pour les cliniques",
+        "description": "Créez une couche opérationnelle plus sereine autour des agendas.",
+        "item1": "Configurer services, médecins, salles et disponibilités",
+        "item2": "Suivre acomptes, absences et soldes restants",
+        "item3": "Garder la synchronisation Google Agenda visible et récupérable"
+      }
+    }
+  },
+  "booking": {
+    "eyebrow": "Réservation publique",
+    "title": "Prendre rendez-vous",
+    "description": "L’assistant de réservation validé en trois étapes est représenté comme base de route. Les disponibilités et le comportement suivront dans les phases suivantes.",
+    "panels": {
+      "service": {
+        "title": "Service",
+        "description": "Choisissez le type de rendez-vous et le praticien.",
+        "item1": "Étape distincte de l’assistant",
+        "item2": "Praticiens attribués par la clinique",
+        "item3": "Tarifs clairs"
+      },
+      "time": {
+        "title": "Horaire",
+        "description": "Choisissez parmi les disponibilités générées par la clinique.",
+        "item1": "Vue hebdomadaire sur ordinateur",
+        "item2": "Vue mobile sur trois jours",
+        "item3": "États des créneaux visibles"
+      },
+      "details": {
+        "title": "Détails",
+        "description": "Confirmez les coordonnées et vérifiez l’acompte.",
+        "item1": "Informations patient minimales",
+        "item2": "Récapitulatif de l’acompte",
+        "item3": "Passage sécurisé au paiement"
+      }
+    }
+  },
+  "admin": {
+    "eyebrow": "Administration de la clinique",
+    "title": "Vue opérationnelle",
+    "description": "La base d’administration est prête pour des fonctions opérationnelles limitées à l’organisation.",
+    "panels": {
+      "operations": {
+        "title": "Vue opérationnelle",
+        "description": "L’espace d’administration se concentrera sur le travail de la clinique.",
+        "item1": "Réservations du jour",
+        "item2": "Paiements en attente",
+        "item3": "Échecs de synchronisation du calendrier"
+      },
+      "configuration": {
+        "title": "Configuration de la clinique",
+        "description": "Les paramètres resteront limités à l’organisation et protégés par rôle.",
+        "item1": "Services et ressources",
+        "item2": "Règles de disponibilité",
+        "item3": "Autorisations du personnel"
+      }
+    }
+  },
+  "patient": {
+    "eyebrow": "Compte patient",
+    "title": "Vos rendez-vous",
+    "description": "L’espace patient est prêt pour la propriété, le statut et les demandes d’annulation des rendez-vous.",
+    "panels": {
+      "appointments": {
+        "title": "Rendez-vous",
+        "description": "L’espace patient sert uniquement à gérer les rendez-vous.",
+        "item1": "Rendez-vous à venir et passés",
+        "item2": "Statut de l’acompte et du solde",
+        "item3": "Politique d’annulation"
+      },
+      "privacy": {
+        "title": "Limite de confidentialité",
+        "description": "Les fonctions proches d’un dossier médical restent hors MVP.",
+        "item1": "Aucun diagnostic ni note de traitement",
+        "item2": "Aucun dépôt de fichier",
+        "item3": "Aucun processus d’assurance"
+      }
+    }
+  },
+  "support": {
+    "eyebrow": "Assistance",
+    "title": "Obtenir la bonne aide",
+    "description": "La route d’assistance est prête pour les contacts de la clinique et du patient lorsque ces paramètres seront connectés.",
+    "panels": {
+      "booking": {
+        "title": "Assistance réservation",
+        "description": "Les patients doivent contacter la clinique pour toute question sur les rendez-vous.",
+        "item1": "Questions d’accès à la réservation",
+        "item2": "Questions sur l’annulation",
+        "item3": "Questions sur le statut du paiement"
+      },
+      "product": {
+        "title": "Assistance DocApp",
+        "description": "Le personnel peut contacter DocApp pour obtenir de l’aide sur le produit.",
+        "item1": "Accès au compte",
+        "item2": "Dépannage de la synchronisation du calendrier",
+        "item3": "Assistance pilote"
+      }
+    }
+  },
+  "checkout": {
+    "eyebrow": "Statut de paiement en lecture seule",
+    "foundationTitle": "Règles de base",
+    "foundationDescription": "Le statut réel de la commande et du rendez-vous sera chargé depuis la base de données pendant la phase de paiement.",
+    "item1": "Les pages de statut ne marquent jamais les commandes comme payées",
+    "item2": "Les webhooks Stripe sont la source de vérité du paiement",
+    "item3": "Le calendrier est créé uniquement après confirmation du paiement",
+    "success": {
+      "title": "Paiement du rendez-vous reçu",
+      "description": "Cette page affichera le statut du rendez-vous et du paiement confirmé par webhook."
+    },
+    "pending": {
+      "title": "Le paiement est en cours",
+      "description": "Cette page se mettra à jour depuis l’état local sans finaliser le paiement."
+    },
+    "cancelled": {
+      "title": "Le paiement a été annulé",
+      "description": "Le rendez-vous reste soumis aux règles serveur d’expiration et de nettoyage."
+    },
+    "expired": {
+      "title": "Le paiement a expiré",
+      "description": "Les rendez-vous en attente expirés redeviendront disponibles selon les règles serveur."
+    }
+  }
+}
