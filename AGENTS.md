@@ -26,7 +26,8 @@ Do not add production complexity before the MVP scope is clear, but build the pa
 - Prefer TypeScript, explicit types, and simple architecture over clever abstractions.
 - Keep patient-facing and admin-facing code clearly separated.
 - Patient accounts are part of the MVP. They are for booking, appointment history, payment/deposit status, and cancellation requests only.
-- Support owner/admin setup, staff invitation/approved assignment, and patient registration/login in the foundation.
+- Support trusted owner/admin provisioning through the Clerk Dashboard or controlled database setup, staff invitation/approved assignment, and patient registration/login in the foundation.
+- Do not create a public clinic owner/admin registration route or trust user-controlled role metadata.
 - Staff must join a clinic only through owner/admin invitation or explicit admin approval. Do not allow open public self-registration into arbitrary clinic staff roles.
 - Do not store medical notes, symptoms, diagnoses, documents, or other health details unless explicitly added to scope later.
 - Do not place sensitive appointment details in Google Calendar event titles.

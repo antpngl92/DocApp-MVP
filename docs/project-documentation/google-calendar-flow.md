@@ -8,6 +8,20 @@ Google Calendar is an operational sync target, not the source of truth.
 
 Google Calendar configuration should be built early in the MVP foundation so clinic resources/doctors can be mapped before booking behavior depends on it.
 
+## Clinic And Google Account Relationship
+
+The local `Organization` is the clinic tenant and product source of truth. It is not the Google account.
+
+For MVP:
+
+- an existing clinic may have one active connected Google account
+- the connected Google account may expose multiple calendars
+- each calendar may be mapped to an existing local doctor, resource/cabinet, or documented clinic-default purpose
+- only authorized owner/admin roles may connect, disconnect, replace, or configure the clinic Google account and calendar mappings
+- doctor, resource, service, availability, and booking settings remain local
+
+Disconnecting Google Calendar must not delete or invalidate local clinic records. The integration can be reconnected or replaced while preserving local operations and history.
+
 ## Prototype Reference
 
 The existing prototype already includes:
@@ -139,7 +153,16 @@ Calendars may be configured per:
 
 The exact MVP mapping should be documented in `data-model.md` and implemented consistently.
 
-Provider-specific calendar IDs should live in `CalendarIntegration`, not directly on `Doctor` or `Resource`. A doctor/resource can be mapped to one or more provider integrations over time without changing the core resource model.
+Provider account credentials/tokens should live in a server-side `GoogleAccountConnection` or equivalent connection record. Provider-specific calendar IDs and doctor/resource mappings should live in `CalendarIntegration`, `CalendarMapping`, or equivalent mapping records, not directly on `Doctor` or `Resource`. A doctor/resource can be mapped to one or more provider integrations over time without changing the core resource model.
+
+The setup dependency order is:
+
+1. Create/provision the local organization and authorized owner/admin membership.
+2. Create local doctor and resource/cabinet records.
+3. Connect the clinic Google account.
+4. Discover/list calendars from that account.
+5. Map calendars to local doctors/resources.
+6. Configure local booking behavior for those doctors/resources.
 
 ## Safe Event Description
 

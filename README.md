@@ -41,8 +41,10 @@ Feature-specific documentation lives in `docs/project-documentation/`:
 - Checkout success page is read-only and must not mark orders paid.
 - Google Calendar event creation happens after payment confirmation.
 - Google Calendar sync failures must not erase a paid booking.
+- A clinic is a local organization, not a Google account; for MVP it may connect one active Google account and map its calendars to local doctors/resources.
 - Availability must exclude confirmed appointments and non-expired pending locks.
-- Clinic owner, staff/doctor/receptionist, and patient registration are part of MVP.
+- Clinic owner/admin accounts are provisioned only through the Clerk Dashboard or a controlled database process; public owner/admin registration is not allowed.
+- Staff/doctor/receptionist and patient registration are part of MVP.
 - Staff joins clinics only through invitation or approved clinic assignment.
 - Patients can register publicly and manage their own appointments.
 - Authorized clinic staff can create manual bookings from the admin panel for existing patient accounts or for people without accounts using manually entered contact details.

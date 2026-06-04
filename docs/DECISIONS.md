@@ -794,3 +794,45 @@ Rescheduling introduces another availability, payment, notification, and calenda
 **Implication**
 
 Do not build rescheduling during MVP foundation unless a later decision adds it.
+
+## 045 - Clinic Owner And Admin Accounts Are Provisioned Privately
+
+**Decision**
+
+Clinic owner/admin accounts must be provisioned only through the Clerk Dashboard or a controlled database/administrative process. DocApp must not expose a public owner/admin registration form.
+
+**Reason**
+
+Owner/admin accounts can create or control clinic-scoped access to operational, patient, payment, and calendar data. Public self-registration would allow unverified users to claim clinic-side authority and create untrusted or orphaned clinic accounts.
+
+**Implication**
+
+Owner/admin roles and organization memberships are assigned only through trusted administrative processes. A directly provisioned local database record must be linked to a trusted Clerk identity before authentication. Public input, self-selected roles, and user-controlled Clerk metadata must never grant owner/admin access.
+
+## 046 - A Clinic Owns A Google Connection But Is Not A Google Account
+
+**Decision**
+
+The local `Organization` is the clinic tenant and product source of truth. For MVP, an existing clinic may have one active connected Google account containing multiple calendars. Store the account connection separately from individual calendar mappings. Calendars are mapped through integration records to existing local doctors, resources/cabinets, or an explicitly documented clinic-default purpose.
+
+**Reason**
+
+Clinic identity, authorization, services, booking policies, availability, appointments, and payment history must remain stable if Google Calendar is unavailable, disconnected, or replaced. Treating the clinic itself as a Google account would tightly couple core product records to an external provider.
+
+**Implication**
+
+Create the organization, authorized membership, doctors, resources, and calendar integration schema before implementing the Google connection flow. Keep doctor/resource booking settings local. Only authorized owner/admin roles may manage the clinic Google connection and mappings. Disconnecting or replacing Google Calendar must not delete local clinic records.
+
+## 047 - Implementation Tasks Follow Explicit Dependencies
+
+**Decision**
+
+Implement roadmap tasks from top to bottom, one approved task/branch at a time, and do not begin a task until its prerequisite models, authorization, services, or integrations exist.
+
+**Reason**
+
+DocApp workflows cross authentication, clinic scoping, availability, slot locking, payments, calendar sync, notifications, and authorization. Implementing dependent behavior before its foundation creates temporary shortcuts and contradictory ownership boundaries.
+
+**Implication**
+
+The task roadmap must place local organization and operational records before external integration setup, Stripe Checkout redirection after server-side Checkout Session creation, and scheduled/rate-limit foundations before features depend on them. Focused tests are added with each implementation task; the final testing phase audits and extends coverage rather than postponing it.

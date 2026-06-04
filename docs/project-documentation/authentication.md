@@ -6,9 +6,21 @@ DocApp uses Clerk for authentication and local Prisma records for app-specific u
 
 Authentication proves who the user is. Authorization decides what clinic data and actions they can access.
 
+## Implementation Order
+
+Authentication and authorization must be implemented in dependency order:
+
+1. Configure Clerk identity, login, logout, session handling, and basic signed-in route boundaries.
+2. Configure Prisma/database access and create the minimum local identity models: `User`, `Organization`, `OrganizationMember`, and `PatientProfile`.
+3. Sync Clerk identities into the local `User` table through unique `User.clerkUserId`.
+4. Implement trusted owner/admin provisioning, staff invitations, clinic membership, roles, and patient ownership.
+5. Enforce local membership/role/ownership authorization on private routes and server-side operations.
+
+Clerk authentication can exist before the local identity schema, but local-user lookup, clinic membership checks, role checks, invitations, and patient ownership checks cannot be implemented safely until their database models exist.
+
 ## Goals
 
-- Support clinic owner/admin registration and secure admin login.
+- Support trusted clinic owner/admin provisioning and secure admin login.
 - Support staff registration through clinic invitation or approved clinic assignment for receptionist, doctor, and manager/admin users.
 - Support patient registration/login for booking and appointment management.
 - Sync Clerk users into a local `User` table.
@@ -19,6 +31,8 @@ Authentication proves who the user is. Authorization decides what clinic data an
 ## Local User Sync
 
 The app should store a local user record mapped to the Clerk user ID.
+
+The mapping must use a unique `User.clerkUserId` and webhook processing must be idempotent so repeated Clerk events update the same local user instead of creating duplicates.
 
 Minimum local fields:
 
@@ -70,7 +84,8 @@ Patients do not need an `OrganizationMember` record unless the implementation ch
 
 MVP should support these flows:
 
-- clinic owner/admin creates the clinic account
+- clinic owner/admin authentication accounts are provisioned only through the Clerk Dashboard or a controlled database provisioning process
+- no public owner/admin registration route is exposed
 - owner/admin invites or creates staff users
 - staff user accepts invite and registers/logs in
 - staff user is attached to the clinic only through invitation or owner/admin approval
@@ -78,6 +93,14 @@ MVP should support these flows:
 - patient registers/logs in before completing a paid booking
 - patient registration can be public
 - patient profile is created or updated from booking contact details
+
+### Clinic Owner And Admin Provisioning
+
+Clinic owner/admin accounts must not be created through a public registration form.
+
+For MVP, an owner/admin authentication identity is created through the Clerk Dashboard or another controlled administrative provisioning process. If a database record is provisioned directly, it must be linked to a trusted Clerk identity before the person can authenticate.
+
+Owner/admin roles, organization membership, and clinic access must be assigned through controlled server-side or administrative processes. User-controlled metadata, public form input, or a self-selected role must never grant clinic-side access.
 
 Patient accounts are appointment-management accounts only. They must not expose medical records, prescriptions, diagnoses, treatment notes, insurance workflows, chat, or file uploads.
 
