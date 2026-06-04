@@ -1,0 +1,158 @@
+{
+  "metadata": {
+    "title": "DocApp",
+    "description": "Terminbuchung mit Anzahlung für kleine Kliniken."
+  },
+  "navigation": {
+    "primaryLabel": "Hauptnavigation",
+    "booking": "Buchung",
+    "support": "Support",
+    "overview": "Übersicht",
+    "appointments": "Termine",
+    "adminContext": "Klinikverwaltung",
+    "patientContext": "Patiententermine"
+  },
+  "languageSelector": { "label": "Sprache" },
+  "feedback": {
+    "loading": "DocApp wird geladen",
+    "errorTitle": "Diese Seite konnte nicht geladen werden",
+    "errorDescription": "Versuchen Sie es erneut. Wenn das Problem bestehen bleibt, kontaktieren Sie den Klinik-Support.",
+    "retry": "Erneut versuchen"
+  },
+  "home": {
+    "eyebrow": "Grundlage für Klinikbuchungen",
+    "title": "Buchungen, auf die Kliniken vertrauen können",
+    "description": "Eine fokussierte Grundlage für Klinikbuchungen, Terminanzahlungen und wiederherstellbare Google-Kalender-Synchronisierung.",
+    "panels": {
+      "patients": {
+        "title": "Für Patienten",
+        "description": "Buchen Sie bei einer Klinik und bewahren Sie Termindetails an einem Ort auf.",
+        "item1": "Service und verfügbaren Termin wählen",
+        "item2": "Fällige Anzahlung und Restbetrag in der Klinik sehen",
+        "item3": "Termine ohne Patientenakten-Funktionen verwalten"
+      },
+      "clinics": {
+        "title": "Für Kliniken",
+        "description": "Schaffen Sie eine ruhigere operative Ebene rund um Klinikkalender.",
+        "item1": "Services, Ärzte, Räume und Verfügbarkeit konfigurieren",
+        "item2": "Anzahlungen, Nichterscheinen und Restbeträge verfolgen",
+        "item3": "Google-Kalender-Synchronisierung sichtbar und wiederherstellbar halten"
+      }
+    }
+  },
+  "booking": {
+    "eyebrow": "Öffentliche Buchung",
+    "title": "Termin buchen",
+    "description": "Der freigegebene dreistufige Buchungsassistent ist als Routengrundlage dargestellt. Verfügbarkeit und Buchungsverhalten folgen in späteren Phasen.",
+    "panels": {
+      "service": {
+        "title": "Service",
+        "description": "Terminart und Anbieter wählen.",
+        "item1": "Eigener Assistentenschritt",
+        "item2": "Von der Klinik zugewiesene Anbieter",
+        "item3": "Klare Preise"
+      },
+      "time": {
+        "title": "Zeit",
+        "description": "Aus der von der Klinik erzeugten Verfügbarkeit wählen.",
+        "item1": "Wöchentliche Desktop-Ansicht",
+        "item2": "Dreitägige Mobilansicht",
+        "item3": "Sichtbare Terminstatus"
+      },
+      "details": {
+        "title": "Details",
+        "description": "Kontaktdaten bestätigen und Anzahlung prüfen.",
+        "item1": "Minimale Patientendaten",
+        "item2": "Übersicht der Anzahlung",
+        "item3": "Sichere Übergabe zur Zahlung"
+      }
+    }
+  },
+  "admin": {
+    "eyebrow": "Klinikverwaltung",
+    "title": "Betriebsübersicht",
+    "description": "Die Verwaltungsgrundlage ist für organisationsbezogene Betriebsfunktionen bereit.",
+    "panels": {
+      "operations": {
+        "title": "Betriebsübersicht",
+        "description": "Der Verwaltungsbereich konzentriert sich auf die Klinikarbeit.",
+        "item1": "Heutige Buchungen",
+        "item2": "Ausstehende Zahlungen",
+        "item3": "Fehlgeschlagene Kalendersynchronisierungen"
+      },
+      "configuration": {
+        "title": "Klinikkonfiguration",
+        "description": "Einstellungen bleiben organisationsbezogen und rollengeschützt.",
+        "item1": "Services und Ressourcen",
+        "item2": "Verfügbarkeitsregeln",
+        "item3": "Mitarbeiterberechtigungen"
+      }
+    }
+  },
+  "patient": {
+    "eyebrow": "Patientenkonto",
+    "title": "Ihre Termine",
+    "description": "Der Patientenbereich ist für Terminbesitz, Status und Stornierungsanfragen vorbereitet.",
+    "panels": {
+      "appointments": {
+        "title": "Termine",
+        "description": "Der Patientenbereich dient nur der Terminverwaltung.",
+        "item1": "Bevorstehende und vergangene Termine",
+        "item2": "Status von Anzahlung und Restbetrag",
+        "item3": "Stornierungsrichtlinie"
+      },
+      "privacy": {
+        "title": "Datenschutzgrenze",
+        "description": "Funktionen ähnlich einer Patientenakte bleiben außerhalb des MVP.",
+        "item1": "Keine Diagnosen oder Behandlungsnotizen",
+        "item2": "Keine Datei-Uploads",
+        "item3": "Keine Versicherungsabläufe"
+      }
+    }
+  },
+  "support": {
+    "eyebrow": "Support",
+    "title": "Die richtige Hilfe erhalten",
+    "description": "Die Support-Route ist für Klinik- und Patientenkontakte bereit, sobald diese Einstellungen verbunden sind.",
+    "panels": {
+      "booking": {
+        "title": "Buchungs-Support",
+        "description": "Patienten sollten sich bei Terminfragen an die Klinik wenden.",
+        "item1": "Fragen zum Buchungszugang",
+        "item2": "Fragen zur Stornierungsrichtlinie",
+        "item3": "Fragen zum Zahlungsstatus"
+      },
+      "product": {
+        "title": "DocApp-Support",
+        "description": "Klinikmitarbeiter können DocApp für Produkthilfe kontaktieren.",
+        "item1": "Kontozugriff",
+        "item2": "Fehlerbehebung bei Kalendersynchronisierung",
+        "item3": "Pilot-Support"
+      }
+    }
+  },
+  "checkout": {
+    "eyebrow": "Schreibgeschützter Zahlungsstatus",
+    "foundationTitle": "Grundregeln",
+    "foundationDescription": "Der echte Bestell- und Terminstatus wird in der Zahlungsphase aus der Datenbank geladen.",
+    "item1": "Statusseiten markieren Bestellungen niemals als bezahlt",
+    "item2": "Stripe-Webhooks sind die Quelle der Wahrheit für Zahlungen",
+    "item3": "Kalendereinträge entstehen erst nach bestätigter Zahlung",
+    "success": {
+      "title": "Terminzahlung erhalten",
+      "description": "Diese Seite zeigt den per Webhook bestätigten Termin- und Zahlungsstatus."
+    },
+    "pending": {
+      "title": "Zahlung wird noch verarbeitet",
+      "description": "Diese Seite aktualisiert sich aus dem lokalen Bestellstatus, ohne die Zahlung abzuschließen."
+    },
+    "cancelled": {
+      "title": "Zahlung wurde abgebrochen",
+      "description": "Der Termin unterliegt weiterhin den serverseitigen Ablauf- und Bereinigungsregeln."
+    },
+    "expired": {
+      "title": "Zahlung ist abgelaufen",
+      "description": "Abgelaufene ausstehende Termine werden gemäß Serverregeln wieder verfügbar."
+    }
+  }
+}

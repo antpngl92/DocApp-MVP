@@ -1,0 +1,158 @@
+{
+  "metadata": {
+    "title": "DocApp",
+    "description": "Reserva de citas con depósito para clínicas pequeñas."
+  },
+  "navigation": {
+    "primaryLabel": "Navegación principal",
+    "booking": "Reserva",
+    "support": "Soporte",
+    "overview": "Resumen",
+    "appointments": "Citas",
+    "adminContext": "Administración de la clínica",
+    "patientContext": "Citas del paciente"
+  },
+  "languageSelector": { "label": "Idioma" },
+  "feedback": {
+    "loading": "Cargando DocApp",
+    "errorTitle": "No pudimos cargar esta página",
+    "errorDescription": "Inténtalo de nuevo. Si el problema continúa, contacta con el soporte de la clínica.",
+    "retry": "Intentar de nuevo"
+  },
+  "home": {
+    "eyebrow": "Base de reservas clínicas",
+    "title": "Reservas en las que las clínicas pueden confiar",
+    "description": "Una base enfocada para reservas clínicas, depósitos de citas y sincronización recuperable con Google Calendar.",
+    "panels": {
+      "patients": {
+        "title": "Para pacientes",
+        "description": "Reserva con una clínica y conserva los detalles de la cita en un solo lugar.",
+        "item1": "Elige un servicio y una hora disponible",
+        "item2": "Consulta el depósito y el saldo restante en la clínica",
+        "item3": "Gestiona citas sin funciones de historial médico"
+      },
+      "clinics": {
+        "title": "Para clínicas",
+        "description": "Crea una capa operativa más tranquila alrededor de los calendarios.",
+        "item1": "Configura servicios, médicos, salas y disponibilidad",
+        "item2": "Controla depósitos, ausencias y saldos restantes",
+        "item3": "Mantén visible y recuperable la sincronización con Google Calendar"
+      }
+    }
+  },
+  "booking": {
+    "eyebrow": "Reserva pública",
+    "title": "Reservar una cita",
+    "description": "El asistente de reserva aprobado de tres pasos está representado como base de ruta. La disponibilidad y el comportamiento llegarán en fases posteriores.",
+    "panels": {
+      "service": {
+        "title": "Servicio",
+        "description": "Elige el tipo de cita y el profesional.",
+        "item1": "Paso separado del asistente",
+        "item2": "Profesionales asignados por la clínica",
+        "item3": "Precios claros"
+      },
+      "time": {
+        "title": "Hora",
+        "description": "Elige entre la disponibilidad generada por la clínica.",
+        "item1": "Vista semanal de escritorio",
+        "item2": "Vista móvil de tres días",
+        "item3": "Estados de horario visibles"
+      },
+      "details": {
+        "title": "Detalles",
+        "description": "Confirma los datos de contacto y revisa el depósito.",
+        "item1": "Datos mínimos del paciente",
+        "item2": "Resumen del depósito",
+        "item3": "Paso seguro al pago"
+      }
+    }
+  },
+  "admin": {
+    "eyebrow": "Administración de la clínica",
+    "title": "Resumen operativo",
+    "description": "La base administrativa está lista para funciones operativas limitadas a la organización.",
+    "panels": {
+      "operations": {
+        "title": "Resumen operativo",
+        "description": "La zona administrativa se centrará en el trabajo de la clínica.",
+        "item1": "Reservas de hoy",
+        "item2": "Pagos pendientes",
+        "item3": "Sincronizaciones de calendario fallidas"
+      },
+      "configuration": {
+        "title": "Configuración de la clínica",
+        "description": "La configuración estará limitada a la organización y protegida por roles.",
+        "item1": "Servicios y recursos",
+        "item2": "Reglas de disponibilidad",
+        "item3": "Permisos del personal"
+      }
+    }
+  },
+  "patient": {
+    "eyebrow": "Cuenta del paciente",
+    "title": "Tus citas",
+    "description": "La zona del paciente está lista para propiedad, estado y solicitudes de cancelación de citas.",
+    "panels": {
+      "appointments": {
+        "title": "Citas",
+        "description": "La zona del paciente es solo para gestionar citas.",
+        "item1": "Citas próximas y pasadas",
+        "item2": "Estado del depósito y saldo",
+        "item3": "Política de cancelación"
+      },
+      "privacy": {
+        "title": "Límite de privacidad",
+        "description": "Las funciones similares a historiales médicos quedan fuera del MVP.",
+        "item1": "Sin diagnósticos ni notas de tratamiento",
+        "item2": "Sin carga de archivos",
+        "item3": "Sin flujos de seguros"
+      }
+    }
+  },
+  "support": {
+    "eyebrow": "Soporte",
+    "title": "Obtén la ayuda adecuada",
+    "description": "La ruta de soporte está lista para los contactos de clínica y paciente cuando se conecten esos ajustes.",
+    "panels": {
+      "booking": {
+        "title": "Soporte de reservas",
+        "description": "Los pacientes deben contactar con la clínica para preguntas sobre citas.",
+        "item1": "Preguntas de acceso a reservas",
+        "item2": "Preguntas sobre cancelaciones",
+        "item3": "Preguntas sobre el estado del pago"
+      },
+      "product": {
+        "title": "Soporte de DocApp",
+        "description": "El personal puede contactar con DocApp para obtener ayuda con el producto.",
+        "item1": "Acceso a la cuenta",
+        "item2": "Problemas de sincronización del calendario",
+        "item3": "Soporte piloto"
+      }
+    }
+  },
+  "checkout": {
+    "eyebrow": "Estado de pago de solo lectura",
+    "foundationTitle": "Reglas base",
+    "foundationDescription": "El estado real del pedido y la cita se cargará desde la base de datos en la fase de pagos.",
+    "item1": "Las páginas de estado nunca marcan pedidos como pagados",
+    "item2": "Los webhooks de Stripe son la fuente de verdad del pago",
+    "item3": "El calendario se crea solo después del pago confirmado",
+    "success": {
+      "title": "Pago de la cita recibido",
+      "description": "Esta página mostrará el estado de la cita y el pago confirmado por webhook."
+    },
+    "pending": {
+      "title": "El pago sigue procesándose",
+      "description": "Esta página se actualizará desde el estado local sin finalizar el pago."
+    },
+    "cancelled": {
+      "title": "El pago fue cancelado",
+      "description": "La cita sigue sujeta a las reglas del servidor de expiración y limpieza."
+    },
+    "expired": {
+      "title": "El pago ha caducado",
+      "description": "Las citas pendientes caducadas volverán a estar disponibles según las reglas del servidor."
+    }
+  }
+}

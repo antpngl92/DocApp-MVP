@@ -83,6 +83,40 @@ src/app/
     └── admin/
 ```
 
+## Implemented App Foundation Routes
+
+Phase 4 establishes these route foundations:
+
+```txt
+/
+/support
+/booking/[clinicSlug]
+/checkout/success
+/checkout/cancel
+/checkout/expired
+/checkout/status/[reference]
+/admin
+/account
+```
+
+The admin and patient route groups are prepared for authentication boundaries, but route protection is implemented in the authentication phase.
+
+A standalone public `/services` informational route is not part of the MVP foundation. Public service selection belongs inside the clinic-branded booking flow unless a later product decision adds a separate services page.
+
+Checkout success, cancel, expired, and status routes are read-only UI foundations. They must not mutate appointment, order, payment, or calendar state.
+
+## App Foundation State Strategy
+
+The Phase 4 foundation includes organization-scoped cache-tag helpers for future server-state caching.
+
+Do not add a global client state store until a concrete UI-state need exists. Server state remains in the database/server layer, and later feature work should use scoped invalidation/refetch behavior after webhooks or external sync updates.
+
+## Internationalization Foundation
+
+The app uses `next-intl` with Bulgarian, English, Spanish, German, French, and Italian message catalogs.
+
+The selected locale is stored in a first-party `docapp-locale` cookie and applies without locale-prefixed URLs. The shared navigation contains the language selector, Server Components load translated copy through `next-intl/server`, and Client Components receive translation context from the root provider.
+
 ## Server-Side Boundaries
 
 Server-only code should live in `src/server` or server-only feature modules.

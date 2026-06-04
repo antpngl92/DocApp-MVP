@@ -126,6 +126,8 @@ Use Codex Worktree mode for isolated feature work when possible.
 
 Each worktree should focus on one task or feature.
 
+Within an implementation phase, complete and hand off one `docs/TASKS.md` checklist task at a time unless the user explicitly approves a larger scope.
+
 Good examples:
 
 - implement Prisma schema foundation

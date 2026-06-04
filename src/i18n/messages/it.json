@@ -1,0 +1,158 @@
+{
+  "metadata": {
+    "title": "DocApp",
+    "description": "Prenotazione appuntamenti con deposito per piccole cliniche."
+  },
+  "navigation": {
+    "primaryLabel": "Navigazione principale",
+    "booking": "Prenotazione",
+    "support": "Assistenza",
+    "overview": "Panoramica",
+    "appointments": "Appuntamenti",
+    "adminContext": "Amministrazione clinica",
+    "patientContext": "Appuntamenti del paziente"
+  },
+  "languageSelector": { "label": "Lingua" },
+  "feedback": {
+    "loading": "Caricamento di DocApp",
+    "errorTitle": "Impossibile caricare questa pagina",
+    "errorDescription": "Riprova. Se il problema continua, contatta l’assistenza della clinica.",
+    "retry": "Riprova"
+  },
+  "home": {
+    "eyebrow": "Base per prenotazioni cliniche",
+    "title": "Prenotazioni affidabili per le cliniche",
+    "description": "Una base focalizzata per prenotazioni, depositi e sincronizzazione recuperabile con Google Calendar.",
+    "panels": {
+      "patients": {
+        "title": "Per i pazienti",
+        "description": "Prenota presso una clinica e conserva i dettagli dell’appuntamento in un unico posto.",
+        "item1": "Scegli un servizio e un orario disponibile",
+        "item2": "Visualizza il deposito dovuto e il saldo restante in clinica",
+        "item3": "Gestisci gli appuntamenti senza funzioni di cartella clinica"
+      },
+      "clinics": {
+        "title": "Per le cliniche",
+        "description": "Crea un livello operativo più tranquillo attorno ai calendari.",
+        "item1": "Configura servizi, medici, stanze e disponibilità",
+        "item2": "Monitora depositi, assenze e saldi restanti",
+        "item3": "Mantieni visibile e recuperabile la sincronizzazione con Google Calendar"
+      }
+    }
+  },
+  "booking": {
+    "eyebrow": "Prenotazione pubblica",
+    "title": "Prenota un appuntamento",
+    "description": "La procedura di prenotazione approvata in tre passaggi è rappresentata come base di percorso. Disponibilità e comportamento arriveranno nelle fasi successive.",
+    "panels": {
+      "service": {
+        "title": "Servizio",
+        "description": "Scegli il tipo di appuntamento e il professionista.",
+        "item1": "Passaggio separato della procedura",
+        "item2": "Professionisti assegnati dalla clinica",
+        "item3": "Prezzi chiari"
+      },
+      "time": {
+        "title": "Orario",
+        "description": "Scegli tra le disponibilità generate dalla clinica.",
+        "item1": "Vista settimanale desktop",
+        "item2": "Vista mobile di tre giorni",
+        "item3": "Stati degli orari visibili"
+      },
+      "details": {
+        "title": "Dettagli",
+        "description": "Conferma i contatti e controlla il deposito.",
+        "item1": "Dati minimi del paziente",
+        "item2": "Riepilogo del deposito",
+        "item3": "Passaggio sicuro al pagamento"
+      }
+    }
+  },
+  "admin": {
+    "eyebrow": "Amministrazione clinica",
+    "title": "Panoramica operativa",
+    "description": "La base amministrativa è pronta per funzioni operative limitate all’organizzazione.",
+    "panels": {
+      "operations": {
+        "title": "Panoramica operativa",
+        "description": "L’area amministrativa si concentrerà sul lavoro della clinica.",
+        "item1": "Prenotazioni di oggi",
+        "item2": "Pagamenti in sospeso",
+        "item3": "Sincronizzazioni calendario non riuscite"
+      },
+      "configuration": {
+        "title": "Configurazione clinica",
+        "description": "Le impostazioni resteranno limitate all’organizzazione e protette per ruolo.",
+        "item1": "Servizi e risorse",
+        "item2": "Regole di disponibilità",
+        "item3": "Permessi del personale"
+      }
+    }
+  },
+  "patient": {
+    "eyebrow": "Account paziente",
+    "title": "I tuoi appuntamenti",
+    "description": "L’area paziente è pronta per proprietà, stato e richieste di annullamento degli appuntamenti.",
+    "panels": {
+      "appointments": {
+        "title": "Appuntamenti",
+        "description": "L’area paziente serve solo alla gestione degli appuntamenti.",
+        "item1": "Appuntamenti futuri e passati",
+        "item2": "Stato del deposito e del saldo",
+        "item3": "Politica di annullamento"
+      },
+      "privacy": {
+        "title": "Limite di privacy",
+        "description": "Le funzioni simili a cartelle cliniche restano fuori dall’MVP.",
+        "item1": "Nessuna diagnosi o nota di trattamento",
+        "item2": "Nessun caricamento di file",
+        "item3": "Nessun flusso assicurativo"
+      }
+    }
+  },
+  "support": {
+    "eyebrow": "Assistenza",
+    "title": "Ottieni l’aiuto giusto",
+    "description": "Il percorso di assistenza è pronto per i contatti di clinica e paziente quando le impostazioni saranno collegate.",
+    "panels": {
+      "booking": {
+        "title": "Assistenza prenotazioni",
+        "description": "I pazienti devono contattare la clinica per domande sugli appuntamenti.",
+        "item1": "Domande sull’accesso alla prenotazione",
+        "item2": "Domande sulla politica di annullamento",
+        "item3": "Domande sullo stato del pagamento"
+      },
+      "product": {
+        "title": "Assistenza DocApp",
+        "description": "Il personale può contattare DocApp per assistenza sul prodotto.",
+        "item1": "Accesso all’account",
+        "item2": "Risoluzione problemi di sincronizzazione",
+        "item3": "Assistenza pilota"
+      }
+    }
+  },
+  "checkout": {
+    "eyebrow": "Stato pagamento in sola lettura",
+    "foundationTitle": "Regole di base",
+    "foundationDescription": "Lo stato reale dell’ordine e dell’appuntamento verrà caricato dal database nella fase pagamenti.",
+    "item1": "Le pagine di stato non segnano mai gli ordini come pagati",
+    "item2": "I webhook Stripe sono la fonte di verità del pagamento",
+    "item3": "Il calendario viene creato solo dopo il pagamento confermato",
+    "success": {
+      "title": "Pagamento dell’appuntamento ricevuto",
+      "description": "Questa pagina mostrerà lo stato dell’appuntamento e del pagamento confermato dal webhook."
+    },
+    "pending": {
+      "title": "Il pagamento è ancora in elaborazione",
+      "description": "Questa pagina si aggiornerà dallo stato locale senza finalizzare il pagamento."
+    },
+    "cancelled": {
+      "title": "Il pagamento è stato annullato",
+      "description": "L’appuntamento resta soggetto alle regole server di scadenza e pulizia."
+    },
+    "expired": {
+      "title": "Il pagamento è scaduto",
+      "description": "Gli appuntamenti in sospeso scaduti torneranno disponibili secondo le regole server."
+    }
+  }
+}
