@@ -91,7 +91,7 @@ At the end of each task, summarize:
 - Before editing, read the relevant docs and propose a short plan.
 - Implement only the approved scope.
 - Run available checks before handoff.
-- Add or update tests when code changes are testable.
+- Add or update focused tests in the same branch for every new or changed component and every new or changed unit of application or business logic.
 - Update `docs/TASKS.md` checkboxes only for work actually completed in the current branch.
 
 ## Documentation context
@@ -141,12 +141,14 @@ Branch names should describe the work, not the tool.
 
 ## Testing
 
-- Add or update tests in the same branch when code changes are testable.
+- Every branch/task that adds or changes a component must add or update focused component tests in the same branch.
+- Every branch/task that adds or changes application or business logic must add or update focused logic tests in the same branch.
 - Use React Testing Library for React component behavior.
 - Use focused unit tests for validators, mappers, services, and business logic.
 - Add tests for appointment lifecycle transitions, availability generation, slot locking, payment webhook idempotency, and Google Calendar sync failure handling.
 - For bug fixes, add a regression test when practical.
-- If tests are not added, explain why in the handoff summary.
+- Documentation-only changes do not require tests.
+- If a technical blocker makes a required test impossible, leave the task incomplete and explain the blocker in the handoff summary.
 
 ## Project structure and code style
 

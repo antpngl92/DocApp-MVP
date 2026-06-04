@@ -50,10 +50,11 @@ For each feature:
 3. Read the relevant docs.
 4. Write or update the feature plan.
 5. Implement the smallest useful slice.
-6. Run lint, typecheck, tests, and build where available.
-7. Commit the changes.
-8. Push the branch.
-9. Open a PR/MR or review the diff before merging.
+6. Add or update focused tests for every new or changed component and every new or changed unit of application or business logic.
+7. Run lint, typecheck, tests, and build where available.
+8. Commit the changes.
+9. Push the branch.
+10. Open a PR/MR or review the diff before merging.
 
 ## Codex Workflow
 
@@ -183,7 +184,8 @@ Before merging a branch, check:
 - Are component prop types placed in `types.ts` when needed?
 - Are component-only constants placed in `constants.ts` when needed?
 - Are child components that belong only to one parent placed inside the parent component’s `components/` folder?
-- Are component tests placed inside the component folder’s `__tests__/` folder when tests exist?
+- Does every new or changed component have focused tests in its component folder’s `__tests__/` folder?
+- Does every new or changed unit of application or business logic have focused tests?
 - Do component folders default export their main component?
 - Do section-level `index.ts` files re-export public components as named exports?
 - Are imports using section barrel files where appropriate?
@@ -193,6 +195,8 @@ Before merging a branch, check:
 - Does the branch stay scoped to the approved task without overbuilding unrelated product UI?
 - Did lint/typecheck/tests/build run where available?
 - If a local development server was started, was it stopped before handoff?
+
+Documentation-only branches do not require tests. If a technical blocker prevents a required test, the task remains incomplete until the blocker is resolved or the user explicitly changes the requirement.
 
 ## Main Branch Rule
 
