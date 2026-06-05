@@ -1,15 +1,15 @@
 import { ShieldCheck } from "lucide-react";
 
-import type { ProvisionedClinicSignInProps } from "./types";
+import type { AccountSignInProps } from "./types";
 
-const ProvisionedClinicSignIn = ({
-  accessNote,
+const AccountSignIn = ({
   clerkSignIn,
   description,
   eyebrow,
   helpText,
+  securityNote,
   title,
-}: ProvisionedClinicSignInProps) => {
+}: AccountSignInProps) => {
   return (
     <main className="min-h-screen bg-[var(--background)] px-4 py-8 sm:px-6 lg:px-8">
       <div className="mx-auto grid min-h-[calc(100vh-4rem)] w-full max-w-6xl items-center gap-8 lg:grid-cols-[minmax(0,1fr)_420px]">
@@ -25,7 +25,7 @@ const ProvisionedClinicSignIn = ({
               <span className="grid size-10 shrink-0 place-items-center rounded-lg bg-blue-50 text-[var(--primary)]">
                 <ShieldCheck aria-hidden="true" size={20} />
               </span>
-              <p className="text-sm leading-6 text-[var(--text)]">{accessNote}</p>
+              <p className="text-sm leading-6 text-[var(--text)]">{securityNote}</p>
             </div>
           </div>
         </section>
@@ -45,4 +45,4 @@ const ProvisionedClinicSignIn = ({
   );
 };
 
-export default ProvisionedClinicSignIn;
+export default AccountSignIn;
