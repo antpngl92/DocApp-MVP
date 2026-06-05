@@ -5,7 +5,7 @@ import AccountSignIn from "..";
 
 describe("AccountSignIn", () => {
   it("renders neutral account sign-in copy around the Clerk sign-in surface", () => {
-    render(
+    const { container } = render(
       <AccountSignIn
         clerkSignIn={<div>Clerk sign in</div>}
         description="Sign in to continue to your DocApp account."
@@ -24,5 +24,6 @@ describe("AccountSignIn", () => {
     expect(
       screen.getByText("New here? Create an account from the registration page."),
     ).toBeInTheDocument();
+    expect(container.querySelector("main")).not.toBeInTheDocument();
   });
 });

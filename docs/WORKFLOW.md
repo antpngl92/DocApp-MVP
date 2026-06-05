@@ -71,6 +71,16 @@ When using Codex:
 
 Codex should not make broad unrelated changes.
 
+## Mandatory Pre-Handoff Checklist
+
+Before handoff, Codex must verify and report:
+
+- External docs checked for every touched external library/API, or state that no external library/API was touched.
+- Layout semantics checked when UI/layout changed: one page-level `<main>`, no accidental nested page landmarks, global header/navigation outside `<main>`, and no nested full-viewport layout inside an existing shell unless intentionally documented.
+- Focused tests added or updated for changed components/logic, or explain why not applicable.
+- Checks run: lint, typecheck, tests, format, and build where appropriate.
+- Dev server status: not started, or started and stopped.
+
 ## Documentation Updates
 
 Before meaningful implementation work, read the relevant docs in `docs/`.
@@ -120,6 +130,19 @@ Key expectations:
 - do not put React hooks inside `src/lib`
 - keep server-only code in `src/server`
 - keep each branch scoped to the approved task
+
+## External Library Rule
+
+Before adding, changing, or using APIs from an external library, SDK, service package, or integration provider, check the relevant official documentation for the installed/current version whenever practical.
+
+Do not substitute a homegrown or "equivalent" implementation when the library provides a documented component, helper, hook, middleware, or API for the behavior being implemented.
+
+For external integrations such as Clerk, Stripe, Google Calendar, Prisma, Next.js, FullCalendar, email providers, and SuperDesign:
+
+- prefer documented official APIs and examples over assumptions
+- verify version-specific exports and props against installed package types or official docs
+- document any intentional deviation from official guidance before implementing it
+- keep secrets and server-only integration code out of client components
 
 ## Worktree Workflow
 
@@ -189,6 +212,9 @@ Before merging a branch, check:
 - Do component folders default export their main component?
 - Do section-level `index.ts` files re-export public components as named exports?
 - Are imports using section barrel files where appropriate?
+- Are external library APIs implemented with the provider's documented components, hooks, helpers, middleware, or SDK methods?
+- If an external library's documented API was not used, is the deviation explicitly justified in docs or handoff notes?
+- For layout-sensitive UI, do tests guard against invalid page landmarks or accidental nested `<main>` elements where practical?
 - Are navigation data, status definitions, limits, labels, and meaningful constants outside page components?
 - Are shared hooks placed in `src/hooks` instead of `src/lib`?
 - Are feature-specific hooks kept inside the relevant feature folder?

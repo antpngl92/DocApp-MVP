@@ -6,13 +6,12 @@ const PatientRegistration = ({
   clerkSignUp,
   description,
   eyebrow,
-  helpText,
   privacyNote,
   title,
 }: PatientRegistrationProps) => {
   return (
-    <main className="min-h-screen bg-[var(--background)] px-4 py-8 sm:px-6 lg:px-8">
-      <div className="mx-auto grid min-h-[calc(100vh-4rem)] w-full max-w-6xl items-center gap-8 lg:grid-cols-[minmax(0,1fr)_420px]">
+    <div className="w-full">
+      <div className="mx-auto grid w-full max-w-6xl items-center gap-8 py-4 lg:grid-cols-[minmax(0,1fr)_420px]">
         <section className="max-w-2xl">
           <p className="mb-3 text-xs font-bold uppercase text-[var(--secondary)]">{eyebrow}</p>
           <h1 className="text-3xl font-bold text-[var(--text-strong)] sm:text-5xl">{title}</h1>
@@ -36,12 +35,8 @@ const PatientRegistration = ({
         >
           {clerkSignUp}
         </section>
-
-        <p className="text-center text-xs leading-5 text-[var(--text-muted)] lg:col-start-2">
-          {helpText}
-        </p>
       </div>
-    </main>
+    </div>
   );
 };
 

@@ -7,8 +7,11 @@ import AppHeader from "..";
 vi.mock("next-intl/server", () => ({
   getTranslations: async () => (key: string) => {
     const messages: Record<string, string> = {
+      createAccount: "Create account",
       overview: "Overview",
       primaryLabel: "Primary navigation",
+      signIn: "Sign in",
+      signOut: "Sign out",
     };
 
     return messages[key] ?? key;
@@ -17,6 +20,22 @@ vi.mock("next-intl/server", () => ({
 
 vi.mock("@/components/i18n", () => ({
   LanguageSelector: () => <span>Language selector</span>,
+}));
+
+vi.mock("@/features/auth/components", () => ({
+  AuthControls: ({
+    createAccountLabel,
+    signInLabel,
+    signOutLabel,
+  }: {
+    createAccountLabel: string;
+    signInLabel: string;
+    signOutLabel: string;
+  }) => (
+    <span>
+      Auth controls: {signInLabel}, {createAccountLabel}, {signOutLabel}
+    </span>
+  ),
 }));
 
 describe("AppHeader", () => {
@@ -31,6 +50,9 @@ describe("AppHeader", () => {
     expect(screen.getByText("DocApp")).toBeInTheDocument();
     expect(screen.getByText("Clinic administration")).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Overview" })).toHaveAttribute("href", "/admin");
+    expect(
+      screen.getByText("Auth controls: Sign in, Create account, Sign out"),
+    ).toBeInTheDocument();
     expect(screen.getByText("Language selector")).toBeInTheDocument();
   });
 });

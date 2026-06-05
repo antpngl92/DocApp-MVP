@@ -9,10 +9,15 @@
     "support": "Assistance",
     "overview": "Vue d’ensemble",
     "appointments": "Rendez-vous",
+    "signIn": "Connexion",
+    "signOut": "Déconnexion",
+    "createAccount": "Créer un compte",
     "adminContext": "Administration de la clinique",
-    "patientContext": "Rendez-vous du patient"
+    "patientContext": "Vos rendez-vous"
   },
-  "languageSelector": { "label": "Langue" },
+  "languageSelector": {
+    "label": "Langue"
+  },
   "feedback": {
     "loading": "Chargement de DocApp",
     "errorTitle": "Impossible de charger cette page",
@@ -28,11 +33,10 @@
       "helpText": "New here? Create an account from the registration page."
     },
     "signUp": {
-      "eyebrow": "Patient account",
+      "eyebrow": "Compte",
       "title": "Create account",
-      "description": "Register as a patient to manage bookings, appointment status, deposits, and clinic cancellation requests.",
-      "privacyNote": "Patient accounts are appointment-management only. Do not enter symptoms, diagnoses, treatment notes, or other medical-record details.",
-      "helpText": "Clinic staff access is invitation-only. Staff should use the invitation link sent by the clinic."
+      "description": "Create an account to manage bookings, appointment status, deposits, and clinic cancellation requests.",
+      "privacyNote": "Use this account for appointment management only. Do not enter symptoms, diagnoses, treatment notes, or other medical-record details."
     }
   },
   "home": {
@@ -98,21 +102,21 @@
       },
       "configuration": {
         "title": "Configuration de la clinique",
-        "description": "Les paramètres resteront limités à l’organisation et protégés par rôle.",
+        "description": "Les param?tres resteront limit?s ? l?organisation et prot?g?s par les droits d?acc?s.",
         "item1": "Services et ressources",
         "item2": "Règles de disponibilité",
-        "item3": "Autorisations du personnel"
+        "item3": "Droits d?acc?s"
       }
     }
   },
   "patient": {
-    "eyebrow": "Compte patient",
+    "eyebrow": "Compte",
     "title": "Vos rendez-vous",
-    "description": "L’espace patient est prêt pour la propriété, le statut et les demandes d’annulation des rendez-vous.",
+    "description": "Cet espace est pr?t pour les d?tails des rendez-vous, leur statut et les demandes d?annulation.",
     "panels": {
       "appointments": {
         "title": "Rendez-vous",
-        "description": "L’espace patient sert uniquement à gérer les rendez-vous.",
+        "description": "Cet espace sert uniquement ? g?rer les rendez-vous.",
         "item1": "Rendez-vous à venir et passés",
         "item2": "Statut de l’acompte et du solde",
         "item3": "Politique d’annulation"
@@ -140,7 +144,7 @@
       },
       "product": {
         "title": "Assistance DocApp",
-        "description": "Le personnel peut contacter DocApp pour obtenir de l’aide sur le produit.",
+        "description": "Les cliniques peuvent contacter DocApp pour obtenir de l?aide sur le produit.",
         "item1": "Accès au compte",
         "item2": "Dépannage de la synchronisation du calendrier",
         "item3": "Assistance pilote"
