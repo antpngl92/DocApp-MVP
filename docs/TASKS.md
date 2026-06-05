@@ -87,7 +87,7 @@ Complete tasks from top to bottom and one approved task/branch at a time. Do not
 ## Phase 5 - Authentication And Registration Foundation
 
 - [x] Define clinic owner/admin account provisioning as Clerk Dashboard or controlled database provisioning only; do not expose public owner/admin registration.
-- [ ] Configure Clerk authentication foundation: `ClerkProvider`, middleware/proxy, environment validation, and public/private route definitions.
+- [x] Configure Clerk authentication foundation: `ClerkProvider`, middleware/proxy, environment validation, and public/private route definitions.
 - [ ] Implement Clerk login for privately provisioned clinic owner/admin accounts.
 - [ ] Implement patient registration.
 - [ ] Implement patient login.
