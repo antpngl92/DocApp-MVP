@@ -92,8 +92,8 @@ Complete tasks from top to bottom and one approved task/branch at a time. Do not
 - [x] Implement patient registration.
 - [x] Implement patient login.
 - [x] Implement logout.
-- [ ] Implement session management.
-- [ ] Add Clerk signed-in boundaries for private admin and patient route groups.
+- [x] Implement session management.
+- [x] Add Clerk signed-in boundaries for private admin and patient route groups.
 - [ ] Keep public marketing, booking discovery, support, and public-safe checkout status routes accessible without login.
 
 ## Phase 6 - Identity Database, Provisioning, Roles, And Clinic Scoping

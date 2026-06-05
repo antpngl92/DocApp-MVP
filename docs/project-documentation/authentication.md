@@ -158,6 +158,13 @@ Patients cannot request or self-initiate refunds.
 
 ## Route Protection
 
+The Phase 5 authentication foundation protects private routes in two places:
+
+- `clerkMiddleware` protects configured private route patterns before route rendering.
+- Private admin and account route-group layouts call a shared server-side session helper that delegates to Clerk's documented `auth.protect()` API before rendering shell content.
+
+This is an authentication boundary only. Local user lookup, clinic membership, role checks, and patient ownership checks are added after the database identity models exist.
+
 Authenticated admin routes must require:
 
 - signed-in user
