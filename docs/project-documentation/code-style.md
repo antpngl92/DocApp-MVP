@@ -245,6 +245,27 @@ Do not add `"use client"` just because a component renders UI.
 
 Do not import server-only code into client components.
 
+## External Libraries And SDKs
+
+When using external libraries, SDKs, or provider integrations, follow the official documentation for the installed/current version.
+
+Rules:
+
+- Check official docs before implementing or changing behavior that depends on an external library.
+- Prefer the library's documented components, hooks, helpers, middleware, SDK clients, and recommended patterns.
+- Verify version-specific props, exports, and APIs against installed package types or official docs.
+- Do not replace a documented library API with a custom or "equivalent" implementation unless there is an approved reason.
+- Document any intentional deviation from official guidance before or alongside the code.
+- Keep provider secrets, credentials, webhooks, and server-only clients out of client components.
+
+Examples:
+
+- use Clerk's documented auth components/hooks for auth controls and authentication flows
+- use Stripe's documented Checkout and webhook verification APIs for payment flow
+- use Google Calendar's documented OAuth/token and event APIs for calendar sync
+- use Prisma's documented schema/client/migration workflows for database work
+- use FullCalendar's documented components/plugins for calendar UI behavior
+
 ## Page And Layout Files
 
 Keep Next.js route/page files thin.
@@ -254,6 +275,12 @@ Page files should compose components from `components/` or `features/`.
 Global shell, header, and navigation should live in layout components, not inside page files.
 
 Do not place global header/navigation inside the `<main>` landmark.
+
+Each rendered page should have one clear page-level `<main>` landmark owned by the route page or shell. Components rendered inside an existing shell must not add another page-level `<main>` unless the layout intentionally requires it and the reason is documented.
+
+Do not nest `min-h-screen`, `h-screen`, or other full-viewport layout wrappers inside an existing app shell unless the behavior is intentional and tested. Prefer shell-relative spacing and sizing so header/navigation remains visible and browser scroll restoration does not hide the page chrome.
+
+When changing layout-sensitive components, add or update focused tests that guard against invalid page landmarks or accidental nested `<main>` elements where practical.
 
 ## Business Logic
 

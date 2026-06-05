@@ -21,6 +21,7 @@ Do not add production complexity before the MVP scope is clear, but build the pa
 - For feature-specific work, also read the relevant file under `docs/project-documentation/`.
 - Keep changes small and easy to review.
 - Do not add new dependencies without explaining why.
+- For every external library, SDK, service package, or integration provider, check and follow official documentation for the installed/current version before implementing or changing its APIs. Prefer documented components, hooks, helpers, middleware, SDK clients, and provider examples over custom or "equivalent" shortcuts. Document any intentional deviation before or alongside the code.
 - Do not change auth, billing, database migrations, Stripe payment flow, or Google Calendar integration without approval.
 - Never commit secrets, API keys, tokens, `.env` values, private credentials, Stripe keys, Clerk keys, Google credentials, or webhook secrets.
 - Prefer TypeScript, explicit types, and simple architecture over clever abstractions.
@@ -85,6 +86,14 @@ At the end of each task, summarize:
 - risks or TODOs
 - confirmation that any local dev server started by Codex was stopped
 
+Also include a compact pre-handoff checklist:
+
+- External docs checked for every touched external library/API, or state that no external library/API was touched.
+- Layout semantics checked when UI/layout changed: one page-level `<main>`, no accidental nested page landmarks, global header/navigation outside `<main>`, and no nested full-viewport layout inside an existing shell unless intentionally documented.
+- Focused tests added or updated for changed components/logic, or explain why not applicable.
+- Checks run: lint, typecheck, tests, format, and build where appropriate.
+- Dev server status: not started, or started and stopped.
+
 ## Development workflow
 
 - Do not implement meaningful changes directly on `main`.
@@ -144,6 +153,7 @@ Branch names should describe the work, not the tool.
 
 - Every branch/task that adds or changes a component must add or update focused component tests in the same branch.
 - Every branch/task that adds or changes application or business logic must add or update focused logic tests in the same branch.
+- For layout-sensitive components rendered inside an existing shell, add or update tests that guard against invalid page landmarks or accidental nested `<main>` elements when practical.
 - Use React Testing Library for React component behavior.
 - Use focused unit tests for validators, mappers, services, and business logic.
 - Add tests for appointment lifecycle transitions, availability generation, slot locking, payment webhook idempotency, and Google Calendar sync failure handling.
