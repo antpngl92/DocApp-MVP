@@ -12,13 +12,11 @@ describe("PatientRegistration", () => {
         eyebrow="Patient account"
         helpText="Clinic staff access is by invitation only."
         privacyNote="Patient accounts are for appointments only."
-        title="Create your patient account"
+        title="Create account"
       />,
     );
 
-    expect(
-      screen.getByRole("heading", { name: "Create your patient account" }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Create account" })).toBeInTheDocument();
     expect(screen.getByText("Clerk sign up")).toBeInTheDocument();
     expect(screen.getByText("Patient accounts are for appointments only.")).toBeInTheDocument();
     expect(screen.getByText("Clinic staff access is by invitation only.")).toBeInTheDocument();

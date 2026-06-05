@@ -21,15 +21,15 @@
   },
   "auth": {
     "signIn": {
-      "eyebrow": "Secure clinic access",
-      "title": "Sign in to DocApp",
-      "description": "Use the Clerk account provisioned for clinic operations. Public owner or admin self-registration is not available.",
-      "accessNote": "Clinic owner and admin accounts are created through Clerk Dashboard or a controlled administrative process before they can access DocApp.",
-      "helpText": "Need clinic-side access? Contact the clinic owner or DocApp administrator."
+      "eyebrow": "Account access",
+      "title": "Sign in",
+      "description": "Sign in to continue to your DocApp account and manage your appointments.",
+      "securityNote": "DocApp protects account access through Clerk.",
+      "helpText": "New here? Create an account from the registration page."
     },
     "signUp": {
       "eyebrow": "Patient account",
-      "title": "Create your patient account",
+      "title": "Create account",
       "description": "Register as a patient to manage bookings, appointment status, deposits, and clinic cancellation requests.",
       "privacyNote": "Patient accounts are appointment-management only. Do not enter symptoms, diagnoses, treatment notes, or other medical-record details.",
       "helpText": "Clinic staff access is invitation-only. Staff should use the invitation link sent by the clinic."

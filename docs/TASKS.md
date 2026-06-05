@@ -90,7 +90,7 @@ Complete tasks from top to bottom and one approved task/branch at a time. Do not
 - [x] Configure Clerk authentication foundation: `ClerkProvider`, middleware/proxy, environment validation, and public/private route definitions.
 - [x] Implement Clerk login for privately provisioned clinic owner/admin accounts.
 - [x] Implement patient registration.
-- [ ] Implement patient login.
+- [x] Implement patient login.
 - [ ] Implement logout.
 - [ ] Implement session management.
 - [ ] Add Clerk signed-in boundaries for private admin and patient route groups.
