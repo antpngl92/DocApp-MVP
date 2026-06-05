@@ -7,19 +7,20 @@ import {
   isDocumentedProtectedRoute,
   isDocumentedPublicRoute,
 } from "../auth";
+import { PRIVATE_ROUTES, PUBLIC_ROUTES } from "../routes";
 
 describe("auth route configuration", () => {
   const publicRoutes = [
-    "/",
-    "/booking/sofia-care",
-    "/checkout/success",
-    "/checkout/cancel",
-    "/checkout/expired",
-    "/checkout/status/demo-booking",
-    "/support",
-    "/sign-in",
+    PUBLIC_ROUTES.home,
+    PUBLIC_ROUTES.bookingDemo,
+    PUBLIC_ROUTES.checkoutSuccess,
+    PUBLIC_ROUTES.checkoutCancel,
+    PUBLIC_ROUTES.checkoutExpired,
+    PUBLIC_ROUTES.checkoutStatusDemo,
+    PUBLIC_ROUTES.support,
+    PUBLIC_ROUTES.signIn,
     "/sign-in/factor-one",
-    "/sign-up",
+    PUBLIC_ROUTES.signUp,
     "/sign-up/verify-email-address",
     "/api/health",
   ];
@@ -53,7 +54,12 @@ describe("auth route configuration", () => {
   });
 
   it("does not classify private app routes as public", () => {
-    for (const route of ["/admin", "/admin/settings", "/account", "/account/appointments"]) {
+    for (const route of [
+      PRIVATE_ROUTES.admin,
+      "/admin/settings",
+      PRIVATE_ROUTES.patientAccount,
+      "/account/appointments",
+    ]) {
       expect(isDocumentedPublicRoute(route)).toBe(false);
       expect(isDocumentedProtectedRoute(route)).toBe(true);
     }
