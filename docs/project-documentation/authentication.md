@@ -21,7 +21,7 @@ Clerk authentication can exist before the local identity schema, but local-user 
 ## Goals
 
 - Support trusted clinic owner/admin provisioning and secure admin login.
-- Support staff registration through clinic invitation or approved clinic assignment for receptionist, doctor, and manager/admin users.
+- Support one staff-user registration/onboarding flow through clinic invitation or approved clinic assignment, with receptionist, doctor, manager, admin, and owner represented as roles.
 - Support patient registration/login for booking and appointment management.
 - Sync Clerk users into a local `User` table.
 - Scope all admin data to an organization/clinic.
@@ -86,7 +86,7 @@ MVP should support these flows:
 
 - clinic owner/admin authentication accounts are provisioned only through the Clerk Dashboard or a controlled database provisioning process
 - no public owner/admin registration route is exposed
-- owner/admin invites or creates staff users
+- owner/admin invites staff users, preferably through Clerk Invitations
 - staff user accepts invite and registers/logs in
 - staff user is attached to the clinic only through invitation or owner/admin approval
 - staff users cannot publicly self-register into arbitrary clinics or staff roles
@@ -103,6 +103,45 @@ For MVP, an owner/admin authentication identity is created through the Clerk Das
 Owner/admin roles, organization membership, and clinic access must be assigned through controlled server-side or administrative processes. User-controlled metadata, public form input, or a self-selected role must never grant clinic-side access.
 
 Patient accounts are appointment-management accounts only. They must not expose medical records, prescriptions, diagnoses, treatment notes, insurance workflows, chat, or file uploads.
+
+### Staff Invitations With Clerk
+
+Clerk Invitations are the preferred MVP mechanism for onboarding clinic-side staff users. Managers, receptionists, doctors, admins, and owners are roles or memberships under this staff-user flow, not separate onboarding products.
+
+Recommended flow:
+
+1. Authorized owner/admin creates a staff invitation from DocApp.
+2. The invitation form requires a staff email input and a role dropdown.
+3. Owner/admin selects the intended role, such as admin, manager, receptionist, or doctor.
+4. DocApp validates that the inviting user can assign the selected role.
+5. DocApp creates a pending local invitation or `OrganizationMember` record with organization, intended role, status, invited email, and inviter/audit details.
+6. DocApp creates a Clerk Invitation for that email from a server-only action or route.
+7. Clerk sends the invitation email and handles account acceptance/sign-in.
+8. Clerk webhook sync creates or updates the local `User` by unique `User.clerkUserId`.
+9. DocApp validates the pending local invitation or membership before activating clinic access.
+10. DocApp activates the local `OrganizationMember` and assigns the intended role.
+
+A staff member with role `doctor` may also be linked to a `Doctor` operational profile when that person is a bookable provider. Receptionists, managers, and other non-doctor staff normally need only the `OrganizationMember` record unless the product later adds a separate operational profile for them.
+
+Implementation note:
+
+```ts
+await clerkClient.invitations.createInvitation({
+  emailAddress: staffEmail,
+  redirectUrl: "/sign-up",
+  publicMetadata: {
+    organizationId,
+    membershipId,
+    intendedRole,
+  },
+});
+```
+
+The Clerk Backend API endpoint is `POST /v1/invitations`. It requires the Clerk secret key and must never run in a client component. Clerk sends the invitation email by default. Store the returned Clerk invitation ID and status locally so DocApp can track pending, accepted, expired, and revoked invitations.
+
+Clerk invitation metadata may include references such as `organizationId`, `membershipId`, or intended role, but it must be treated only as a hint. Local database records remain the source of truth for clinic membership, role, status, and permissions.
+
+Never grant staff permissions from user-controlled Clerk metadata, public form input, or invitation acceptance alone. If the local invitation is missing, expired, revoked, or mismatched, the signed-in user must not receive clinic-side access.
 
 ## Refund Permissions
 

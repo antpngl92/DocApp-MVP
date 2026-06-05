@@ -251,7 +251,9 @@ The MVP should allow an admin to:
 
 - sign in through Clerk
 - use an owner/admin account provisioned through the Clerk Dashboard or a controlled database process
-- invite or register staff users
+- invite staff users through Clerk Invitations where practical
+- invite staff by entering an email and selecting the intended staff role from a dropdown
+- activate staff access through local organization membership and role records
 - view a dashboard overview
 - manage clinic settings
 - manage doctors

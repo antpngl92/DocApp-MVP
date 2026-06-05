@@ -5,6 +5,7 @@ const ROUTES = {
   checkoutCancel: "/checkout/cancel",
   checkoutExpired: "/checkout/expired",
   checkoutStatusDemo: "/checkout/status/demo-booking",
+  signIn: "/sign-in",
   admin: "/admin",
   patientAccount: "/account",
   support: "/support",

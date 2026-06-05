@@ -19,6 +19,15 @@
     "errorDescription": "Riprova. Se il problema continua, contatta l’assistenza della clinica.",
     "retry": "Riprova"
   },
+  "auth": {
+    "signIn": {
+      "eyebrow": "Secure clinic access",
+      "title": "Sign in to DocApp",
+      "description": "Use the Clerk account provisioned for clinic operations. Public owner or admin self-registration is not available.",
+      "accessNote": "Clinic owner and admin accounts are created through Clerk Dashboard or a controlled administrative process before they can access DocApp.",
+      "helpText": "Need clinic-side access? Contact the clinic owner or DocApp administrator."
+    }
+  },
   "home": {
     "eyebrow": "Base per prenotazioni cliniche",
     "title": "Prenotazioni affidabili per le cliniche",
