@@ -4,6 +4,7 @@ import { getTranslations } from "next-intl/server";
 
 import { LanguageSelector } from "@/components/i18n";
 import { ROUTES } from "@/config/routes";
+import { AuthControls } from "@/features/auth/components";
 import { SITE_CONFIG } from "@/config/site";
 
 import type { AppHeaderProps } from "./types";
@@ -49,6 +50,11 @@ const AppHeader = async ({ contextLabel, navigation }: AppHeaderProps) => {
               ))}
             </ul>
           </nav>
+          <AuthControls
+            createAccountLabel={t("createAccount")}
+            signInLabel={t("signIn")}
+            signOutLabel={t("signOut")}
+          />
           <LanguageSelector />
         </div>
       </div>

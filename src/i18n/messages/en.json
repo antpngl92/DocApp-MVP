@@ -9,6 +9,9 @@
     "support": "Support",
     "overview": "Overview",
     "appointments": "Appointments",
+    "signIn": "Sign in",
+    "signOut": "Sign out",
+    "createAccount": "Create account",
     "adminContext": "Clinic administration",
     "patientContext": "Patient appointments"
   },

@@ -9,6 +9,9 @@
     "support": "Soporte",
     "overview": "Resumen",
     "appointments": "Citas",
+    "signIn": "Iniciar sesión",
+    "signOut": "Cerrar sesión",
+    "createAccount": "Crear cuenta",
     "adminContext": "Administración de la clínica",
     "patientContext": "Citas del paciente"
   },

@@ -9,6 +9,9 @@
     "support": "Support",
     "overview": "Übersicht",
     "appointments": "Termine",
+    "signIn": "Anmelden",
+    "signOut": "Abmelden",
+    "createAccount": "Konto erstellen",
     "adminContext": "Klinikverwaltung",
     "patientContext": "Patiententermine"
   },

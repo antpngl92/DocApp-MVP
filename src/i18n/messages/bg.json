@@ -9,6 +9,9 @@
     "support": "Поддръжка",
     "overview": "Преглед",
     "appointments": "Часове",
+    "signIn": "Вход",
+    "signOut": "Изход",
+    "createAccount": "Създайте акаунт",
     "adminContext": "Администрация на клиниката",
     "patientContext": "Часове на пациента"
   },

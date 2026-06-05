@@ -9,6 +9,9 @@
     "support": "Assistenza",
     "overview": "Panoramica",
     "appointments": "Appuntamenti",
+    "signIn": "Accedi",
+    "signOut": "Esci",
+    "createAccount": "Crea account",
     "adminContext": "Amministrazione clinica",
     "patientContext": "Appuntamenti del paziente"
   },

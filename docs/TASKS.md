@@ -91,7 +91,7 @@ Complete tasks from top to bottom and one approved task/branch at a time. Do not
 - [x] Implement Clerk login for privately provisioned clinic owner/admin accounts.
 - [x] Implement patient registration.
 - [x] Implement patient login.
-- [ ] Implement logout.
+- [x] Implement logout.
 - [ ] Implement session management.
 - [ ] Add Clerk signed-in boundaries for private admin and patient route groups.
 - [ ] Keep public marketing, booking discovery, support, and public-safe checkout status routes accessible without login.

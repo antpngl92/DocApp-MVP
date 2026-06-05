@@ -9,6 +9,9 @@
     "support": "Assistance",
     "overview": "Vue d’ensemble",
     "appointments": "Rendez-vous",
+    "signIn": "Connexion",
+    "signOut": "Déconnexion",
+    "createAccount": "Créer un compte",
     "adminContext": "Administration de la clinique",
     "patientContext": "Rendez-vous du patient"
   },
