@@ -13,9 +13,11 @@
     "signOut": "Esci",
     "createAccount": "Crea account",
     "adminContext": "Amministrazione clinica",
-    "patientContext": "Appuntamenti del paziente"
+    "patientContext": "I tuoi appuntamenti"
   },
-  "languageSelector": { "label": "Lingua" },
+  "languageSelector": {
+    "label": "Lingua"
+  },
   "feedback": {
     "loading": "Caricamento di DocApp",
     "errorTitle": "Impossibile caricare questa pagina",
@@ -31,11 +33,10 @@
       "helpText": "New here? Create an account from the registration page."
     },
     "signUp": {
-      "eyebrow": "Patient account",
+      "eyebrow": "Account",
       "title": "Create account",
-      "description": "Register as a patient to manage bookings, appointment status, deposits, and clinic cancellation requests.",
-      "privacyNote": "Patient accounts are appointment-management only. Do not enter symptoms, diagnoses, treatment notes, or other medical-record details.",
-      "helpText": "Clinic staff access is invitation-only. Staff should use the invitation link sent by the clinic."
+      "description": "Create an account to manage bookings, appointment status, deposits, and clinic cancellation requests.",
+      "privacyNote": "Use this account for appointment management only. Do not enter symptoms, diagnoses, treatment notes, or other medical-record details."
     }
   },
   "home": {
@@ -101,21 +102,21 @@
       },
       "configuration": {
         "title": "Configurazione clinica",
-        "description": "Le impostazioni resteranno limitate all’organizzazione e protette per ruolo.",
+        "description": "Le impostazioni resteranno limitate all?organizzazione e protette da autorizzazioni di accesso.",
         "item1": "Servizi e risorse",
         "item2": "Regole di disponibilità",
-        "item3": "Permessi del personale"
+        "item3": "Permessi di accesso"
       }
     }
   },
   "patient": {
-    "eyebrow": "Account paziente",
+    "eyebrow": "Account",
     "title": "I tuoi appuntamenti",
-    "description": "L’area paziente è pronta per proprietà, stato e richieste di annullamento degli appuntamenti.",
+    "description": "Questa area ? pronta per dettagli degli appuntamenti, stato e richieste di cancellazione.",
     "panels": {
       "appointments": {
         "title": "Appuntamenti",
-        "description": "L’area paziente serve solo alla gestione degli appuntamenti.",
+        "description": "Questa area serve solo per gestire gli appuntamenti.",
         "item1": "Appuntamenti futuri e passati",
         "item2": "Stato del deposito e del saldo",
         "item3": "Politica di annullamento"
@@ -143,7 +144,7 @@
       },
       "product": {
         "title": "Assistenza DocApp",
-        "description": "Il personale può contattare DocApp per assistenza sul prodotto.",
+        "description": "Le cliniche possono contattare DocApp per assistenza sul prodotto.",
         "item1": "Accesso all’account",
         "item2": "Risoluzione problemi di sincronizzazione",
         "item3": "Assistenza pilota"

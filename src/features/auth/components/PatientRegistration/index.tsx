@@ -6,7 +6,6 @@ const PatientRegistration = ({
   clerkSignUp,
   description,
   eyebrow,
-  helpText,
   privacyNote,
   title,
 }: PatientRegistrationProps) => {
@@ -36,10 +35,6 @@ const PatientRegistration = ({
         >
           {clerkSignUp}
         </section>
-
-        <p className="text-center text-xs leading-5 text-[var(--text-muted)] lg:col-start-2">
-          {helpText}
-        </p>
       </div>
     </div>
   );

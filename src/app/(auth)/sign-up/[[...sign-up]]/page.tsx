@@ -12,7 +12,6 @@ const SignUpPage = async () => {
       clerkSignUp={<SignUp fallbackRedirectUrl={AUTH_ROUTES.afterSignUp} />}
       description={t("description")}
       eyebrow={t("eyebrow")}
-      helpText={t("helpText")}
       privacyNote={t("privacyNote")}
       title={t("title")}
     />

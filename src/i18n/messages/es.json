@@ -13,9 +13,11 @@
     "signOut": "Cerrar sesión",
     "createAccount": "Crear cuenta",
     "adminContext": "Administración de la clínica",
-    "patientContext": "Citas del paciente"
+    "patientContext": "Tus citas"
   },
-  "languageSelector": { "label": "Idioma" },
+  "languageSelector": {
+    "label": "Idioma"
+  },
   "feedback": {
     "loading": "Cargando DocApp",
     "errorTitle": "No pudimos cargar esta página",
@@ -31,11 +33,10 @@
       "helpText": "New here? Create an account from the registration page."
     },
     "signUp": {
-      "eyebrow": "Patient account",
+      "eyebrow": "Cuenta",
       "title": "Create account",
-      "description": "Register as a patient to manage bookings, appointment status, deposits, and clinic cancellation requests.",
-      "privacyNote": "Patient accounts are appointment-management only. Do not enter symptoms, diagnoses, treatment notes, or other medical-record details.",
-      "helpText": "Clinic staff access is invitation-only. Staff should use the invitation link sent by the clinic."
+      "description": "Create an account to manage bookings, appointment status, deposits, and clinic cancellation requests.",
+      "privacyNote": "Use this account for appointment management only. Do not enter symptoms, diagnoses, treatment notes, or other medical-record details."
     }
   },
   "home": {
@@ -101,21 +102,21 @@
       },
       "configuration": {
         "title": "Configuración de la clínica",
-        "description": "La configuración estará limitada a la organización y protegida por roles.",
+        "description": "La configuraci?n estar? limitada a la organizaci?n y protegida por permisos de acceso.",
         "item1": "Servicios y recursos",
         "item2": "Reglas de disponibilidad",
-        "item3": "Permisos del personal"
+        "item3": "Permisos de acceso"
       }
     }
   },
   "patient": {
-    "eyebrow": "Cuenta del paciente",
+    "eyebrow": "Cuenta",
     "title": "Tus citas",
-    "description": "La zona del paciente está lista para propiedad, estado y solicitudes de cancelación de citas.",
+    "description": "Esta ?rea est? preparada para detalles de citas, estado y solicitudes de cancelaci?n.",
     "panels": {
       "appointments": {
         "title": "Citas",
-        "description": "La zona del paciente es solo para gestionar citas.",
+        "description": "Esta ?rea es solo para gestionar citas.",
         "item1": "Citas próximas y pasadas",
         "item2": "Estado del depósito y saldo",
         "item3": "Política de cancelación"
@@ -143,7 +144,7 @@
       },
       "product": {
         "title": "Soporte de DocApp",
-        "description": "El personal puede contactar con DocApp para obtener ayuda con el producto.",
+        "description": "Las cl?nicas pueden contactar con DocApp para recibir ayuda con el producto.",
         "item1": "Acceso a la cuenta",
         "item2": "Problemas de sincronización del calendario",
         "item3": "Soporte piloto"

@@ -13,9 +13,11 @@
     "signOut": "Abmelden",
     "createAccount": "Konto erstellen",
     "adminContext": "Klinikverwaltung",
-    "patientContext": "Patiententermine"
+    "patientContext": "Ihre Termine"
   },
-  "languageSelector": { "label": "Sprache" },
+  "languageSelector": {
+    "label": "Sprache"
+  },
   "feedback": {
     "loading": "DocApp wird geladen",
     "errorTitle": "Diese Seite konnte nicht geladen werden",
@@ -31,11 +33,10 @@
       "helpText": "New here? Create an account from the registration page."
     },
     "signUp": {
-      "eyebrow": "Patient account",
+      "eyebrow": "Konto",
       "title": "Create account",
-      "description": "Register as a patient to manage bookings, appointment status, deposits, and clinic cancellation requests.",
-      "privacyNote": "Patient accounts are appointment-management only. Do not enter symptoms, diagnoses, treatment notes, or other medical-record details.",
-      "helpText": "Clinic staff access is invitation-only. Staff should use the invitation link sent by the clinic."
+      "description": "Create an account to manage bookings, appointment status, deposits, and clinic cancellation requests.",
+      "privacyNote": "Use this account for appointment management only. Do not enter symptoms, diagnoses, treatment notes, or other medical-record details."
     }
   },
   "home": {
@@ -101,21 +102,21 @@
       },
       "configuration": {
         "title": "Klinikkonfiguration",
-        "description": "Einstellungen bleiben organisationsbezogen und rollengeschützt.",
+        "description": "Einstellungen bleiben organisationsbezogen und zugriffsgesch?tzt.",
         "item1": "Services und Ressourcen",
         "item2": "Verfügbarkeitsregeln",
-        "item3": "Mitarbeiterberechtigungen"
+        "item3": "Zugriffsrechte"
       }
     }
   },
   "patient": {
-    "eyebrow": "Patientenkonto",
+    "eyebrow": "Konto",
     "title": "Ihre Termine",
-    "description": "Der Patientenbereich ist für Terminbesitz, Status und Stornierungsanfragen vorbereitet.",
+    "description": "Dieser Bereich ist f?r Termindetails, Status und Stornierungsanfragen vorbereitet.",
     "panels": {
       "appointments": {
         "title": "Termine",
-        "description": "Der Patientenbereich dient nur der Terminverwaltung.",
+        "description": "Dieser Bereich dient nur der Terminverwaltung.",
         "item1": "Bevorstehende und vergangene Termine",
         "item2": "Status von Anzahlung und Restbetrag",
         "item3": "Stornierungsrichtlinie"
@@ -143,7 +144,7 @@
       },
       "product": {
         "title": "DocApp-Support",
-        "description": "Klinikmitarbeiter können DocApp für Produkthilfe kontaktieren.",
+        "description": "Kliniken k?nnen DocApp f?r Produkthilfe kontaktieren.",
         "item1": "Kontozugriff",
         "item2": "Fehlerbehebung bei Kalendersynchronisierung",
         "item3": "Pilot-Support"
