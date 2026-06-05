@@ -11,13 +11,15 @@ describe("AccountSignIn", () => {
         description="Sign in to continue to your DocApp account."
         eyebrow="Account access"
         helpText="New here? Create an account from the registration page."
-        securityNote="DocApp protects account access through Clerk."
+        securityNote="DocApp protects account access with secure authentication."
         title="Sign in"
       />,
     );
 
     expect(screen.getByRole("heading", { name: "Sign in" })).toBeInTheDocument();
-    expect(screen.getByText("DocApp protects account access through Clerk.")).toBeInTheDocument();
+    expect(
+      screen.getByText("DocApp protects account access with secure authentication."),
+    ).toBeInTheDocument();
     expect(screen.getByText("Clerk sign in")).toBeInTheDocument();
     expect(
       screen.getByText("New here? Create an account from the registration page."),
