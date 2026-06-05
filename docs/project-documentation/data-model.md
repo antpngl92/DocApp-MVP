@@ -99,6 +99,24 @@ Suggested fields:
 - createdAt
 - updatedAt
 
+For staff invitations, an implementation may either use a separate `StaffInvitation` / `OrganizationInvitation` model or represent pending access through `OrganizationMember.status = invited`.
+
+Suggested invitation tracking fields:
+
+- organizationId
+- invitedEmail
+- intendedRole
+- status
+- clerkInvitationId
+- clerkInvitationStatus
+- invitedByUserId
+- acceptedByUserId
+- expiresAt
+- createdAt
+- updatedAt
+
+Clerk invitation metadata may contain organization, invitation/membership, and intended-role references, but local invitation or membership records remain the source of truth for role and access.
+
 ### PatientProfile
 
 Represents a patient account for booking and appointment management.

@@ -88,7 +88,7 @@ Complete tasks from top to bottom and one approved task/branch at a time. Do not
 
 - [x] Define clinic owner/admin account provisioning as Clerk Dashboard or controlled database provisioning only; do not expose public owner/admin registration.
 - [x] Configure Clerk authentication foundation: `ClerkProvider`, middleware/proxy, environment validation, and public/private route definitions.
-- [ ] Implement Clerk login for privately provisioned clinic owner/admin accounts.
+- [x] Implement Clerk login for privately provisioned clinic owner/admin accounts.
 - [ ] Implement patient registration.
 - [ ] Implement patient login.
 - [ ] Implement logout.
@@ -111,9 +111,15 @@ Complete tasks from top to bottom and one approved task/branch at a time. Do not
 - [ ] Add current-authenticated-user helper.
 - [ ] Add local user lookup helper.
 - [ ] Implement trusted clinic owner/admin local provisioning and link it to a trusted Clerk identity.
-- [ ] Implement staff user registration or invitation.
-- [ ] Implement doctor user registration or invitation.
-- [ ] Implement receptionist user registration or invitation.
+- [ ] Implement one staff-user onboarding flow with Clerk Invitations plus local membership validation.
+- [ ] Build owner/admin staff invitation form with staff email input and role dropdown.
+- [ ] Allow owner/admin to choose staff role during invitation, such as admin, manager, receptionist, or doctor.
+- [ ] Create staff invitation from a server-only action/route using Clerk Backend API `clerkClient.invitations.createInvitation`.
+- [ ] Store Clerk invitation ID/status alongside the pending local invitation or membership record.
+- [ ] Pass only non-authoritative references such as organization ID, membership/invitation ID, and intended role in Clerk invitation metadata.
+- [ ] Support staff roles through local `OrganizationMember` state, including manager, receptionist, doctor, admin, and owner where applicable.
+- [ ] Link a staff user with role `doctor` to a `Doctor` operational profile when that staff member is a bookable provider.
+- [ ] Ensure Clerk invitation metadata is treated as a hint and local `OrganizationMember` state remains the source of staff roles and permissions.
 - [ ] Ensure staff cannot self-register into arbitrary clinics without invitation or owner/admin approval.
 - [ ] Model and enforce roles: owner, admin, manager, receptionist, doctor, patient.
 - [ ] Add organization/clinic membership checks.
