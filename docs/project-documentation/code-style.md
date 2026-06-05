@@ -380,6 +380,8 @@ order.status = "paid";
 
 Every implementation branch should add or update tests when the changed code is testable.
 
+When changing shared config, components, helpers, schemas, or exported APIs, search for dependent tests and usages and update them in the same branch. Do not only test the new file if existing tests still duplicate or depend on the old shape.
+
 Use React Testing Library for component behavior.
 
 Use focused unit tests for:

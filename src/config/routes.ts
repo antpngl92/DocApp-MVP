@@ -1,4 +1,4 @@
-const ROUTES = {
+const PUBLIC_ROUTES = {
   home: "/",
   bookingDemo: "/booking/sofia-care",
   checkoutSuccess: "/checkout/success",
@@ -7,9 +7,17 @@ const ROUTES = {
   checkoutStatusDemo: "/checkout/status/demo-booking",
   signIn: "/sign-in",
   signUp: "/sign-up",
-  admin: "/admin",
-  patientAccount: "/account",
   support: "/support",
 } as const;
 
-export { ROUTES };
+const PRIVATE_ROUTES = {
+  admin: "/admin",
+  patientAccount: "/account",
+} as const;
+
+const ROUTES = {
+  ...PUBLIC_ROUTES,
+  ...PRIVATE_ROUTES,
+} as const;
+
+export { PRIVATE_ROUTES, PUBLIC_ROUTES, ROUTES };

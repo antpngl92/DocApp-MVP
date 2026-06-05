@@ -78,6 +78,7 @@ Before handoff, Codex must verify and report:
 - External docs checked for every touched external library/API, or state that no external library/API was touched.
 - Layout semantics checked when UI/layout changed: one page-level `<main>`, no accidental nested page landmarks, global header/navigation outside `<main>`, and no nested full-viewport layout inside an existing shell unless intentionally documented.
 - Focused tests added or updated for changed components/logic, or explain why not applicable.
+- Dependent tests checked for every changed shared config, component, helper, schema, or exported API.
 - Checks run: lint, typecheck, tests, format, and build where appropriate.
 - Dev server status: not started, or started and stopped.
 
@@ -215,6 +216,7 @@ Before merging a branch, check:
 - Are external library APIs implemented with the provider's documented components, hooks, helpers, middleware, or SDK methods?
 - If an external library's documented API was not used, is the deviation explicitly justified in docs or handoff notes?
 - For layout-sensitive UI, do tests guard against invalid page landmarks or accidental nested `<main>` elements where practical?
+- If shared config, components, helpers, schemas, or exported APIs changed, were dependent tests and usages searched and updated?
 - Are navigation data, status definitions, limits, labels, and meaningful constants outside page components?
 - Are shared hooks placed in `src/hooks` instead of `src/lib`?
 - Are feature-specific hooks kept inside the relevant feature folder?
