@@ -1,16 +1,15 @@
 "use client";
 
-import { SignOutButton, useAuth } from "@clerk/nextjs";
-import Link from "next/link";
+import { SignInButton, SignOutButton, SignUpButton, useAuth } from "@clerk/nextjs";
 
 import { ROUTES } from "@/config/routes";
 
 import type { AuthControlsProps } from "./types";
 
-const linkClassName =
+const secondaryButtonClassName =
   "inline-flex min-h-10 items-center rounded-md px-2 text-sm font-medium text-[var(--text-muted)] transition hover:bg-[var(--surface-muted)] hover:text-[var(--text-strong)] sm:px-3";
 
-const primaryLinkClassName =
+const primaryButtonClassName =
   "inline-flex min-h-10 items-center rounded-md bg-[var(--primary)] px-3 text-sm font-semibold text-white transition hover:bg-[var(--primary-strong)]";
 
 const signOutClassName =
@@ -29,12 +28,16 @@ const AuthControls = ({ createAccountLabel, signInLabel, signOutLabel }: AuthCon
         </SignOutButton>
       ) : (
         <>
-          <Link className={linkClassName} href={ROUTES.signIn}>
-            {signInLabel}
-          </Link>
-          <Link className={primaryLinkClassName} href={ROUTES.signUp}>
-            {createAccountLabel}
-          </Link>
+          <SignInButton mode="redirect">
+            <button className={secondaryButtonClassName} type="button">
+              {signInLabel}
+            </button>
+          </SignInButton>
+          <SignUpButton mode="redirect">
+            <button className={primaryButtonClassName} type="button">
+              {createAccountLabel}
+            </button>
+          </SignUpButton>
         </>
       )}
     </div>

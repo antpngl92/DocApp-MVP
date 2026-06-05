@@ -5,7 +5,7 @@ import PatientRegistration from "..";
 
 describe("PatientRegistration", () => {
   it("renders patient registration copy around the Clerk sign-up surface", () => {
-    render(
+    const { container } = render(
       <PatientRegistration
         clerkSignUp={<div>Clerk sign up</div>}
         description="Create an account to manage appointments."
@@ -20,5 +20,6 @@ describe("PatientRegistration", () => {
     expect(screen.getByText("Clerk sign up")).toBeInTheDocument();
     expect(screen.getByText("Patient accounts are for appointments only.")).toBeInTheDocument();
     expect(screen.getByText("Clinic staff access is by invitation only.")).toBeInTheDocument();
+    expect(container.querySelector("main")).not.toBeInTheDocument();
   });
 });

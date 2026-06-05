@@ -8,6 +8,11 @@ const clerkState = vi.hoisted(() => ({
 }));
 
 vi.mock("@clerk/nextjs", () => ({
+  SignInButton: ({ children, mode }: { children: React.ReactNode; mode: "redirect" | "modal" }) => (
+    <span data-mode={mode} data-testid="sign-in-wrapper">
+      {children}
+    </span>
+  ),
   SignOutButton: ({
     children,
     redirectUrl,
@@ -16,6 +21,11 @@ vi.mock("@clerk/nextjs", () => ({
     redirectUrl: string;
   }) => (
     <span data-redirect-url={redirectUrl} data-testid="sign-out-wrapper">
+      {children}
+    </span>
+  ),
+  SignUpButton: ({ children, mode }: { children: React.ReactNode; mode: "redirect" | "modal" }) => (
+    <span data-mode={mode} data-testid="sign-up-wrapper">
       {children}
     </span>
   ),
@@ -36,11 +46,10 @@ describe("AuthControls", () => {
 
     render(<AuthControls {...defaultProps} />);
 
-    expect(screen.getByRole("link", { name: "Sign in" })).toHaveAttribute("href", "/sign-in");
-    expect(screen.getByRole("link", { name: "Create account" })).toHaveAttribute(
-      "href",
-      "/sign-up",
-    );
+    expect(screen.getByRole("button", { name: "Sign in" })).toBeInTheDocument();
+    expect(screen.getByTestId("sign-in-wrapper")).toHaveAttribute("data-mode", "redirect");
+    expect(screen.getByRole("button", { name: "Create account" })).toBeInTheDocument();
+    expect(screen.getByTestId("sign-up-wrapper")).toHaveAttribute("data-mode", "redirect");
     expect(screen.queryByRole("button", { name: "Sign out" })).not.toBeInTheDocument();
   });
 
@@ -51,7 +60,7 @@ describe("AuthControls", () => {
 
     expect(screen.getByRole("button", { name: "Sign out" })).toBeInTheDocument();
     expect(screen.getByTestId("sign-out-wrapper")).toHaveAttribute("data-redirect-url", "/");
-    expect(screen.queryByRole("link", { name: "Sign in" })).not.toBeInTheDocument();
-    expect(screen.queryByRole("link", { name: "Create account" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Sign in" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Create account" })).not.toBeInTheDocument();
   });
 });
