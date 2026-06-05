@@ -89,7 +89,7 @@ Complete tasks from top to bottom and one approved task/branch at a time. Do not
 - [x] Define clinic owner/admin account provisioning as Clerk Dashboard or controlled database provisioning only; do not expose public owner/admin registration.
 - [x] Configure Clerk authentication foundation: `ClerkProvider`, middleware/proxy, environment validation, and public/private route definitions.
 - [x] Implement Clerk login for privately provisioned clinic owner/admin accounts.
-- [ ] Implement patient registration.
+- [x] Implement patient registration.
 - [ ] Implement patient login.
 - [ ] Implement logout.
 - [ ] Implement session management.
@@ -98,7 +98,7 @@ Complete tasks from top to bottom and one approved task/branch at a time. Do not
 
 ## Phase 6 - Identity Database, Provisioning, Roles, And Clinic Scoping
 
-- [ ] Add database connection configuration.
+- [ ] Add database connection configuration and guide user step by step on how to setup Prisma.
 - [ ] Add Prisma setup.
 - [ ] Model users synced from Clerk with unique `User.clerkUserId`.
 - [ ] Model organizations/clinics.
