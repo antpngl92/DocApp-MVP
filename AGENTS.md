@@ -153,6 +153,7 @@ Branch names should describe the work, not the tool.
 
 - Every branch/task that adds or changes a component must add or update focused component tests in the same branch.
 - Every branch/task that adds or changes application or business logic must add or update focused logic tests in the same branch.
+- When changing a shared config, component, helper, schema, or exported API, search for all tests and code that depend on it and update dependent tests in the same branch.
 - For layout-sensitive components rendered inside an existing shell, add or update tests that guard against invalid page landmarks or accidental nested `<main>` elements when practical.
 - Use React Testing Library for React component behavior.
 - Use focused unit tests for validators, mappers, services, and business logic.
