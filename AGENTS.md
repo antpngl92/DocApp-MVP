@@ -6,6 +6,8 @@ DocApp is an MVP for small private clinics and appointment-based healthcare prac
 
 DocApp is not a public doctor marketplace, medical-record system, prescription system, or hospital-management platform. The MVP focuses on a stable booking, deposit, and Google Calendar workflow.
 
+MVP deployment is single-clinic. Each clinic receives its own app deployment, database, Prisma configuration, and integration credentials. Do not build cross-clinic switching, marketplace behavior, or shared-database multi-tenant operations unless a later decision explicitly changes the product architecture.
+
 ## Current phase
 
 The project is in MVP foundation/rebuild mode. Use the existing prototype only as reference. Do not copy fragile payment, booking, or Google Calendar logic without rechecking it against the docs.
@@ -28,6 +30,7 @@ Do not add production complexity before the MVP scope is clear, but build the pa
 - Keep patient-facing and admin-facing code clearly separated.
 - Patient accounts are part of the MVP. They are for booking, appointment history, payment/deposit status, and cancellation requests only.
 - Support trusted owner/admin provisioning through the Clerk Dashboard or controlled database setup, staff invitation/approved assignment, and patient registration/login in the foundation.
+- Treat `Organization` as the single local clinic profile/source of truth for this deployment, not one tenant among many active clinics.
 - Do not create a public clinic owner/admin registration route or trust user-controlled role metadata.
 - Staff must join a clinic only through owner/admin invitation or explicit admin approval. Do not allow open public self-registration into arbitrary clinic staff roles.
 - Do not store medical notes, symptoms, diagnoses, documents, or other health details unless explicitly added to scope later.
@@ -57,7 +60,7 @@ Do not add production complexity before the MVP scope is clear, but build the pa
 - Prisma
 - PostgreSQL
 - Clerk
-- Stripe Checkout, later Stripe Connect if multi-clinic payments require it
+- Stripe Checkout for the clinic deployment; Stripe Connect only if a later approved architecture changes DocApp into shared multi-clinic SaaS
 - Google Calendar API
 - Tailwind CSS
 - FullCalendar where useful for MVP calendar views

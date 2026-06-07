@@ -16,7 +16,7 @@ describe("Prisma schema identity model", () => {
 });
 
 describe("Prisma schema organization model", () => {
-  it("models organizations as local clinic tenants with stable lookup fields", () => {
+  it("models organizations as the single-clinic deployment profile with stable lookup fields", () => {
     const schema = readFileSync(schemaPath, "utf8");
 
     expect(schema).toContain("enum OrganizationStatus");
@@ -36,6 +36,55 @@ describe("Prisma schema organization model", () => {
     expect(organizationModel).not.toMatch(/google/i);
     expect(organizationModel).not.toMatch(/calendar/i);
     expect(organizationModel).not.toMatch(/provider/i);
+  });
+});
+
+describe("Prisma schema organization membership model", () => {
+  it("models clinic-side membership roles and statuses", () => {
+    const schema = readFileSync(schemaPath, "utf8");
+
+    expect(schema).toContain("enum OrganizationMemberRole");
+    expect(schema).toContain("owner");
+    expect(schema).toContain("admin");
+    expect(schema).toContain("manager");
+    expect(schema).toContain("receptionist");
+    expect(schema).toContain("doctor");
+    expect(schema).not.toMatch(/enum OrganizationMemberRole \{[\s\S]*?\n\s+patient\n/);
+
+    expect(schema).toContain("enum OrganizationMemberStatus");
+    expect(schema).toContain("invited");
+    expect(schema).toContain("active");
+    expect(schema).toContain("disabled");
+    expect(schema).toContain("removed");
+  });
+
+  it("links one local user to at most one clinic-side membership in this deployment", () => {
+    const schema = readFileSync(schemaPath, "utf8");
+    const memberModel = schema.match(/model OrganizationMember \{[\s\S]*?\n\}/)?.[0];
+
+    expect(memberModel).toBeDefined();
+    expect(memberModel).toMatch(/organizationId\s+String/);
+    expect(memberModel).toMatch(/userId\s+String\?/);
+    expect(memberModel).toMatch(/invitedEmail\s+String\?/);
+    expect(memberModel).toMatch(/role\s+OrganizationMemberRole/);
+    expect(memberModel).toMatch(/status\s+OrganizationMemberStatus\s+@default\(invited\)/);
+    expect(memberModel).toContain("@@unique([userId])");
+    expect(memberModel).not.toContain("@@unique([organizationId, userId])");
+  });
+
+  it("keeps membership tied to the local clinic profile and optional local user", () => {
+    const schema = readFileSync(schemaPath, "utf8");
+    const memberModel = schema.match(/model OrganizationMember \{[\s\S]*?\n\}/)?.[0];
+
+    expect(memberModel).toBeDefined();
+    expect(memberModel).toMatch(
+      /organization\s+Organization\s+@relation\(fields: \[organizationId\], references: \[id\], onDelete: Cascade\)/,
+    );
+    expect(memberModel).toMatch(
+      /user\s+User\?\s+@relation\(fields: \[userId\], references: \[id\], onDelete: SetNull\)/,
+    );
+    expect(schema).toMatch(/organizationMember\s+OrganizationMember\?/);
+    expect(schema).toMatch(/members\s+OrganizationMember\[\]/);
   });
 });
 

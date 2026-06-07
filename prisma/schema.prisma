@@ -13,26 +13,63 @@ enum OrganizationStatus {
   suspended
 }
 
+enum OrganizationMemberRole {
+  owner
+  admin
+  manager
+  receptionist
+  doctor
+}
+
+enum OrganizationMemberStatus {
+  invited
+  active
+  disabled
+  removed
+}
+
 model User {
-  id          String   @id @default(cuid())
-  clerkUserId String   @unique
-  email       String
-  name        String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id                 String              @id @default(cuid())
+  clerkUserId        String              @unique
+  email              String
+  name               String?
+  organizationMember OrganizationMember?
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
 
   @@index([email])
 }
 
 model Organization {
-  id              String             @id @default(cuid())
+  id              String               @id @default(cuid())
   name            String
-  slug            String             @unique
-  timezone        String             @default("Europe/Sofia")
-  defaultCurrency String             @default("BGN")
-  status          OrganizationStatus @default(active)
-  createdAt       DateTime           @default(now())
-  updatedAt       DateTime           @updatedAt
+  slug            String               @unique
+  timezone        String               @default("Europe/Sofia")
+  defaultCurrency String               @default("BGN")
+  status          OrganizationStatus   @default(active)
+  members         OrganizationMember[]
+  createdAt       DateTime             @default(now())
+  updatedAt       DateTime             @updatedAt
 
+  @@index([status])
+}
+
+model OrganizationMember {
+  id             String                   @id @default(cuid())
+  organizationId String
+  userId         String?
+  role           OrganizationMemberRole
+  status         OrganizationMemberStatus @default(invited)
+  invitedEmail   String?
+  createdAt      DateTime                 @default(now())
+  updatedAt      DateTime                 @updatedAt
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  user         User?        @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@unique([userId])
+  @@index([organizationId])
+  @@index([organizationId, invitedEmail])
+  @@index([role])
   @@index([status])
 }

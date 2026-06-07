@@ -201,35 +201,37 @@ Avoid titles like:
 Anton - cardiology chest pain
 ```
 
-## 012 - Design For Organization/Clinic Scoping From The Start
+## 012 - Use A Single-Clinic Deployment And Database For MVP
 
 **Decision**
 
-DocApp should use shared app URL and shared database tenancy with strict organization/clinic scoping.
+DocApp MVP should be deployed separately for each clinic.
 
-Do not use one database per clinic or per-clinic subdomains in the MVP.
+Each clinic gets its own application deployment, database, Prisma configuration, and integration credentials.
+
+Do not build shared-database multi-tenant behavior, cross-clinic switching, or marketplace operations in the MVP.
 
 **Reason**
 
-Shared tenancy is simpler to build, migrate, test, and operate. It also supports a future SaaS model.
+The product is sold to clinics individually, and each clinic operates its own isolated booking/payment/calendar environment. Separate deployments keep the MVP simpler to operate, easier to reason about, and safer while the core workflow is being stabilized.
 
 **Implication**
 
-Every query, route handler, server action, webhook side effect, admin view, and calendar operation must enforce clinic ownership/authorization.
+Every deployment should normally have one local `Organization` record representing the clinic profile and product source of truth. Do not add UI or backend logic for switching between clinics or querying across clinics.
 
-## 013 - Start With One Clinic Operationally, But Keep The Schema Multi-Tenant
+## 013 - Keep Organization IDs For Local Clinic Ownership, Not Cross-Clinic Operations
 
 **Decision**
 
-The first pilot may run for one clinic, but the schema should support multiple organizations/clinics from the beginning.
+Models should still use `organizationId` or equivalent ownership fields where the record belongs to the clinic, even though the MVP database is single-clinic.
 
 **Reason**
 
-Retrofitting tenant scoping later is risky and expensive.
+The local organization record anchors clinic settings, Google Calendar connection, staff membership, doctors, resources, services, appointments, orders, sync records, notification logs, and audit events. Keeping that ownership explicit makes joins, authorization, data export, support, and future migration safer without implying that one deployment serves many clinics.
 
 **Implication**
 
-Models should include `organizationId`/`clinicId` where appropriate, even if early development uses a single seeded organization.
+Use `organizationId` as a local ownership boundary and consistency check. Do not build cross-clinic queries, clinic switching, or multiple active clinic memberships for one local user in the MVP.
 
 ## 014 - Keep Billing Simple For MVP
 
@@ -254,15 +256,15 @@ Do not build:
 - team billing
 - complex trials
 
-Normal Stripe Checkout without Stripe Connect is acceptable only for a controlled single-clinic pilot where payment ownership and accounting are clear.
+Normal Stripe Checkout without Stripe Connect is acceptable for the single-clinic deployment model when payment ownership and accounting are clear.
 
-Before onboarding multiple real clinics where patient deposits belong to different clinics, evaluate Stripe Connect or an equivalent platform payment architecture. Do not build a multi-clinic production model where all clinic deposits are collected into the platform owner's Stripe account and manually redistributed unless legal, accounting, and payment-service implications have been reviewed.
+If DocApp later becomes a shared multi-clinic SaaS where patient deposits belong to different clinics, evaluate Stripe Connect or an equivalent platform payment architecture before building that model.
 
-## 015 - Use Stripe Connect Later For Multi-Clinic Money Movement
+## 015 - Use Stripe Connect Only If A Later Shared Multi-Clinic Architecture Is Approved
 
 **Decision**
 
-For a real multi-clinic SaaS where patient deposits should flow to clinics and DocApp keeps a platform fee, plan for Stripe Connect or an equivalent platform-payment solution.
+For a later shared multi-clinic SaaS where patient deposits should flow to clinics and DocApp keeps a platform fee, plan for Stripe Connect or an equivalent platform-payment solution.
 
 **Reason**
 
@@ -270,7 +272,7 @@ Collecting all patient deposits into the platform's own bank account and manuall
 
 **Implication**
 
-The data model should store enough payment metadata to migrate later. The MVP should not hard-code assumptions that every clinic's money permanently belongs to the platform account.
+The data model should store enough payment metadata to support migration later. The MVP should not build Stripe Connect or marketplace money movement while deployments remain single-clinic.
 
 ## 016 - Build A Production-Shaped Payment And Booking Foundation From The Start
 
@@ -656,13 +658,15 @@ Patients can register/login, manage basic contact details, book appointments, vi
 
 **Decision**
 
-The MVP should model the following user roles from the start:
+The MVP should model clinic-side staff roles and patient ownership from the start:
 
 - owner
+- admin
 - manager
 - receptionist
 - doctor
-- patient
+
+Patients are represented through patient ownership/profile records, not `OrganizationMember` staff memberships.
 
 **Reason**
 
@@ -670,7 +674,7 @@ Clinic-side users and patients both authenticate, so access separation is founda
 
 **Implication**
 
-Owner can manage clinic settings, staff, doctors, services, calendars, appointments, and billing configuration. Manager can manage clinic operations and appointments. Receptionist can create/manage appointments but should not manage billing/platform settings unless allowed. Doctor can view their own calendar/appointments where needed. Patient can view and manage only their own appointments/profile.
+Owner can manage clinic settings, staff, doctors, services, calendars, appointments, and billing configuration. Admin/manager can manage clinic operations and appointments according to configured permissions. Receptionist can create/manage appointments but should not manage billing/platform settings unless allowed. Doctor can view their own calendar/appointments where needed. Patient can view and manage only their own appointments/profile.
 
 ## 037 - Google Calendar Foundation Comes Early
 
@@ -813,7 +817,7 @@ Owner/admin roles and organization memberships are assigned only through trusted
 
 **Decision**
 
-The local `Organization` is the clinic tenant and product source of truth. For MVP, an existing clinic may have one active connected Google account containing multiple calendars. Store the account connection separately from individual calendar mappings. Calendars are mapped through integration records to existing local doctors, resources/cabinets, or an explicitly documented clinic-default purpose.
+The local `Organization` is the single clinic profile and product source of truth for this deployment. For MVP, an existing clinic may have one active connected Google account containing multiple calendars. Store the account connection separately from individual calendar mappings. Calendars are mapped through integration records to existing local doctors, resources/cabinets, or an explicitly documented clinic-default purpose.
 
 **Reason**
 

@@ -42,7 +42,7 @@ Prototype issues that the MVP architecture must correct:
 
 ## Architecture Principles
 
-- Keep the app clinic/organization-scoped from the beginning.
+- Keep the app clinic/organization-scoped inside a single-clinic deployment from the beginning.
 - Keep route/page files thin.
 - Keep business logic in feature services, validators, mappers, and server modules.
 - Keep payment fulfillment webhook-driven.
@@ -139,9 +139,17 @@ Clerk identity/session setup comes before local database authorization. The mini
 
 Clerk route protection proves that a request is signed in. Local database authorization determines whether that signed-in user may access a clinic, staff action, patient profile, or appointment.
 
+## Single-Clinic Deployment Shape
+
+DocApp MVP uses one deployment and one database per clinic. Each clinic also has its own Prisma configuration and integration credentials.
+
+The local `Organization` is the clinic profile and product source of truth for that deployment. It is not one tenant among many active clinics in a shared database.
+
+Do not build cross-clinic switching, marketplace behavior, or shared-database multi-tenant operations in the MVP. `organizationId` remains useful on clinic-owned records as a local ownership boundary and consistency check.
+
 ## Clinic And Google Calendar Dependency Order
 
-An `Organization` is the local clinic tenant and must exist before Google Calendar can be connected. The organization is not a Google account. For MVP, an existing authorized clinic may connect one active Google account, then discover and map that account's calendars to existing local `Doctor` and `Resource` records.
+An `Organization` is the local clinic profile and must exist before Google Calendar can be connected. The organization is not a Google account. For MVP, an existing authorized clinic may connect one active Google account, then discover and map that account's calendars to existing local `Doctor` and `Resource` records.
 
 The dependency order is:
 
@@ -191,16 +199,11 @@ Expired short holds and pending-payment locks need a concrete cleanup mechanism,
 
 The same scheduled-job foundation may be reused for time-based notifications such as appointment reminders.
 
-## MVP Deployment Shape
-
-Use a normal SaaS URL and a shared database with strict tenant scoping.
-
-Do not use per-clinic databases or subdomains in MVP.
-
 ## Future Architecture Considerations
 
 Consider later only after the pilot workflow is stable:
 
+- shared multi-clinic SaaS architecture, if the product direction changes
 - Stripe Connect for real multi-clinic money movement
 - durable job queue for retries/background processing
 - SMS reminder provider

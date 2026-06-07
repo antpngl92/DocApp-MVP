@@ -7,7 +7,7 @@ Use these prompts in SuperDesign as design references. Generated output must be 
 ## Base Style Prompt
 
 ```txt
-Design a calm, trustworthy clinic booking SaaS interface for DocApp.
+Design a calm, trustworthy clinic booking interface for DocApp.
 
 Product context:
 DocApp helps small private clinics configure services, doctors, rooms, availability, appointment deposits, patient accounts, and Google Calendar sync. It is not a public doctor marketplace and not a medical-record system.
@@ -25,7 +25,7 @@ Payment amounts must be obvious. Show "Deposit due now" and "Remaining balance a
 ## Public Booking Flow Prompt
 
 ```txt
-Create a mobile-first public booking flow for DocApp using the approved calm clinic SaaS style.
+Create a mobile-first public booking flow for DocApp using the approved calm clinic application style.
 
 Screens/states to include:
 1. Clinic-branded booking page
@@ -174,7 +174,7 @@ show raw credentials, tokens, sensitive patient notes, or imply the booking is l
 
 Use this checklist before accepting any generated design:
 
-- Matches calm clinic SaaS direction.
+- Matches calm clinic application direction.
 - No ads.
 - No medical-record features.
 - No patient refund request action.

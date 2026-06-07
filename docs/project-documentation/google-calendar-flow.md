@@ -10,11 +10,11 @@ Google Calendar configuration should be built early in the MVP foundation so cli
 
 ## Clinic And Google Account Relationship
 
-The local `Organization` is the clinic tenant and product source of truth. It is not the Google account.
+The local `Organization` is the clinic profile and product source of truth for this single-clinic deployment. It is not the Google account.
 
 For MVP:
 
-- an existing clinic may have one active connected Google account
+- the deployed clinic may have one active connected Google account
 - the connected Google account may expose multiple calendars
 - each calendar may be mapped to an existing local doctor, resource/cabinet, or documented clinic-default purpose
 - only authorized owner/admin roles may connect, disconnect, replace, or configure the clinic Google account and calendar mappings

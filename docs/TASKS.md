@@ -103,8 +103,8 @@ Complete tasks from top to bottom and one approved task/branch at a time. Do not
 - [x] Model users synced from Clerk with unique `User.clerkUserId`.
 - [x] Remove temporary Prisma setup models once real organization/clinic models exist, including schema, migrations where appropriate, seed/verify references, tests, generated Prisma client files, and all other generated or documented references.
 - [x] Model organizations/clinics.
-- [x] Keep each organization/clinic as the local tenant and product source of truth; do not model the clinic itself as a Google account.
-- [ ] Model organization members, membership status, and roles.
+- [x] Keep the local organization/clinic as the single-clinic deployment source of truth; do not model the clinic itself as a Google account or as one tenant in a shared multi-clinic database.
+- [x] Model organization members, membership status, and roles.
 - [ ] Model minimal patient profile/contact details.
 - [ ] Model audit/event records needed for identity, membership, and role changes.
 - [ ] Add identity and membership indexes and ownership constraints wherever practical.
@@ -122,7 +122,7 @@ Complete tasks from top to bottom and one approved task/branch at a time. Do not
 - [ ] Link a staff user with role `doctor` to a `Doctor` operational profile when that staff member is a bookable provider.
 - [ ] Ensure Clerk invitation metadata is treated as a hint and local `OrganizationMember` state remains the source of staff roles and permissions.
 - [ ] Ensure staff cannot self-register into arbitrary clinics without invitation or owner/admin approval.
-- [ ] Model and enforce roles: owner, admin, manager, receptionist, doctor, patient.
+- [ ] Model and enforce clinic-side roles plus patient ownership: owner, admin, manager, receptionist, doctor, and patient account access.
 - [ ] Add organization/clinic membership checks.
 - [ ] Add current-organization/current-clinic helper.
 - [ ] Add admin/staff authorization guards.
@@ -295,7 +295,7 @@ Complete tasks from top to bottom and one approved task/branch at a time. Do not
 - [ ] Add cancel/expired page that reads local status only.
 - [ ] Add public-safe status token/reference handling.
 - [ ] Ensure status pages do not expose arbitrary appointments or cross-clinic data.
-- [ ] Strengthen Stripe Connect warning before multi-clinic money movement.
+- [ ] Strengthen future Stripe Connect warning before any shared multi-clinic money movement.
 
 ## Phase 15 - Post-Payment Google Calendar Event Creation And Retry
 
@@ -402,7 +402,7 @@ Complete tasks from top to bottom and one approved task/branch at a time. Do not
 ## Phase 21 - Privacy, Security, Legal, And Abuse Prevention
 
 - [ ] Verify all clinic data queries are scoped by organization/clinic ownership.
-- [ ] Verify admins cannot access another clinic's appointments.
+- [ ] Verify no cross-clinic switching or shared multi-clinic access exists in MVP.
 - [ ] Verify patients cannot access another patient's appointments.
 - [ ] Verify webhook processing cannot modify unrelated orders.
 - [ ] Verify payment amount is calculated server-side.

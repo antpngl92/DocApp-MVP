@@ -8,6 +8,14 @@ The MVP focuses on letting a clinic owner/admin configure doctors, staff, cabine
 
 The main goal is not to build a public doctor marketplace, medical-record system, prescription platform, insurance tool, or generic booking app. The MVP is focused on the core booking, payment, and calendar-sync workflow.
 
+## Deployment Model
+
+DocApp MVP is deployed per clinic. Each clinic gets its own application deployment, database, Prisma configuration, and integration credentials.
+
+The local `Organization` record represents the clinic profile and product source of truth inside that deployment. It is not one tenant in a shared multi-clinic database, and it is not a Google account.
+
+The MVP must not support cross-clinic operations, clinic switching, marketplace behavior, or shared-database multi-tenant workflows. Multiple real clinics mean multiple deployments/databases unless a later architecture decision explicitly changes this rule.
+
 ## Core Problem
 
 Small private clinics often manage bookings through phone calls, manual calendars, spreadsheets, Google Calendar, or fragmented tools. This creates operational problems:
@@ -26,7 +34,7 @@ DocApp should reduce this operational friction by combining booking, upfront dep
 
 The MVP should prove that DocApp can:
 
-1. Create a clinic-scoped foundation suitable for SaaS.
+1. Create a stable single-clinic deployment foundation.
 2. Let admins configure doctors, cabinets/rooms, services, prices, deposits, and availability.
 3. Generate available time slots from weekday availability, service duration, buffers, and existing appointments.
 4. Let patients book an appointment from a public booking flow.
@@ -41,7 +49,7 @@ The MVP should prove that DocApp can:
 13. Let admins manually create, cancel, or mark appointments as no-show.
 14. Let patients register, log in, view their own appointments, view payment/deposit status, and request cancellation when clinic policy allows it.
 15. Keep patient data minimal and privacy-conscious.
-16. Support a pilot with one or more small clinics.
+16. Support a pilot clinic per deployment; additional clinics require separate deployments/databases.
 
 ## Target Users
 
@@ -71,7 +79,7 @@ Typical needs:
 
 ### Patient
 
-The patient is not the SaaS customer, but patient registration and login are part of the MVP.
+The patient is not the clinic customer paying for DocApp, but patient registration and login are part of the MVP.
 
 Patients use the public booking flow to reserve a time and pay a deposit/partial prepayment. A patient account is for booking and appointment management only.
 
@@ -360,11 +368,11 @@ The following are not MVP requirements:
 - full accounting system
 - automatic clinic onboarding wizard
 - team billing complexity
-- Stripe Connect marketplace payments, unless real multi-clinic pilots require it immediately
+- Stripe Connect marketplace payments
 
 These can be considered after the core booking/deposit/calendar workflow is reliable.
 
-Normal Stripe Checkout without Stripe Connect is acceptable only for a controlled single-clinic pilot where payment ownership and accounting are clear. Before onboarding multiple real clinics where patient deposits belong to different clinics, Stripe Connect or an equivalent platform-payment architecture must be evaluated.
+Normal Stripe Checkout without Stripe Connect is acceptable for the single-clinic deployment model when payment ownership and accounting are clear. If DocApp later becomes a shared multi-clinic SaaS where patient deposits belong to different clinics, Stripe Connect or an equivalent platform-payment architecture must be evaluated before that architecture is used.
 
 ## MVP Success Criteria
 
@@ -401,5 +409,5 @@ The rebuild should correct prototype weaknesses:
 - pending slot locks need explicit expiration
 - services/prices/deposits should replace daily-rate-only thinking
 - Google Calendar sync status should be stored separately
-- multi-tenant clinic scoping should be designed from the beginning
+- clinic-local ownership boundaries should be designed from the beginning
 - privacy boundaries should be explicit from the beginning

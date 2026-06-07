@@ -12,7 +12,7 @@ It should not feel like a flashy marketplace, generic landing-page template, exp
 
 ## Visual Direction
 
-Use a neutral healthcare-adjacent SaaS direction:
+Use a neutral healthcare-adjacent clinic application direction:
 
 - light background
 - white or off-white surfaces

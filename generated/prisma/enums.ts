@@ -16,3 +16,24 @@ export const OrganizationStatus = {
 } as const
 
 export type OrganizationStatus = (typeof OrganizationStatus)[keyof typeof OrganizationStatus]
+
+
+export const OrganizationMemberRole = {
+  owner: 'owner',
+  admin: 'admin',
+  manager: 'manager',
+  receptionist: 'receptionist',
+  doctor: 'doctor'
+} as const
+
+export type OrganizationMemberRole = (typeof OrganizationMemberRole)[keyof typeof OrganizationMemberRole]
+
+
+export const OrganizationMemberStatus = {
+  invited: 'invited',
+  active: 'active',
+  disabled: 'disabled',
+  removed: 'removed'
+} as const
+
+export type OrganizationMemberStatus = (typeof OrganizationMemberStatus)[keyof typeof OrganizationMemberStatus]
