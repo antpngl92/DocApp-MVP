@@ -273,14 +273,6 @@ export type StarterClinicScalarRelationFilter = {
   isNot?: Prisma.StarterClinicWhereInput
 }
 
-export type StringFieldUpdateOperationsInput = {
-  set?: string
-}
-
-export type DateTimeFieldUpdateOperationsInput = {
-  set?: Date | string
-}
-
 export type StarterClinicCreateNestedOneWithoutNotesInput = {
   create?: Prisma.XOR<Prisma.StarterClinicCreateWithoutNotesInput, Prisma.StarterClinicUncheckedCreateWithoutNotesInput>
   connectOrCreate?: Prisma.StarterClinicCreateOrConnectWithoutNotesInput

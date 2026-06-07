@@ -8,6 +8,7 @@
  *
  * 🟢 You can import this file directly.
  */
+export type * from './models/User'
 export type * from './models/StarterClinic'
 export type * from './models/StarterNote'
 export type * from './commonInputTypes'
