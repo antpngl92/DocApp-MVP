@@ -4,6 +4,8 @@ This documentation pack defines a clean MVP foundation for DocApp.
 
 DocApp is a deposit-based appointment booking and Google Calendar management tool for small private clinics.
 
+MVP deployment is single-clinic: each clinic gets its own app deployment, database, Prisma configuration, and integration credentials. DocApp does not support cross-clinic operations, clinic switching, or shared multi-tenant database behavior in the MVP.
+
 ## Start Here
 
 Read these files first:
@@ -41,7 +43,8 @@ Feature-specific documentation lives in `docs/project-documentation/`:
 - Checkout success page is read-only and must not mark orders paid.
 - Google Calendar event creation happens after payment confirmation.
 - Google Calendar sync failures must not erase a paid booking.
-- A clinic is a local organization, not a Google account; for MVP it may connect one active Google account and map its calendars to local doctors/resources.
+- A clinic is the single local organization for its deployment, not a Google account; for MVP it may connect one active Google account and map its calendars to local doctors/resources.
+- Do not build cross-clinic switching or shared-database multi-tenant behavior in MVP.
 - Availability must exclude confirmed appointments and non-expired pending locks.
 - Clinic owner/admin accounts are provisioned only through the Clerk Dashboard or a controlled database process; public owner/admin registration is not allowed.
 - Staff-user and patient registration are part of MVP.

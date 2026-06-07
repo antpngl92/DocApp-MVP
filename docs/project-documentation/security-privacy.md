@@ -4,6 +4,8 @@
 
 DocApp handles healthcare-adjacent booking data, patient contact information, appointment payments, and calendar sync. The MVP should collect minimal patient data and avoid medical-record scope.
 
+MVP deployment is single-clinic: each clinic has its own app deployment and database. Still keep local clinic ownership explicit with `organizationId` where records belong to the clinic so server checks and future migrations stay clear.
+
 ## Privacy Principles
 
 - Collect only what is needed for booking and payment.
@@ -12,7 +14,7 @@ DocApp handles healthcare-adjacent booking data, patient contact information, ap
 - Do not put sensitive details in Google Calendar.
 - Do not put sensitive details in Stripe metadata.
 - Keep secrets server-side only.
-- Enforce organization/clinic scoping everywhere.
+- Enforce local organization/clinic ownership everywhere.
 - Enforce patient ownership for patient account pages and appointment status pages.
 
 ## Patient Data In MVP

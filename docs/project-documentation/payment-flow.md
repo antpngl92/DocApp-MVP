@@ -145,11 +145,11 @@ If implemented:
 
 ## Stripe Connect
 
-For early single-clinic or controlled pilots, normal Stripe Checkout may be enough.
+For the single-clinic deployment model, normal Stripe Checkout may be enough when payment ownership and accounting are clear.
 
-For a real multi-clinic SaaS where patient deposits belong to clinics and DocApp keeps a fee, evaluate Stripe Connect.
+For a later shared multi-clinic SaaS where patient deposits belong to clinics and DocApp keeps a fee, evaluate Stripe Connect before building that architecture.
 
-The MVP should avoid hard-coding assumptions that all deposits permanently belong to the platform account. Do not onboard multiple real clinics with patient deposits flowing through the platform owner's Stripe account unless Stripe Connect or an equivalent payment architecture, legal, and accounting handling are explicitly approved.
+Do not onboard multiple real clinics into one shared payment/platform account unless Stripe Connect or an equivalent payment architecture, legal, and accounting handling are explicitly approved.
 
 ## Security Rules
 

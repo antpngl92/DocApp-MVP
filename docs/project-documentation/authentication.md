@@ -6,6 +6,8 @@ DocApp uses Clerk for authentication and local Prisma records for app-specific u
 
 Authentication proves who the user is. Authorization decides what clinic data and actions they can access.
 
+MVP deployment is single-clinic. Each clinic has its own app deployment and database, so local membership represents access to this deployment's clinic only. The app should not expose cross-clinic switching or multiple clinic memberships for one local user in MVP.
+
 ## Implementation Order
 
 Authentication and authorization must be implemented in dependency order:
@@ -24,7 +26,7 @@ Clerk authentication can exist before the local identity schema, but local-user 
 - Support one staff-user registration/onboarding flow through clinic invitation or approved clinic assignment, with receptionist, doctor, manager, admin, and owner represented as roles.
 - Support patient registration/login for booking and appointment management.
 - Sync Clerk users into a local `User` table.
-- Scope all admin data to an organization/clinic.
+- Scope all admin data to the local organization/clinic.
 - Support owner/admin/manager/receptionist/doctor/patient access boundaries.
 - Enforce access control on the server.
 
@@ -47,7 +49,7 @@ Clerk webhook sync should create/update local users.
 
 ## Organization/Clinic Membership
 
-Users access clinic data through membership records.
+Staff users access clinic data through membership records.
 
 Suggested model:
 
@@ -60,9 +62,10 @@ OrganizationMember
 `OrganizationMember` should include:
 
 - organizationId
-- userId
+- userId, nullable while an invitation is pending
 - role
 - status
+- invitedEmail
 - createdAt
 - updatedAt
 
@@ -78,7 +81,7 @@ doctor
 
 Clinic-side MVP permissions can start simple, but the data model should support role expansion from the foundation.
 
-Patients do not need an `OrganizationMember` record unless the implementation chooses that for consistency. A patient account should be represented locally and linked to appointments through a patient profile or user ownership field.
+A linked local `User` should have at most one `OrganizationMember` in this deployment. Patients do not use `OrganizationMember`; a patient account should be represented locally and linked to appointments through `PatientProfile` or patient ownership fields.
 
 ## Registration Flows
 
@@ -220,6 +223,6 @@ Create audit events for sensitive actions:
 
 ## Risks
 
-- Shared database tenancy requires repeated ownership checks.
+- Single-clinic deployment still requires explicit local ownership checks so future features do not accidentally read or mutate records outside the intended clinic profile.
 - Clerk auth does not automatically protect server actions if they query data without scoping.
 - Webhook handlers need separate validation and idempotency.

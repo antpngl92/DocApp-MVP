@@ -4,7 +4,13 @@ This document describes the intended DocApp MVP data model.
 
 Model names are suggestions and may change during implementation, but the concepts should remain stable.
 
-## Core Tenancy
+## Single-Clinic Deployment Model
+
+DocApp MVP is deployed per clinic. Each clinic has its own application deployment, database, Prisma configuration, and integration credentials.
+
+The local `Organization` record is the clinic profile and product source of truth for that deployment. It is not one tenant in a shared multi-clinic database, and it is not a Google account.
+
+Use `organizationId` on clinic-owned records as a local ownership and consistency boundary. Do not build cross-clinic switching, shared-database multi-tenant queries, or multiple active clinic memberships for one local user in the MVP.
 
 ## Prototype Schema Reference
 
@@ -21,7 +27,7 @@ These proved useful concepts, but they are not sufficient for the MVP rebuild as
 
 Important prototype gaps to correct:
 
-- No `Organization` / `Clinic` tenant model.
+- No local `Organization` / `Clinic` profile model.
 - No membership or role model beyond Clerk metadata checks.
 - No separate doctor model.
 - No separate cabinet/resource model beyond `Calendar`.
@@ -36,7 +42,7 @@ The rebuild should treat prototype `Calendar` roughly as evidence that a bookabl
 
 ### Organization
 
-Represents a clinic or business account.
+Represents the clinic profile for this deployment.
 
 Suggested fields:
 
@@ -70,7 +76,7 @@ Suggested fields:
 
 Organization can keep simple default fields, but operational behavior should be centralized in clinic settings as it grows.
 
-An organization is the local clinic tenant and product source of truth. It does not represent a Google account. An existing organization may connect a Google account through integration records after authorized membership, doctor, and resource records exist.
+An organization is the local clinic product source of truth. It does not represent a Google account. The clinic may connect a Google account through integration records after authorized membership, doctor, and resource records exist.
 
 ### User
 
@@ -87,19 +93,43 @@ Suggested fields:
 
 ### OrganizationMember
 
-Connects users to organizations and roles.
+Connects a local staff user or pending staff invitation to the clinic and a clinic-side role.
 
 Suggested fields:
 
 - id
 - organizationId
-- userId
+- userId, nullable while an invitation is pending
 - role
 - status
+- invitedEmail
 - createdAt
 - updatedAt
 
-For staff invitations, an implementation may either use a separate `StaffInvitation` / `OrganizationInvitation` model or represent pending access through `OrganizationMember.status = invited`.
+Suggested roles:
+
+```txt
+owner
+admin
+manager
+receptionist
+doctor
+```
+
+Suggested statuses:
+
+```txt
+invited
+active
+disabled
+removed
+```
+
+The MVP deployment supports one clinic. A linked local `User` should have at most one `OrganizationMember` record in that deployment. Pending invitations may exist without a linked user until Clerk creates/syncs the user.
+
+Patients are not organization members. Patient access is represented through `PatientProfile` and patient-owned appointment records.
+
+For staff invitations, the implementation may either use a separate `StaffInvitation` / `OrganizationInvitation` model later or represent pending access through `OrganizationMember.status = invited`.
 
 Suggested invitation tracking fields:
 
