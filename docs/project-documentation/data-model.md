@@ -6,21 +6,6 @@ Model names are suggestions and may change during implementation, but the concep
 
 ## Core Tenancy
 
-## Temporary Prisma Setup Models
-
-The current Prisma setup may include temporary `StarterClinic` and `StarterNote` models. These exist only to prove the initial Prisma Postgres migration, seed, and client generation flow.
-
-They are not DocApp product models and should not be used for real booking, clinic, staff, patient, payment, or calendar behavior. Remove them once the real `Organization` / clinic tenancy models and related identity records exist.
-
-Removal must include every reference to these temporary models:
-
-- `prisma/schema.prisma`
-- migration/cleanup strategy where appropriate
-- `prisma/seed.ts`
-- `scripts/verify-prisma.ts`
-- generated Prisma client files, including `generated/prisma/browser.ts`, `generated/prisma/client.ts`, `generated/prisma/models.ts`, `generated/prisma/internal/class.ts`, and any other generated files that mention the starter models
-- tests or documentation that mention the starter models
-
 ## Prototype Schema Reference
 
 The current prototype schema contains these models:

@@ -52,9 +52,7 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   User: 'User',
-  Organization: 'Organization',
-  StarterClinic: 'StarterClinic',
-  StarterNote: 'StarterNote'
+  Organization: 'Organization'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -97,25 +95,6 @@ export const OrganizationScalarFieldEnum = {
 } as const
 
 export type OrganizationScalarFieldEnum = (typeof OrganizationScalarFieldEnum)[keyof typeof OrganizationScalarFieldEnum]
-
-
-export const StarterClinicScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  createdAt: 'createdAt'
-} as const
-
-export type StarterClinicScalarFieldEnum = (typeof StarterClinicScalarFieldEnum)[keyof typeof StarterClinicScalarFieldEnum]
-
-
-export const StarterNoteScalarFieldEnum = {
-  id: 'id',
-  clinicId: 'clinicId',
-  content: 'content',
-  createdAt: 'createdAt'
-} as const
-
-export type StarterNoteScalarFieldEnum = (typeof StarterNoteScalarFieldEnum)[keyof typeof StarterNoteScalarFieldEnum]
 
 
 export const SortOrder = {
