@@ -27,6 +27,16 @@ describe("Prisma schema organization model", () => {
     expect(schema).toMatch(/status\s+OrganizationStatus\s+@default\(active\)/);
     expect(schema).toContain("@@index([status])");
   });
+
+  it("keeps Google account identity out of the organization tenant model", () => {
+    const schema = readFileSync(schemaPath, "utf8");
+    const organizationModel = schema.match(/model Organization \{[\s\S]*?\n\}/)?.[0];
+
+    expect(organizationModel).toBeDefined();
+    expect(organizationModel).not.toMatch(/google/i);
+    expect(organizationModel).not.toMatch(/calendar/i);
+    expect(organizationModel).not.toMatch(/provider/i);
+  });
 });
 
 describe("Prisma schema cleanup", () => {
