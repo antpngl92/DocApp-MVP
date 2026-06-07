@@ -1,7 +1,7 @@
 import { prisma } from "../src/lib/prisma";
 
 const main = async () => {
-  await prisma.starterClinic.findFirst();
+  await prisma.organization.findFirst();
   console.log("✅ Connected");
 };
 

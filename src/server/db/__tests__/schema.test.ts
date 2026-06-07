@@ -28,3 +28,14 @@ describe("Prisma schema organization model", () => {
     expect(schema).toContain("@@index([status])");
   });
 });
+
+describe("Prisma schema cleanup", () => {
+  it("does not keep temporary starter setup models in the live schema", () => {
+    const schema = readFileSync(schemaPath, "utf8");
+    const removedModelNames = ["Starter" + "Clinic", "Starter" + "Note"];
+
+    for (const modelName of removedModelNames) {
+      expect(schema).not.toContain(`model ${modelName}`);
+    }
+  });
+});

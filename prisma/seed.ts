@@ -14,26 +14,18 @@ const adapter = new PrismaPg({ connectionString: databaseUrl });
 const prisma = new PrismaClient({ adapter });
 
 const main = async () => {
-  const clinic = await prisma.starterClinic.upsert({
-    where: { id: "starter-clinic-sofia-care" },
+  await prisma.organization.upsert({
+    where: { slug: "sofia-care-clinic" },
     update: {
       name: "Sofia Care Clinic",
+      timezone: "Europe/Sofia",
+      defaultCurrency: "BGN",
     },
     create: {
-      id: "starter-clinic-sofia-care",
       name: "Sofia Care Clinic",
-    },
-  });
-
-  await prisma.starterNote.upsert({
-    where: { id: "starter-note-booking-foundation" },
-    update: {
-      content: "Prisma Postgres connection verified for the MVP foundation.",
-    },
-    create: {
-      id: "starter-note-booking-foundation",
-      clinicId: clinic.id,
-      content: "Prisma Postgres connection verified for the MVP foundation.",
+      slug: "sofia-care-clinic",
+      timezone: "Europe/Sofia",
+      defaultCurrency: "BGN",
     },
   });
 };

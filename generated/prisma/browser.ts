@@ -27,13 +27,3 @@ export type User = Prisma.UserModel
  *
  */
 export type Organization = Prisma.OrganizationModel
-/**
- * Model StarterClinic
- *
- */
-export type StarterClinic = Prisma.StarterClinicModel
-/**
- * Model StarterNote
- *
- */
-export type StarterNote = Prisma.StarterNoteModel

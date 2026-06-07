@@ -385,9 +385,7 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 export const ModelName = {
   User: 'User',
-  Organization: 'Organization',
-  StarterClinic: 'StarterClinic',
-  StarterNote: 'StarterNote'
+  Organization: 'Organization'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -403,7 +401,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "organization" | "starterClinic" | "starterNote"
+    modelProps: "user" | "organization"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -555,154 +553,6 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
-    StarterClinic: {
-      payload: Prisma.$StarterClinicPayload<ExtArgs>
-      fields: Prisma.StarterClinicFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.StarterClinicFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StarterClinicPayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.StarterClinicFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StarterClinicPayload>
-        }
-        findFirst: {
-          args: Prisma.StarterClinicFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StarterClinicPayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.StarterClinicFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StarterClinicPayload>
-        }
-        findMany: {
-          args: Prisma.StarterClinicFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StarterClinicPayload>[]
-        }
-        create: {
-          args: Prisma.StarterClinicCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StarterClinicPayload>
-        }
-        createMany: {
-          args: Prisma.StarterClinicCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        createManyAndReturn: {
-          args: Prisma.StarterClinicCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StarterClinicPayload>[]
-        }
-        delete: {
-          args: Prisma.StarterClinicDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StarterClinicPayload>
-        }
-        update: {
-          args: Prisma.StarterClinicUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StarterClinicPayload>
-        }
-        deleteMany: {
-          args: Prisma.StarterClinicDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.StarterClinicUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateManyAndReturn: {
-          args: Prisma.StarterClinicUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StarterClinicPayload>[]
-        }
-        upsert: {
-          args: Prisma.StarterClinicUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StarterClinicPayload>
-        }
-        aggregate: {
-          args: Prisma.StarterClinicAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateStarterClinic>
-        }
-        groupBy: {
-          args: Prisma.StarterClinicGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.StarterClinicGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.StarterClinicCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.StarterClinicCountAggregateOutputType> | number
-        }
-      }
-    }
-    StarterNote: {
-      payload: Prisma.$StarterNotePayload<ExtArgs>
-      fields: Prisma.StarterNoteFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.StarterNoteFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StarterNotePayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.StarterNoteFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StarterNotePayload>
-        }
-        findFirst: {
-          args: Prisma.StarterNoteFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StarterNotePayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.StarterNoteFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StarterNotePayload>
-        }
-        findMany: {
-          args: Prisma.StarterNoteFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StarterNotePayload>[]
-        }
-        create: {
-          args: Prisma.StarterNoteCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StarterNotePayload>
-        }
-        createMany: {
-          args: Prisma.StarterNoteCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        createManyAndReturn: {
-          args: Prisma.StarterNoteCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StarterNotePayload>[]
-        }
-        delete: {
-          args: Prisma.StarterNoteDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StarterNotePayload>
-        }
-        update: {
-          args: Prisma.StarterNoteUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StarterNotePayload>
-        }
-        deleteMany: {
-          args: Prisma.StarterNoteDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.StarterNoteUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateManyAndReturn: {
-          args: Prisma.StarterNoteUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StarterNotePayload>[]
-        }
-        upsert: {
-          args: Prisma.StarterNoteUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StarterNotePayload>
-        }
-        aggregate: {
-          args: Prisma.StarterNoteAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateStarterNote>
-        }
-        groupBy: {
-          args: Prisma.StarterNoteGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.StarterNoteGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.StarterNoteCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.StarterNoteCountAggregateOutputType> | number
-        }
-      }
-    }
   }
 } & {
   other: {
@@ -766,25 +616,6 @@ export const OrganizationScalarFieldEnum = {
 } as const
 
 export type OrganizationScalarFieldEnum = (typeof OrganizationScalarFieldEnum)[keyof typeof OrganizationScalarFieldEnum]
-
-
-export const StarterClinicScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  createdAt: 'createdAt'
-} as const
-
-export type StarterClinicScalarFieldEnum = (typeof StarterClinicScalarFieldEnum)[keyof typeof StarterClinicScalarFieldEnum]
-
-
-export const StarterNoteScalarFieldEnum = {
-  id: 'id',
-  clinicId: 'clinicId',
-  content: 'content',
-  createdAt: 'createdAt'
-} as const
-
-export type StarterNoteScalarFieldEnum = (typeof StarterNoteScalarFieldEnum)[keyof typeof StarterNoteScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -984,8 +815,6 @@ export type PrismaClientOptions = ({
 export type GlobalOmitConfig = {
   user?: Prisma.UserOmit
   organization?: Prisma.OrganizationOmit
-  starterClinic?: Prisma.StarterClinicOmit
-  starterNote?: Prisma.StarterNoteOmit
 }
 
 /* Types for Logging */
