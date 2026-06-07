@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { parseClerkServerEnv, parsePublicEnv } from "../env";
+import { parseClerkServerEnv, parseDatabaseEnv, parsePublicEnv } from "../env";
 
 describe("environment validation", () => {
   it("defaults public Clerk route values to patient-safe routes", () => {
@@ -25,6 +25,30 @@ describe("environment validation", () => {
     expect(() => parseClerkServerEnv({})).toThrow();
     expect(parseClerkServerEnv({ CLERK_SECRET_KEY: "sk_test" })).toMatchObject({
       CLERK_SECRET_KEY: "sk_test",
+    });
+  });
+
+  it("requires a PostgreSQL database URL when database env is parsed", () => {
+    expect(() => parseDatabaseEnv({})).toThrow();
+    expect(() => parseDatabaseEnv({ DATABASE_URL: "" })).toThrow();
+    expect(() =>
+      parseDatabaseEnv({ DATABASE_URL: "mysql://user:pass@localhost:3306/docapp" }),
+    ).toThrow();
+
+    expect(
+      parseDatabaseEnv({
+        DATABASE_URL: "postgresql://user:pass@localhost:5432/docapp_mvp",
+      }),
+    ).toMatchObject({
+      DATABASE_URL: "postgresql://user:pass@localhost:5432/docapp_mvp",
+    });
+
+    expect(
+      parseDatabaseEnv({
+        DATABASE_URL: "postgres://user:pass@db.prisma.io:5432/docapp_mvp",
+      }),
+    ).toMatchObject({
+      DATABASE_URL: "postgres://user:pass@db.prisma.io:5432/docapp_mvp",
     });
   });
 });

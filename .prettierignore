@@ -1,6 +1,7 @@
 .next/
 coverage/
 node_modules/
+generated/
 package-lock.json
 .agents/
 docs/
