@@ -98,8 +98,8 @@ Complete tasks from top to bottom and one approved task/branch at a time. Do not
 
 ## Phase 6 - Identity Database, Provisioning, Roles, And Clinic Scoping
 
-- [ ] Add database connection configuration and guide user step by step on how to setup Prisma.
-- [ ] Add Prisma setup.
+- [x] Add database connection configuration and guide user step by step on how to setup Prisma.
+- [x] Add Prisma setup.
 - [ ] Model users synced from Clerk with unique `User.clerkUserId`.
 - [ ] Model organizations/clinics.
 - [ ] Keep each organization/clinic as the local tenant and product source of truth; do not model the clinic itself as a Google account.

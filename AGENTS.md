@@ -48,6 +48,7 @@ Do not add production complexity before the MVP scope is clear, but build the pa
 - Keep FullCalendar available for MVP calendar workflows.
 - Do not add ads anywhere in the app.
 - Real `.env` values and Google credential JSON files are needed locally but must never be committed.
+- Never import Prisma Client into browser/client components. Prisma Client must be used only from server-side modules, route handlers, server actions, or scripts.
 
 ## Expected stack
 

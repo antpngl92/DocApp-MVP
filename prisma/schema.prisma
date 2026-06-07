@@ -1,0 +1,24 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// Starter models — replace with your own
+model StarterClinic {
+  id        String        @id @default(cuid())
+  name      String
+  createdAt DateTime      @default(now())
+  notes     StarterNote[]
+}
+
+model StarterNote {
+  id        String        @id @default(cuid())
+  clinicId  String
+  content   String
+  createdAt DateTime      @default(now())
+  clinic    StarterClinic @relation(fields: [clinicId], references: [id], onDelete: Cascade)
+}

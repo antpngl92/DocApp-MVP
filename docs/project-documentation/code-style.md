@@ -245,6 +245,8 @@ Do not add `"use client"` just because a component renders UI.
 
 Do not import server-only code into client components.
 
+Do not import Prisma Client into browser/client components. Keep Prisma Client usage in server-side modules, route handlers, server actions, or scripts.
+
 ## External Libraries And SDKs
 
 When using external libraries, SDKs, or provider integrations, follow the official documentation for the installed/current version.

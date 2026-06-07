@@ -8,6 +8,14 @@ const routeSchema = z
   .string()
   .startsWith("/", { message: "Route environment values must start with /." });
 
+const databaseUrlSchema = z
+  .string()
+  .min(1, { message: "DATABASE_URL is required." })
+  .refine(
+    (value) => value.startsWith("postgresql://") || value.startsWith("postgres://"),
+    "DATABASE_URL must be a PostgreSQL connection string.",
+  );
+
 const optionalNonEmptyString = z.preprocess(emptyStringToUndefined, z.string().min(1).optional());
 
 const publicEnvSchema = z.object({
@@ -37,8 +45,13 @@ const clerkServerEnvSchema = z.object({
   CLERK_WEBHOOK_SECRET: optionalNonEmptyString,
 });
 
+const databaseEnvSchema = z.object({
+  DATABASE_URL: z.preprocess(emptyStringToUndefined, databaseUrlSchema),
+});
+
 type PublicEnv = z.infer<typeof publicEnvSchema>;
 type ClerkServerEnv = z.infer<typeof clerkServerEnvSchema>;
+type DatabaseEnv = z.infer<typeof databaseEnvSchema>;
 type EnvInput = Record<string, string | undefined>;
 
 const parsePublicEnv = (env: EnvInput = process.env): PublicEnv => {
@@ -49,5 +62,9 @@ const parseClerkServerEnv = (env: EnvInput = process.env): ClerkServerEnv => {
   return clerkServerEnvSchema.parse(env);
 };
 
-export { parseClerkServerEnv, parsePublicEnv };
-export type { ClerkServerEnv, PublicEnv };
+const parseDatabaseEnv = (env: EnvInput = process.env): DatabaseEnv => {
+  return databaseEnvSchema.parse(env);
+};
+
+export { parseClerkServerEnv, parseDatabaseEnv, parsePublicEnv };
+export type { ClerkServerEnv, DatabaseEnv, PublicEnv };
