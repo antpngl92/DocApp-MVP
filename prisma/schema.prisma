@@ -7,6 +7,12 @@ datasource db {
   provider = "postgresql"
 }
 
+enum OrganizationStatus {
+  active
+  inactive
+  suspended
+}
+
 model User {
   id          String   @id @default(cuid())
   clerkUserId String   @unique
@@ -16,6 +22,19 @@ model User {
   updatedAt   DateTime @updatedAt
 
   @@index([email])
+}
+
+model Organization {
+  id              String             @id @default(cuid())
+  name            String
+  slug            String             @unique
+  timezone        String             @default("Europe/Sofia")
+  defaultCurrency String             @default("BGN")
+  status          OrganizationStatus @default(active)
+  createdAt       DateTime           @default(now())
+  updatedAt       DateTime           @updatedAt
+
+  @@index([status])
 }
 
 // Starter models — replace with your own
