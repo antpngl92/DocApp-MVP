@@ -34,6 +34,7 @@ model User {
   email              String
   name               String?
   organizationMember OrganizationMember?
+  patientProfile     PatientProfile?
   createdAt          DateTime            @default(now())
   updatedAt          DateTime            @updatedAt
 
@@ -72,4 +73,19 @@ model OrganizationMember {
   @@index([organizationId, invitedEmail])
   @@index([role])
   @@index([status])
+}
+
+model PatientProfile {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  email     String
+  name      String?
+  phone     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([email])
+  @@index([phone])
 }

@@ -11,4 +11,5 @@
 export type * from './models/User'
 export type * from './models/Organization'
 export type * from './models/OrganizationMember'
+export type * from './models/PatientProfile'
 export type * from './commonInputTypes'

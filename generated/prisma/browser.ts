@@ -32,3 +32,8 @@ export type Organization = Prisma.OrganizationModel
  *
  */
 export type OrganizationMember = Prisma.OrganizationMemberModel
+/**
+ * Model PatientProfile
+ *
+ */
+export type PatientProfile = Prisma.PatientProfileModel

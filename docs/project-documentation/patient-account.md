@@ -88,7 +88,7 @@ Allowed patient profile fields:
 - phone
 - optional basic contact preferences if needed
 
-Avoid storing medical details in the patient profile.
+A patient profile should be linked one-to-one to the local `User` record. Avoid storing medical details in the patient profile.
 
 ## Notifications
 

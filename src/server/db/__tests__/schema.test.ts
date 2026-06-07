@@ -88,6 +88,48 @@ describe("Prisma schema organization membership model", () => {
   });
 });
 
+describe("Prisma schema patient profile model", () => {
+  it("models a minimal patient-owned contact profile", () => {
+    const schema = readFileSync(schemaPath, "utf8");
+    const patientProfileModel = schema.match(/model PatientProfile \{[\s\S]*?\n\}/)?.[0];
+
+    expect(patientProfileModel).toBeDefined();
+    expect(patientProfileModel).toMatch(/userId\s+String\s+@unique/);
+    expect(patientProfileModel).toMatch(/email\s+String/);
+    expect(patientProfileModel).toMatch(/name\s+String\?/);
+    expect(patientProfileModel).toMatch(/phone\s+String\?/);
+    expect(patientProfileModel).toMatch(
+      /user\s+User\s+@relation\(fields: \[userId\], references: \[id\], onDelete: Cascade\)/,
+    );
+    expect(patientProfileModel).toContain("@@index([email])");
+    expect(patientProfileModel).toContain("@@index([phone])");
+    expect(schema).toMatch(/patientProfile\s+PatientProfile\?/);
+  });
+
+  it("keeps patients separate from clinic-side membership roles", () => {
+    const schema = readFileSync(schemaPath, "utf8");
+    const memberRoleEnum = schema.match(/enum OrganizationMemberRole \{[\s\S]*?\n\}/)?.[0];
+
+    expect(memberRoleEnum).toBeDefined();
+    expect(memberRoleEnum).not.toContain("patient");
+    expect(schema).toContain("model PatientProfile");
+  });
+
+  it("does not add medical-record fields to patient profiles", () => {
+    const schema = readFileSync(schemaPath, "utf8");
+    const patientProfileModel = schema.match(/model PatientProfile \{[\s\S]*?\n\}/)?.[0];
+
+    expect(patientProfileModel).toBeDefined();
+    expect(patientProfileModel).not.toMatch(/symptom/i);
+    expect(patientProfileModel).not.toMatch(/diagnos/i);
+    expect(patientProfileModel).not.toMatch(/prescription/i);
+    expect(patientProfileModel).not.toMatch(/treatment/i);
+    expect(patientProfileModel).not.toMatch(/medical/i);
+    expect(patientProfileModel).not.toMatch(/insurance/i);
+    expect(patientProfileModel).not.toMatch(/document/i);
+  });
+});
+
 describe("Prisma schema cleanup", () => {
   it("does not keep temporary starter setup models in the live schema", () => {
     const schema = readFileSync(schemaPath, "utf8");
