@@ -102,7 +102,7 @@ Complete tasks from top to bottom and one approved task/branch at a time. Do not
 - [x] Add Prisma setup.
 - [x] Model users synced from Clerk with unique `User.clerkUserId`.
 - [ ] Remove temporary `StarterClinic` and `StarterNote` Prisma setup models once real organization/clinic models exist, including schema, migrations where appropriate, seed/verify references, tests, generated Prisma client files such as `browser.ts`, `client.ts`, `models.ts`, `internal/class.ts`, and all other generated or documented references.
-- [ ] Model organizations/clinics.
+- [x] Model organizations/clinics.
 - [ ] Keep each organization/clinic as the local tenant and product source of truth; do not model the clinic itself as a Google account.
 - [ ] Model organization members, membership status, and roles.
 - [ ] Model minimal patient profile/contact details.

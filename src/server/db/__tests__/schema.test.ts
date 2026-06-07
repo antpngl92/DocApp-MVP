@@ -14,3 +14,17 @@ describe("Prisma schema identity model", () => {
     expect(schema).toContain("@@index([email])");
   });
 });
+
+describe("Prisma schema organization model", () => {
+  it("models organizations as local clinic tenants with stable lookup fields", () => {
+    const schema = readFileSync(schemaPath, "utf8");
+
+    expect(schema).toContain("enum OrganizationStatus");
+    expect(schema).toContain("model Organization");
+    expect(schema).toMatch(/slug\s+String\s+@unique/);
+    expect(schema).toMatch(/timezone\s+String\s+@default\("Europe\/Sofia"\)/);
+    expect(schema).toMatch(/defaultCurrency\s+String\s+@default\("BGN"\)/);
+    expect(schema).toMatch(/status\s+OrganizationStatus\s+@default\(active\)/);
+    expect(schema).toContain("@@index([status])");
+  });
+});
