@@ -103,7 +103,7 @@ Complete tasks from top to bottom and one approved task/branch at a time. Do not
 - [x] Model users synced from Clerk with unique `User.clerkUserId`.
 - [x] Remove temporary Prisma setup models once real organization/clinic models exist, including schema, migrations where appropriate, seed/verify references, tests, generated Prisma client files, and all other generated or documented references.
 - [x] Model organizations/clinics.
-- [ ] Keep each organization/clinic as the local tenant and product source of truth; do not model the clinic itself as a Google account.
+- [x] Keep each organization/clinic as the local tenant and product source of truth; do not model the clinic itself as a Google account.
 - [ ] Model organization members, membership status, and roles.
 - [ ] Model minimal patient profile/contact details.
 - [ ] Model audit/event records needed for identity, membership, and role changes.
