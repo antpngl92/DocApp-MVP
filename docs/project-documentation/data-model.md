@@ -154,14 +154,14 @@ Represents a patient account for booking and appointment management.
 Suggested fields:
 
 - id
-- userId
+- userId, unique
 - email
 - name
 - phone
 - createdAt
 - updatedAt
 
-Patient profile data must stay minimal. Do not store medical records, symptoms, diagnoses, prescriptions, treatment notes, insurance data, chat history, or file uploads in MVP.
+Patient profile data must stay minimal. A patient profile is owned by one local `User` and must not grant clinic-side staff permissions. Do not store medical records, symptoms, diagnoses, prescriptions, treatment notes, insurance data, chat history, or file uploads in MVP.
 
 ## Clinic Resources
 

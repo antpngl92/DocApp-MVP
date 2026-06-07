@@ -191,6 +191,7 @@ export type UserWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   organizationMember?: Prisma.XOR<Prisma.OrganizationMemberNullableScalarRelationFilter, Prisma.OrganizationMemberWhereInput> | null
+  patientProfile?: Prisma.XOR<Prisma.PatientProfileNullableScalarRelationFilter, Prisma.PatientProfileWhereInput> | null
 }
 
 export type UserOrderByWithRelationInput = {
@@ -201,6 +202,7 @@ export type UserOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   organizationMember?: Prisma.OrganizationMemberOrderByWithRelationInput
+  patientProfile?: Prisma.PatientProfileOrderByWithRelationInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -214,6 +216,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   organizationMember?: Prisma.XOR<Prisma.OrganizationMemberNullableScalarRelationFilter, Prisma.OrganizationMemberWhereInput> | null
+  patientProfile?: Prisma.XOR<Prisma.PatientProfileNullableScalarRelationFilter, Prisma.PatientProfileWhereInput> | null
 }, "id" | "clerkUserId">
 
 export type UserOrderByWithAggregationInput = {
@@ -248,6 +251,7 @@ export type UserCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   organizationMember?: Prisma.OrganizationMemberCreateNestedOneWithoutUserInput
+  patientProfile?: Prisma.PatientProfileCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -258,6 +262,7 @@ export type UserUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   organizationMember?: Prisma.OrganizationMemberUncheckedCreateNestedOneWithoutUserInput
+  patientProfile?: Prisma.PatientProfileUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -268,6 +273,7 @@ export type UserUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   organizationMember?: Prisma.OrganizationMemberUpdateOneWithoutUserNestedInput
+  patientProfile?: Prisma.PatientProfileUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -278,6 +284,7 @@ export type UserUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   organizationMember?: Prisma.OrganizationMemberUncheckedUpdateOneWithoutUserNestedInput
+  patientProfile?: Prisma.PatientProfileUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -339,6 +346,11 @@ export type UserNullableScalarRelationFilter = {
   isNot?: Prisma.UserWhereInput | null
 }
 
+export type UserScalarRelationFilter = {
+  is?: Prisma.UserWhereInput
+  isNot?: Prisma.UserWhereInput
+}
+
 export type StringFieldUpdateOperationsInput = {
   set?: string
 }
@@ -367,6 +379,20 @@ export type UserUpdateOneWithoutOrganizationMemberNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutOrganizationMemberInput, Prisma.UserUpdateWithoutOrganizationMemberInput>, Prisma.UserUncheckedUpdateWithoutOrganizationMemberInput>
 }
 
+export type UserCreateNestedOneWithoutPatientProfileInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPatientProfileInput, Prisma.UserUncheckedCreateWithoutPatientProfileInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPatientProfileInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutPatientProfileNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPatientProfileInput, Prisma.UserUncheckedCreateWithoutPatientProfileInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPatientProfileInput
+  upsert?: Prisma.UserUpsertWithoutPatientProfileInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPatientProfileInput, Prisma.UserUpdateWithoutPatientProfileInput>, Prisma.UserUncheckedUpdateWithoutPatientProfileInput>
+}
+
 export type UserCreateWithoutOrganizationMemberInput = {
   id?: string
   clerkUserId: string
@@ -374,6 +400,7 @@ export type UserCreateWithoutOrganizationMemberInput = {
   name?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  patientProfile?: Prisma.PatientProfileCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutOrganizationMemberInput = {
@@ -383,6 +410,7 @@ export type UserUncheckedCreateWithoutOrganizationMemberInput = {
   name?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  patientProfile?: Prisma.PatientProfileUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutOrganizationMemberInput = {
@@ -408,6 +436,7 @@ export type UserUpdateWithoutOrganizationMemberInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  patientProfile?: Prisma.PatientProfileUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutOrganizationMemberInput = {
@@ -417,6 +446,63 @@ export type UserUncheckedUpdateWithoutOrganizationMemberInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  patientProfile?: Prisma.PatientProfileUncheckedUpdateOneWithoutUserNestedInput
+}
+
+export type UserCreateWithoutPatientProfileInput = {
+  id?: string
+  clerkUserId: string
+  email: string
+  name?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  organizationMember?: Prisma.OrganizationMemberCreateNestedOneWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutPatientProfileInput = {
+  id?: string
+  clerkUserId: string
+  email: string
+  name?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  organizationMember?: Prisma.OrganizationMemberUncheckedCreateNestedOneWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutPatientProfileInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutPatientProfileInput, Prisma.UserUncheckedCreateWithoutPatientProfileInput>
+}
+
+export type UserUpsertWithoutPatientProfileInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutPatientProfileInput, Prisma.UserUncheckedUpdateWithoutPatientProfileInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutPatientProfileInput, Prisma.UserUncheckedCreateWithoutPatientProfileInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutPatientProfileInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutPatientProfileInput, Prisma.UserUncheckedUpdateWithoutPatientProfileInput>
+}
+
+export type UserUpdateWithoutPatientProfileInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkUserId?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  organizationMember?: Prisma.OrganizationMemberUpdateOneWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutPatientProfileInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkUserId?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  organizationMember?: Prisma.OrganizationMemberUncheckedUpdateOneWithoutUserNestedInput
 }
 
 
@@ -429,6 +515,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   createdAt?: boolean
   updatedAt?: boolean
   organizationMember?: boolean | Prisma.User$organizationMemberArgs<ExtArgs>
+  patientProfile?: boolean | Prisma.User$patientProfileArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -461,6 +548,7 @@ export type UserSelectScalar = {
 export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "clerkUserId" | "email" | "name" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   organizationMember?: boolean | Prisma.User$organizationMemberArgs<ExtArgs>
+  patientProfile?: boolean | Prisma.User$patientProfileArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
 export type UserIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -469,6 +557,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   name: "User"
   objects: {
     organizationMember: Prisma.$OrganizationMemberPayload<ExtArgs> | null
+    patientProfile: Prisma.$PatientProfilePayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -872,6 +961,7 @@ readonly fields: UserFieldRefs;
 export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   organizationMember<T extends Prisma.User$organizationMemberArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$organizationMemberArgs<ExtArgs>>): Prisma.Prisma__OrganizationMemberClient<runtime.Types.Result.GetResult<Prisma.$OrganizationMemberPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  patientProfile<T extends Prisma.User$patientProfileArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$patientProfileArgs<ExtArgs>>): Prisma.Prisma__PatientProfileClient<runtime.Types.Result.GetResult<Prisma.$PatientProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1316,6 +1406,25 @@ export type User$organizationMemberArgs<ExtArgs extends runtime.Types.Extensions
    */
   include?: Prisma.OrganizationMemberInclude<ExtArgs> | null
   where?: Prisma.OrganizationMemberWhereInput
+}
+
+/**
+ * User.patientProfile
+ */
+export type User$patientProfileArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PatientProfile
+   */
+  select?: Prisma.PatientProfileSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PatientProfile
+   */
+  omit?: Prisma.PatientProfileOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PatientProfileInclude<ExtArgs> | null
+  where?: Prisma.PatientProfileWhereInput
 }
 
 /**
