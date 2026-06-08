@@ -1,13 +1,12 @@
 import { auth } from "@clerk/nextjs/server";
 
-type AuthenticatedUserRecord = {
-  clerkUserId: string;
-  createdAt: Date;
-  email: string;
-  id: string;
-  name: string | null;
-  updatedAt: Date;
-};
+import {
+  findLocalUserByClerkUserId,
+  type LocalUserLookupDatabase,
+  type LocalUserRecord,
+} from "./local-user";
+
+type AuthenticatedUserRecord = LocalUserRecord;
 
 const CURRENT_AUTHENTICATED_USER_STATUS = {
   authenticated: "authenticated",
@@ -45,29 +44,13 @@ type CurrentUserAuthReader = () => Promise<{
   userId: string | null;
 }>;
 
-type CurrentUserDatabase = {
-  user: {
-    findUnique: (args: {
-      where: {
-        clerkUserId: string;
-      };
-    }) => Promise<AuthenticatedUserRecord | null>;
-  };
-};
-
 type GetCurrentAuthenticatedUserOptions = {
   authReader?: CurrentUserAuthReader;
-  database?: CurrentUserDatabase;
+  database?: LocalUserLookupDatabase;
 };
 
 const readCurrentClerkAuth: CurrentUserAuthReader = async () => {
   return auth();
-};
-
-const getDefaultDatabase = async (): Promise<CurrentUserDatabase> => {
-  const { prisma } = await import("@/lib/prisma");
-
-  return prisma;
 };
 
 const getCurrentAuthenticatedUser = async ({
@@ -84,12 +67,7 @@ const getCurrentAuthenticatedUser = async ({
     };
   }
 
-  const currentUserDatabase = database ?? (await getDefaultDatabase());
-  const localUser = await currentUserDatabase.user.findUnique({
-    where: {
-      clerkUserId: userId,
-    },
-  });
+  const localUser = await findLocalUserByClerkUserId(userId, database);
 
   if (!localUser) {
     return {
@@ -112,5 +90,5 @@ export type {
   CurrentAuthenticatedUserResult,
   CurrentAuthenticatedUserStatus,
   CurrentUserAuthReader,
-  CurrentUserDatabase,
+  LocalUserLookupDatabase as CurrentUserDatabase,
 };

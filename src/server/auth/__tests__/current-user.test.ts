@@ -4,8 +4,8 @@ import {
   CURRENT_AUTHENTICATED_USER_STATUS,
   getCurrentAuthenticatedUser,
   type AuthenticatedUserRecord,
-  type CurrentUserDatabase,
 } from "../current-user";
+import type { LocalUserLookupDatabase } from "../local-user";
 
 const createLocalUser = (
   overrides: Partial<AuthenticatedUserRecord> = {},
@@ -23,7 +23,7 @@ const createLocalUser = (
   };
 };
 
-const createDatabase = (localUser: AuthenticatedUserRecord | null): CurrentUserDatabase => {
+const createDatabase = (localUser: AuthenticatedUserRecord | null): LocalUserLookupDatabase => {
   return {
     user: {
       findUnique: vi.fn().mockResolvedValue(localUser),
