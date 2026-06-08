@@ -8,6 +8,10 @@ The highest-risk areas are availability generation, slot locking, payment webhoo
 
 Focused tests must be added in the same task/branch as each new or changed component or unit of application/business logic. The final testing phase is for coverage auditing, cross-feature integration testing, manual E2E validation, and pilot hardening; it must not be used to defer feature tests.
 
+Vitest coverage is required for implementation branches. Global statements, branches, functions, and lines coverage must stay at or above 95% for testable source modules. Do not lower coverage thresholds to make a branch pass; add focused tests or document a genuine untestable exception for user approval.
+
+Coverage excludes generated files, test setup, Next route/page/layout wrappers, and framework glue that is better validated through integration or manual E2E checks. If those files gain meaningful business logic, move that logic into a testable module and cover it there.
+
 ## Unit Tests
 
 Add unit tests for:
@@ -142,6 +146,7 @@ When available, run:
 - typecheck
 - unit tests
 - component tests
+- coverage: `npm run test:coverage`
 - build
 
 If a command does not exist yet, say so in the handoff.

@@ -51,7 +51,7 @@ For each feature:
 4. Write or update the feature plan.
 5. Implement the smallest useful slice.
 6. Add or update focused tests for every new or changed component and every new or changed unit of application or business logic.
-7. Run lint, typecheck, tests, and build where available.
+7. Run lint, typecheck, coverage tests, and build where available.
 8. Commit the changes.
 9. Push the branch.
 10. Open a PR/MR or review the diff before merging.
@@ -79,7 +79,7 @@ Before handoff, Codex must verify and report:
 - Layout semantics checked when UI/layout changed: one page-level `<main>`, no accidental nested page landmarks, global header/navigation outside `<main>`, and no nested full-viewport layout inside an existing shell unless intentionally documented.
 - Focused tests added or updated for changed components/logic, or explain why not applicable.
 - Dependent tests checked for every changed shared config, component, helper, schema, or exported API.
-- Checks run: lint, typecheck, tests, format, and build where appropriate.
+- Checks run: lint, typecheck, coverage tests, format, and build where appropriate.
 - Dev server status: not started, or started and stopped.
 
 ## Documentation Updates
