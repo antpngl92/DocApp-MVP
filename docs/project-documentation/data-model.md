@@ -530,14 +530,16 @@ Suggested fields:
 
 - id
 - organizationId
-- actorUserId
+- actorUserId, nullable for trusted system/provider events
 - action
 - targetType
-- targetId
-- metadata
+- targetId, nullable when the target is not yet local or not applicable
+- metadata, optional JSON
 - createdAt
 
-Do not store unnecessary patient details in audit metadata.
+Audit events should support identity sync, membership creation/removal, invitation lifecycle, role changes, trusted owner/admin provisioning, and later sensitive appointment/payment actions. Index by clinic/time, actor, action, and target lookup.
+
+Do not store unnecessary patient details, secrets, raw webhook payloads, or credential material in audit metadata.
 
 ## Indexes
 

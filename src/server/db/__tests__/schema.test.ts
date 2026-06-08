@@ -130,6 +130,48 @@ describe("Prisma schema patient profile model", () => {
   });
 });
 
+describe("Prisma schema audit event model", () => {
+  it("models clinic-owned audit events for identity, membership, and role changes", () => {
+    const schema = readFileSync(schemaPath, "utf8");
+    const auditEventModel = schema.match(/model AuditEvent \{[\s\S]*?\n\}/)?.[0];
+
+    expect(auditEventModel).toBeDefined();
+    expect(auditEventModel).toMatch(/organizationId\s+String/);
+    expect(auditEventModel).toMatch(/actorUserId\s+String\?/);
+    expect(auditEventModel).toMatch(/action\s+String/);
+    expect(auditEventModel).toMatch(/targetType\s+String/);
+    expect(auditEventModel).toMatch(/targetId\s+String\?/);
+    expect(auditEventModel).toMatch(/metadata\s+Json\?/);
+    expect(auditEventModel).toMatch(/createdAt\s+DateTime\s+@default\(now\(\)\)/);
+  });
+
+  it("ties audit events to the local clinic and optional actor user", () => {
+    const schema = readFileSync(schemaPath, "utf8");
+    const auditEventModel = schema.match(/model AuditEvent \{[\s\S]*?\n\}/)?.[0];
+
+    expect(auditEventModel).toBeDefined();
+    expect(auditEventModel).toMatch(
+      /organization\s+Organization\s+@relation\(fields: \[organizationId\], references: \[id\], onDelete: Cascade\)/,
+    );
+    expect(auditEventModel).toMatch(
+      /actorUser\s+User\?\s+@relation\("AuditEventActor", fields: \[actorUserId\], references: \[id\], onDelete: SetNull\)/,
+    );
+    expect(schema).toMatch(/auditEvents\s+AuditEvent\[\]/);
+    expect(schema).toMatch(/auditEvents\s+AuditEvent\[\]\s+@relation\("AuditEventActor"\)/);
+  });
+
+  it("indexes audit events for clinic timelines and target lookup", () => {
+    const schema = readFileSync(schemaPath, "utf8");
+    const auditEventModel = schema.match(/model AuditEvent \{[\s\S]*?\n\}/)?.[0];
+
+    expect(auditEventModel).toBeDefined();
+    expect(auditEventModel).toContain("@@index([organizationId, createdAt])");
+    expect(auditEventModel).toContain("@@index([actorUserId])");
+    expect(auditEventModel).toContain("@@index([action])");
+    expect(auditEventModel).toContain("@@index([targetType, targetId])");
+  });
+});
+
 describe("Prisma schema cleanup", () => {
   it("does not keep temporary starter setup models in the live schema", () => {
     const schema = readFileSync(schemaPath, "utf8");

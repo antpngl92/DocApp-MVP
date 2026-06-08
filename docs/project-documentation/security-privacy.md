@@ -131,6 +131,8 @@ Audit important actions:
 
 Keep audit metadata minimal and avoid unnecessary patient details.
 
+Audit metadata must not store secrets, raw provider credential material, raw webhook payloads, medical details, or long patient notes. Prefer stable internal IDs, short reason codes, before/after role/status values, and user-safe summaries.
+
 ## Rate Limiting
 
 Add basic rate limiting where appropriate:
