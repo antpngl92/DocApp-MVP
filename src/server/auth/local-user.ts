@@ -1,27 +1,5 @@
-type LocalUserRecord = {
-  clerkUserId: string;
-  createdAt: Date;
-  email: string;
-  id: string;
-  name: string | null;
-  updatedAt: Date;
-};
-
-type LocalUserLookupDatabase = {
-  user: {
-    findUnique: (args: {
-      where: {
-        clerkUserId: string;
-      };
-    }) => Promise<LocalUserRecord | null>;
-  };
-};
-
-const getDefaultLocalUserLookupDatabase = async (): Promise<LocalUserLookupDatabase> => {
-  const { prisma } = await import("@/lib/prisma");
-
-  return prisma;
-};
+import type { LocalUserLookupDatabase, LocalUserRecord } from "./type";
+import { getDefaultLocalUserLookupDatabase } from "./utils";
 
 const findLocalUserByClerkUserId = async (
   clerkUserId: string,
