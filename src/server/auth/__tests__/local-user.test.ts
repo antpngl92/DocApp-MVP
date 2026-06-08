@@ -6,6 +6,16 @@ import {
   type LocalUserRecord,
 } from "../local-user";
 
+const prismaFindUnique = vi.fn();
+
+vi.mock("@/lib/prisma", () => ({
+  prisma: {
+    user: {
+      findUnique: prismaFindUnique,
+    },
+  },
+}));
+
 const createLocalUser = (overrides: Partial<LocalUserRecord> = {}): LocalUserRecord => {
   const now = new Date("2026-06-08T09:00:00.000Z");
 
@@ -48,5 +58,18 @@ describe("findLocalUserByClerkUserId", () => {
     const database = createDatabase(null);
 
     await expect(findLocalUserByClerkUserId("user_missing", database)).resolves.toBeNull();
+  });
+
+  it("uses the default Prisma database when no database is passed", async () => {
+    const localUser = createLocalUser();
+    prismaFindUnique.mockResolvedValueOnce(localUser);
+
+    await expect(findLocalUserByClerkUserId("user_clerk_123")).resolves.toEqual(localUser);
+
+    expect(prismaFindUnique).toHaveBeenCalledWith({
+      where: {
+        clerkUserId: "user_clerk_123",
+      },
+    });
   });
 });

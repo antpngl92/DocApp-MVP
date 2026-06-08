@@ -55,4 +55,15 @@ describe("AppHeader", () => {
     ).toBeInTheDocument();
     expect(screen.getByText("Language selector")).toBeInTheDocument();
   });
+
+  it("omits the context label when none is provided", async () => {
+    render(
+      await AppHeader({
+        navigation: [],
+      }),
+    );
+
+    expect(screen.getByText("DocApp")).toBeInTheDocument();
+    expect(screen.queryByText("Clinic administration")).not.toBeInTheDocument();
+  });
 });

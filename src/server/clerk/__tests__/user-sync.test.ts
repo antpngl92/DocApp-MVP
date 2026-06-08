@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import {
   mapClerkUserToLocalUserInput,
@@ -6,6 +6,16 @@ import {
   type ClerkUserPayload,
   type UserSyncDatabase,
 } from "../user-sync";
+
+const prismaUpsert = vi.fn();
+
+vi.mock("@/lib/prisma", () => ({
+  prisma: {
+    user: {
+      upsert: prismaUpsert,
+    },
+  },
+}));
 
 const createClerkUserPayload = (overrides: Partial<ClerkUserPayload> = {}): ClerkUserPayload => {
   return {
@@ -78,6 +88,20 @@ describe("mapClerkUserToLocalUserInput", () => {
     });
   });
 
+  it("returns null display name when Clerk names and username are missing", () => {
+    expect(
+      mapClerkUserToLocalUserInput(
+        createClerkUserPayload({
+          first_name: null,
+          last_name: null,
+          username: null,
+        }),
+      ),
+    ).toMatchObject({
+      name: null,
+    });
+  });
+
   it("rejects malformed Clerk user payloads without a user ID or email", () => {
     expect(() => mapClerkUserToLocalUserInput(createClerkUserPayload({ id: "" }))).toThrow(
       "missing a user ID",
@@ -87,6 +111,14 @@ describe("mapClerkUserToLocalUserInput", () => {
       mapClerkUserToLocalUserInput(
         createClerkUserPayload({
           email_addresses: [],
+        }),
+      ),
+    ).toThrow("missing an email address");
+
+    expect(() =>
+      mapClerkUserToLocalUserInput(
+        createClerkUserPayload({
+          email_addresses: null,
         }),
       ),
     ).toThrow("missing an email address");
@@ -117,6 +149,29 @@ describe("syncClerkUserToLocalUser", () => {
       clerkUserId: "user_clerk_123",
       email: "updated@example.com",
       name: "Updated Patient",
+    });
+  });
+
+  it("uses the default Prisma database when no database is passed", async () => {
+    prismaUpsert.mockResolvedValueOnce({ id: "user_local_123" });
+
+    await expect(syncClerkUserToLocalUser(createClerkUserPayload())).resolves.toEqual({
+      id: "user_local_123",
+    });
+
+    expect(prismaUpsert).toHaveBeenCalledWith({
+      create: {
+        clerkUserId: "user_clerk_123",
+        email: "patient@example.com",
+        name: "Mila Ivanova",
+      },
+      update: {
+        email: "patient@example.com",
+        name: "Mila Ivanova",
+      },
+      where: {
+        clerkUserId: "user_clerk_123",
+      },
     });
   });
 });

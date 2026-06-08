@@ -382,6 +382,8 @@ order.status = "paid";
 
 Every implementation branch should add or update tests when the changed code is testable.
 
+Keep global Vitest coverage at or above 95% for statements, branches, functions, and lines across testable source modules. Do not lower the threshold as a shortcut; add focused tests for changed behavior.
+
 When changing shared config, components, helpers, schemas, or exported APIs, search for dependent tests and usages and update them in the same branch. Do not only test the new file if existing tests still duplicate or depend on the old shape.
 
 Use React Testing Library for component behavior.

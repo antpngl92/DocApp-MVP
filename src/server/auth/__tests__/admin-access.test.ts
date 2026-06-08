@@ -38,6 +38,19 @@ describe("hasOwnerAdminAccess", () => {
 });
 
 describe("requireOwnerAdminAccess", () => {
+  it("allows users with active owner/admin access", () => {
+    expect(() =>
+      requireOwnerAdminAccess({
+        membership: {
+          role: OWNER_BOOTSTRAP_ROLE.admin,
+          status: OWNER_BOOTSTRAP_MEMBERSHIP_STATUS.active,
+        },
+      }),
+    ).not.toThrow();
+
+    expect(notFound).not.toHaveBeenCalled();
+  });
+
   it("throws a not-found boundary for users without active owner/admin access", () => {
     expect(() => requireOwnerAdminAccess({ membership: null })).toThrow("NEXT_NOT_FOUND");
 
