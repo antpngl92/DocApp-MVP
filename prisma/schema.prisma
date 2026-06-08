@@ -73,6 +73,9 @@ model OrganizationMember {
   @@unique([userId])
   @@index([organizationId])
   @@index([organizationId, invitedEmail])
+  @@index([organizationId, userId])
+  @@index([organizationId, status])
+  @@index([organizationId, role])
   @@index([role])
   @@index([status])
 }

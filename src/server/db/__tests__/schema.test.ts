@@ -86,6 +86,16 @@ describe("Prisma schema organization membership model", () => {
     expect(schema).toMatch(/organizationMember\s+OrganizationMember\?/);
     expect(schema).toMatch(/members\s+OrganizationMember\[\]/);
   });
+
+  it("indexes membership checks and clinic staff lists", () => {
+    const schema = readFileSync(schemaPath, "utf8");
+    const memberModel = schema.match(/model OrganizationMember \{[\s\S]*?\n\}/)?.[0];
+
+    expect(memberModel).toBeDefined();
+    expect(memberModel).toContain("@@index([organizationId, userId])");
+    expect(memberModel).toContain("@@index([organizationId, status])");
+    expect(memberModel).toContain("@@index([organizationId, role])");
+  });
 });
 
 describe("Prisma schema patient profile model", () => {
