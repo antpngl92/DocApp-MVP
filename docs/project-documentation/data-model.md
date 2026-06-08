@@ -546,6 +546,9 @@ Do not store unnecessary patient details, secrets, raw webhook payloads, or cred
 Add indexes for:
 
 - organizationId on all clinic-scoped models
+- organization membership lookup by organizationId + userId
+- organization staff list filtering by organizationId + status
+- organization staff list filtering by organizationId + role
 - appointment start/end time
 - appointment status
 - order status

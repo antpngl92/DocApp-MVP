@@ -107,7 +107,7 @@ Complete tasks from top to bottom and one approved task/branch at a time. Do not
 - [x] Model organization members, membership status, and roles.
 - [x] Model minimal patient profile/contact details.
 - [x] Model audit/event records needed for identity, membership, and role changes.
-- [ ] Add identity and membership indexes and ownership constraints wherever practical.
+- [x] Add identity and membership indexes and ownership constraints wherever practical.
 - [ ] Implement idempotent Clerk webhook user sync and map each Clerk identity to the local `User` table through unique `User.clerkUserId`.
 - [ ] Add current-authenticated-user helper.
 - [ ] Add local user lookup helper.
