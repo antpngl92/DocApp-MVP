@@ -60,6 +60,21 @@ Implemented MVP behavior:
 
 Identity sync does not grant staff permissions. Staff/admin access still requires a trusted local `OrganizationMember` record and role validation in later tasks.
 
+## Current Authenticated User Helper
+
+Server-side code can use the current-authenticated-user helper to connect the active Clerk session to the local `User` table.
+
+Implemented MVP behavior:
+
+- The helper reads the active session with Clerk's App Router server `auth()` helper.
+- If no Clerk user is signed in, it returns `signed_out`.
+- If Clerk has a signed-in user but the local `User` row does not exist yet, it returns `missing_local_user`.
+- If the local row exists, it returns `authenticated` with the local user record.
+- The helper looks up local users by unique `User.clerkUserId`.
+- The helper does not create missing users, assign roles, activate memberships, or grant patient ownership.
+
+Later route guards should decide how to handle `signed_out` and `missing_local_user` for each surface. Staff/admin authorization still requires an active local `OrganizationMember`; patient ownership still requires `PatientProfile` and appointment ownership checks.
+
 ## Organization/Clinic Membership
 
 Staff users access clinic data through membership records.
