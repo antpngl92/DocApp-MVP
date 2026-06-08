@@ -75,6 +75,19 @@ Implemented MVP behavior:
 
 Later route guards should decide how to handle `signed_out` and `missing_local_user` for each surface. Staff/admin authorization still requires an active local `OrganizationMember`; patient ownership still requires `PatientProfile` and appointment ownership checks.
 
+## Local User Lookup Helper
+
+Server-side identity and authorization code should reuse the local-user lookup helper when resolving a Clerk identity to the local `User` table.
+
+Implemented MVP behavior:
+
+- The helper accepts a Clerk user ID.
+- The helper queries the local `User` table by unique `User.clerkUserId`.
+- The helper returns the local user record or `null`.
+- The helper does not create users, assign permissions, activate staff memberships, or create patient profiles.
+
+This keeps the Prisma query shape centralized for current-user resolution, trusted owner/admin provisioning, staff invitation acceptance, membership guards, and patient ownership guards.
+
 ## Organization/Clinic Membership
 
 Staff users access clinic data through membership records.
