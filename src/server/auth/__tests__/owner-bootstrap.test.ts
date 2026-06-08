@@ -144,6 +144,23 @@ describe("mapClerkBackendUserToBootstrapProfile", () => {
 });
 
 describe("bootstrapOwnerAdminMembershipFromClerkPrivateMetadata", () => {
+  it("skips bootstrap for signed-out users", async () => {
+    const database = createDatabase();
+
+    await expect(
+      bootstrapOwnerAdminMembershipFromClerkPrivateMetadata({
+        authReader: async () => ({ userId: null }),
+        database,
+      }),
+    ).resolves.toEqual({
+      membership: null,
+      role: null,
+      status: OWNER_BOOTSTRAP_STATUS.signedOut,
+    });
+
+    expect(database.organizationMember.findUnique).not.toHaveBeenCalled();
+  });
+
   it("creates an active owner membership and audit event from trusted private metadata", async () => {
     const localUser = createLocalUser();
     const database = createDatabase({ localUser });
@@ -343,6 +360,48 @@ describe("bootstrapOwnerAdminMembershipFromClerkPrivateMetadata", () => {
         userId: localUser.id,
       },
     });
+  });
+
+  it("uses a concurrently created membership after local user upsert", async () => {
+    const localUser = createLocalUser();
+    const database = createDatabase({ localUser: null });
+    database.user.upsert = vi.fn().mockResolvedValue(localUser);
+    database.organizationMember.findUnique = vi.fn().mockResolvedValueOnce({
+      id: "member_concurrent",
+      role: OWNER_BOOTSTRAP_ROLE.owner,
+      status: OWNER_BOOTSTRAP_MEMBERSHIP_STATUS.active,
+      userId: localUser.id,
+    });
+
+    await expect(
+      bootstrapOwnerAdminMembershipFromClerkPrivateMetadata({
+        authReader: async () => ({ userId: "user_clerk_123" }),
+        clerkProfileReader: async () => ({
+          localUserInput: {
+            clerkUserId: "user_clerk_123",
+            email: "owner@example.com",
+            name: "Clinic Owner",
+          },
+          privateMetadata: {
+            docapp: {
+              bootstrapRole: "owner",
+            },
+          },
+        }),
+        database,
+      }),
+    ).resolves.toEqual({
+      membership: {
+        id: "member_concurrent",
+        role: OWNER_BOOTSTRAP_ROLE.owner,
+        status: OWNER_BOOTSTRAP_MEMBERSHIP_STATUS.active,
+        userId: localUser.id,
+      },
+      role: OWNER_BOOTSTRAP_ROLE.owner,
+      status: OWNER_BOOTSTRAP_STATUS.existingMembership,
+    });
+
+    expect(database.organizationMember.create).not.toHaveBeenCalled();
   });
 
   it("skips bootstrap when the Clerk user cannot create a local User or no active organization exists", async () => {

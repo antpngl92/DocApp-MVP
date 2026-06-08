@@ -57,6 +57,13 @@ describe("environment validation", () => {
         }),
       ),
     ).toBe("official_secret");
+
+    expect(
+      getClerkWebhookSigningSecret({
+        CLERK_WEBHOOK_SECRET: undefined,
+        CLERK_WEBHOOK_SIGNING_SECRET: undefined,
+      }),
+    ).toBe("");
   });
 
   it("requires a PostgreSQL database URL when database env is parsed", () => {
