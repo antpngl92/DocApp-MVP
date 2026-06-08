@@ -1,6 +1,12 @@
 import { describe, expect, it } from "vitest";
 
-import { parseClerkServerEnv, parseDatabaseEnv, parsePublicEnv } from "../env";
+import {
+  getClerkWebhookSigningSecret,
+  parseClerkServerEnv,
+  parseClerkWebhookEnv,
+  parseDatabaseEnv,
+  parsePublicEnv,
+} from "../env";
 
 describe("environment validation", () => {
   it("defaults public Clerk route values to patient-safe routes", () => {
@@ -26,6 +32,31 @@ describe("environment validation", () => {
     expect(parseClerkServerEnv({ CLERK_SECRET_KEY: "sk_test" })).toMatchObject({
       CLERK_SECRET_KEY: "sk_test",
     });
+  });
+
+  it("requires a Clerk webhook signing secret when webhook env is parsed", () => {
+    expect(() => parseClerkWebhookEnv({})).toThrow();
+
+    expect(
+      getClerkWebhookSigningSecret(
+        parseClerkWebhookEnv({ CLERK_WEBHOOK_SIGNING_SECRET: "whsec_test" }),
+      ),
+    ).toBe("whsec_test");
+  });
+
+  it("supports the legacy Clerk webhook secret name while preferring the official name", () => {
+    expect(
+      getClerkWebhookSigningSecret(parseClerkWebhookEnv({ CLERK_WEBHOOK_SECRET: "legacy_secret" })),
+    ).toBe("legacy_secret");
+
+    expect(
+      getClerkWebhookSigningSecret(
+        parseClerkWebhookEnv({
+          CLERK_WEBHOOK_SECRET: "legacy_secret",
+          CLERK_WEBHOOK_SIGNING_SECRET: "official_secret",
+        }),
+      ),
+    ).toBe("official_secret");
   });
 
   it("requires a PostgreSQL database URL when database env is parsed", () => {
