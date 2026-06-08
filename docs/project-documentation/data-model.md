@@ -149,6 +149,8 @@ Suggested invitation tracking fields:
 
 Clerk invitation metadata may contain organization, invitation/membership, and intended-role references, but local invitation or membership records remain the source of truth for role and access.
 
+For trusted initial owner/admin bootstrap, Clerk private metadata may contain `docapp.bootstrapRole = owner | admin`. This metadata is a one-time server-side bootstrap hint only. Once an `OrganizationMember` exists for the local user, role and status changes must be controlled by local database state and audited application workflows, not continuous metadata sync.
+
 ### PatientProfile
 
 Represents a patient account for booking and appointment management.

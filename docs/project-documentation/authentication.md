@@ -146,6 +146,29 @@ For MVP, an owner/admin authentication identity is created through the Clerk Das
 
 Owner/admin roles, organization membership, and clinic access must be assigned through controlled server-side or administrative processes. User-controlled metadata, public form input, or a self-selected role must never grant clinic-side access.
 
+Implemented MVP bootstrap behavior:
+
+1. Create the trusted owner/admin identity in Clerk Dashboard.
+2. Add Clerk private metadata:
+
+```json
+{
+  "docapp": {
+    "bootstrapRole": "owner"
+  }
+}
+```
+
+Allowed bootstrap roles are `owner` and `admin` only.
+
+On authenticated admin app access, DocApp first resolves the Clerk identity to the local `User`. If the local `User` does not exist yet, DocApp may fetch the trusted Clerk Backend user, create or update the local `User` from Clerk ID, primary email, and display name, then continue bootstrap.
+
+DocApp reads Clerk private metadata server-side through Clerk's Backend API only when the local user has no existing `OrganizationMember`. If the local user has no existing membership and the deployment has an active local `Organization`, DocApp creates an active local owner/admin membership and writes an audit event.
+
+The admin route shell must not render for a signed-in user unless bootstrap returns or finds an active local membership with role `owner` or `admin`. A regular patient user with no `OrganizationMember`, or a staff user with another role/status, must not be able to render `/admin`.
+
+Clerk private metadata is a one-time bootstrap hint only. Once a local membership exists, DocApp ignores the bootstrap metadata and keeps `OrganizationMember.role` and `OrganizationMember.status` as the source of truth for authorization. Do not expose private metadata in UI, API responses, logs, public metadata, or session claims.
+
 Patient accounts are appointment-management accounts only. They must not expose medical records, prescriptions, diagnoses, treatment notes, insurance workflows, chat, or file uploads.
 
 ### Staff Invitations With Clerk

@@ -111,7 +111,7 @@ Complete tasks from top to bottom and one approved task/branch at a time. Do not
 - [x] Implement idempotent Clerk webhook user sync and map each Clerk identity to the local `User` table through unique `User.clerkUserId`.
 - [x] Add current-authenticated-user helper.
 - [x] Add local user lookup helper.
-- [ ] Implement trusted clinic owner/admin local provisioning and link it to a trusted Clerk identity.
+- [x] Implement trusted clinic owner/admin local provisioning and link it to a trusted Clerk identity.
 - [ ] Implement one staff-user onboarding flow with Clerk Invitations plus local membership validation.
 - [ ] Build owner/admin staff invitation form with staff email input and role dropdown.
 - [ ] Allow owner/admin to choose staff role during invitation, such as admin, manager, receptionist, or doctor.
