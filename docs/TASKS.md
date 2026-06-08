@@ -109,7 +109,7 @@ Complete tasks from top to bottom and one approved task/branch at a time. Do not
 - [x] Model audit/event records needed for identity, membership, and role changes.
 - [x] Add identity and membership indexes and ownership constraints wherever practical.
 - [x] Implement idempotent Clerk webhook user sync and map each Clerk identity to the local `User` table through unique `User.clerkUserId`.
-- [ ] Add current-authenticated-user helper.
+- [x] Add current-authenticated-user helper.
 - [ ] Add local user lookup helper.
 - [ ] Implement trusted clinic owner/admin local provisioning and link it to a trusted Clerk identity.
 - [ ] Implement one staff-user onboarding flow with Clerk Invitations plus local membership validation.
