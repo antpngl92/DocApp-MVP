@@ -35,6 +35,7 @@ model User {
   name               String?
   organizationMember OrganizationMember?
   patientProfile     PatientProfile?
+  auditEvents        AuditEvent[]        @relation("AuditEventActor")
   createdAt          DateTime            @default(now())
   updatedAt          DateTime            @updatedAt
 
@@ -49,6 +50,7 @@ model Organization {
   defaultCurrency String               @default("BGN")
   status          OrganizationStatus   @default(active)
   members         OrganizationMember[]
+  auditEvents     AuditEvent[]
   createdAt       DateTime             @default(now())
   updatedAt       DateTime             @updatedAt
 
@@ -88,4 +90,23 @@ model PatientProfile {
 
   @@index([email])
   @@index([phone])
+}
+
+model AuditEvent {
+  id             String   @id @default(cuid())
+  organizationId String
+  actorUserId    String?
+  action         String
+  targetType     String
+  targetId       String?
+  metadata       Json?
+  createdAt      DateTime @default(now())
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  actorUser    User?        @relation("AuditEventActor", fields: [actorUserId], references: [id], onDelete: SetNull)
+
+  @@index([organizationId, createdAt])
+  @@index([actorUserId])
+  @@index([action])
+  @@index([targetType, targetId])
 }

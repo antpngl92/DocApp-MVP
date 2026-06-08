@@ -61,3 +61,8 @@ export type OrganizationMember = Prisma.OrganizationMemberModel
  *
  */
 export type PatientProfile = Prisma.PatientProfileModel
+/**
+ * Model AuditEvent
+ *
+ */
+export type AuditEvent = Prisma.AuditEventModel
