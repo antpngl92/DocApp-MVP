@@ -47,6 +47,19 @@ Minimum local fields:
 
 Clerk webhook sync should create/update local users.
 
+Implemented MVP behavior:
+
+- `POST /api/clerk/webhook` verifies Clerk/Svix signatures with `@clerk/nextjs/webhooks`.
+- Use `CLERK_WEBHOOK_SIGNING_SECRET` for the webhook secret. `CLERK_WEBHOOK_SECRET` is kept only as a legacy compatibility fallback.
+- `user.created` and `user.updated` events upsert a local `User` by unique `User.clerkUserId`.
+- The primary Clerk email is normalized to lowercase before storing locally. If Clerk does not provide a primary email, the first email address is used.
+- Duplicate webhook deliveries are idempotent because they update the same `User.clerkUserId` instead of creating another local user.
+- Unsupported Clerk events are acknowledged but ignored.
+- `user.deleted` must not delete local appointment, payment, patient, or audit history until a dedicated retention/anonymization policy is implemented.
+- Do not log raw Clerk webhook payloads, signing secrets, or full provider headers.
+
+Identity sync does not grant staff permissions. Staff/admin access still requires a trusted local `OrganizationMember` record and role validation in later tasks.
+
 ## Organization/Clinic Membership
 
 Staff users access clinic data through membership records.

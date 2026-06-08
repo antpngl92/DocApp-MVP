@@ -112,6 +112,8 @@ Manual booking creation must require an authorized clinic-side user. Receptionis
 
 Webhook routes must verify provider signatures and never trust arbitrary user input.
 
+Clerk user-sync webhooks must verify with the Clerk/Svix signing secret before touching the local `User` table. The handler may create or update identity fields only; it must not assign clinic roles, activate staff membership, or mutate appointment/payment records from Clerk payload data alone.
+
 ## Audit Logging
 
 Audit important actions:

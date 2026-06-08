@@ -91,6 +91,8 @@ Suggested fields:
 - createdAt
 - updatedAt
 
+`clerkUserId` must be unique. Clerk `user.created` and `user.updated` webhooks should upsert this model by `clerkUserId`, making repeated webhook deliveries safe. The local `User` record proves identity mapping only; clinic-side access still comes from `OrganizationMember`, and patient ownership still comes from `PatientProfile` plus appointment ownership fields.
+
 ### OrganizationMember
 
 Connects a local staff user or pending staff invitation to the clinic and a clinic-side role.
