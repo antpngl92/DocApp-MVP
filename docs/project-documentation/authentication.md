@@ -197,6 +197,7 @@ Implemented MVP foundation:
 - Activation links `OrganizationMember.userId` to the local user, changes membership status to `active`, and writes an audit event.
 - If the user is signed out, missing locally, already active, disabled/removed, missing a pending invitation, mismatched by email, or assigned an invalid role, staff access is not activated.
 - A regular patient account with no pending local invitation remains a patient-only account and receives no clinic-side staff access.
+- The admin overview includes the staff invitation form shell with a staff email field and role dropdown. It validates input locally, but invitation sending and persistence are connected in the following server-only invitation task.
 
 Implementation note:
 

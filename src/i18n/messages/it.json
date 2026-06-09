@@ -107,6 +107,21 @@
         "item2": "Regole di disponibilità",
         "item3": "Permessi di accesso"
       }
+    },
+    "staffInvitation": {
+      "connectedLater": "Prepara un invito per lo staff. Invio e registrazione dell’appartenenza saranno collegati nel prossimo task.",
+      "emailLabel": "Email dello staff",
+      "emailPlaceholder": "staff@example.com",
+      "emailError": "Inserisci un indirizzo email valido dello staff.",
+      "roleLabel": "Ruolo",
+      "submitLabel": "Invita staff",
+      "successMessage": "I dettagli dell’invito sono pronti per il flusso server.",
+      "roles": {
+        "admin": "Admin",
+        "manager": "Manager",
+        "receptionist": "Receptionist",
+        "doctor": "Dottore"
+      }
     }
   },
   "patient": {

@@ -107,6 +107,21 @@
         "item2": "Verfügbarkeitsregeln",
         "item3": "Zugriffsrechte"
       }
+    },
+    "staffInvitation": {
+      "connectedLater": "Bereiten Sie eine Einladung für Mitarbeitende vor. Versand und Mitgliedschaftsspeicherung werden in der nächsten Aufgabe verbunden.",
+      "emailLabel": "E-Mail des Mitarbeiters",
+      "emailPlaceholder": "staff@example.com",
+      "emailError": "Geben Sie eine gültige Mitarbeiter-E-Mail ein.",
+      "roleLabel": "Rolle",
+      "submitLabel": "Mitarbeiter einladen",
+      "successMessage": "Die Einladungsdaten sind bereit für den Server-Einladungsfluss.",
+      "roles": {
+        "admin": "Admin",
+        "manager": "Manager",
+        "receptionist": "Rezeption",
+        "doctor": "Arzt"
+      }
     }
   },
   "patient": {
