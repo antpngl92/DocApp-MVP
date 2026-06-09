@@ -1,7 +1,7 @@
 import { LocalizedFoundationOverview } from "@/features/app-foundation/components";
 import { ADMIN_PANEL_DEFINITIONS } from "@/features/app-foundation/constants";
 import { StaffInvitationForm } from "@/features/staff/components";
-import { STAFF_MEMBER_ROLE } from "@/server/auth/consts";
+import { getStaffInvitationRoleOptions } from "@/features/staff/utils";
 import { getTranslations } from "next-intl/server";
 
 const AdminPage = async () => {
@@ -20,12 +20,7 @@ const AdminPage = async () => {
           submitLabel: t("submitLabel"),
           successMessage: t("successMessage"),
         }}
-        roleOptions={[
-          { label: t("roles.admin"), value: STAFF_MEMBER_ROLE.admin },
-          { label: t("roles.manager"), value: STAFF_MEMBER_ROLE.manager },
-          { label: t("roles.receptionist"), value: STAFF_MEMBER_ROLE.receptionist },
-          { label: t("roles.doctor"), value: STAFF_MEMBER_ROLE.doctor },
-        ]}
+        roleOptions={getStaffInvitationRoleOptions((role) => t(`roles.${role}`))}
       />
     </div>
   );

@@ -3,5 +3,4 @@ export type {
   StaffInvitationFormContent,
   StaffInvitationFormProps,
   StaffInvitationFormSubmitPayload,
-  StaffInvitationRoleOption,
 } from "./StaffInvitationForm/types";

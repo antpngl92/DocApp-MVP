@@ -1,9 +1,4 @@
-import type { StaffMemberRole } from "@/server/auth/type";
-
-type StaffInvitationRoleOption = Readonly<{
-  label: string;
-  value: StaffMemberRole;
-}>;
+import type { StaffInvitationRoleOption, StaffInvitationRoleValue } from "../../types";
 
 type StaffInvitationFormContent = Readonly<{
   connectedLater: string;
@@ -17,7 +12,7 @@ type StaffInvitationFormContent = Readonly<{
 
 type StaffInvitationFormSubmitPayload = Readonly<{
   email: string;
-  role: StaffMemberRole;
+  role: StaffInvitationRoleValue;
 }>;
 
 type StaffInvitationFormProps = Readonly<{
@@ -30,5 +25,4 @@ export type {
   StaffInvitationFormContent,
   StaffInvitationFormProps,
   StaffInvitationFormSubmitPayload,
-  StaffInvitationRoleOption,
 };

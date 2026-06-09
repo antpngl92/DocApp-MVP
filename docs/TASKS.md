@@ -114,7 +114,7 @@ Complete tasks from top to bottom and one approved task/branch at a time. Do not
 - [x] Implement trusted clinic owner/admin local provisioning and link it to a trusted Clerk identity.
 - [x] Implement one staff-user onboarding flow with Clerk Invitations plus local membership validation.
 - [x] Build owner/admin staff invitation form with staff email input and role dropdown.
-- [ ] Allow owner/admin to choose staff role during invitation, such as admin, manager, receptionist, or doctor.
+- [x] Allow owner/admin to choose staff role during invitation, such as admin, manager, receptionist, or doctor.
 - [ ] Create staff invitation from a server-only action/route using Clerk Backend API `clerkClient.invitations.createInvitation`.
 - [ ] Store Clerk invitation ID/status alongside the pending local invitation or membership record.
 - [ ] Pass only non-authoritative references such as organization ID, membership/invitation ID, and intended role in Clerk invitation metadata.
