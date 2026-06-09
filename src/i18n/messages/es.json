@@ -107,6 +107,21 @@
         "item2": "Reglas de disponibilidad",
         "item3": "Permisos de acceso"
       }
+    },
+    "staffInvitation": {
+      "connectedLater": "Prepara una invitación para el personal. El envío y el registro de membresía se conectarán en la siguiente tarea.",
+      "emailLabel": "Email del personal",
+      "emailPlaceholder": "staff@example.com",
+      "emailError": "Introduce un email válido del personal.",
+      "roleLabel": "Rol",
+      "submitLabel": "Invitar personal",
+      "successMessage": "Los datos de la invitación están listos para el flujo del servidor.",
+      "roles": {
+        "admin": "Administrador",
+        "manager": "Gerente",
+        "receptionist": "Recepcionista",
+        "doctor": "Doctor"
+      }
     }
   },
   "patient": {

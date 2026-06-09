@@ -107,6 +107,21 @@
         "item2": "Availability rules",
         "item3": "Access permissions"
       }
+    },
+    "staffInvitation": {
+      "connectedLater": "Prepare a staff invitation. Sending and membership storage are connected in the next task.",
+      "emailLabel": "Staff email",
+      "emailPlaceholder": "staff@example.com",
+      "emailError": "Enter a valid staff email address.",
+      "roleLabel": "Role",
+      "submitLabel": "Invite staff",
+      "successMessage": "Invitation details are ready for the server invitation flow.",
+      "roles": {
+        "admin": "Admin",
+        "manager": "Manager",
+        "receptionist": "Receptionist",
+        "doctor": "Doctor"
+      }
     }
   },
   "patient": {

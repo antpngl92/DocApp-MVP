@@ -107,6 +107,21 @@
         "item2": "Règles de disponibilité",
         "item3": "Droits d?acc?s"
       }
+    },
+    "staffInvitation": {
+      "connectedLater": "Préparez une invitation pour un membre du personnel. L’envoi et l’enregistrement de l’adhésion seront connectés dans la prochaine tâche.",
+      "emailLabel": "E-mail du personnel",
+      "emailPlaceholder": "staff@example.com",
+      "emailError": "Saisissez une adresse e-mail valide pour le personnel.",
+      "roleLabel": "Rôle",
+      "submitLabel": "Inviter le personnel",
+      "successMessage": "Les détails de l’invitation sont prêts pour le flux serveur.",
+      "roles": {
+        "admin": "Admin",
+        "manager": "Responsable",
+        "receptionist": "Réceptionniste",
+        "doctor": "Médecin"
+      }
     }
   },
   "patient": {
