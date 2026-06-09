@@ -4,8 +4,9 @@ import { describe, expect, it, vi } from "vitest";
 
 import { STAFF_MEMBER_ROLE } from "@/server/auth/consts";
 
+import type { StaffInvitationRoleOption } from "../../../types";
 import StaffInvitationForm from "..";
-import type { StaffInvitationFormContent, StaffInvitationRoleOption } from "../types";
+import type { StaffInvitationFormContent } from "../types";
 
 const content: StaffInvitationFormContent = {
   connectedLater: "Sending is connected in the next task.",
