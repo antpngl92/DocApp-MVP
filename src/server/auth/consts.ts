@@ -29,6 +29,35 @@ const OWNER_BOOTSTRAP_STATUS = {
   signedOut: "signed_out",
 } as const;
 
+const STAFF_MEMBER_ROLE = {
+  admin: "admin",
+  doctor: "doctor",
+  manager: "manager",
+  owner: "owner",
+  receptionist: "receptionist",
+} as const;
+
+const STAFF_MEMBER_STATUS = {
+  active: "active",
+  disabled: "disabled",
+  invited: "invited",
+  removed: "removed",
+} as const;
+
+const STAFF_ONBOARDING_AUDIT_ACTION = "staff_membership_activated";
+const STAFF_ONBOARDING_AUDIT_SOURCE = "clerk_invitation";
+const STAFF_ONBOARDING_AUDIT_TARGET_TYPE = "OrganizationMember";
+
+const STAFF_ONBOARDING_STATUS = {
+  activated: "activated",
+  alreadyActive: "already_active",
+  disabledOrRemoved: "disabled_or_removed",
+  emailMismatch: "email_mismatch",
+  missingLocalUser: "missing_local_user",
+  noPendingInvitation: "no_pending_invitation",
+  signedOut: "signed_out",
+} as const;
+
 export {
   CURRENT_AUTHENTICATED_USER_STATUS,
   OWNER_BOOTSTRAP_AUDIT_ACTION,
@@ -39,4 +68,10 @@ export {
   OWNER_BOOTSTRAP_METADATA_ROLE_KEY,
   OWNER_BOOTSTRAP_ROLE,
   OWNER_BOOTSTRAP_STATUS,
+  STAFF_MEMBER_ROLE,
+  STAFF_MEMBER_STATUS,
+  STAFF_ONBOARDING_AUDIT_ACTION,
+  STAFF_ONBOARDING_AUDIT_SOURCE,
+  STAFF_ONBOARDING_AUDIT_TARGET_TYPE,
+  STAFF_ONBOARDING_STATUS,
 };
