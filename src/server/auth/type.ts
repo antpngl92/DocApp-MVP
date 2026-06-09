@@ -3,6 +3,9 @@ import type {
   OWNER_BOOTSTRAP_MEMBERSHIP_STATUS,
   OWNER_BOOTSTRAP_ROLE,
   OWNER_BOOTSTRAP_STATUS,
+  STAFF_MEMBER_ROLE,
+  STAFF_MEMBER_STATUS,
+  STAFF_ONBOARDING_STATUS,
 } from "./consts";
 
 type LocalUserRecord = {
@@ -179,6 +182,70 @@ type BootstrapOwnerAdminMembershipOptions = {
   database?: OwnerBootstrapDatabase;
 };
 
+type StaffMemberRole = (typeof STAFF_MEMBER_ROLE)[keyof typeof STAFF_MEMBER_ROLE];
+type StaffMemberStatus = (typeof STAFF_MEMBER_STATUS)[keyof typeof STAFF_MEMBER_STATUS];
+type StaffOnboardingStatus = (typeof STAFF_ONBOARDING_STATUS)[keyof typeof STAFF_ONBOARDING_STATUS];
+
+type StaffOnboardingMembership = {
+  id: string;
+  invitedEmail: string | null;
+  organizationId: string;
+  role: string;
+  status: string;
+  userId: string | null;
+};
+
+type StaffOnboardingResult = {
+  membership: StaffOnboardingMembership | null;
+  status: StaffOnboardingStatus;
+};
+
+type StaffOnboardingDatabase = LocalUserLookupDatabase & {
+  auditEvent: {
+    create: (args: {
+      data: {
+        action: string;
+        actorUserId: string;
+        metadata: {
+          email: string;
+          role: StaffMemberRole;
+          source: string;
+        };
+        organizationId: string;
+        targetId: string;
+        targetType: string;
+      };
+    }) => Promise<unknown>;
+  };
+  organizationMember: {
+    findFirst: (args: {
+      where: {
+        invitedEmail: string;
+        status: typeof STAFF_MEMBER_STATUS.invited;
+      };
+    }) => Promise<StaffOnboardingMembership | null>;
+    findUnique: (args: {
+      where: {
+        userId: string;
+      };
+    }) => Promise<StaffOnboardingMembership | null>;
+    update: (args: {
+      data: {
+        status: typeof STAFF_MEMBER_STATUS.active;
+        userId: string;
+      };
+      where: {
+        id: string;
+      };
+    }) => Promise<StaffOnboardingMembership>;
+  };
+};
+
+type ActivateStaffInvitationOptions = {
+  authReader?: CurrentUserAuthReader;
+  database?: StaffOnboardingDatabase;
+};
+
 export type {
   AdminAccessMembership,
   AuthenticatedUserRecord,
@@ -201,4 +268,11 @@ export type {
   OwnerBootstrapRole,
   OwnerBootstrapStatus,
   RequireAdminAccessOptions,
+  ActivateStaffInvitationOptions,
+  StaffMemberRole,
+  StaffMemberStatus,
+  StaffOnboardingDatabase,
+  StaffOnboardingMembership,
+  StaffOnboardingResult,
+  StaffOnboardingStatus,
 };

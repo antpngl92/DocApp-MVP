@@ -9,6 +9,7 @@ import {
   OWNER_BOOTSTRAP_METADATA_ROLE_KEY,
   OWNER_BOOTSTRAP_ROLE,
   OWNER_BOOTSTRAP_STATUS,
+  STAFF_MEMBER_ROLE,
 } from "./consts";
 import type {
   ClerkBackendUser,
@@ -20,6 +21,7 @@ import type {
   OwnerBootstrapLocalUserInput,
   OwnerBootstrapResult,
   OwnerBootstrapRole,
+  StaffMemberRole,
 } from "./type";
 
 const isRecord = (value: unknown): value is Record<string, unknown> => {
@@ -28,6 +30,16 @@ const isRecord = (value: unknown): value is Record<string, unknown> => {
 
 const isOwnerBootstrapRole = (role: unknown): role is OwnerBootstrapRole => {
   return role === OWNER_BOOTSTRAP_ROLE.owner || role === OWNER_BOOTSTRAP_ROLE.admin;
+};
+
+const isStaffMemberRole = (role: unknown): role is StaffMemberRole => {
+  return (
+    role === STAFF_MEMBER_ROLE.owner ||
+    role === STAFF_MEMBER_ROLE.admin ||
+    role === STAFF_MEMBER_ROLE.manager ||
+    role === STAFF_MEMBER_ROLE.receptionist ||
+    role === STAFF_MEMBER_ROLE.doctor
+  );
 };
 
 const parseOwnerBootstrapRole = (privateMetadata: unknown): OwnerBootstrapRole | null => {
@@ -219,7 +231,9 @@ export {
   getDefaultOwnerBootstrapDatabase,
   hasDocAppBootstrapMetadata,
   isOwnerBootstrapRole,
+  isStaffMemberRole,
   mapClerkBackendUserToBootstrapProfile,
+  normalizeEmail,
   parseOwnerBootstrapRole,
   readClerkBootstrapProfile,
   readCurrentClerkAuth,

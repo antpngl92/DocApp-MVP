@@ -1,0 +1,134 @@
+import {
+  CURRENT_AUTHENTICATED_USER_STATUS,
+  STAFF_MEMBER_STATUS,
+  STAFF_ONBOARDING_AUDIT_ACTION,
+  STAFF_ONBOARDING_AUDIT_SOURCE,
+  STAFF_ONBOARDING_AUDIT_TARGET_TYPE,
+  STAFF_ONBOARDING_STATUS,
+} from "./consts";
+import { getCurrentAuthenticatedUser } from "./current-user";
+import type {
+  ActivateStaffInvitationOptions,
+  StaffOnboardingDatabase,
+  StaffOnboardingResult,
+} from "./type";
+import { isStaffMemberRole, normalizeEmail } from "./utils";
+
+const getDefaultStaffOnboardingDatabase = async (): Promise<StaffOnboardingDatabase> => {
+  const { prisma } = await import("@/lib/prisma");
+
+  return prisma;
+};
+
+const activateStaffInvitationForCurrentUser = async ({
+  authReader,
+  database,
+}: ActivateStaffInvitationOptions = {}): Promise<StaffOnboardingResult> => {
+  const staffOnboardingDatabase = database ?? (await getDefaultStaffOnboardingDatabase());
+  const currentUser = await getCurrentAuthenticatedUser({
+    authReader,
+    database: staffOnboardingDatabase,
+  });
+
+  if (currentUser.status === CURRENT_AUTHENTICATED_USER_STATUS.signedOut) {
+    return {
+      membership: null,
+      status: STAFF_ONBOARDING_STATUS.signedOut,
+    };
+  }
+
+  if (currentUser.status === CURRENT_AUTHENTICATED_USER_STATUS.missingLocalUser) {
+    return {
+      membership: null,
+      status: STAFF_ONBOARDING_STATUS.missingLocalUser,
+    };
+  }
+
+  const existingMembership = await staffOnboardingDatabase.organizationMember.findUnique({
+    where: {
+      userId: currentUser.user.id,
+    },
+  });
+
+  if (existingMembership?.status === STAFF_MEMBER_STATUS.active) {
+    return {
+      membership: existingMembership,
+      status: STAFF_ONBOARDING_STATUS.alreadyActive,
+    };
+  }
+
+  if (
+    existingMembership?.status === STAFF_MEMBER_STATUS.disabled ||
+    existingMembership?.status === STAFF_MEMBER_STATUS.removed
+  ) {
+    return {
+      membership: existingMembership,
+      status: STAFF_ONBOARDING_STATUS.disabledOrRemoved,
+    };
+  }
+
+  const normalizedEmail = normalizeEmail(currentUser.user.email);
+  const pendingInvitation = await staffOnboardingDatabase.organizationMember.findFirst({
+    where: {
+      invitedEmail: normalizedEmail,
+      status: STAFF_MEMBER_STATUS.invited,
+    },
+  });
+
+  if (!pendingInvitation) {
+    return {
+      membership: null,
+      status: STAFF_ONBOARDING_STATUS.noPendingInvitation,
+    };
+  }
+
+  if (
+    !pendingInvitation.invitedEmail ||
+    normalizeEmail(pendingInvitation.invitedEmail) !== normalizedEmail
+  ) {
+    return {
+      membership: pendingInvitation,
+      status: STAFF_ONBOARDING_STATUS.emailMismatch,
+    };
+  }
+
+  if (!isStaffMemberRole(pendingInvitation.role)) {
+    return {
+      membership: pendingInvitation,
+      status: STAFF_ONBOARDING_STATUS.noPendingInvitation,
+    };
+  }
+
+  const activatedMembership = await staffOnboardingDatabase.organizationMember.update({
+    data: {
+      status: STAFF_MEMBER_STATUS.active,
+      userId: currentUser.user.id,
+    },
+    where: {
+      id: pendingInvitation.id,
+    },
+  });
+
+  await staffOnboardingDatabase.auditEvent.create({
+    data: {
+      action: STAFF_ONBOARDING_AUDIT_ACTION,
+      actorUserId: currentUser.user.id,
+      metadata: {
+        email: normalizedEmail,
+        role: pendingInvitation.role,
+        source: STAFF_ONBOARDING_AUDIT_SOURCE,
+      },
+      organizationId: pendingInvitation.organizationId,
+      targetId: pendingInvitation.id,
+      targetType: STAFF_ONBOARDING_AUDIT_TARGET_TYPE,
+    },
+  });
+
+  return {
+    membership: activatedMembership,
+    status: STAFF_ONBOARDING_STATUS.activated,
+  };
+};
+
+export { activateStaffInvitationForCurrentUser, getDefaultStaffOnboardingDatabase };
+export type { ActivateStaffInvitationOptions, StaffOnboardingDatabase, StaffOnboardingResult };

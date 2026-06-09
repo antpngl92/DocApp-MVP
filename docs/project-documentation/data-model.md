@@ -131,6 +131,8 @@ The MVP deployment supports one clinic. A linked local `User` should have at mos
 
 Patients are not organization members. Patient access is represented through `PatientProfile` and patient-owned appointment records.
 
+Staff invitation activation links a synced local `User` to an invited `OrganizationMember` only when the signed-in user's normalized email matches the pending invited email and the pending membership has `status = invited`. Activation changes the membership to `active` and audits the transition. Local membership remains the source of truth; Clerk invitation acceptance alone does not grant access.
+
 For staff invitations, the implementation may either use a separate `StaffInvitation` / `OrganizationInvitation` model later or represent pending access through `OrganizationMember.status = invited`.
 
 Suggested invitation tracking fields:

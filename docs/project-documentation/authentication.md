@@ -190,6 +190,14 @@ Recommended flow:
 
 A staff member with role `doctor` may also be linked to a `Doctor` operational profile when that person is a bookable provider. Receptionists, managers, and other non-doctor staff normally need only the `OrganizationMember` record unless the product later adds a separate operational profile for them.
 
+Implemented MVP foundation:
+
+- After a staff user accepts a Clerk invitation and the Clerk webhook has synced a local `User`, server-side onboarding can activate the pending local `OrganizationMember`.
+- Activation requires a signed-in Clerk session, an existing local `User`, a pending local membership with `status = invited`, and a normalized invited email matching the local user email.
+- Activation links `OrganizationMember.userId` to the local user, changes membership status to `active`, and writes an audit event.
+- If the user is signed out, missing locally, already active, disabled/removed, missing a pending invitation, mismatched by email, or assigned an invalid role, staff access is not activated.
+- A regular patient account with no pending local invitation remains a patient-only account and receives no clinic-side staff access.
+
 Implementation note:
 
 ```ts
