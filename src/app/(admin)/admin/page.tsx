@@ -1,4 +1,5 @@
 import { LocalizedFoundationOverview } from "@/features/app-foundation/components";
+import { createStaffInvitationAction } from "@/features/staff/actions";
 import { ADMIN_PANEL_DEFINITIONS } from "@/features/app-foundation/constants";
 import { StaffInvitationForm } from "@/features/staff/components";
 import { getStaffInvitationRoleOptions } from "@/features/staff/utils";
@@ -17,9 +18,11 @@ const AdminPage = async () => {
           emailLabel: t("emailLabel"),
           emailPlaceholder: t("emailPlaceholder"),
           roleLabel: t("roleLabel"),
+          serverError: t("serverError"),
           submitLabel: t("submitLabel"),
           successMessage: t("successMessage"),
         }}
+        onInvite={createStaffInvitationAction}
         roleOptions={getStaffInvitationRoleOptions((role) => t(`roles.${role}`))}
       />
     </div>

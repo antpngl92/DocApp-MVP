@@ -1,10 +1,12 @@
 import type {
   CURRENT_AUTHENTICATED_USER_STATUS,
+  ORGANIZATION_STATUS,
   OWNER_BOOTSTRAP_MEMBERSHIP_STATUS,
   OWNER_BOOTSTRAP_ROLE,
   OWNER_BOOTSTRAP_STATUS,
   STAFF_MEMBER_ROLE,
   STAFF_MEMBER_STATUS,
+  STAFF_INVITATION_RESULT_STATUS,
   STAFF_ONBOARDING_STATUS,
 } from "./consts";
 
@@ -186,6 +188,68 @@ type StaffMemberRole = (typeof STAFF_MEMBER_ROLE)[keyof typeof STAFF_MEMBER_ROLE
 type StaffMemberStatus = (typeof STAFF_MEMBER_STATUS)[keyof typeof STAFF_MEMBER_STATUS];
 type StaffOnboardingStatus = (typeof STAFF_ONBOARDING_STATUS)[keyof typeof STAFF_ONBOARDING_STATUS];
 
+type StaffInvitationResultStatus =
+  (typeof STAFF_INVITATION_RESULT_STATUS)[keyof typeof STAFF_INVITATION_RESULT_STATUS];
+
+type StaffInvitationOrganization = {
+  id: string;
+};
+
+type StaffInvitationMembership = {
+  role: string;
+  status: string;
+};
+
+type StaffInvitationResult = {
+  clerkInvitationId: string | null;
+  organizationId: string | null;
+  status: StaffInvitationResultStatus;
+};
+
+type StaffInvitationCreateInput = {
+  email: string;
+  role: StaffMemberRole;
+};
+
+type ClerkInvitationCreateInput = {
+  emailAddress: string;
+  redirectUrl: string;
+};
+
+type ClerkInvitationCreateResult = {
+  id?: string | null;
+};
+
+type ClerkInvitationCreator = (
+  input: ClerkInvitationCreateInput,
+) => Promise<ClerkInvitationCreateResult>;
+
+type StaffInvitationDatabase = LocalUserLookupDatabase & {
+  organization: {
+    findFirst: (args: {
+      orderBy: {
+        createdAt: "asc";
+      };
+      where: {
+        status: typeof ORGANIZATION_STATUS.active;
+      };
+    }) => Promise<StaffInvitationOrganization | null>;
+  };
+  organizationMember: {
+    findUnique: (args: {
+      where: {
+        userId: string;
+      };
+    }) => Promise<StaffInvitationMembership | null>;
+  };
+};
+
+type CreateStaffInvitationOptions = StaffInvitationCreateInput & {
+  authReader?: CurrentUserAuthReader;
+  database?: StaffInvitationDatabase;
+  invitationCreator?: ClerkInvitationCreator;
+};
+
 type StaffOnboardingMembership = {
   id: string;
   invitedEmail: string | null;
@@ -271,6 +335,11 @@ export type {
   ActivateStaffInvitationOptions,
   StaffMemberRole,
   StaffMemberStatus,
+  ClerkInvitationCreator,
+  CreateStaffInvitationOptions,
+  StaffInvitationDatabase,
+  StaffInvitationResult,
+  StaffInvitationResultStatus,
   StaffOnboardingDatabase,
   StaffOnboardingMembership,
   StaffOnboardingResult,

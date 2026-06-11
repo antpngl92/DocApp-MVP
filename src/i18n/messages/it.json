@@ -102,26 +102,27 @@
       },
       "configuration": {
         "title": "Configurazione clinica",
-        "description": "Le impostazioni resteranno limitate all?organizzazione e protette da autorizzazioni di accesso.",
+        "description": "Le impostazioni resteranno limitate all’organizzazione e protette da autorizzazioni di accesso.",
         "item1": "Servizi e risorse",
         "item2": "Regole di disponibilità",
         "item3": "Permessi di accesso"
       }
     },
     "staffInvitation": {
-      "connectedLater": "Prepara un invito per lo staff. Invio e registrazione dell’appartenenza saranno collegati nel prossimo task.",
+      "connectedLater": "Invia un invito allo staff tramite il flusso server sicuro.",
       "emailLabel": "Email dello staff",
       "emailPlaceholder": "staff@example.com",
       "emailError": "Inserisci un indirizzo email valido dello staff.",
       "roleLabel": "Ruolo",
       "submitLabel": "Invita staff",
-      "successMessage": "I dettagli dell’invito sono pronti per il flusso server.",
+      "successMessage": "Invito inviato.",
       "roles": {
         "admin": "Admin",
         "manager": "Manager",
         "receptionist": "Receptionist",
         "doctor": "Dottore"
-      }
+      },
+      "serverError": "Non è stato possibile inviare l’invito. Controlla l’email e riprova."
     }
   },
   "patient": {

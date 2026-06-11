@@ -109,19 +109,20 @@
       }
     },
     "staffInvitation": {
-      "connectedLater": "Prepare a staff invitation. Sending and membership storage are connected in the next task.",
+      "connectedLater": "Send a staff invitation through the secure server flow.",
       "emailLabel": "Staff email",
       "emailPlaceholder": "staff@example.com",
       "emailError": "Enter a valid staff email address.",
       "roleLabel": "Role",
       "submitLabel": "Invite staff",
-      "successMessage": "Invitation details are ready for the server invitation flow.",
+      "successMessage": "Invitation sent.",
       "roles": {
         "admin": "Admin",
         "manager": "Manager",
         "receptionist": "Receptionist",
         "doctor": "Doctor"
-      }
+      },
+      "serverError": "The invitation could not be sent. Check the email and try again."
     }
   },
   "patient": {

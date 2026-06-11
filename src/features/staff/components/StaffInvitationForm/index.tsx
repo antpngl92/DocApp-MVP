@@ -3,23 +3,24 @@
 import { MailPlus } from "lucide-react";
 import { useId, useState } from "react";
 
+import { DEFAULT_STAFF_INVITATION_ROLE, STAFF_INVITATION_EMAIL_PATTERN } from "./constants";
 import type { StaffInvitationFormProps, StaffInvitationFormSubmitPayload } from "./types";
-
-const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const StaffInvitationForm = ({ content, onInvite, roleOptions }: StaffInvitationFormProps) => {
   const emailId = useId();
   const roleId = useId();
   const [email, setEmail] = useState("");
-  const [role, setRole] = useState(roleOptions[0]?.value ?? "receptionist");
+  const [role, setRole] = useState(roleOptions[0]?.value ?? DEFAULT_STAFF_INVITATION_ROLE);
   const [emailError, setEmailError] = useState<string | null>(null);
+  const [serverError, setServerError] = useState<string | null>(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const normalizedEmail = email.trim().toLowerCase();
 
-    if (!EMAIL_PATTERN.test(normalizedEmail)) {
+    if (!STAFF_INVITATION_EMAIL_PATTERN.test(normalizedEmail)) {
       setIsSubmitted(false);
       setEmailError(content.emailError);
       return;
@@ -31,8 +32,18 @@ const StaffInvitationForm = ({ content, onInvite, roleOptions }: StaffInvitation
     };
 
     setEmailError(null);
-    await onInvite?.(payload);
-    setIsSubmitted(true);
+    setServerError(null);
+    setIsSubmitting(true);
+
+    try {
+      await onInvite?.(payload);
+      setIsSubmitted(true);
+    } catch {
+      setIsSubmitted(false);
+      setServerError(content.serverError);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -66,6 +77,7 @@ const StaffInvitationForm = ({ content, onInvite, roleOptions }: StaffInvitation
             onChange={(event) => {
               setEmail(event.target.value);
               setEmailError(null);
+              setServerError(null);
               setIsSubmitted(false);
             }}
             placeholder={content.emailPlaceholder}
@@ -88,6 +100,7 @@ const StaffInvitationForm = ({ content, onInvite, roleOptions }: StaffInvitation
             id={roleId}
             onChange={(event) => {
               setRole(event.target.value as typeof role);
+              setServerError(null);
               setIsSubmitted(false);
             }}
             value={role}
@@ -103,12 +116,19 @@ const StaffInvitationForm = ({ content, onInvite, roleOptions }: StaffInvitation
         <div className="flex items-end">
           <button
             className="inline-flex min-h-11 w-full items-center justify-center rounded-md bg-[var(--primary)] px-4 text-sm font-bold text-white transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-200 sm:w-auto"
+            disabled={isSubmitting}
             type="submit"
           >
             {content.submitLabel}
           </button>
         </div>
       </form>
+
+      {serverError ? (
+        <p className="mt-4 rounded-md bg-red-50 px-3 py-2 text-sm font-medium text-red-700">
+          {serverError}
+        </p>
+      ) : null}
 
       {isSubmitted ? (
         <p className="mt-4 rounded-md bg-blue-50 px-3 py-2 text-sm font-medium text-[var(--primary)]">

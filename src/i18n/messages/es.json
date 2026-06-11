@@ -102,36 +102,37 @@
       },
       "configuration": {
         "title": "Configuración de la clínica",
-        "description": "La configuraci?n estar? limitada a la organizaci?n y protegida por permisos de acceso.",
+        "description": "La configuración estará limitada a la organización y protegida por permisos de acceso.",
         "item1": "Servicios y recursos",
         "item2": "Reglas de disponibilidad",
         "item3": "Permisos de acceso"
       }
     },
     "staffInvitation": {
-      "connectedLater": "Prepara una invitación para el personal. El envío y el registro de membresía se conectarán en la siguiente tarea.",
+      "connectedLater": "Envía una invitación al personal mediante el flujo seguro del servidor.",
       "emailLabel": "Email del personal",
       "emailPlaceholder": "staff@example.com",
       "emailError": "Introduce un email válido del personal.",
       "roleLabel": "Rol",
       "submitLabel": "Invitar personal",
-      "successMessage": "Los datos de la invitación están listos para el flujo del servidor.",
+      "successMessage": "Invitación enviada.",
       "roles": {
         "admin": "Administrador",
         "manager": "Gerente",
         "receptionist": "Recepcionista",
         "doctor": "Doctor"
-      }
+      },
+      "serverError": "No se pudo enviar la invitación. Revisa el correo e inténtalo de nuevo."
     }
   },
   "patient": {
     "eyebrow": "Cuenta",
     "title": "Tus citas",
-    "description": "Esta ?rea est? preparada para detalles de citas, estado y solicitudes de cancelaci?n.",
+    "description": "Esta área está preparada para detalles de citas, estado y solicitudes de cancelación.",
     "panels": {
       "appointments": {
         "title": "Citas",
-        "description": "Esta ?rea es solo para gestionar citas.",
+        "description": "Esta área es solo para gestionar citas.",
         "item1": "Citas próximas y pasadas",
         "item2": "Estado del depósito y saldo",
         "item3": "Política de cancelación"
@@ -159,7 +160,7 @@
       },
       "product": {
         "title": "Soporte de DocApp",
-        "description": "Las cl?nicas pueden contactar con DocApp para recibir ayuda con el producto.",
+        "description": "Las clínicas pueden contactar con DocApp para recibir ayuda con el producto.",
         "item1": "Acceso a la cuenta",
         "item2": "Problemas de sincronización del calendario",
         "item3": "Soporte piloto"
