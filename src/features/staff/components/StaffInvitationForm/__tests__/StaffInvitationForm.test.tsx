@@ -14,8 +14,9 @@ const content: StaffInvitationFormContent = {
   emailLabel: "Staff email",
   emailPlaceholder: "staff@example.com",
   roleLabel: "Role",
+  serverError: "The invitation could not be sent.",
   submitLabel: "Invite staff",
-  successMessage: "Invitation details are ready.",
+  successMessage: "Invitation sent.",
 };
 
 const roleOptions: readonly StaffInvitationRoleOption[] = [
@@ -53,7 +54,7 @@ describe("StaffInvitationForm", () => {
 
   it("submits normalized email and selected role to the handler", async () => {
     const user = userEvent.setup();
-    const onInvite = vi.fn();
+    const onInvite = vi.fn().mockResolvedValue(undefined);
 
     render(<StaffInvitationForm content={content} onInvite={onInvite} roleOptions={roleOptions} />);
 
@@ -65,7 +66,20 @@ describe("StaffInvitationForm", () => {
       email: "reception@example.com",
       role: STAFF_MEMBER_ROLE.doctor,
     });
-    expect(screen.getByText("Invitation details are ready.")).toBeInTheDocument();
+    expect(screen.getByText("Invitation sent.")).toBeInTheDocument();
+  });
+
+  it("shows a user-safe error when server invitation fails", async () => {
+    const user = userEvent.setup();
+    const onInvite = vi.fn().mockRejectedValue(new Error("Clerk failed"));
+
+    render(<StaffInvitationForm content={content} onInvite={onInvite} roleOptions={roleOptions} />);
+
+    await user.type(screen.getByLabelText("Staff email"), "staff@example.com");
+    await user.click(screen.getByRole("button", { name: "Invite staff" }));
+
+    expect(screen.getByText("The invitation could not be sent.")).toBeInTheDocument();
+    expect(screen.queryByText("Invitation sent.")).not.toBeInTheDocument();
   });
 
   it("does not expose patient or owner self-registration content", () => {

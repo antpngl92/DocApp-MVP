@@ -197,20 +197,21 @@ Implemented MVP foundation:
 - Activation links `OrganizationMember.userId` to the local user, changes membership status to `active`, and writes an audit event.
 - If the user is signed out, missing locally, already active, disabled/removed, missing a pending invitation, mismatched by email, or assigned an invalid role, staff access is not activated.
 - A regular patient account with no pending local invitation remains a patient-only account and receives no clinic-side staff access.
-- The admin overview includes the staff invitation form shell with a staff email field and role dropdown. It validates input locally, but invitation sending and persistence are connected in the following server-only invitation task.
+- The admin overview includes the staff invitation form with a staff email field and role dropdown. It validates input locally and submits through a server action.
 - Staff invitation role options are centralized and intentionally limited to `admin`, `manager`, `receptionist`, and `doctor`; `owner` is not exposed as a selectable invitation role.
+- The staff invitation server action validates the signed-in local user, active owner/admin membership, active local organization, invite email, and inviteable role before calling Clerk.
+- The staff invitation server action uses Clerk's Backend API `clerkClient().invitations.createInvitation` from `@clerk/nextjs/server`. This must remain server-only because it depends on the Clerk secret key.
+- The invitation `redirectUrl` must be an absolute application URL built from `NEXT_PUBLIC_APP_URL` and `NEXT_PUBLIC_CLERK_SIGN_UP_URL`. A relative path is resolved against Clerk's Account Portal domain, so the invitation email would send staff to the hosted portal sign-up instead of the app's sign-up page.
+- This branch sends the Clerk invitation email. Persisting the returned Clerk invitation ID/status and passing non-authoritative metadata are handled by the following invitation persistence tasks.
 
 Implementation note:
 
 ```ts
 await clerkClient.invitations.createInvitation({
   emailAddress: staffEmail,
-  redirectUrl: "/sign-up",
-  publicMetadata: {
-    organizationId,
-    membershipId,
-    intendedRole,
-  },
+  // Absolute URL from NEXT_PUBLIC_APP_URL + NEXT_PUBLIC_CLERK_SIGN_UP_URL,
+  // e.g. http://localhost:3000/sign-up in development.
+  redirectUrl: staffInvitationRedirectUrl,
 });
 ```
 

@@ -1,5 +1,7 @@
 import { auth, clerkClient } from "@clerk/nextjs/server";
 
+import { parsePublicEnv } from "@/lib/env";
+
 import {
   OWNER_BOOTSTRAP_AUDIT_ACTION,
   OWNER_BOOTSTRAP_AUDIT_SOURCE,
@@ -21,6 +23,7 @@ import type {
   OwnerBootstrapLocalUserInput,
   OwnerBootstrapResult,
   OwnerBootstrapRole,
+  ClerkInvitationCreator,
   StaffMemberRole,
 } from "./type";
 
@@ -127,6 +130,12 @@ const getDefaultOwnerBootstrapDatabase = async (): Promise<OwnerBootstrapDatabas
   return prisma;
 };
 
+const getDefaultStaffInvitationDatabase = async () => {
+  const { prisma } = await import("@/lib/prisma");
+
+  return prisma;
+};
+
 const readCurrentClerkAuth = async () => {
   return auth();
 };
@@ -136,6 +145,28 @@ const readClerkBootstrapProfile: ClerkBootstrapProfileReader = async (clerkUserI
   const user = await client.users.getUser(clerkUserId);
 
   return mapClerkBackendUserToBootstrapProfile(user);
+};
+
+const getStaffInvitationRedirectUrl = (
+  env: Record<string, string | undefined> = process.env,
+): string => {
+  const publicEnv = parsePublicEnv(env);
+
+  // Clerk resolves relative redirect paths against its own Account Portal
+  // domain, so the invitation link must carry an absolute app URL.
+  return new URL(
+    publicEnv.NEXT_PUBLIC_CLERK_SIGN_UP_URL,
+    publicEnv.NEXT_PUBLIC_APP_URL,
+  ).toString();
+};
+
+const createClerkStaffInvitation: ClerkInvitationCreator = async (input) => {
+  const client = await clerkClient();
+
+  return client.invitations.createInvitation({
+    emailAddress: input.emailAddress,
+    redirectUrl: input.redirectUrl,
+  });
 };
 
 const upsertLocalUserFromClerkProfile = async (
@@ -227,8 +258,11 @@ const createOwnerAdminMembership = async ({
 
 export {
   createOwnerAdminMembership,
+  createClerkStaffInvitation,
   getDefaultLocalUserLookupDatabase,
   getDefaultOwnerBootstrapDatabase,
+  getDefaultStaffInvitationDatabase,
+  getStaffInvitationRedirectUrl,
   hasDocAppBootstrapMetadata,
   isOwnerBootstrapRole,
   isStaffMemberRole,

@@ -1,3 +1,5 @@
+import { EMAIL_PATTERN } from "@/lib/validation";
+
 const CURRENT_AUTHENTICATED_USER_STATUS = {
   authenticated: "authenticated",
   missingLocalUser: "missing_local_user",
@@ -58,6 +60,20 @@ const STAFF_ONBOARDING_STATUS = {
   signedOut: "signed_out",
 } as const;
 
+const ORGANIZATION_STATUS = {
+  active: "active",
+} as const;
+
+const STAFF_INVITATION_EMAIL_PATTERN = EMAIL_PATTERN;
+
+const STAFF_INVITATION_RESULT_STATUS = {
+  invalidEmail: "invalid_email",
+  invalidRole: "invalid_role",
+  noActiveOrganization: "no_active_organization",
+  sent: "sent",
+  unauthorized: "unauthorized",
+} as const;
+
 export {
   CURRENT_AUTHENTICATED_USER_STATUS,
   OWNER_BOOTSTRAP_AUDIT_ACTION,
@@ -66,10 +82,13 @@ export {
   OWNER_BOOTSTRAP_MEMBERSHIP_STATUS,
   OWNER_BOOTSTRAP_METADATA_NAMESPACE,
   OWNER_BOOTSTRAP_METADATA_ROLE_KEY,
+  ORGANIZATION_STATUS,
   OWNER_BOOTSTRAP_ROLE,
   OWNER_BOOTSTRAP_STATUS,
   STAFF_MEMBER_ROLE,
   STAFF_MEMBER_STATUS,
+  STAFF_INVITATION_EMAIL_PATTERN,
+  STAFF_INVITATION_RESULT_STATUS,
   STAFF_ONBOARDING_AUDIT_ACTION,
   STAFF_ONBOARDING_AUDIT_SOURCE,
   STAFF_ONBOARDING_AUDIT_TARGET_TYPE,

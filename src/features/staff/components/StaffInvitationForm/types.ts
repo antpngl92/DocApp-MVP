@@ -6,6 +6,7 @@ type StaffInvitationFormContent = Readonly<{
   emailLabel: string;
   emailPlaceholder: string;
   roleLabel: string;
+  serverError: string;
   submitLabel: string;
   successMessage: string;
 }>;
@@ -17,7 +18,7 @@ type StaffInvitationFormSubmitPayload = Readonly<{
 
 type StaffInvitationFormProps = Readonly<{
   content: StaffInvitationFormContent;
-  onInvite?: (payload: StaffInvitationFormSubmitPayload) => void | Promise<void>;
+  onInvite?: (payload: StaffInvitationFormSubmitPayload) => Promise<void>;
   roleOptions: readonly StaffInvitationRoleOption[];
 }>;
 

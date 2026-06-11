@@ -7,18 +7,21 @@ import {
 } from "../consts";
 import type { LocalUserRecord, OwnerBootstrapDatabase } from "../type";
 import {
+  createClerkStaffInvitation,
   createOwnerAdminMembership,
   getDefaultOwnerBootstrapDatabase,
+  getStaffInvitationRedirectUrl,
+  hasDocAppBootstrapMetadata,
   mapClerkBackendUserToBootstrapProfile,
+  parseOwnerBootstrapRole,
   readClerkBootstrapProfile,
   readCurrentClerkAuth,
   upsertLocalUserFromClerkProfile,
-  parseOwnerBootstrapRole,
-  hasDocAppBootstrapMetadata,
 } from "../utils";
 
 const clerkMocks = vi.hoisted(() => ({
   auth: vi.fn(),
+  createInvitation: vi.fn(),
   getUser: vi.fn(),
 }));
 
@@ -44,6 +47,9 @@ const prismaMock = vi.hoisted(() => ({
 vi.mock("@clerk/nextjs/server", () => ({
   auth: clerkMocks.auth,
   clerkClient: vi.fn(async () => ({
+    invitations: {
+      createInvitation: clerkMocks.createInvitation,
+    },
     users: {
       getUser: clerkMocks.getUser,
     },
@@ -154,6 +160,35 @@ describe("auth utils", () => {
         name: "Clinic Owner",
       },
     });
+  });
+
+  it("creates a Clerk staff invitation through the Backend API", async () => {
+    clerkMocks.createInvitation.mockResolvedValueOnce({ id: "inv_123" });
+
+    await expect(
+      createClerkStaffInvitation({
+        emailAddress: "staff@example.com",
+        redirectUrl: "http://localhost:3000/sign-up",
+      }),
+    ).resolves.toEqual({ id: "inv_123" });
+
+    expect(clerkMocks.createInvitation).toHaveBeenCalledWith({
+      emailAddress: "staff@example.com",
+      redirectUrl: "http://localhost:3000/sign-up",
+    });
+  });
+
+  it("builds an absolute staff invitation redirect URL from the public app URL", () => {
+    expect(
+      getStaffInvitationRedirectUrl({
+        NEXT_PUBLIC_APP_URL: "https://clinic.example.com",
+        NEXT_PUBLIC_CLERK_SIGN_UP_URL: "/join",
+      }),
+    ).toBe("https://clinic.example.com/join");
+  });
+
+  it("falls back to the default app URL and sign-up route for the redirect URL", () => {
+    expect(getStaffInvitationRedirectUrl({})).toBe("http://localhost:3000/sign-up");
   });
 
   it("maps Clerk profile names to null when no display name is available", () => {
