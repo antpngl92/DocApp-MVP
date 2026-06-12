@@ -105,6 +105,8 @@ Suggested fields:
 - role
 - status
 - invitedEmail
+- clerkInvitationId, nullable and unique, stores the Clerk Backend API invitation ID
+- clerkInvitationStatus, nullable, mirrors the Clerk invitation lifecycle (`pending`, `accepted`, `revoked`, `expired`)
 - createdAt
 - updatedAt
 
@@ -131,9 +133,11 @@ The MVP deployment supports one clinic. A linked local `User` should have at mos
 
 Patients are not organization members. Patient access is represented through `PatientProfile` and patient-owned appointment records.
 
-Staff invitation activation links a synced local `User` to an invited `OrganizationMember` only when the signed-in user's normalized email matches the pending invited email and the pending membership has `status = invited`. Activation changes the membership to `active` and audits the transition. Local membership remains the source of truth; Clerk invitation acceptance alone does not grant access.
+Staff invitation activation links a synced local `User` to an invited `OrganizationMember` only when the signed-in user's normalized email matches the pending invited email and the pending membership has `status = invited`. Activation runs after Clerk authentication when the user reaches a protected app surface. Activation changes the membership to `active`, changes `clerkInvitationStatus` to `accepted`, and audits the transition. Local membership remains the source of truth; Clerk invitation acceptance alone does not grant access.
 
-For staff invitations, the implementation may either use a separate `StaffInvitation` / `OrganizationInvitation` model later or represent pending access through `OrganizationMember.status = invited`.
+For staff invitations, the implemented MVP foundation represents pending access through `OrganizationMember.status = invited` and stores the Clerk invitation ID and mirrored status on the same record. A separate `StaffInvitation` / `OrganizationInvitation` model remains a possible later refactor.
+
+Sending a staff invitation creates the pending membership with the normalized invited email, intended role, and `status = invited`, then stores the returned `clerkInvitationId` with `clerkInvitationStatus = pending` and writes an audit event. If the Clerk invitation call fails, the pending membership is removed so the email is not blocked from re-invites. An email that already has an `invited` or `active` membership in the organization is rejected before calling Clerk and protected by a database partial unique index on active/invited membership email per organization.
 
 Suggested invitation tracking fields:
 

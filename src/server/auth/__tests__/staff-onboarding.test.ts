@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 
 import {
+  CLERK_INVITATION_STATUS,
   STAFF_MEMBER_ROLE,
   STAFF_MEMBER_STATUS,
   STAFF_ONBOARDING_AUDIT_ACTION,
@@ -50,6 +51,8 @@ const createMembership = (
   overrides: Partial<StaffOnboardingMembership> = {},
 ): StaffOnboardingMembership => {
   return {
+    clerkInvitationId: "inv_123",
+    clerkInvitationStatus: CLERK_INVITATION_STATUS.pending,
     id: "member_123",
     invitedEmail: "staff@example.com",
     organizationId: "org_123",
@@ -105,6 +108,8 @@ describe("activateStaffInvitationForCurrentUser", () => {
       }),
     ).resolves.toEqual({
       membership: {
+        clerkInvitationId: "inv_123",
+        clerkInvitationStatus: CLERK_INVITATION_STATUS.accepted,
         id: "member_123",
         invitedEmail: "staff@example.com",
         organizationId: "org_123",
@@ -123,6 +128,7 @@ describe("activateStaffInvitationForCurrentUser", () => {
     });
     expect(database.organizationMember.update).toHaveBeenCalledWith({
       data: {
+        clerkInvitationStatus: CLERK_INVITATION_STATUS.accepted,
         status: STAFF_MEMBER_STATUS.active,
         userId: localUser.id,
       },

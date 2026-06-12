@@ -1,4 +1,5 @@
 import { PatientShell } from "@/components/layout";
+import { activateStaffInvitationForCurrentUser } from "@/server/auth/staff-onboarding";
 import { requireAuthenticatedSession } from "@/server/auth/session";
 
 type PatientLayoutProps = Readonly<{
@@ -7,6 +8,7 @@ type PatientLayoutProps = Readonly<{
 
 const PatientLayout = async ({ children }: PatientLayoutProps) => {
   await requireAuthenticatedSession();
+  await activateStaffInvitationForCurrentUser();
 
   return <PatientShell>{children}</PatientShell>;
 };

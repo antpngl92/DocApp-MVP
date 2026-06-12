@@ -9,7 +9,7 @@ import { SITE_CONFIG } from "@/config/site";
 
 import type { AppHeaderProps } from "./types";
 
-const AppHeader = async ({ contextLabel, navigation }: AppHeaderProps) => {
+const AppHeader = async ({ contextLabel, currentUserName, navigation }: AppHeaderProps) => {
   const t = await getTranslations("navigation");
 
   return (
@@ -36,6 +36,11 @@ const AppHeader = async ({ contextLabel, navigation }: AppHeaderProps) => {
         </Link>
 
         <div className="ml-auto flex items-center gap-1 sm:gap-2">
+          {currentUserName ? (
+            <span className="max-w-36 truncate px-2 text-sm font-semibold text-[var(--text-strong)] sm:max-w-48 sm:px-3">
+              {currentUserName}
+            </span>
+          ) : null}
           <nav aria-label={t("primaryLabel")}>
             <ul className="flex items-center gap-1 sm:gap-2">
               {navigation.map((item) => (

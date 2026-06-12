@@ -4,7 +4,12 @@ import { describe, expect, it, vi } from "vitest";
 import PatientLayout from "../layout";
 
 const sessionBoundary = vi.hoisted(() => ({
+  activateStaffInvitationForCurrentUser: vi.fn(),
   requireAuthenticatedSession: vi.fn(),
+}));
+
+vi.mock("@/server/auth/staff-onboarding", () => ({
+  activateStaffInvitationForCurrentUser: sessionBoundary.activateStaffInvitationForCurrentUser,
 }));
 
 vi.mock("@/server/auth/session", () => ({
@@ -31,6 +36,7 @@ describe("PatientLayout", () => {
     );
 
     expect(sessionBoundary.requireAuthenticatedSession).toHaveBeenCalledTimes(1);
+    expect(sessionBoundary.activateStaffInvitationForCurrentUser).toHaveBeenCalledTimes(1);
     expect(screen.getByTestId("patient-shell")).toHaveTextContent("Account content");
   });
 });

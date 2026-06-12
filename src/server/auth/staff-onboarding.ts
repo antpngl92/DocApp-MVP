@@ -1,4 +1,5 @@
 import {
+  CLERK_INVITATION_STATUS,
   CURRENT_AUTHENTICATED_USER_STATUS,
   STAFF_MEMBER_STATUS,
   STAFF_ONBOARDING_AUDIT_ACTION,
@@ -101,6 +102,7 @@ const activateStaffInvitationForCurrentUser = async ({
 
   const activatedMembership = await staffOnboardingDatabase.organizationMember.update({
     data: {
+      clerkInvitationStatus: CLERK_INVITATION_STATUS.accepted,
       status: STAFF_MEMBER_STATUS.active,
       userId: currentUser.user.id,
     },

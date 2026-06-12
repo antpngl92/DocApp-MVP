@@ -1,9 +1,10 @@
 import { render, screen } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import AdminLayout from "../layout";
 
 const sessionBoundary = vi.hoisted(() => ({
+  activateStaffInvitationForCurrentUser: vi.fn(),
   bootstrapOwnerAdminMembershipFromClerkPrivateMetadata: vi.fn(),
   requireOwnerAdminAccess: vi.fn(),
   requireAuthenticatedSession: vi.fn(),
@@ -22,6 +23,10 @@ vi.mock("@/server/auth/session", () => ({
   requireAuthenticatedSession: sessionBoundary.requireAuthenticatedSession,
 }));
 
+vi.mock("@/server/auth/staff-onboarding", () => ({
+  activateStaffInvitationForCurrentUser: sessionBoundary.activateStaffInvitationForCurrentUser,
+}));
+
 vi.mock("@/components/layout", () => ({
   AdminShell: ({ children }: { children: React.ReactNode }) => (
     <div data-testid="admin-shell">{children}</div>
@@ -29,6 +34,10 @@ vi.mock("@/components/layout", () => ({
 }));
 
 describe("AdminLayout", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
   it("requires an authenticated session before rendering admin content", async () => {
     sessionBoundary.requireAuthenticatedSession.mockResolvedValueOnce({
       sessionId: "session_123",
@@ -52,6 +61,7 @@ describe("AdminLayout", () => {
     );
 
     expect(sessionBoundary.requireAuthenticatedSession).toHaveBeenCalledTimes(1);
+    expect(sessionBoundary.activateStaffInvitationForCurrentUser).toHaveBeenCalledTimes(1);
     expect(
       sessionBoundary.bootstrapOwnerAdminMembershipFromClerkPrivateMetadata,
     ).toHaveBeenCalledTimes(1);
@@ -85,5 +95,7 @@ describe("AdminLayout", () => {
         children: <div>Admin content</div>,
       }),
     ).rejects.toThrow("NEXT_NOT_FOUND");
+
+    expect(sessionBoundary.activateStaffInvitationForCurrentUser).toHaveBeenCalledTimes(1);
   });
 });

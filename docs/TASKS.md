@@ -116,7 +116,7 @@ Complete tasks from top to bottom and one approved task/branch at a time. Do not
 - [x] Build owner/admin staff invitation form with staff email input and role dropdown.
 - [x] Allow owner/admin to choose staff role during invitation, such as admin, manager, receptionist, or doctor.
 - [x] Create staff invitation from a server-only action/route using Clerk Backend API `clerkClient.invitations.createInvitation`.
-- [ ] Store Clerk invitation ID/status alongside the pending local invitation or membership record.
+- [x] Store Clerk invitation ID/status alongside the pending local invitation or membership record.
 - [ ] Pass only non-authoritative references such as organization ID, membership/invitation ID, and intended role in Clerk invitation metadata.
 - [ ] Support staff roles through local `OrganizationMember` state, including manager, receptionist, doctor, admin, and owner where applicable.
 - [ ] Link a staff user with role `doctor` to a `Doctor` operational profile when that staff member is a bookable provider.
@@ -422,6 +422,7 @@ Complete tasks from top to bottom and one approved task/branch at a time. Do not
 Focused component and logic tests must already have been added with every implementation task. This phase closes cross-feature coverage gaps, adds integration/E2E coverage, and performs pilot hardening.
 
 - [ ] Audit focused test coverage from earlier phases and close any documented gaps.
+- [ ] Review duplicated staff invitation activation calls in patient/admin layouts and decide whether to replace them with a shared authenticated-session preparation helper.
 - [ ] Add cross-feature integration coverage for authentication, clinic scoping, patient ownership, and staff permissions.
 - [ ] Add cross-feature integration coverage for holds, availability, pending-payment conversion, cleanup, and double-booking prevention.
 - [ ] Add cross-feature integration coverage for Stripe webhook idempotency, Google Calendar sync/retry, and notification idempotency.

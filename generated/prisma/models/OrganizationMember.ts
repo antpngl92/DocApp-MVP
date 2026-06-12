@@ -31,6 +31,8 @@ export type OrganizationMemberMinAggregateOutputType = {
   role: $Enums.OrganizationMemberRole | null
   status: $Enums.OrganizationMemberStatus | null
   invitedEmail: string | null
+  clerkInvitationId: string | null
+  clerkInvitationStatus: $Enums.ClerkInvitationStatus | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -42,6 +44,8 @@ export type OrganizationMemberMaxAggregateOutputType = {
   role: $Enums.OrganizationMemberRole | null
   status: $Enums.OrganizationMemberStatus | null
   invitedEmail: string | null
+  clerkInvitationId: string | null
+  clerkInvitationStatus: $Enums.ClerkInvitationStatus | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -53,6 +57,8 @@ export type OrganizationMemberCountAggregateOutputType = {
   role: number
   status: number
   invitedEmail: number
+  clerkInvitationId: number
+  clerkInvitationStatus: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -66,6 +72,8 @@ export type OrganizationMemberMinAggregateInputType = {
   role?: true
   status?: true
   invitedEmail?: true
+  clerkInvitationId?: true
+  clerkInvitationStatus?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -77,6 +85,8 @@ export type OrganizationMemberMaxAggregateInputType = {
   role?: true
   status?: true
   invitedEmail?: true
+  clerkInvitationId?: true
+  clerkInvitationStatus?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -88,6 +98,8 @@ export type OrganizationMemberCountAggregateInputType = {
   role?: true
   status?: true
   invitedEmail?: true
+  clerkInvitationId?: true
+  clerkInvitationStatus?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -172,6 +184,8 @@ export type OrganizationMemberGroupByOutputType = {
   role: $Enums.OrganizationMemberRole
   status: $Enums.OrganizationMemberStatus
   invitedEmail: string | null
+  clerkInvitationId: string | null
+  clerkInvitationStatus: $Enums.ClerkInvitationStatus | null
   createdAt: Date
   updatedAt: Date
   _count: OrganizationMemberCountAggregateOutputType | null
@@ -204,6 +218,8 @@ export type OrganizationMemberWhereInput = {
   role?: Prisma.EnumOrganizationMemberRoleFilter<"OrganizationMember"> | $Enums.OrganizationMemberRole
   status?: Prisma.EnumOrganizationMemberStatusFilter<"OrganizationMember"> | $Enums.OrganizationMemberStatus
   invitedEmail?: Prisma.StringNullableFilter<"OrganizationMember"> | string | null
+  clerkInvitationId?: Prisma.StringNullableFilter<"OrganizationMember"> | string | null
+  clerkInvitationStatus?: Prisma.EnumClerkInvitationStatusNullableFilter<"OrganizationMember"> | $Enums.ClerkInvitationStatus | null
   createdAt?: Prisma.DateTimeFilter<"OrganizationMember"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"OrganizationMember"> | Date | string
   organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
@@ -217,6 +233,8 @@ export type OrganizationMemberOrderByWithRelationInput = {
   role?: Prisma.SortOrder
   status?: Prisma.SortOrder
   invitedEmail?: Prisma.SortOrderInput | Prisma.SortOrder
+  clerkInvitationId?: Prisma.SortOrderInput | Prisma.SortOrder
+  clerkInvitationStatus?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   organization?: Prisma.OrganizationOrderByWithRelationInput
@@ -226,6 +244,7 @@ export type OrganizationMemberOrderByWithRelationInput = {
 export type OrganizationMemberWhereUniqueInput = Prisma.AtLeast<{
   id?: string
   userId?: string
+  clerkInvitationId?: string
   AND?: Prisma.OrganizationMemberWhereInput | Prisma.OrganizationMemberWhereInput[]
   OR?: Prisma.OrganizationMemberWhereInput[]
   NOT?: Prisma.OrganizationMemberWhereInput | Prisma.OrganizationMemberWhereInput[]
@@ -233,11 +252,12 @@ export type OrganizationMemberWhereUniqueInput = Prisma.AtLeast<{
   role?: Prisma.EnumOrganizationMemberRoleFilter<"OrganizationMember"> | $Enums.OrganizationMemberRole
   status?: Prisma.EnumOrganizationMemberStatusFilter<"OrganizationMember"> | $Enums.OrganizationMemberStatus
   invitedEmail?: Prisma.StringNullableFilter<"OrganizationMember"> | string | null
+  clerkInvitationStatus?: Prisma.EnumClerkInvitationStatusNullableFilter<"OrganizationMember"> | $Enums.ClerkInvitationStatus | null
   createdAt?: Prisma.DateTimeFilter<"OrganizationMember"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"OrganizationMember"> | Date | string
   organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
   user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
-}, "id" | "userId">
+}, "id" | "clerkInvitationId" | "userId">
 
 export type OrganizationMemberOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -246,6 +266,8 @@ export type OrganizationMemberOrderByWithAggregationInput = {
   role?: Prisma.SortOrder
   status?: Prisma.SortOrder
   invitedEmail?: Prisma.SortOrderInput | Prisma.SortOrder
+  clerkInvitationId?: Prisma.SortOrderInput | Prisma.SortOrder
+  clerkInvitationStatus?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.OrganizationMemberCountOrderByAggregateInput
@@ -263,6 +285,8 @@ export type OrganizationMemberScalarWhereWithAggregatesInput = {
   role?: Prisma.EnumOrganizationMemberRoleWithAggregatesFilter<"OrganizationMember"> | $Enums.OrganizationMemberRole
   status?: Prisma.EnumOrganizationMemberStatusWithAggregatesFilter<"OrganizationMember"> | $Enums.OrganizationMemberStatus
   invitedEmail?: Prisma.StringNullableWithAggregatesFilter<"OrganizationMember"> | string | null
+  clerkInvitationId?: Prisma.StringNullableWithAggregatesFilter<"OrganizationMember"> | string | null
+  clerkInvitationStatus?: Prisma.EnumClerkInvitationStatusNullableWithAggregatesFilter<"OrganizationMember"> | $Enums.ClerkInvitationStatus | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"OrganizationMember"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"OrganizationMember"> | Date | string
 }
@@ -272,6 +296,8 @@ export type OrganizationMemberCreateInput = {
   role: $Enums.OrganizationMemberRole
   status?: $Enums.OrganizationMemberStatus
   invitedEmail?: string | null
+  clerkInvitationId?: string | null
+  clerkInvitationStatus?: $Enums.ClerkInvitationStatus | null
   createdAt?: Date | string
   updatedAt?: Date | string
   organization: Prisma.OrganizationCreateNestedOneWithoutMembersInput
@@ -285,6 +311,8 @@ export type OrganizationMemberUncheckedCreateInput = {
   role: $Enums.OrganizationMemberRole
   status?: $Enums.OrganizationMemberStatus
   invitedEmail?: string | null
+  clerkInvitationId?: string | null
+  clerkInvitationStatus?: $Enums.ClerkInvitationStatus | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -294,6 +322,8 @@ export type OrganizationMemberUpdateInput = {
   role?: Prisma.EnumOrganizationMemberRoleFieldUpdateOperationsInput | $Enums.OrganizationMemberRole
   status?: Prisma.EnumOrganizationMemberStatusFieldUpdateOperationsInput | $Enums.OrganizationMemberStatus
   invitedEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clerkInvitationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clerkInvitationStatus?: Prisma.NullableEnumClerkInvitationStatusFieldUpdateOperationsInput | $Enums.ClerkInvitationStatus | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutMembersNestedInput
@@ -307,6 +337,8 @@ export type OrganizationMemberUncheckedUpdateInput = {
   role?: Prisma.EnumOrganizationMemberRoleFieldUpdateOperationsInput | $Enums.OrganizationMemberRole
   status?: Prisma.EnumOrganizationMemberStatusFieldUpdateOperationsInput | $Enums.OrganizationMemberStatus
   invitedEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clerkInvitationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clerkInvitationStatus?: Prisma.NullableEnumClerkInvitationStatusFieldUpdateOperationsInput | $Enums.ClerkInvitationStatus | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -318,6 +350,8 @@ export type OrganizationMemberCreateManyInput = {
   role: $Enums.OrganizationMemberRole
   status?: $Enums.OrganizationMemberStatus
   invitedEmail?: string | null
+  clerkInvitationId?: string | null
+  clerkInvitationStatus?: $Enums.ClerkInvitationStatus | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -327,6 +361,8 @@ export type OrganizationMemberUpdateManyMutationInput = {
   role?: Prisma.EnumOrganizationMemberRoleFieldUpdateOperationsInput | $Enums.OrganizationMemberRole
   status?: Prisma.EnumOrganizationMemberStatusFieldUpdateOperationsInput | $Enums.OrganizationMemberStatus
   invitedEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clerkInvitationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clerkInvitationStatus?: Prisma.NullableEnumClerkInvitationStatusFieldUpdateOperationsInput | $Enums.ClerkInvitationStatus | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -338,6 +374,8 @@ export type OrganizationMemberUncheckedUpdateManyInput = {
   role?: Prisma.EnumOrganizationMemberRoleFieldUpdateOperationsInput | $Enums.OrganizationMemberRole
   status?: Prisma.EnumOrganizationMemberStatusFieldUpdateOperationsInput | $Enums.OrganizationMemberStatus
   invitedEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clerkInvitationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clerkInvitationStatus?: Prisma.NullableEnumClerkInvitationStatusFieldUpdateOperationsInput | $Enums.ClerkInvitationStatus | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -364,6 +402,8 @@ export type OrganizationMemberCountOrderByAggregateInput = {
   role?: Prisma.SortOrder
   status?: Prisma.SortOrder
   invitedEmail?: Prisma.SortOrder
+  clerkInvitationId?: Prisma.SortOrder
+  clerkInvitationStatus?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -375,6 +415,8 @@ export type OrganizationMemberMaxOrderByAggregateInput = {
   role?: Prisma.SortOrder
   status?: Prisma.SortOrder
   invitedEmail?: Prisma.SortOrder
+  clerkInvitationId?: Prisma.SortOrder
+  clerkInvitationStatus?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -386,6 +428,8 @@ export type OrganizationMemberMinOrderByAggregateInput = {
   role?: Prisma.SortOrder
   status?: Prisma.SortOrder
   invitedEmail?: Prisma.SortOrder
+  clerkInvitationId?: Prisma.SortOrder
+  clerkInvitationStatus?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -472,11 +516,17 @@ export type EnumOrganizationMemberStatusFieldUpdateOperationsInput = {
   set?: $Enums.OrganizationMemberStatus
 }
 
+export type NullableEnumClerkInvitationStatusFieldUpdateOperationsInput = {
+  set?: $Enums.ClerkInvitationStatus | null
+}
+
 export type OrganizationMemberCreateWithoutUserInput = {
   id?: string
   role: $Enums.OrganizationMemberRole
   status?: $Enums.OrganizationMemberStatus
   invitedEmail?: string | null
+  clerkInvitationId?: string | null
+  clerkInvitationStatus?: $Enums.ClerkInvitationStatus | null
   createdAt?: Date | string
   updatedAt?: Date | string
   organization: Prisma.OrganizationCreateNestedOneWithoutMembersInput
@@ -488,6 +538,8 @@ export type OrganizationMemberUncheckedCreateWithoutUserInput = {
   role: $Enums.OrganizationMemberRole
   status?: $Enums.OrganizationMemberStatus
   invitedEmail?: string | null
+  clerkInvitationId?: string | null
+  clerkInvitationStatus?: $Enums.ClerkInvitationStatus | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -513,6 +565,8 @@ export type OrganizationMemberUpdateWithoutUserInput = {
   role?: Prisma.EnumOrganizationMemberRoleFieldUpdateOperationsInput | $Enums.OrganizationMemberRole
   status?: Prisma.EnumOrganizationMemberStatusFieldUpdateOperationsInput | $Enums.OrganizationMemberStatus
   invitedEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clerkInvitationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clerkInvitationStatus?: Prisma.NullableEnumClerkInvitationStatusFieldUpdateOperationsInput | $Enums.ClerkInvitationStatus | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutMembersNestedInput
@@ -524,6 +578,8 @@ export type OrganizationMemberUncheckedUpdateWithoutUserInput = {
   role?: Prisma.EnumOrganizationMemberRoleFieldUpdateOperationsInput | $Enums.OrganizationMemberRole
   status?: Prisma.EnumOrganizationMemberStatusFieldUpdateOperationsInput | $Enums.OrganizationMemberStatus
   invitedEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clerkInvitationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clerkInvitationStatus?: Prisma.NullableEnumClerkInvitationStatusFieldUpdateOperationsInput | $Enums.ClerkInvitationStatus | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -533,6 +589,8 @@ export type OrganizationMemberCreateWithoutOrganizationInput = {
   role: $Enums.OrganizationMemberRole
   status?: $Enums.OrganizationMemberStatus
   invitedEmail?: string | null
+  clerkInvitationId?: string | null
+  clerkInvitationStatus?: $Enums.ClerkInvitationStatus | null
   createdAt?: Date | string
   updatedAt?: Date | string
   user?: Prisma.UserCreateNestedOneWithoutOrganizationMemberInput
@@ -544,6 +602,8 @@ export type OrganizationMemberUncheckedCreateWithoutOrganizationInput = {
   role: $Enums.OrganizationMemberRole
   status?: $Enums.OrganizationMemberStatus
   invitedEmail?: string | null
+  clerkInvitationId?: string | null
+  clerkInvitationStatus?: $Enums.ClerkInvitationStatus | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -584,6 +644,8 @@ export type OrganizationMemberScalarWhereInput = {
   role?: Prisma.EnumOrganizationMemberRoleFilter<"OrganizationMember"> | $Enums.OrganizationMemberRole
   status?: Prisma.EnumOrganizationMemberStatusFilter<"OrganizationMember"> | $Enums.OrganizationMemberStatus
   invitedEmail?: Prisma.StringNullableFilter<"OrganizationMember"> | string | null
+  clerkInvitationId?: Prisma.StringNullableFilter<"OrganizationMember"> | string | null
+  clerkInvitationStatus?: Prisma.EnumClerkInvitationStatusNullableFilter<"OrganizationMember"> | $Enums.ClerkInvitationStatus | null
   createdAt?: Prisma.DateTimeFilter<"OrganizationMember"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"OrganizationMember"> | Date | string
 }
@@ -594,6 +656,8 @@ export type OrganizationMemberCreateManyOrganizationInput = {
   role: $Enums.OrganizationMemberRole
   status?: $Enums.OrganizationMemberStatus
   invitedEmail?: string | null
+  clerkInvitationId?: string | null
+  clerkInvitationStatus?: $Enums.ClerkInvitationStatus | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -603,6 +667,8 @@ export type OrganizationMemberUpdateWithoutOrganizationInput = {
   role?: Prisma.EnumOrganizationMemberRoleFieldUpdateOperationsInput | $Enums.OrganizationMemberRole
   status?: Prisma.EnumOrganizationMemberStatusFieldUpdateOperationsInput | $Enums.OrganizationMemberStatus
   invitedEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clerkInvitationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clerkInvitationStatus?: Prisma.NullableEnumClerkInvitationStatusFieldUpdateOperationsInput | $Enums.ClerkInvitationStatus | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneWithoutOrganizationMemberNestedInput
@@ -614,6 +680,8 @@ export type OrganizationMemberUncheckedUpdateWithoutOrganizationInput = {
   role?: Prisma.EnumOrganizationMemberRoleFieldUpdateOperationsInput | $Enums.OrganizationMemberRole
   status?: Prisma.EnumOrganizationMemberStatusFieldUpdateOperationsInput | $Enums.OrganizationMemberStatus
   invitedEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clerkInvitationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clerkInvitationStatus?: Prisma.NullableEnumClerkInvitationStatusFieldUpdateOperationsInput | $Enums.ClerkInvitationStatus | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -624,6 +692,8 @@ export type OrganizationMemberUncheckedUpdateManyWithoutOrganizationInput = {
   role?: Prisma.EnumOrganizationMemberRoleFieldUpdateOperationsInput | $Enums.OrganizationMemberRole
   status?: Prisma.EnumOrganizationMemberStatusFieldUpdateOperationsInput | $Enums.OrganizationMemberStatus
   invitedEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clerkInvitationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clerkInvitationStatus?: Prisma.NullableEnumClerkInvitationStatusFieldUpdateOperationsInput | $Enums.ClerkInvitationStatus | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -637,6 +707,8 @@ export type OrganizationMemberSelect<ExtArgs extends runtime.Types.Extensions.In
   role?: boolean
   status?: boolean
   invitedEmail?: boolean
+  clerkInvitationId?: boolean
+  clerkInvitationStatus?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
@@ -650,6 +722,8 @@ export type OrganizationMemberSelectCreateManyAndReturn<ExtArgs extends runtime.
   role?: boolean
   status?: boolean
   invitedEmail?: boolean
+  clerkInvitationId?: boolean
+  clerkInvitationStatus?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
@@ -663,6 +737,8 @@ export type OrganizationMemberSelectUpdateManyAndReturn<ExtArgs extends runtime.
   role?: boolean
   status?: boolean
   invitedEmail?: boolean
+  clerkInvitationId?: boolean
+  clerkInvitationStatus?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
@@ -676,11 +752,13 @@ export type OrganizationMemberSelectScalar = {
   role?: boolean
   status?: boolean
   invitedEmail?: boolean
+  clerkInvitationId?: boolean
+  clerkInvitationStatus?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type OrganizationMemberOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "organizationId" | "userId" | "role" | "status" | "invitedEmail" | "createdAt" | "updatedAt", ExtArgs["result"]["organizationMember"]>
+export type OrganizationMemberOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "organizationId" | "userId" | "role" | "status" | "invitedEmail" | "clerkInvitationId" | "clerkInvitationStatus" | "createdAt" | "updatedAt", ExtArgs["result"]["organizationMember"]>
 export type OrganizationMemberInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   user?: boolean | Prisma.OrganizationMember$userArgs<ExtArgs>
@@ -707,6 +785,8 @@ export type $OrganizationMemberPayload<ExtArgs extends runtime.Types.Extensions.
     role: $Enums.OrganizationMemberRole
     status: $Enums.OrganizationMemberStatus
     invitedEmail: string | null
+    clerkInvitationId: string | null
+    clerkInvitationStatus: $Enums.ClerkInvitationStatus | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["organizationMember"]>
@@ -1140,6 +1220,8 @@ export interface OrganizationMemberFieldRefs {
   readonly role: Prisma.FieldRef<"OrganizationMember", 'OrganizationMemberRole'>
   readonly status: Prisma.FieldRef<"OrganizationMember", 'OrganizationMemberStatus'>
   readonly invitedEmail: Prisma.FieldRef<"OrganizationMember", 'String'>
+  readonly clerkInvitationId: Prisma.FieldRef<"OrganizationMember", 'String'>
+  readonly clerkInvitationStatus: Prisma.FieldRef<"OrganizationMember", 'ClerkInvitationStatus'>
   readonly createdAt: Prisma.FieldRef<"OrganizationMember", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"OrganizationMember", 'DateTime'>
 }

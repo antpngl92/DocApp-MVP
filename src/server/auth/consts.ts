@@ -6,6 +6,8 @@ const CURRENT_AUTHENTICATED_USER_STATUS = {
   signedOut: "signed_out",
 } as const;
 
+const PRISMA_UNIQUE_CONSTRAINT_ERROR_CODE = "P2002";
+
 const OWNER_BOOTSTRAP_METADATA_NAMESPACE = "docapp";
 const OWNER_BOOTSTRAP_METADATA_ROLE_KEY = "bootstrapRole";
 const OWNER_BOOTSTRAP_AUDIT_ACTION = "owner_admin_bootstrapped";
@@ -67,6 +69,7 @@ const ORGANIZATION_STATUS = {
 const STAFF_INVITATION_EMAIL_PATTERN = EMAIL_PATTERN;
 
 const STAFF_INVITATION_RESULT_STATUS = {
+  alreadyInvited: "already_invited",
   invalidEmail: "invalid_email",
   invalidRole: "invalid_role",
   noActiveOrganization: "no_active_organization",
@@ -74,7 +77,19 @@ const STAFF_INVITATION_RESULT_STATUS = {
   unauthorized: "unauthorized",
 } as const;
 
+const CLERK_INVITATION_STATUS = {
+  accepted: "accepted",
+  expired: "expired",
+  pending: "pending",
+  revoked: "revoked",
+} as const;
+
+const STAFF_INVITATION_AUDIT_ACTION = "staff_invitation_created";
+const STAFF_INVITATION_AUDIT_SOURCE = "admin_staff_invitation";
+const STAFF_INVITATION_AUDIT_TARGET_TYPE = "OrganizationMember";
+
 export {
+  CLERK_INVITATION_STATUS,
   CURRENT_AUTHENTICATED_USER_STATUS,
   OWNER_BOOTSTRAP_AUDIT_ACTION,
   OWNER_BOOTSTRAP_AUDIT_SOURCE,
@@ -85,8 +100,12 @@ export {
   ORGANIZATION_STATUS,
   OWNER_BOOTSTRAP_ROLE,
   OWNER_BOOTSTRAP_STATUS,
+  PRISMA_UNIQUE_CONSTRAINT_ERROR_CODE,
   STAFF_MEMBER_ROLE,
   STAFF_MEMBER_STATUS,
+  STAFF_INVITATION_AUDIT_ACTION,
+  STAFF_INVITATION_AUDIT_SOURCE,
+  STAFF_INVITATION_AUDIT_TARGET_TYPE,
   STAFF_INVITATION_EMAIL_PATTERN,
   STAFF_INVITATION_RESULT_STATUS,
   STAFF_ONBOARDING_AUDIT_ACTION,

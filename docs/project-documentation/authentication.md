@@ -194,7 +194,8 @@ Implemented MVP foundation:
 
 - After a staff user accepts a Clerk invitation and the Clerk webhook has synced a local `User`, server-side onboarding can activate the pending local `OrganizationMember`.
 - Activation requires a signed-in Clerk session, an existing local `User`, a pending local membership with `status = invited`, and a normalized invited email matching the local user email.
-- Activation links `OrganizationMember.userId` to the local user, changes membership status to `active`, and writes an audit event.
+- Activation runs when the authenticated invited user reaches a protected app surface such as `/account` or `/admin` after sign-up/sign-in.
+- Activation links `OrganizationMember.userId` to the local user, changes membership status to `active`, changes `clerkInvitationStatus` to `accepted`, and writes an audit event.
 - If the user is signed out, missing locally, already active, disabled/removed, missing a pending invitation, mismatched by email, or assigned an invalid role, staff access is not activated.
 - A regular patient account with no pending local invitation remains a patient-only account and receives no clinic-side staff access.
 - The admin overview includes the staff invitation form with a staff email field and role dropdown. It validates input locally and submits through a server action.
@@ -202,7 +203,12 @@ Implemented MVP foundation:
 - The staff invitation server action validates the signed-in local user, active owner/admin membership, active local organization, invite email, and inviteable role before calling Clerk.
 - The staff invitation server action uses Clerk's Backend API `clerkClient().invitations.createInvitation` from `@clerk/nextjs/server`. This must remain server-only because it depends on the Clerk secret key.
 - The invitation `redirectUrl` must be an absolute application URL built from `NEXT_PUBLIC_APP_URL` and `NEXT_PUBLIC_CLERK_SIGN_UP_URL`. A relative path is resolved against Clerk's Account Portal domain, so the invitation email would send staff to the hosted portal sign-up instead of the app's sign-up page.
-- This branch sends the Clerk invitation email. Persisting the returned Clerk invitation ID/status and passing non-authoritative metadata are handled by the following invitation persistence tasks.
+- Sending a staff invitation creates the pending local `OrganizationMember` with `status = invited`, the normalized invited email, and the intended role, so Clerk invitation acceptance can activate into local membership.
+- The returned Clerk invitation ID is stored on the pending membership as unique `clerkInvitationId`, with `clerkInvitationStatus = pending`, and an audit event records the invitation creation.
+- If the email already has an `invited` or `active` membership in the organization, the server returns `already_invited` without calling Clerk. A database-level partial unique index also protects this rule under concurrent requests.
+- If the Clerk invitation call fails, the pending membership is removed so the email can be re-invited. If local tracking fails after Clerk creates an invitation, DocApp makes a best-effort attempt to revoke the Clerk invitation and remove the pending membership before surfacing the failure.
+- Invitation audit logging is best-effort after the invitation has been sent and tracked; audit failure must be monitored but must not report a failed invite to the admin.
+- Passing non-authoritative references in Clerk invitation metadata is handled by the following invitation metadata task.
 
 Implementation note:
 

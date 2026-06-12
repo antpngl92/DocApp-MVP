@@ -10,12 +10,14 @@ import {
   createClerkStaffInvitation,
   createOwnerAdminMembership,
   getDefaultOwnerBootstrapDatabase,
+  getLocalUserDisplayName,
   getStaffInvitationRedirectUrl,
   hasDocAppBootstrapMetadata,
   mapClerkBackendUserToBootstrapProfile,
   parseOwnerBootstrapRole,
   readClerkBootstrapProfile,
   readCurrentClerkAuth,
+  revokeClerkStaffInvitation,
   upsertLocalUserFromClerkProfile,
 } from "../utils";
 
@@ -23,6 +25,7 @@ const clerkMocks = vi.hoisted(() => ({
   auth: vi.fn(),
   createInvitation: vi.fn(),
   getUser: vi.fn(),
+  revokeInvitation: vi.fn(),
 }));
 
 const prismaMock = vi.hoisted(() => ({
@@ -49,6 +52,7 @@ vi.mock("@clerk/nextjs/server", () => ({
   clerkClient: vi.fn(async () => ({
     invitations: {
       createInvitation: clerkMocks.createInvitation,
+      revokeInvitation: clerkMocks.revokeInvitation,
     },
     users: {
       getUser: clerkMocks.getUser,
@@ -139,6 +143,12 @@ describe("auth utils", () => {
     await expect(readCurrentClerkAuth()).resolves.toEqual({ userId: "user_clerk_123" });
   });
 
+  it("formats the local user display name for the navigation bar", () => {
+    expect(getLocalUserDisplayName(createLocalUser())).toBe("Clinic Owner");
+    expect(getLocalUserDisplayName(createLocalUser({ name: " " }))).toBe("owner@example.com");
+    expect(getLocalUserDisplayName(null)).toBeNull();
+  });
+
   it("reads a Clerk bootstrap profile through the Backend API", async () => {
     clerkMocks.getUser.mockResolvedValueOnce({
       emailAddresses: [{ emailAddress: "Owner@Example.com", id: "email_primary" }],
@@ -176,6 +186,17 @@ describe("auth utils", () => {
       emailAddress: "staff@example.com",
       redirectUrl: "http://localhost:3000/sign-up",
     });
+  });
+
+  it("revokes a Clerk staff invitation through the Backend API", async () => {
+    clerkMocks.revokeInvitation.mockResolvedValueOnce({ id: "inv_123", status: "revoked" });
+
+    await expect(revokeClerkStaffInvitation("inv_123")).resolves.toEqual({
+      id: "inv_123",
+      status: "revoked",
+    });
+
+    expect(clerkMocks.revokeInvitation).toHaveBeenCalledWith("inv_123");
   });
 
   it("builds an absolute staff invitation redirect URL from the public app URL", () => {

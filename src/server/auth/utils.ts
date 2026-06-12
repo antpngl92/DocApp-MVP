@@ -11,6 +11,7 @@ import {
   OWNER_BOOTSTRAP_METADATA_ROLE_KEY,
   OWNER_BOOTSTRAP_ROLE,
   OWNER_BOOTSTRAP_STATUS,
+  PRISMA_UNIQUE_CONSTRAINT_ERROR_CODE,
   STAFF_MEMBER_ROLE,
 } from "./consts";
 import type {
@@ -24,11 +25,16 @@ import type {
   OwnerBootstrapResult,
   OwnerBootstrapRole,
   ClerkInvitationCreator,
+  ClerkInvitationRevoker,
   StaffMemberRole,
 } from "./type";
 
 const isRecord = (value: unknown): value is Record<string, unknown> => {
   return typeof value === "object" && value !== null && !Array.isArray(value);
+};
+
+const isUniqueConstraintError = (error: unknown): boolean => {
+  return isRecord(error) && error.code === PRISMA_UNIQUE_CONSTRAINT_ERROR_CODE;
 };
 
 const isOwnerBootstrapRole = (role: unknown): role is OwnerBootstrapRole => {
@@ -99,6 +105,14 @@ const getDisplayName = (clerkUser: ClerkBackendUser): string | null => {
   return fullName || clerkUser.username?.trim() || null;
 };
 
+const getLocalUserDisplayName = (localUser: LocalUserRecord | null): string | null => {
+  if (!localUser) {
+    return null;
+  }
+
+  return localUser.name?.trim() || localUser.email;
+};
+
 const mapClerkBackendUserToBootstrapProfile = (
   clerkUser: ClerkBackendUser,
 ): ClerkBootstrapProfile => {
@@ -154,10 +168,7 @@ const getStaffInvitationRedirectUrl = (
 
   // Clerk resolves relative redirect paths against its own Account Portal
   // domain, so the invitation link must carry an absolute app URL.
-  return new URL(
-    publicEnv.NEXT_PUBLIC_CLERK_SIGN_UP_URL,
-    publicEnv.NEXT_PUBLIC_APP_URL,
-  ).toString();
+  return new URL(publicEnv.NEXT_PUBLIC_CLERK_SIGN_UP_URL, publicEnv.NEXT_PUBLIC_APP_URL).toString();
 };
 
 const createClerkStaffInvitation: ClerkInvitationCreator = async (input) => {
@@ -167,6 +178,12 @@ const createClerkStaffInvitation: ClerkInvitationCreator = async (input) => {
     emailAddress: input.emailAddress,
     redirectUrl: input.redirectUrl,
   });
+};
+
+const revokeClerkStaffInvitation: ClerkInvitationRevoker = async (invitationId) => {
+  const client = await clerkClient();
+
+  return client.invitations.revokeInvitation(invitationId);
 };
 
 const upsertLocalUserFromClerkProfile = async (
@@ -262,14 +279,17 @@ export {
   getDefaultLocalUserLookupDatabase,
   getDefaultOwnerBootstrapDatabase,
   getDefaultStaffInvitationDatabase,
+  getLocalUserDisplayName,
   getStaffInvitationRedirectUrl,
   hasDocAppBootstrapMetadata,
   isOwnerBootstrapRole,
   isStaffMemberRole,
+  isUniqueConstraintError,
   mapClerkBackendUserToBootstrapProfile,
   normalizeEmail,
   parseOwnerBootstrapRole,
   readClerkBootstrapProfile,
   readCurrentClerkAuth,
+  revokeClerkStaffInvitation,
   upsertLocalUserFromClerkProfile,
 };
