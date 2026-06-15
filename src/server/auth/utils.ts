@@ -187,7 +187,11 @@ const revokeClerkStaffInvitation: ClerkInvitationRevoker = async (invitationId) 
 };
 
 const upsertLocalUserFromClerkProfile = async (
-  database: OwnerBootstrapDatabase,
+  database: {
+    user: {
+      upsert: OwnerBootstrapDatabase["user"]["upsert"];
+    };
+  },
   localUserInput: OwnerBootstrapLocalUserInput,
 ): Promise<LocalUserRecord> => {
   return database.user.upsert({

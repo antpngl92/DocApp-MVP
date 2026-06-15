@@ -1,13 +1,11 @@
-import { getPublicNavigationForCurrentUser } from "@/server/auth/navigation";
+import { PUBLIC_NAVIGATION } from "@/config/navigation";
 
 import AppShell from "../AppShell";
 import type { PublicShellProps } from "./types";
 
 const PublicShell = async ({ children, contextLabel }: PublicShellProps) => {
-  const navigation = await getPublicNavigationForCurrentUser();
-
   return (
-    <AppShell contextLabel={contextLabel} navigation={navigation}>
+    <AppShell contextLabel={contextLabel} navigation={PUBLIC_NAVIGATION}>
       {children}
     </AppShell>
   );

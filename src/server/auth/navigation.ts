@@ -3,7 +3,9 @@ import {
   PUBLIC_SIGNED_IN_ADMIN_NAVIGATION,
   PUBLIC_SIGNED_IN_PATIENT_NAVIGATION,
 } from "@/config/navigation";
+import { ROUTES } from "@/config/routes";
 
+import { hasOwnerAdminAccess } from "./admin-access";
 import { CURRENT_AUTHENTICATED_USER_STATUS, STAFF_MEMBER_STATUS } from "./consts";
 import { getCurrentAuthenticatedUser } from "./current-user";
 import type { GetPublicNavigationForCurrentUserOptions, PublicNavigationDatabase } from "./type";
@@ -43,5 +45,32 @@ const getPublicNavigationForCurrentUser = async ({
     : PUBLIC_SIGNED_IN_PATIENT_NAVIGATION;
 };
 
-export { getDefaultPublicNavigationDatabase, getPublicNavigationForCurrentUser };
+const getAuthenticatedHomeForCurrentUser = async ({
+  authReader,
+  database,
+}: GetPublicNavigationForCurrentUserOptions = {}) => {
+  const publicNavigationDatabase = database ?? (await getDefaultPublicNavigationDatabase());
+  const currentUser = await getCurrentAuthenticatedUser({
+    authReader,
+    database: publicNavigationDatabase,
+  });
+
+  if (currentUser.status !== CURRENT_AUTHENTICATED_USER_STATUS.authenticated) {
+    return ROUTES.patientAccount;
+  }
+
+  const membership = await publicNavigationDatabase.organizationMember.findUnique({
+    where: {
+      userId: currentUser.user.id,
+    },
+  });
+
+  return hasOwnerAdminAccess(membership) ? ROUTES.admin : ROUTES.patientAccount;
+};
+
+export {
+  getAuthenticatedHomeForCurrentUser,
+  getDefaultPublicNavigationDatabase,
+  getPublicNavigationForCurrentUser,
+};
 export type { GetPublicNavigationForCurrentUserOptions, PublicNavigationDatabase };

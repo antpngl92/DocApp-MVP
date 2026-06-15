@@ -121,15 +121,15 @@ Complete tasks from top to bottom and one approved task/branch at a time. Do not
 - [ ] Support staff roles through local `OrganizationMember` state, including manager, receptionist, doctor, admin, and owner where applicable.
 - [ ] Link a staff user with role `doctor` to a `Doctor` operational profile when that staff member is a bookable provider.
 - [ ] Ensure Clerk invitation metadata is treated as a hint and local `OrganizationMember` state remains the source of staff roles and permissions.
-- [ ] Ensure staff cannot self-register into arbitrary clinics without invitation or owner/admin approval.
+- [x] Ensure staff cannot self-register into arbitrary clinics without invitation or owner/admin approval.
 - [ ] Model and enforce clinic-side roles plus patient ownership: owner, admin, manager, receptionist, doctor, and patient account access.
 - [ ] Add organization/clinic membership checks.
 - [ ] Add current-organization/current-clinic helper.
-- [ ] Add admin/staff authorization guards.
+- [x] Add admin/staff authorization guards.
 - [ ] Add patient ownership authorization guards.
-- [ ] Protect admin routes with authenticated local user, active clinic membership, and an authorized clinic-side role.
+- [x] Protect admin routes with authenticated local user, active clinic membership, and an authorized clinic-side role.
 - [ ] Protect patient account routes with authenticated local user and patient ownership checks.
-- [ ] Add route-level authorization boundaries for public, admin, staff, and patient surfaces.
+- [x] Add route-level authorization boundaries for public, admin, staff, and patient surfaces.
 - [ ] Ensure patients can access only their own appointments/profile.
 - [ ] Ensure clinic users can access only their clinic-scoped records.
 - [ ] Ensure webhook processing cannot mutate unrelated clinic/order records.

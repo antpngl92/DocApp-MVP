@@ -28,12 +28,12 @@ const AuthControls = ({ createAccountLabel, signInLabel, signOutLabel }: AuthCon
         </SignOutButton>
       ) : (
         <>
-          <SignInButton mode="redirect">
+          <SignInButton forceRedirectUrl={ROUTES.postAuth} mode="redirect">
             <button className={secondaryButtonClassName} type="button">
               {signInLabel}
             </button>
           </SignInButton>
-          <SignUpButton mode="redirect">
+          <SignUpButton forceRedirectUrl={ROUTES.postAuth} mode="redirect">
             <button className={primaryButtonClassName} type="button">
               {createAccountLabel}
             </button>

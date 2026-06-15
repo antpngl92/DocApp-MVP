@@ -6,6 +6,7 @@ type AppShellProps = Readonly<{
   children: ReactNode;
   contextLabel?: string;
   navigation: readonly NavigationItem[];
+  showCurrentUserName?: boolean;
 }>;
 
 export type { AppShellProps };

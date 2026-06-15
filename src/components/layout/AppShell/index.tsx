@@ -6,10 +6,15 @@ import {
 } from "@/server/auth/current-user";
 import { getLocalUserDisplayName } from "@/server/auth/utils";
 
-const AppShell = async ({ children, contextLabel, navigation }: AppShellProps) => {
-  const currentUser = await getCurrentAuthenticatedUser();
+const AppShell = async ({
+  children,
+  contextLabel,
+  navigation,
+  showCurrentUserName = false,
+}: AppShellProps) => {
+  const currentUser = showCurrentUserName ? await getCurrentAuthenticatedUser() : null;
   const currentUserName =
-    currentUser.status === CURRENT_AUTHENTICATED_USER_STATUS.authenticated
+    currentUser?.status === CURRENT_AUTHENTICATED_USER_STATUS.authenticated
       ? getLocalUserDisplayName(currentUser.user)
       : null;
 

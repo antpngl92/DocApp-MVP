@@ -362,6 +362,15 @@ type StaffOnboardingDatabase = LocalUserLookupDatabase & {
       };
     }) => Promise<unknown>;
   };
+  user: LocalUserLookupDatabase["user"] & {
+    upsert: (args: {
+      create: OwnerBootstrapLocalUserInput;
+      update: Pick<OwnerBootstrapLocalUserInput, "email" | "name">;
+      where: {
+        clerkUserId: string;
+      };
+    }) => Promise<LocalUserRecord>;
+  };
   organizationMember: {
     findFirst: (args: {
       where: {
@@ -389,6 +398,7 @@ type StaffOnboardingDatabase = LocalUserLookupDatabase & {
 
 type ActivateStaffInvitationOptions = {
   authReader?: CurrentUserAuthReader;
+  clerkProfileReader?: ClerkBootstrapProfileReader;
   database?: StaffOnboardingDatabase;
 };
 
