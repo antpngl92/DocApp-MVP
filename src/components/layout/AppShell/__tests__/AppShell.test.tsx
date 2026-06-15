@@ -49,6 +49,7 @@ describe("AppShell", () => {
         children: <p>Shell content</p>,
         contextLabel: "Clinic admin",
         navigation: [],
+        showCurrentUserName: true,
       }),
     );
 

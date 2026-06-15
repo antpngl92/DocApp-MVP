@@ -22,11 +22,12 @@ describe("auth route configuration", () => {
     "/sign-in/factor-one",
     PUBLIC_ROUTES.signUp,
     "/sign-up/verify-email-address",
+    PUBLIC_ROUTES.postAuth,
     "/api/health",
   ];
 
-  it("keeps admin and patient account routes protected by Clerk", () => {
-    expect(CLERK_PROTECTED_ROUTE_PATTERNS).toEqual(["/admin(.*)", "/account(.*)"]);
+  it("keeps patient account routes protected by Clerk and admin hidden by layout guards", () => {
+    expect(CLERK_PROTECTED_ROUTE_PATTERNS).toEqual(["/account(.*)"]);
     expect(isDocumentedProtectedRoute("/admin")).toBe(true);
     expect(isDocumentedProtectedRoute("/admin/settings")).toBe(true);
     expect(isDocumentedProtectedRoute("/account")).toBe(true);
@@ -44,6 +45,7 @@ describe("auth route configuration", () => {
       "/support",
       "/sign-in(.*)",
       "/sign-up(.*)",
+      "/auth/after",
       "/api/health",
     ]);
 
@@ -65,8 +67,8 @@ describe("auth route configuration", () => {
     }
   });
 
-  it("defaults sign-up redirects to the patient account area, not admin", () => {
+  it("sends sign-up through post-auth role routing, not directly to admin", () => {
     expect(AUTH_ROUTES.signUp).toBe("/sign-up");
-    expect(AUTH_ROUTES.afterSignUp).toBe("/account");
+    expect(AUTH_ROUTES.afterSignUp).toBe("/auth/after");
   });
 });
