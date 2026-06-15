@@ -109,6 +109,7 @@ Complete tasks from top to bottom and one approved task/branch at a time. Do not
 - [x] Model audit/event records needed for identity, membership, and role changes.
 - [x] Add identity and membership indexes and ownership constraints wherever practical.
 - [x] Implement idempotent Clerk webhook user sync and map each Clerk identity to the local `User` table through unique `User.clerkUserId`.
+- [ ] Add an audit event for public account registration through the `/sign-up` flow.
 - [x] Add current-authenticated-user helper.
 - [x] Add local user lookup helper.
 - [x] Implement trusted clinic owner/admin local provisioning and link it to a trusted Clerk identity.
@@ -179,6 +180,8 @@ Complete tasks from top to bottom and one approved task/branch at a time. Do not
 ## Phase 9 - Clinic Admin Setup
 
 - [ ] Build admin dashboard shell.
+- [ ] Redirect authenticated staff/owner/admin users to the staff dashboard instead of the patient account area after login, registration, or invitation acceptance.
+- [ ] Use a dashboard sidebar layout for staff/admin pages; shadcn Sidebar is approved for this admin dashboard shell only unless explicitly expanded later.
 - [ ] Build clinic settings page.
 - [ ] Support booking page slug.
 - [ ] Support clinic timezone.

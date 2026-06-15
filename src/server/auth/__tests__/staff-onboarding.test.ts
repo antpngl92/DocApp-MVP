@@ -186,6 +186,47 @@ describe("activateStaffInvitationForCurrentUser", () => {
     expect(missingUserDatabase.organizationMember.update).not.toHaveBeenCalled();
   });
 
+  it("upserts the local user from Clerk before activating when the webhook has not synced yet", async () => {
+    const database = createDatabase({ localUser: null });
+
+    await expect(
+      activateStaffInvitationForCurrentUser({
+        authReader: async () => ({ userId: "user_clerk_123" }),
+        database,
+        clerkProfileReader: async () => ({
+          localUserInput: {
+            clerkUserId: "user_clerk_123",
+            email: "Staff@Example.com",
+            name: "Invited Staff",
+          },
+          privateMetadata: {},
+        }),
+      }),
+    ).resolves.toMatchObject({
+      membership: {
+        clerkInvitationStatus: CLERK_INVITATION_STATUS.accepted,
+        status: STAFF_MEMBER_STATUS.active,
+        userId: "user_local_123",
+      },
+      status: STAFF_ONBOARDING_STATUS.activated,
+    });
+
+    expect(database.user.upsert).toHaveBeenCalledWith({
+      create: {
+        clerkUserId: "user_clerk_123",
+        email: "Staff@Example.com",
+        name: "Invited Staff",
+      },
+      update: {
+        email: "Staff@Example.com",
+        name: "Invited Staff",
+      },
+      where: {
+        clerkUserId: "user_clerk_123",
+      },
+    });
+  });
+
   it("returns existing active membership without reactivating invitation state", async () => {
     const existingMembership = createMembership({
       status: STAFF_MEMBER_STATUS.active,

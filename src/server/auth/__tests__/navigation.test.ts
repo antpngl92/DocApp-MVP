@@ -5,9 +5,11 @@ import {
   PUBLIC_SIGNED_IN_ADMIN_NAVIGATION,
   PUBLIC_SIGNED_IN_PATIENT_NAVIGATION,
 } from "@/config/navigation";
+import { ROUTES } from "@/config/routes";
 
 import { OWNER_BOOTSTRAP_MEMBERSHIP_STATUS, OWNER_BOOTSTRAP_ROLE } from "../consts";
 import {
+  getAuthenticatedHomeForCurrentUser,
   getDefaultPublicNavigationDatabase,
   getPublicNavigationForCurrentUser,
 } from "../navigation";
@@ -115,5 +117,68 @@ describe("getPublicNavigationForCurrentUser", () => {
 
   it("returns the default database", async () => {
     await expect(getDefaultPublicNavigationDatabase()).resolves.toBe(prismaMock.prisma);
+  });
+
+  it("uses the default database when no navigation database is provided", async () => {
+    prismaMock.prisma.user.findUnique.mockResolvedValueOnce(null);
+
+    await expect(
+      getPublicNavigationForCurrentUser({
+        authReader: async () => ({ userId: "user_clerk_123" }),
+      }),
+    ).resolves.toBe(PUBLIC_SIGNED_IN_PATIENT_NAVIGATION);
+  });
+});
+
+describe("getAuthenticatedHomeForCurrentUser", () => {
+  it("returns the patient account for signed-out users", async () => {
+    await expect(
+      getAuthenticatedHomeForCurrentUser({
+        authReader: async () => ({ userId: null }),
+        database: createDatabase(),
+      }),
+    ).resolves.toBe(ROUTES.patientAccount);
+  });
+
+  it("returns the patient account before local user sync completes", async () => {
+    await expect(
+      getAuthenticatedHomeForCurrentUser({
+        authReader: async () => ({ userId: "user_clerk_123" }),
+        database: createDatabase({ localUser: null }),
+      }),
+    ).resolves.toBe(ROUTES.patientAccount);
+  });
+
+  it("returns the patient account for signed-in users without owner/admin access", async () => {
+    await expect(
+      getAuthenticatedHomeForCurrentUser({
+        authReader: async () => ({ userId: "user_clerk_123" }),
+        database: createDatabase(),
+      }),
+    ).resolves.toBe(ROUTES.patientAccount);
+  });
+
+  it("returns admin for signed-in users with owner/admin access", async () => {
+    await expect(
+      getAuthenticatedHomeForCurrentUser({
+        authReader: async () => ({ userId: "user_clerk_123" }),
+        database: createDatabase({
+          membership: {
+            role: OWNER_BOOTSTRAP_ROLE.admin,
+            status: OWNER_BOOTSTRAP_MEMBERSHIP_STATUS.active,
+          },
+        }),
+      }),
+    ).resolves.toBe(ROUTES.admin);
+  });
+
+  it("uses the default database when no redirect database is provided", async () => {
+    prismaMock.prisma.user.findUnique.mockResolvedValueOnce(null);
+
+    await expect(
+      getAuthenticatedHomeForCurrentUser({
+        authReader: async () => ({ userId: "user_clerk_123" }),
+      }),
+    ).resolves.toBe(ROUTES.patientAccount);
   });
 });

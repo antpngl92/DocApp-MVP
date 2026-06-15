@@ -57,4 +57,18 @@ describe("AppShell", () => {
     expect(screen.getByText("Clinic Owner")).toBeInTheDocument();
     expect(screen.getByRole("main")).toHaveTextContent("Shell content");
   });
+
+  it("does not load or render the current user name by default", async () => {
+    render(
+      await AppShell({
+        children: <p>Shell content</p>,
+        contextLabel: "Public clinic",
+        navigation: [],
+      }),
+    );
+
+    expect(screen.getByText("Public clinic")).toBeInTheDocument();
+    expect(screen.queryByText("Clinic Owner")).not.toBeInTheDocument();
+    expect(screen.getByRole("main")).toHaveTextContent("Shell content");
+  });
 });
