@@ -88,6 +88,7 @@ const createDatabase = ({
     },
     user: {
       findUnique: vi.fn().mockResolvedValue(localUser),
+      upsert: vi.fn().mockImplementation(async ({ create }) => createLocalUser(create)),
     },
   };
 };
@@ -171,6 +172,10 @@ describe("activateStaffInvitationForCurrentUser", () => {
       activateStaffInvitationForCurrentUser({
         authReader: async () => ({ userId: "user_clerk_123" }),
         database: missingUserDatabase,
+        clerkProfileReader: async () => ({
+          localUserInput: null,
+          privateMetadata: {},
+        }),
       }),
     ).resolves.toEqual({
       membership: null,
