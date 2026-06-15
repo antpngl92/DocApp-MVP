@@ -107,6 +107,8 @@ export const OrganizationMemberScalarFieldEnum = {
   role: 'role',
   status: 'status',
   invitedEmail: 'invitedEmail',
+  clerkInvitationId: 'clerkInvitationId',
+  clerkInvitationStatus: 'clerkInvitationStatus',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const

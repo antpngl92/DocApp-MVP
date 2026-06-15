@@ -9,7 +9,12 @@ const SignUpPage = async () => {
 
   return (
     <PatientRegistration
-      clerkSignUp={<SignUp fallbackRedirectUrl={AUTH_ROUTES.afterSignUp} />}
+      clerkSignUp={
+        <SignUp
+          fallbackRedirectUrl={AUTH_ROUTES.afterSignUp}
+          forceRedirectUrl={AUTH_ROUTES.afterSignUp}
+        />
+      }
       description={t("description")}
       eyebrow={t("eyebrow")}
       privacyNote={t("privacyNote")}

@@ -37,3 +37,13 @@ export const OrganizationMemberStatus = {
 } as const
 
 export type OrganizationMemberStatus = (typeof OrganizationMemberStatus)[keyof typeof OrganizationMemberStatus]
+
+
+export const ClerkInvitationStatus = {
+  pending: 'pending',
+  accepted: 'accepted',
+  revoked: 'revoked',
+  expired: 'expired'
+} as const
+
+export type ClerkInvitationStatus = (typeof ClerkInvitationStatus)[keyof typeof ClerkInvitationStatus]

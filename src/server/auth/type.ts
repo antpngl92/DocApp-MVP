@@ -1,4 +1,5 @@
 import type {
+  CLERK_INVITATION_STATUS,
   CURRENT_AUTHENTICATED_USER_STATUS,
   ORGANIZATION_STATUS,
   OWNER_BOOTSTRAP_MEMBERSHIP_STATUS,
@@ -73,6 +74,21 @@ type AdminAccessMembership = {
 
 type RequireAdminAccessOptions = {
   membership: AdminAccessMembership | null;
+};
+
+type PublicNavigationDatabase = LocalUserLookupDatabase & {
+  organizationMember: {
+    findUnique: (args: {
+      where: {
+        userId: string;
+      };
+    }) => Promise<AdminAccessMembership | null>;
+  };
+};
+
+type GetPublicNavigationForCurrentUserOptions = {
+  authReader?: CurrentUserAuthReader;
+  database?: PublicNavigationDatabase;
 };
 
 type OwnerBootstrapRole = (typeof OWNER_BOOTSTRAP_ROLE)[keyof typeof OWNER_BOOTSTRAP_ROLE];
@@ -200,8 +216,21 @@ type StaffInvitationMembership = {
   status: string;
 };
 
+type ClerkInvitationStatus = (typeof CLERK_INVITATION_STATUS)[keyof typeof CLERK_INVITATION_STATUS];
+
+type StaffInvitationPendingMembership = {
+  clerkInvitationId: string | null;
+  clerkInvitationStatus: string | null;
+  id: string;
+  invitedEmail: string | null;
+  organizationId: string;
+  role: string;
+  status: string;
+};
+
 type StaffInvitationResult = {
   clerkInvitationId: string | null;
+  membershipId: string | null;
   organizationId: string | null;
   status: StaffInvitationResultStatus;
 };
@@ -224,7 +253,25 @@ type ClerkInvitationCreator = (
   input: ClerkInvitationCreateInput,
 ) => Promise<ClerkInvitationCreateResult>;
 
+type ClerkInvitationRevoker = (invitationId: string) => Promise<unknown>;
+
 type StaffInvitationDatabase = LocalUserLookupDatabase & {
+  auditEvent: {
+    create: (args: {
+      data: {
+        action: string;
+        actorUserId: string;
+        metadata: {
+          email: string;
+          role: StaffMemberRole;
+          source: string;
+        };
+        organizationId: string;
+        targetId: string;
+        targetType: string;
+      };
+    }) => Promise<unknown>;
+  };
   organization: {
     findFirst: (args: {
       orderBy: {
@@ -236,11 +283,42 @@ type StaffInvitationDatabase = LocalUserLookupDatabase & {
     }) => Promise<StaffInvitationOrganization | null>;
   };
   organizationMember: {
+    create: (args: {
+      data: {
+        invitedEmail: string;
+        organizationId: string;
+        role: StaffMemberRole;
+        status: typeof STAFF_MEMBER_STATUS.invited;
+      };
+    }) => Promise<StaffInvitationPendingMembership>;
+    delete: (args: {
+      where: {
+        id: string;
+      };
+    }) => Promise<unknown>;
+    findFirst: (args: {
+      where: {
+        invitedEmail: string;
+        organizationId: string;
+        status: {
+          in: StaffMemberStatus[];
+        };
+      };
+    }) => Promise<StaffInvitationPendingMembership | null>;
     findUnique: (args: {
       where: {
         userId: string;
       };
     }) => Promise<StaffInvitationMembership | null>;
+    update: (args: {
+      data: {
+        clerkInvitationId: string | null;
+        clerkInvitationStatus: ClerkInvitationStatus;
+      };
+      where: {
+        id: string;
+      };
+    }) => Promise<StaffInvitationPendingMembership>;
   };
 };
 
@@ -248,9 +326,12 @@ type CreateStaffInvitationOptions = StaffInvitationCreateInput & {
   authReader?: CurrentUserAuthReader;
   database?: StaffInvitationDatabase;
   invitationCreator?: ClerkInvitationCreator;
+  invitationRevoker?: ClerkInvitationRevoker;
 };
 
 type StaffOnboardingMembership = {
+  clerkInvitationId: string | null;
+  clerkInvitationStatus: string | null;
   id: string;
   invitedEmail: string | null;
   organizationId: string;
@@ -281,6 +362,15 @@ type StaffOnboardingDatabase = LocalUserLookupDatabase & {
       };
     }) => Promise<unknown>;
   };
+  user: LocalUserLookupDatabase["user"] & {
+    upsert: (args: {
+      create: OwnerBootstrapLocalUserInput;
+      update: Pick<OwnerBootstrapLocalUserInput, "email" | "name">;
+      where: {
+        clerkUserId: string;
+      };
+    }) => Promise<LocalUserRecord>;
+  };
   organizationMember: {
     findFirst: (args: {
       where: {
@@ -295,6 +385,7 @@ type StaffOnboardingDatabase = LocalUserLookupDatabase & {
     }) => Promise<StaffOnboardingMembership | null>;
     update: (args: {
       data: {
+        clerkInvitationStatus: typeof CLERK_INVITATION_STATUS.accepted;
         status: typeof STAFF_MEMBER_STATUS.active;
         userId: string;
       };
@@ -307,6 +398,7 @@ type StaffOnboardingDatabase = LocalUserLookupDatabase & {
 
 type ActivateStaffInvitationOptions = {
   authReader?: CurrentUserAuthReader;
+  clerkProfileReader?: ClerkBootstrapProfileReader;
   database?: StaffOnboardingDatabase;
 };
 
@@ -320,10 +412,12 @@ export type {
   CurrentAuthenticatedUserResult,
   CurrentAuthenticatedUserStatus,
   CurrentUserAuthReader,
+  GetPublicNavigationForCurrentUserOptions,
   GetCurrentAuthenticatedUserOptions,
   LocalUserLookupDatabase,
   LocalUserLookupDatabase as CurrentUserDatabase,
   LocalUserRecord,
+  PublicNavigationDatabase,
   OwnerBootstrapDatabase,
   OwnerBootstrapLocalUserInput,
   OwnerBootstrapMembership,
@@ -335,9 +429,13 @@ export type {
   ActivateStaffInvitationOptions,
   StaffMemberRole,
   StaffMemberStatus,
+  ClerkInvitationCreateResult,
   ClerkInvitationCreator,
+  ClerkInvitationRevoker,
+  ClerkInvitationStatus,
   CreateStaffInvitationOptions,
   StaffInvitationDatabase,
+  StaffInvitationPendingMembership,
   StaffInvitationResult,
   StaffInvitationResultStatus,
   StaffOnboardingDatabase,

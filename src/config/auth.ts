@@ -1,11 +1,11 @@
 const AUTH_ROUTES = {
   signIn: "/sign-in",
   signUp: "/sign-up",
-  afterSignIn: "/account",
-  afterSignUp: "/account",
+  afterSignIn: "/auth/after",
+  afterSignUp: "/auth/after",
 } as const;
 
-const CLERK_PROTECTED_ROUTE_PATTERNS = ["/admin(.*)", "/account(.*)"] as const;
+const CLERK_PROTECTED_ROUTE_PATTERNS = ["/account(.*)"] as const;
 
 const PUBLIC_ROUTE_PATTERNS = [
   "/",
@@ -17,6 +17,7 @@ const PUBLIC_ROUTE_PATTERNS = [
   "/support",
   "/sign-in(.*)",
   "/sign-up(.*)",
+  "/auth/after",
   "/api/health",
 ] as const;
 
@@ -34,6 +35,7 @@ const isDocumentedPublicRoute = (pathname: string) => {
     "/support",
     "/sign-in",
     "/sign-up",
+    "/auth/after",
     "/api/health",
   ].some((routePrefix) => pathname === routePrefix || pathname.startsWith(`${routePrefix}/`));
 };

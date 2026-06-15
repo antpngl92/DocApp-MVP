@@ -2,7 +2,7 @@ import { ROUTES } from "./routes";
 
 type NavigationItem = Readonly<{
   href: string;
-  labelKey: "appointments" | "booking" | "overview" | "support";
+  labelKey: "appointments" | "booking" | "dashboard" | "support";
 }>;
 
 const PUBLIC_NAVIGATION: readonly NavigationItem[] = [
@@ -10,15 +10,27 @@ const PUBLIC_NAVIGATION: readonly NavigationItem[] = [
   { href: ROUTES.support, labelKey: "support" },
 ];
 
-const ADMIN_NAVIGATION: readonly NavigationItem[] = [
-  { href: ROUTES.admin, labelKey: "overview" },
-  { href: ROUTES.support, labelKey: "support" },
+const PUBLIC_SIGNED_IN_ADMIN_NAVIGATION: readonly NavigationItem[] = [
+  { href: ROUTES.admin, labelKey: "dashboard" },
 ];
+
+const PUBLIC_SIGNED_IN_PATIENT_NAVIGATION: readonly NavigationItem[] = [
+  ...PUBLIC_NAVIGATION,
+  { href: ROUTES.patientAccount, labelKey: "appointments" },
+];
+
+const ADMIN_NAVIGATION: readonly NavigationItem[] = [{ href: ROUTES.admin, labelKey: "dashboard" }];
 
 const PATIENT_NAVIGATION: readonly NavigationItem[] = [
   { href: ROUTES.patientAccount, labelKey: "appointments" },
   { href: ROUTES.support, labelKey: "support" },
 ];
 
-export { ADMIN_NAVIGATION, PATIENT_NAVIGATION, PUBLIC_NAVIGATION };
+export {
+  ADMIN_NAVIGATION,
+  PATIENT_NAVIGATION,
+  PUBLIC_NAVIGATION,
+  PUBLIC_SIGNED_IN_ADMIN_NAVIGATION,
+  PUBLIC_SIGNED_IN_PATIENT_NAVIGATION,
+};
 export type { NavigationItem };

@@ -9,7 +9,12 @@ const SignInPage = async () => {
 
   return (
     <AccountSignIn
-      clerkSignIn={<SignIn fallbackRedirectUrl={AUTH_ROUTES.afterSignIn} />}
+      clerkSignIn={
+        <SignIn
+          fallbackRedirectUrl={AUTH_ROUTES.afterSignIn}
+          forceRedirectUrl={AUTH_ROUTES.afterSignIn}
+        />
+      }
       description={t("description")}
       eyebrow={t("eyebrow")}
       helpText={t("helpText")}

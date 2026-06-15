@@ -1,14 +1,29 @@
 import { render, screen } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import PatientLayout from "../layout";
 
 const sessionBoundary = vi.hoisted(() => ({
+  activateStaffInvitationForCurrentUser: vi.fn(),
+  getAuthenticatedHomeForCurrentUser: vi.fn(),
+  redirect: vi.fn(),
   requireAuthenticatedSession: vi.fn(),
+}));
+
+vi.mock("@/server/auth/navigation", () => ({
+  getAuthenticatedHomeForCurrentUser: sessionBoundary.getAuthenticatedHomeForCurrentUser,
+}));
+
+vi.mock("@/server/auth/staff-onboarding", () => ({
+  activateStaffInvitationForCurrentUser: sessionBoundary.activateStaffInvitationForCurrentUser,
 }));
 
 vi.mock("@/server/auth/session", () => ({
   requireAuthenticatedSession: sessionBoundary.requireAuthenticatedSession,
+}));
+
+vi.mock("next/navigation", () => ({
+  redirect: sessionBoundary.redirect,
 }));
 
 vi.mock("@/components/layout", () => ({
@@ -18,11 +33,16 @@ vi.mock("@/components/layout", () => ({
 }));
 
 describe("PatientLayout", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
   it("requires an authenticated session before rendering account content", async () => {
     sessionBoundary.requireAuthenticatedSession.mockResolvedValueOnce({
       sessionId: "session_123",
       userId: "user_123",
     });
+    sessionBoundary.getAuthenticatedHomeForCurrentUser.mockResolvedValueOnce("/account");
 
     render(
       await PatientLayout({
@@ -31,6 +51,9 @@ describe("PatientLayout", () => {
     );
 
     expect(sessionBoundary.requireAuthenticatedSession).toHaveBeenCalledTimes(1);
+    expect(sessionBoundary.activateStaffInvitationForCurrentUser).toHaveBeenCalledTimes(1);
+    expect(sessionBoundary.getAuthenticatedHomeForCurrentUser).toHaveBeenCalledTimes(1);
+    expect(sessionBoundary.redirect).not.toHaveBeenCalled();
     expect(screen.getByTestId("patient-shell")).toHaveTextContent("Account content");
   });
 });

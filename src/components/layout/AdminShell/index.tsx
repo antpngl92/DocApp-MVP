@@ -8,7 +8,7 @@ const AdminShell = async ({ children }: AdminShellProps) => {
   const t = await getTranslations("navigation");
 
   return (
-    <AppShell contextLabel={t("adminContext")} navigation={ADMIN_NAVIGATION}>
+    <AppShell contextLabel={t("adminContext")} navigation={ADMIN_NAVIGATION} showCurrentUserName>
       {children}
     </AppShell>
   );

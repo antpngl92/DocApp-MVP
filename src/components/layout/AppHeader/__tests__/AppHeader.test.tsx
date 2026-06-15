@@ -8,6 +8,7 @@ vi.mock("next-intl/server", () => ({
   getTranslations: async () => (key: string) => {
     const messages: Record<string, string> = {
       createAccount: "Create account",
+      dashboard: "Dashboard",
       overview: "Overview",
       primaryLabel: "Primary navigation",
       signIn: "Sign in",
@@ -43,13 +44,15 @@ describe("AppHeader", () => {
     render(
       await AppHeader({
         contextLabel: "Clinic administration",
-        navigation: [{ href: "/admin", labelKey: "overview" }],
+        currentUserName: "Clinic Owner",
+        navigation: [{ href: "/admin", labelKey: "dashboard" }],
       }),
     );
 
     expect(screen.getByText("DocApp")).toBeInTheDocument();
     expect(screen.getByText("Clinic administration")).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "Overview" })).toHaveAttribute("href", "/admin");
+    expect(screen.getByText("Clinic Owner")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Dashboard" })).toHaveAttribute("href", "/admin");
     expect(
       screen.getByText("Auth controls: Sign in, Create account, Sign out"),
     ).toBeInTheDocument();
@@ -65,5 +68,16 @@ describe("AppHeader", () => {
 
     expect(screen.getByText("DocApp")).toBeInTheDocument();
     expect(screen.queryByText("Clinic administration")).not.toBeInTheDocument();
+  });
+
+  it("omits the current user name when none is provided", async () => {
+    render(
+      await AppHeader({
+        currentUserName: null,
+        navigation: [],
+      }),
+    );
+
+    expect(screen.queryByText("Clinic Owner")).not.toBeInTheDocument();
   });
 });

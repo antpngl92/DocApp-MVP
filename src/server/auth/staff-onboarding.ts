@@ -1,4 +1,5 @@
 import {
+  CLERK_INVITATION_STATUS,
   CURRENT_AUTHENTICATED_USER_STATUS,
   STAFF_MEMBER_STATUS,
   STAFF_ONBOARDING_AUDIT_ACTION,
@@ -9,10 +10,16 @@ import {
 import { getCurrentAuthenticatedUser } from "./current-user";
 import type {
   ActivateStaffInvitationOptions,
+  LocalUserRecord,
   StaffOnboardingDatabase,
   StaffOnboardingResult,
 } from "./type";
-import { isStaffMemberRole, normalizeEmail } from "./utils";
+import {
+  isStaffMemberRole,
+  normalizeEmail,
+  readClerkBootstrapProfile,
+  upsertLocalUserFromClerkProfile,
+} from "./utils";
 
 const getDefaultStaffOnboardingDatabase = async (): Promise<StaffOnboardingDatabase> => {
   const { prisma } = await import("@/lib/prisma");
@@ -22,6 +29,7 @@ const getDefaultStaffOnboardingDatabase = async (): Promise<StaffOnboardingDatab
 
 const activateStaffInvitationForCurrentUser = async ({
   authReader,
+  clerkProfileReader = readClerkBootstrapProfile,
   database,
 }: ActivateStaffInvitationOptions = {}): Promise<StaffOnboardingResult> => {
   const staffOnboardingDatabase = database ?? (await getDefaultStaffOnboardingDatabase());
@@ -37,7 +45,28 @@ const activateStaffInvitationForCurrentUser = async ({
     };
   }
 
+  let localUser: LocalUserRecord | null =
+    currentUser.status === CURRENT_AUTHENTICATED_USER_STATUS.authenticated
+      ? currentUser.user
+      : null;
+
   if (currentUser.status === CURRENT_AUTHENTICATED_USER_STATUS.missingLocalUser) {
+    const clerkProfile = await clerkProfileReader(currentUser.clerkUserId);
+
+    if (!clerkProfile.localUserInput) {
+      return {
+        membership: null,
+        status: STAFF_ONBOARDING_STATUS.missingLocalUser,
+      };
+    }
+
+    localUser = await upsertLocalUserFromClerkProfile(
+      staffOnboardingDatabase,
+      clerkProfile.localUserInput,
+    );
+  }
+
+  if (!localUser) {
     return {
       membership: null,
       status: STAFF_ONBOARDING_STATUS.missingLocalUser,
@@ -46,7 +75,7 @@ const activateStaffInvitationForCurrentUser = async ({
 
   const existingMembership = await staffOnboardingDatabase.organizationMember.findUnique({
     where: {
-      userId: currentUser.user.id,
+      userId: localUser.id,
     },
   });
 
@@ -67,7 +96,7 @@ const activateStaffInvitationForCurrentUser = async ({
     };
   }
 
-  const normalizedEmail = normalizeEmail(currentUser.user.email);
+  const normalizedEmail = normalizeEmail(localUser.email);
   const pendingInvitation = await staffOnboardingDatabase.organizationMember.findFirst({
     where: {
       invitedEmail: normalizedEmail,
@@ -101,8 +130,9 @@ const activateStaffInvitationForCurrentUser = async ({
 
   const activatedMembership = await staffOnboardingDatabase.organizationMember.update({
     data: {
+      clerkInvitationStatus: CLERK_INVITATION_STATUS.accepted,
       status: STAFF_MEMBER_STATUS.active,
-      userId: currentUser.user.id,
+      userId: localUser.id,
     },
     where: {
       id: pendingInvitation.id,
@@ -112,7 +142,7 @@ const activateStaffInvitationForCurrentUser = async ({
   await staffOnboardingDatabase.auditEvent.create({
     data: {
       action: STAFF_ONBOARDING_AUDIT_ACTION,
-      actorUserId: currentUser.user.id,
+      actorUserId: localUser.id,
       metadata: {
         email: normalizedEmail,
         role: pendingInvitation.role,

@@ -8,7 +8,11 @@ const PatientShell = async ({ children }: PatientShellProps) => {
   const t = await getTranslations("navigation");
 
   return (
-    <AppShell contextLabel={t("patientContext")} navigation={PATIENT_NAVIGATION}>
+    <AppShell
+      contextLabel={t("patientContext")}
+      navigation={PATIENT_NAVIGATION}
+      showCurrentUserName
+    >
       {children}
     </AppShell>
   );

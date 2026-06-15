@@ -141,6 +141,13 @@ export type EnumOrganizationMemberStatusFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumOrganizationMemberStatusFilter<$PrismaModel> | $Enums.OrganizationMemberStatus
 }
 
+export type EnumClerkInvitationStatusNullableFilter<$PrismaModel = never> = {
+  equals?: $Enums.ClerkInvitationStatus | Prisma.EnumClerkInvitationStatusFieldRefInput<$PrismaModel> | null
+  in?: $Enums.ClerkInvitationStatus[] | Prisma.ListEnumClerkInvitationStatusFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.ClerkInvitationStatus[] | Prisma.ListEnumClerkInvitationStatusFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumClerkInvitationStatusNullableFilter<$PrismaModel> | $Enums.ClerkInvitationStatus | null
+}
+
 export type EnumOrganizationMemberRoleWithAggregatesFilter<$PrismaModel = never> = {
   equals?: $Enums.OrganizationMemberRole | Prisma.EnumOrganizationMemberRoleFieldRefInput<$PrismaModel>
   in?: $Enums.OrganizationMemberRole[] | Prisma.ListEnumOrganizationMemberRoleFieldRefInput<$PrismaModel>
@@ -159,6 +166,16 @@ export type EnumOrganizationMemberStatusWithAggregatesFilter<$PrismaModel = neve
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumOrganizationMemberStatusFilter<$PrismaModel>
   _max?: Prisma.NestedEnumOrganizationMemberStatusFilter<$PrismaModel>
+}
+
+export type EnumClerkInvitationStatusNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ClerkInvitationStatus | Prisma.EnumClerkInvitationStatusFieldRefInput<$PrismaModel> | null
+  in?: $Enums.ClerkInvitationStatus[] | Prisma.ListEnumClerkInvitationStatusFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.ClerkInvitationStatus[] | Prisma.ListEnumClerkInvitationStatusFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumClerkInvitationStatusNullableWithAggregatesFilter<$PrismaModel> | $Enums.ClerkInvitationStatus | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumClerkInvitationStatusNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumClerkInvitationStatusNullableFilter<$PrismaModel>
 }
 
 export type JsonNullableFilter<$PrismaModel = never> =
@@ -352,6 +369,13 @@ export type NestedEnumOrganizationMemberStatusFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumOrganizationMemberStatusFilter<$PrismaModel> | $Enums.OrganizationMemberStatus
 }
 
+export type NestedEnumClerkInvitationStatusNullableFilter<$PrismaModel = never> = {
+  equals?: $Enums.ClerkInvitationStatus | Prisma.EnumClerkInvitationStatusFieldRefInput<$PrismaModel> | null
+  in?: $Enums.ClerkInvitationStatus[] | Prisma.ListEnumClerkInvitationStatusFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.ClerkInvitationStatus[] | Prisma.ListEnumClerkInvitationStatusFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumClerkInvitationStatusNullableFilter<$PrismaModel> | $Enums.ClerkInvitationStatus | null
+}
+
 export type NestedEnumOrganizationMemberRoleWithAggregatesFilter<$PrismaModel = never> = {
   equals?: $Enums.OrganizationMemberRole | Prisma.EnumOrganizationMemberRoleFieldRefInput<$PrismaModel>
   in?: $Enums.OrganizationMemberRole[] | Prisma.ListEnumOrganizationMemberRoleFieldRefInput<$PrismaModel>
@@ -370,6 +394,16 @@ export type NestedEnumOrganizationMemberStatusWithAggregatesFilter<$PrismaModel 
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumOrganizationMemberStatusFilter<$PrismaModel>
   _max?: Prisma.NestedEnumOrganizationMemberStatusFilter<$PrismaModel>
+}
+
+export type NestedEnumClerkInvitationStatusNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ClerkInvitationStatus | Prisma.EnumClerkInvitationStatusFieldRefInput<$PrismaModel> | null
+  in?: $Enums.ClerkInvitationStatus[] | Prisma.ListEnumClerkInvitationStatusFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.ClerkInvitationStatus[] | Prisma.ListEnumClerkInvitationStatusFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumClerkInvitationStatusNullableWithAggregatesFilter<$PrismaModel> | $Enums.ClerkInvitationStatus | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumClerkInvitationStatusNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumClerkInvitationStatusNullableFilter<$PrismaModel>
 }
 
 export type NestedJsonNullableFilter<$PrismaModel = never> =

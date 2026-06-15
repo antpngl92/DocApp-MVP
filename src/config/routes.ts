@@ -7,6 +7,7 @@ const PUBLIC_ROUTES = {
   checkoutStatusDemo: "/checkout/status/demo-booking",
   signIn: "/sign-in",
   signUp: "/sign-up",
+  postAuth: "/auth/after",
   support: "/support",
 } as const;
 

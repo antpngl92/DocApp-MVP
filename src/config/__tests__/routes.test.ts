@@ -20,6 +20,7 @@ describe("routes", () => {
       "checkoutStatusDemo",
       "signIn",
       "signUp",
+      "postAuth",
       "support",
     ]);
   });

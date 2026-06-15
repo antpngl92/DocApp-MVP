@@ -109,6 +109,7 @@ Complete tasks from top to bottom and one approved task/branch at a time. Do not
 - [x] Model audit/event records needed for identity, membership, and role changes.
 - [x] Add identity and membership indexes and ownership constraints wherever practical.
 - [x] Implement idempotent Clerk webhook user sync and map each Clerk identity to the local `User` table through unique `User.clerkUserId`.
+- [ ] Add an audit event for public account registration through the `/sign-up` flow.
 - [x] Add current-authenticated-user helper.
 - [x] Add local user lookup helper.
 - [x] Implement trusted clinic owner/admin local provisioning and link it to a trusted Clerk identity.
@@ -116,20 +117,20 @@ Complete tasks from top to bottom and one approved task/branch at a time. Do not
 - [x] Build owner/admin staff invitation form with staff email input and role dropdown.
 - [x] Allow owner/admin to choose staff role during invitation, such as admin, manager, receptionist, or doctor.
 - [x] Create staff invitation from a server-only action/route using Clerk Backend API `clerkClient.invitations.createInvitation`.
-- [ ] Store Clerk invitation ID/status alongside the pending local invitation or membership record.
+- [x] Store Clerk invitation ID/status alongside the pending local invitation or membership record.
 - [ ] Pass only non-authoritative references such as organization ID, membership/invitation ID, and intended role in Clerk invitation metadata.
 - [ ] Support staff roles through local `OrganizationMember` state, including manager, receptionist, doctor, admin, and owner where applicable.
 - [ ] Link a staff user with role `doctor` to a `Doctor` operational profile when that staff member is a bookable provider.
 - [ ] Ensure Clerk invitation metadata is treated as a hint and local `OrganizationMember` state remains the source of staff roles and permissions.
-- [ ] Ensure staff cannot self-register into arbitrary clinics without invitation or owner/admin approval.
+- [x] Ensure staff cannot self-register into arbitrary clinics without invitation or owner/admin approval.
 - [ ] Model and enforce clinic-side roles plus patient ownership: owner, admin, manager, receptionist, doctor, and patient account access.
 - [ ] Add organization/clinic membership checks.
 - [ ] Add current-organization/current-clinic helper.
-- [ ] Add admin/staff authorization guards.
+- [x] Add admin/staff authorization guards.
 - [ ] Add patient ownership authorization guards.
-- [ ] Protect admin routes with authenticated local user, active clinic membership, and an authorized clinic-side role.
+- [x] Protect admin routes with authenticated local user, active clinic membership, and an authorized clinic-side role.
 - [ ] Protect patient account routes with authenticated local user and patient ownership checks.
-- [ ] Add route-level authorization boundaries for public, admin, staff, and patient surfaces.
+- [x] Add route-level authorization boundaries for public, admin, staff, and patient surfaces.
 - [ ] Ensure patients can access only their own appointments/profile.
 - [ ] Ensure clinic users can access only their clinic-scoped records.
 - [ ] Ensure webhook processing cannot mutate unrelated clinic/order records.
@@ -179,6 +180,8 @@ Complete tasks from top to bottom and one approved task/branch at a time. Do not
 ## Phase 9 - Clinic Admin Setup
 
 - [ ] Build admin dashboard shell.
+- [ ] Redirect authenticated staff/owner/admin users to the staff dashboard instead of the patient account area after login, registration, or invitation acceptance.
+- [ ] Use a dashboard sidebar layout for staff/admin pages; shadcn Sidebar is approved for this admin dashboard shell only unless explicitly expanded later.
 - [ ] Build clinic settings page.
 - [ ] Support booking page slug.
 - [ ] Support clinic timezone.
@@ -422,6 +425,7 @@ Complete tasks from top to bottom and one approved task/branch at a time. Do not
 Focused component and logic tests must already have been added with every implementation task. This phase closes cross-feature coverage gaps, adds integration/E2E coverage, and performs pilot hardening.
 
 - [ ] Audit focused test coverage from earlier phases and close any documented gaps.
+- [ ] Review duplicated staff invitation activation calls in patient/admin layouts and decide whether to replace them with a shared authenticated-session preparation helper.
 - [ ] Add cross-feature integration coverage for authentication, clinic scoping, patient ownership, and staff permissions.
 - [ ] Add cross-feature integration coverage for holds, availability, pending-payment conversion, cleanup, and double-booking prevention.
 - [ ] Add cross-feature integration coverage for Stripe webhook idempotency, Google Calendar sync/retry, and notification idempotency.
