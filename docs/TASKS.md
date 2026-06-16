@@ -118,7 +118,7 @@ Complete tasks from top to bottom and one approved task/branch at a time. Do not
 - [x] Allow owner/admin to choose staff role during invitation, such as admin, manager, receptionist, or doctor.
 - [x] Create staff invitation from a server-only action/route using Clerk Backend API `clerkClient.invitations.createInvitation`.
 - [x] Store Clerk invitation ID/status alongside the pending local invitation or membership record.
-- [ ] Pass only non-authoritative references such as organization ID, membership/invitation ID, and intended role in Clerk invitation metadata.
+- [x] Do not pass local organization, membership, invitation, or role metadata to Clerk invitations for MVP; match staff invitation acceptance by invited email against local `OrganizationMember` state only.
 - [ ] Support staff roles through local `OrganizationMember` state, including manager, receptionist, doctor, admin, and owner where applicable.
 - [ ] Link a staff user with role `doctor` to a `Doctor` operational profile when that staff member is a bookable provider.
 - [ ] Ensure Clerk invitation metadata is treated as a hint and local `OrganizationMember` state remains the source of staff roles and permissions.
