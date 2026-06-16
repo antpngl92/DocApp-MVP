@@ -10,7 +10,9 @@ type ClerkWebhookSyncResult = {
 
 const handleClerkWebhookEvent = async (event: WebhookEvent): Promise<ClerkWebhookSyncResult> => {
   if (event.type === "user.created" || event.type === "user.updated") {
-    await syncClerkUserToLocalUser(event.data);
+    await syncClerkUserToLocalUser(event.data, undefined, {
+      auditPublicRegistration: event.type === "user.created",
+    });
 
     return {
       action: "synced",

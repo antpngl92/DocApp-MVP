@@ -4,13 +4,28 @@ import {
   mapClerkUserToLocalUserInput,
   syncClerkUserToLocalUser,
   type ClerkUserPayload,
+  type LocalUserSyncRecord,
   type UserSyncDatabase,
 } from "../user-sync";
 
+const prismaAuditEventCreate = vi.fn();
+const prismaAuditEventFindFirst = vi.fn();
+const prismaOrganizationFindFirst = vi.fn();
+const prismaOrganizationMemberFindFirst = vi.fn();
 const prismaUpsert = vi.fn();
 
 vi.mock("@/lib/prisma", () => ({
   prisma: {
+    auditEvent: {
+      create: prismaAuditEventCreate,
+      findFirst: prismaAuditEventFindFirst,
+    },
+    organization: {
+      findFirst: prismaOrganizationFindFirst,
+    },
+    organizationMember: {
+      findFirst: prismaOrganizationMemberFindFirst,
+    },
     user: {
       upsert: prismaUpsert,
     },
@@ -38,11 +53,79 @@ const createClerkUserPayload = (overrides: Partial<ClerkUserPayload> = {}): Cler
 };
 
 const createFakeDatabase = (): UserSyncDatabase & {
-  records: Map<string, { clerkUserId: string; email: string; name: string | null }>;
+  auditEvents: Array<{
+    action: string;
+    actorUserId: string;
+    metadata: {
+      clerkUserId: string;
+      email: string;
+      source: string;
+    };
+    organizationId: string;
+    targetId: string;
+    targetType: string;
+  }>;
+  pendingStaffInvitation: { id: string } | null;
+  records: Map<string, LocalUserSyncRecord>;
 } => {
-  const records = new Map<string, { clerkUserId: string; email: string; name: string | null }>();
+  const auditEvents: Array<{
+    action: string;
+    actorUserId: string;
+    metadata: {
+      clerkUserId: string;
+      email: string;
+      source: string;
+    };
+    organizationId: string;
+    targetId: string;
+    targetType: string;
+  }> = [];
+  const records = new Map<string, LocalUserSyncRecord>();
 
-  return {
+  const database: UserSyncDatabase & {
+    auditEvents: typeof auditEvents;
+    pendingStaffInvitation: { id: string } | null;
+    records: typeof records;
+  } = {
+    auditEvent: {
+      create: async ({ data }) => {
+        auditEvents.push(data);
+
+        return {
+          id: `audit_${auditEvents.length}`,
+        };
+      },
+      findFirst: async ({ where }) => {
+        const existingAuditEvent = auditEvents.find((auditEvent) => {
+          return (
+            auditEvent.action === where.action &&
+            auditEvent.organizationId === where.organizationId &&
+            auditEvent.targetId === where.targetId &&
+            auditEvent.targetType === where.targetType
+          );
+        });
+
+        return existingAuditEvent
+          ? {
+              id: "audit_existing",
+            }
+          : null;
+      },
+    },
+    auditEvents,
+    organization: {
+      findFirst: async () => {
+        return {
+          id: "org_123",
+        };
+      },
+    },
+    organizationMember: {
+      findFirst: async () => {
+        return database.pendingStaffInvitation;
+      },
+    },
+    pendingStaffInvitation: null,
     records,
     user: {
       upsert: async ({ create, update, where }) => {
@@ -52,7 +135,10 @@ const createFakeDatabase = (): UserSyncDatabase & {
               ...existingRecord,
               ...update,
             }
-          : create;
+          : {
+              ...create,
+              id: `user_local_${records.size + 1}`,
+            };
 
         records.set(where.clerkUserId, nextRecord);
 
@@ -60,6 +146,8 @@ const createFakeDatabase = (): UserSyncDatabase & {
       },
     },
   };
+
+  return database;
 };
 
 describe("mapClerkUserToLocalUserInput", () => {
@@ -148,15 +236,24 @@ describe("syncClerkUserToLocalUser", () => {
     expect(database.records.get("user_clerk_123")).toEqual({
       clerkUserId: "user_clerk_123",
       email: "updated@example.com",
+      id: "user_local_1",
       name: "Updated Patient",
     });
   });
 
   it("uses the default Prisma database when no database is passed", async () => {
-    prismaUpsert.mockResolvedValueOnce({ id: "user_local_123" });
+    prismaUpsert.mockResolvedValueOnce({
+      clerkUserId: "user_clerk_123",
+      email: "patient@example.com",
+      id: "user_local_123",
+      name: "Mila Ivanova",
+    });
 
     await expect(syncClerkUserToLocalUser(createClerkUserPayload())).resolves.toEqual({
+      clerkUserId: "user_clerk_123",
+      email: "patient@example.com",
       id: "user_local_123",
+      name: "Mila Ivanova",
     });
 
     expect(prismaUpsert).toHaveBeenCalledWith({
@@ -173,5 +270,52 @@ describe("syncClerkUserToLocalUser", () => {
         clerkUserId: "user_clerk_123",
       },
     });
+  });
+
+  it("audits a public account registration once for a Clerk user.created sync", async () => {
+    const database = createFakeDatabase();
+
+    await syncClerkUserToLocalUser(createClerkUserPayload(), database, {
+      auditPublicRegistration: true,
+    });
+    await syncClerkUserToLocalUser(createClerkUserPayload(), database, {
+      auditPublicRegistration: true,
+    });
+
+    expect(database.auditEvents).toEqual([
+      {
+        action: "public_account_registered",
+        actorUserId: "user_local_1",
+        metadata: {
+          clerkUserId: "user_clerk_123",
+          email: "patient@example.com",
+          source: "clerk_user_created",
+        },
+        organizationId: "org_123",
+        targetId: "user_local_1",
+        targetType: "User",
+      },
+    ]);
+  });
+
+  it("does not audit ordinary Clerk user updates as public registrations", async () => {
+    const database = createFakeDatabase();
+
+    await syncClerkUserToLocalUser(createClerkUserPayload(), database);
+
+    expect(database.auditEvents).toEqual([]);
+  });
+
+  it("does not audit invited staff registration as public account registration", async () => {
+    const database = createFakeDatabase();
+    database.pendingStaffInvitation = {
+      id: "member_invited_123",
+    };
+
+    await syncClerkUserToLocalUser(createClerkUserPayload(), database, {
+      auditPublicRegistration: true,
+    });
+
+    expect(database.auditEvents).toEqual([]);
   });
 });
