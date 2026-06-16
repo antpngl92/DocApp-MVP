@@ -113,9 +113,7 @@ Suggested fields:
 Suggested roles:
 
 ```txt
-owner
 admin
-manager
 receptionist
 doctor
 ```
@@ -153,9 +151,9 @@ Suggested invitation tracking fields:
 - createdAt
 - updatedAt
 
-Clerk invitation metadata may contain organization, invitation/membership, and intended-role references, but local invitation or membership records remain the source of truth for role and access.
+Do not pass local organization, membership, invitation, or role metadata to Clerk invitations for MVP. Staff invitation acceptance is matched by normalized invited email against local `OrganizationMember` state only.
 
-For trusted initial owner/admin bootstrap, Clerk private metadata may contain `docapp.bootstrapRole = owner | admin`. This metadata is a one-time server-side bootstrap hint only. Once an `OrganizationMember` exists for the local user, role and status changes must be controlled by local database state and audited application workflows, not continuous metadata sync.
+For trusted initial clinic admin bootstrap, Clerk private metadata may contain `docapp.bootstrapRole = admin`. This metadata is a one-time server-side bootstrap hint only. A clinic business owner/admin is represented by the local `admin` role. Once an `OrganizationMember` exists for the local user, role and status changes must be controlled by local database state and audited application workflows, not continuous metadata sync.
 
 ### PatientProfile
 
@@ -195,7 +193,7 @@ Suggested fields:
 
 A doctor can exist as a clinic operational profile before the doctor registers. Once the doctor registers or accepts an invitation, link the doctor profile to the local `User` and/or `OrganizationMember`.
 
-Receptionists, managers, and non-doctor staff can exist through `OrganizationMember` without a separate operational profile unless the product needs one later.
+Receptionists and other non-doctor staff can exist through `OrganizationMember` without a separate operational profile unless the product needs one later.
 
 Patient users exist through `PatientProfile`, not `OrganizationMember`, unless a later implementation intentionally chooses a unified membership model.
 

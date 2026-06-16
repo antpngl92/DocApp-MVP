@@ -26,10 +26,10 @@ describe("auth route configuration", () => {
     "/api/health",
   ];
 
-  it("keeps patient account routes protected by Clerk and admin hidden by layout guards", () => {
+  it("keeps patient account routes protected by Clerk and dashboard hidden by layout guards", () => {
     expect(CLERK_PROTECTED_ROUTE_PATTERNS).toEqual(["/account(.*)"]);
-    expect(isDocumentedProtectedRoute("/admin")).toBe(true);
-    expect(isDocumentedProtectedRoute("/admin/settings")).toBe(true);
+    expect(isDocumentedProtectedRoute("/dashboard")).toBe(true);
+    expect(isDocumentedProtectedRoute("/dashboard/settings")).toBe(true);
     expect(isDocumentedProtectedRoute("/account")).toBe(true);
     expect(isDocumentedProtectedRoute("/account/appointments")).toBe(true);
   });
@@ -57,8 +57,8 @@ describe("auth route configuration", () => {
 
   it("does not classify private app routes as public", () => {
     for (const route of [
-      PRIVATE_ROUTES.admin,
-      "/admin/settings",
+      PRIVATE_ROUTES.dashboard,
+      "/dashboard/settings",
       PRIVATE_ROUTES.patientAccount,
       "/account/appointments",
     ]) {
@@ -67,7 +67,7 @@ describe("auth route configuration", () => {
     }
   });
 
-  it("sends sign-up through post-auth role routing, not directly to admin", () => {
+  it("sends sign-up through post-auth role routing, not directly to dashboard", () => {
     expect(AUTH_ROUTES.signUp).toBe("/sign-up");
     expect(AUTH_ROUTES.afterSignUp).toBe("/auth/after");
   });

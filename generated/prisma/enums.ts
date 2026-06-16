@@ -19,9 +19,7 @@ export type OrganizationStatus = (typeof OrganizationStatus)[keyof typeof Organi
 
 
 export const OrganizationMemberRole = {
-  owner: 'owner',
   admin: 'admin',
-  manager: 'manager',
   receptionist: 'receptionist',
   doctor: 'doctor'
 } as const

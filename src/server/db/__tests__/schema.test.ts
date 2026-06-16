@@ -42,14 +42,16 @@ describe("Prisma schema organization model", () => {
 describe("Prisma schema organization membership model", () => {
   it("models clinic-side membership roles and statuses", () => {
     const schema = readFileSync(schemaPath, "utf8");
+    const memberRoleEnum = schema.match(/enum OrganizationMemberRole \{[\s\S]*?\n\}/)?.[0];
 
     expect(schema).toContain("enum OrganizationMemberRole");
-    expect(schema).toContain("owner");
-    expect(schema).toContain("admin");
-    expect(schema).toContain("manager");
-    expect(schema).toContain("receptionist");
-    expect(schema).toContain("doctor");
-    expect(schema).not.toMatch(/enum OrganizationMemberRole \{[\s\S]*?\n\s+patient\n/);
+    expect(memberRoleEnum).toBeDefined();
+    expect(memberRoleEnum).toContain("admin");
+    expect(memberRoleEnum).toContain("receptionist");
+    expect(memberRoleEnum).toContain("doctor");
+    expect(memberRoleEnum).not.toContain("owner");
+    expect(memberRoleEnum).not.toContain("manager");
+    expect(memberRoleEnum).not.toContain("patient");
 
     expect(schema).toContain("enum OrganizationMemberStatus");
     expect(schema).toContain("invited");

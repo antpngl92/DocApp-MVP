@@ -25,7 +25,7 @@ Small private clinics often manage bookings through phone calls, manual calendar
 - patients reserve appointments without commitment
 - no-shows waste doctor time and clinic revenue
 - deposits and remaining balances are tracked manually
-- managers lack a simple view across doctors and rooms
+- clinic admins lack a simple view across doctors and rooms
 - failed calendar updates can go unnoticed
 
 DocApp should reduce this operational friction by combining booking, upfront deposit payment, local appointment records, and Google Calendar sync.
@@ -55,7 +55,7 @@ The MVP should prove that DocApp can:
 
 ### Primary User
 
-Clinic manager or owner of a small private clinic.
+Clinic admin or business owner of a small private clinic.
 
 Typical needs:
 
@@ -121,7 +121,7 @@ Primary value:
 - avoid double-booking doctors and rooms
 - collect deposits upfront
 - keep Google Calendar as the clinic's operational calendar
-- give managers a clear admin dashboard
+- give clinic admins a clear dashboard
 
 ## Supported Appointment Model
 

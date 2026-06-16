@@ -68,14 +68,14 @@ const createDatabase = ({
 };
 
 describe("parseOwnerBootstrapRole", () => {
-  it("returns only supported owner/admin bootstrap roles from namespaced private metadata", () => {
+  it("returns only the supported admin bootstrap role from namespaced private metadata", () => {
     expect(
       parseOwnerBootstrapRole({
         docapp: {
           bootstrapRole: "owner",
         },
       }),
-    ).toBe(OWNER_BOOTSTRAP_ROLE.owner);
+    ).toBeNull();
 
     expect(
       parseOwnerBootstrapRole({
@@ -115,7 +115,7 @@ describe("mapClerkBackendUserToBootstrapProfile", () => {
         primaryEmailAddressId: "email_primary",
         privateMetadata: {
           docapp: {
-            bootstrapRole: "owner",
+            bootstrapRole: "admin",
           },
         },
       }),
@@ -127,7 +127,7 @@ describe("mapClerkBackendUserToBootstrapProfile", () => {
       },
       privateMetadata: {
         docapp: {
-          bootstrapRole: "owner",
+          bootstrapRole: "admin",
         },
       },
     });
@@ -161,7 +161,7 @@ describe("bootstrapOwnerAdminMembershipFromClerkPrivateMetadata", () => {
     expect(database.organizationMember.findUnique).not.toHaveBeenCalled();
   });
 
-  it("creates an active owner membership and audit event from trusted private metadata", async () => {
+  it("creates an active admin membership and audit event from trusted private metadata", async () => {
     const localUser = createLocalUser();
     const database = createDatabase({ localUser });
 
@@ -176,7 +176,7 @@ describe("bootstrapOwnerAdminMembershipFromClerkPrivateMetadata", () => {
           },
           privateMetadata: {
             docapp: {
-              bootstrapRole: "owner",
+              bootstrapRole: "admin",
             },
           },
         }),
@@ -185,11 +185,11 @@ describe("bootstrapOwnerAdminMembershipFromClerkPrivateMetadata", () => {
     ).resolves.toEqual({
       membership: {
         id: "member_123",
-        role: OWNER_BOOTSTRAP_ROLE.owner,
+        role: OWNER_BOOTSTRAP_ROLE.admin,
         status: OWNER_BOOTSTRAP_MEMBERSHIP_STATUS.active,
         userId: localUser.id,
       },
-      role: OWNER_BOOTSTRAP_ROLE.owner,
+      role: OWNER_BOOTSTRAP_ROLE.admin,
       status: OWNER_BOOTSTRAP_STATUS.bootstrapped,
     });
 
@@ -197,7 +197,7 @@ describe("bootstrapOwnerAdminMembershipFromClerkPrivateMetadata", () => {
       data: {
         invitedEmail: localUser.email,
         organizationId: "org_123",
-        role: OWNER_BOOTSTRAP_ROLE.owner,
+        role: OWNER_BOOTSTRAP_ROLE.admin,
         status: OWNER_BOOTSTRAP_MEMBERSHIP_STATUS.active,
         userId: localUser.id,
       },
@@ -207,7 +207,7 @@ describe("bootstrapOwnerAdminMembershipFromClerkPrivateMetadata", () => {
         action: OWNER_BOOTSTRAP_AUDIT_ACTION,
         actorUserId: localUser.id,
         metadata: {
-          role: OWNER_BOOTSTRAP_ROLE.owner,
+          role: OWNER_BOOTSTRAP_ROLE.admin,
           source: OWNER_BOOTSTRAP_AUDIT_SOURCE,
         },
         organizationId: "org_123",
@@ -368,7 +368,7 @@ describe("bootstrapOwnerAdminMembershipFromClerkPrivateMetadata", () => {
     database.user.upsert = vi.fn().mockResolvedValue(localUser);
     database.organizationMember.findUnique = vi.fn().mockResolvedValueOnce({
       id: "member_concurrent",
-      role: OWNER_BOOTSTRAP_ROLE.owner,
+      role: OWNER_BOOTSTRAP_ROLE.admin,
       status: OWNER_BOOTSTRAP_MEMBERSHIP_STATUS.active,
       userId: localUser.id,
     });
@@ -384,7 +384,7 @@ describe("bootstrapOwnerAdminMembershipFromClerkPrivateMetadata", () => {
           },
           privateMetadata: {
             docapp: {
-              bootstrapRole: "owner",
+              bootstrapRole: "admin",
             },
           },
         }),
@@ -393,11 +393,11 @@ describe("bootstrapOwnerAdminMembershipFromClerkPrivateMetadata", () => {
     ).resolves.toEqual({
       membership: {
         id: "member_concurrent",
-        role: OWNER_BOOTSTRAP_ROLE.owner,
+        role: OWNER_BOOTSTRAP_ROLE.admin,
         status: OWNER_BOOTSTRAP_MEMBERSHIP_STATUS.active,
         userId: localUser.id,
       },
-      role: OWNER_BOOTSTRAP_ROLE.owner,
+      role: OWNER_BOOTSTRAP_ROLE.admin,
       status: OWNER_BOOTSTRAP_STATUS.existingMembership,
     });
 
@@ -414,7 +414,7 @@ describe("bootstrapOwnerAdminMembershipFromClerkPrivateMetadata", () => {
           localUserInput: null,
           privateMetadata: {
             docapp: {
-              bootstrapRole: "owner",
+              bootstrapRole: "admin",
             },
           },
         }),

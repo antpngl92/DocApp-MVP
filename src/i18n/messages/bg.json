@@ -119,7 +119,6 @@
       "successMessage": "Поканата е изпратена.",
       "roles": {
         "admin": "Администратор",
-        "manager": "Мениджър",
         "receptionist": "Рецепционист",
         "doctor": "Доктор"
       },

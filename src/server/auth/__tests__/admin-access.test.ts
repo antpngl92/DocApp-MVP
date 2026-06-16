@@ -1,8 +1,13 @@
 import { notFound } from "next/navigation";
-import { describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { hasOwnerAdminAccess, requireOwnerAdminAccess } from "../admin-access";
-import { OWNER_BOOTSTRAP_MEMBERSHIP_STATUS, OWNER_BOOTSTRAP_ROLE } from "../owner-bootstrap";
+import {
+  hasActiveStaffAccess,
+  hasOwnerAdminAccess,
+  requireActiveStaffAccess,
+  requireOwnerAdminAccess,
+} from "../admin-access";
+import { STAFF_MEMBER_ROLE, STAFF_MEMBER_STATUS } from "../consts";
 
 vi.mock("next/navigation", () => ({
   notFound: vi.fn(() => {
@@ -10,27 +15,47 @@ vi.mock("next/navigation", () => ({
   }),
 }));
 
+beforeEach(() => {
+  vi.clearAllMocks();
+});
+
+describe("hasActiveStaffAccess", () => {
+  it("allows every supported active local staff role", () => {
+    for (const role of Object.values(STAFF_MEMBER_ROLE)) {
+      expect(
+        hasActiveStaffAccess({
+          role,
+          status: STAFF_MEMBER_STATUS.active,
+        }),
+      ).toBe(true);
+    }
+  });
+
+  it("rejects inactive, unknown, or missing local memberships", () => {
+    expect(hasActiveStaffAccess({ role: STAFF_MEMBER_ROLE.admin, status: "disabled" })).toBe(false);
+    expect(hasActiveStaffAccess({ role: "patient", status: STAFF_MEMBER_STATUS.active })).toBe(
+      false,
+    );
+    expect(hasActiveStaffAccess(null)).toBe(false);
+  });
+});
+
 describe("hasOwnerAdminAccess", () => {
-  it("allows only active owner or admin memberships", () => {
+  it("allows only active admin memberships", () => {
     expect(
       hasOwnerAdminAccess({
-        role: OWNER_BOOTSTRAP_ROLE.owner,
-        status: OWNER_BOOTSTRAP_MEMBERSHIP_STATUS.active,
+        role: STAFF_MEMBER_ROLE.admin,
+        status: STAFF_MEMBER_STATUS.active,
       }),
     ).toBe(true);
     expect(
       hasOwnerAdminAccess({
-        role: OWNER_BOOTSTRAP_ROLE.admin,
-        status: OWNER_BOOTSTRAP_MEMBERSHIP_STATUS.active,
-      }),
-    ).toBe(true);
-    expect(
-      hasOwnerAdminAccess({
-        role: "manager",
-        status: OWNER_BOOTSTRAP_MEMBERSHIP_STATUS.active,
+        role: STAFF_MEMBER_ROLE.doctor,
+        status: STAFF_MEMBER_STATUS.active,
       }),
     ).toBe(false);
-    expect(hasOwnerAdminAccess({ role: OWNER_BOOTSTRAP_ROLE.owner, status: "disabled" })).toBe(
+    expect(hasOwnerAdminAccess({ role: STAFF_MEMBER_ROLE.admin, status: "disabled" })).toBe(false);
+    expect(hasOwnerAdminAccess({ role: "patient", status: STAFF_MEMBER_STATUS.active })).toBe(
       false,
     );
     expect(hasOwnerAdminAccess(null)).toBe(false);
@@ -42,8 +67,8 @@ describe("requireOwnerAdminAccess", () => {
     expect(() =>
       requireOwnerAdminAccess({
         membership: {
-          role: OWNER_BOOTSTRAP_ROLE.admin,
-          status: OWNER_BOOTSTRAP_MEMBERSHIP_STATUS.active,
+          role: STAFF_MEMBER_ROLE.admin,
+          status: STAFF_MEMBER_STATUS.active,
         },
       }),
     ).not.toThrow();
@@ -53,6 +78,27 @@ describe("requireOwnerAdminAccess", () => {
 
   it("throws a not-found boundary for users without active owner/admin access", () => {
     expect(() => requireOwnerAdminAccess({ membership: null })).toThrow("NEXT_NOT_FOUND");
+
+    expect(notFound).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe("requireActiveStaffAccess", () => {
+  it("allows users with any active staff access", () => {
+    expect(() =>
+      requireActiveStaffAccess({
+        membership: {
+          role: STAFF_MEMBER_ROLE.doctor,
+          status: STAFF_MEMBER_STATUS.active,
+        },
+      }),
+    ).not.toThrow();
+
+    expect(notFound).not.toHaveBeenCalled();
+  });
+
+  it("throws a not-found boundary for users without active staff access", () => {
+    expect(() => requireActiveStaffAccess({ membership: null })).toThrow("NEXT_NOT_FOUND");
 
     expect(notFound).toHaveBeenCalledTimes(1);
   });

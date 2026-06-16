@@ -149,7 +149,7 @@ describe("getAuthenticatedHomeForCurrentUser", () => {
     ).resolves.toBe(ROUTES.patientAccount);
   });
 
-  it("returns the patient account for signed-in users without owner/admin access", async () => {
+  it("returns the patient account for signed-in users without active staff access", async () => {
     await expect(
       getAuthenticatedHomeForCurrentUser({
         authReader: async () => ({ userId: "user_clerk_123" }),
@@ -158,7 +158,7 @@ describe("getAuthenticatedHomeForCurrentUser", () => {
     ).resolves.toBe(ROUTES.patientAccount);
   });
 
-  it("returns admin for signed-in users with owner/admin access", async () => {
+  it("returns dashboard for signed-in users with active admin access", async () => {
     await expect(
       getAuthenticatedHomeForCurrentUser({
         authReader: async () => ({ userId: "user_clerk_123" }),
@@ -169,7 +169,21 @@ describe("getAuthenticatedHomeForCurrentUser", () => {
           },
         }),
       }),
-    ).resolves.toBe(ROUTES.admin);
+    ).resolves.toBe(ROUTES.dashboard);
+  });
+
+  it("returns dashboard for signed-in users with active non-admin staff access", async () => {
+    await expect(
+      getAuthenticatedHomeForCurrentUser({
+        authReader: async () => ({ userId: "user_clerk_123" }),
+        database: createDatabase({
+          membership: {
+            role: "doctor",
+            status: OWNER_BOOTSTRAP_MEMBERSHIP_STATUS.active,
+          },
+        }),
+      }),
+    ).resolves.toBe(ROUTES.dashboard);
   });
 
   it("uses the default database when no redirect database is provided", async () => {

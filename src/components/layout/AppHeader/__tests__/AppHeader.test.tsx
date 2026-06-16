@@ -45,14 +45,17 @@ describe("AppHeader", () => {
       await AppHeader({
         contextLabel: "Clinic administration",
         currentUserName: "Clinic Owner",
-        navigation: [{ href: "/admin", labelKey: "dashboard" }],
+        navigation: [{ href: "/dashboard", labelKey: "dashboard" }],
       }),
     );
 
     expect(screen.getByText("DocApp")).toBeInTheDocument();
     expect(screen.getByText("Clinic administration")).toBeInTheDocument();
     expect(screen.getByText("Clinic Owner")).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "Dashboard" })).toHaveAttribute("href", "/admin");
+    expect(screen.getByRole("link", { name: "Dashboard" })).toHaveAttribute(
+      "href",
+      "/dashboard",
+    );
     expect(
       screen.getByText("Auth controls: Sign in, Create account, Sign out"),
     ).toBeInTheDocument();

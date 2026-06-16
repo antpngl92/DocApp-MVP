@@ -24,12 +24,12 @@ describe("navigation", () => {
       { href: ROUTES.patientAccount, labelKey: "appointments" },
     ]);
     expect(PUBLIC_SIGNED_IN_ADMIN_NAVIGATION).toEqual([
-      { href: ROUTES.admin, labelKey: "dashboard" },
+      { href: ROUTES.dashboard, labelKey: "dashboard" },
     ]);
   });
 
   it("defines admin navigation links", () => {
-    expect(ADMIN_NAVIGATION).toEqual([{ href: ROUTES.admin, labelKey: "dashboard" }]);
+    expect(ADMIN_NAVIGATION).toEqual([{ href: ROUTES.dashboard, labelKey: "dashboard" }]);
   });
 
   it("defines patient navigation links", () => {

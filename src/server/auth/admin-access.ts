@@ -1,14 +1,29 @@
 import { notFound } from "next/navigation";
 
-import { OWNER_BOOTSTRAP_MEMBERSHIP_STATUS } from "./consts";
+import { STAFF_MEMBER_STATUS, STAFF_OWNER_ADMIN_ROLE_VALUES } from "./consts";
 import type { AdminAccessMembership, RequireAdminAccessOptions } from "./type";
-import { isOwnerBootstrapRole } from "./utils";
+import { isStaffMemberRole } from "./utils";
+
+const hasActiveStaffAccess = (
+  membership: AdminAccessMembership | null,
+): membership is AdminAccessMembership => {
+  return membership?.status === STAFF_MEMBER_STATUS.active && isStaffMemberRole(membership.role);
+};
 
 const hasOwnerAdminAccess = (membership: AdminAccessMembership | null): boolean => {
-  return (
-    membership?.status === OWNER_BOOTSTRAP_MEMBERSHIP_STATUS.active &&
-    isOwnerBootstrapRole(membership.role)
+  if (!hasActiveStaffAccess(membership)) {
+    return false;
+  }
+
+  return STAFF_OWNER_ADMIN_ROLE_VALUES.includes(
+    membership.role as (typeof STAFF_OWNER_ADMIN_ROLE_VALUES)[number],
   );
+};
+
+const requireActiveStaffAccess = ({ membership }: RequireAdminAccessOptions) => {
+  if (!hasActiveStaffAccess(membership)) {
+    notFound();
+  }
 };
 
 const requireOwnerAdminAccess = ({ membership }: RequireAdminAccessOptions) => {
@@ -17,5 +32,10 @@ const requireOwnerAdminAccess = ({ membership }: RequireAdminAccessOptions) => {
   }
 };
 
-export { hasOwnerAdminAccess, requireOwnerAdminAccess };
+export {
+  hasActiveStaffAccess,
+  hasOwnerAdminAccess,
+  requireActiveStaffAccess,
+  requireOwnerAdminAccess,
+};
 export type { AdminAccessMembership, RequireAdminAccessOptions };

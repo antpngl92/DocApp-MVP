@@ -108,7 +108,7 @@ Checkout status pages should use a public-safe reference or token. Do not expose
 
 Admin routes must require authenticated users with membership.
 
-Manual booking creation must require an authorized clinic-side user. Receptionists/managers/doctors should only get the actions their role allows. Manual override of availability or double-booking rules, if allowed, should require elevated permission, a visible warning, an override reason, and audit logging.
+Manual booking creation must require an authorized clinic-side user. Receptionists and doctors should only get the actions their role allows. Manual override of availability or double-booking rules, if allowed, should require elevated admin permission, a visible warning, an override reason, and audit logging.
 
 Webhook routes must verify provider signatures and never trust arbitrary user input.
 

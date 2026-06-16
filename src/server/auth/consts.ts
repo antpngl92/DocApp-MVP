@@ -16,7 +16,6 @@ const OWNER_BOOTSTRAP_AUDIT_TARGET_TYPE = "OrganizationMember";
 
 const OWNER_BOOTSTRAP_ROLE = {
   admin: "admin",
-  owner: "owner",
 } as const;
 
 const OWNER_BOOTSTRAP_MEMBERSHIP_STATUS = {
@@ -36,10 +35,22 @@ const OWNER_BOOTSTRAP_STATUS = {
 const STAFF_MEMBER_ROLE = {
   admin: "admin",
   doctor: "doctor",
-  manager: "manager",
-  owner: "owner",
   receptionist: "receptionist",
 } as const;
+
+const STAFF_MEMBER_ROLE_VALUES = [
+  STAFF_MEMBER_ROLE.admin,
+  STAFF_MEMBER_ROLE.receptionist,
+  STAFF_MEMBER_ROLE.doctor,
+] as const;
+
+const STAFF_INVITABLE_ROLE_VALUES = [
+  STAFF_MEMBER_ROLE.admin,
+  STAFF_MEMBER_ROLE.receptionist,
+  STAFF_MEMBER_ROLE.doctor,
+] as const;
+
+const STAFF_OWNER_ADMIN_ROLE_VALUES = [STAFF_MEMBER_ROLE.admin] as const;
 
 const STAFF_MEMBER_STATUS = {
   active: "active",
@@ -102,7 +113,10 @@ export {
   OWNER_BOOTSTRAP_STATUS,
   PRISMA_UNIQUE_CONSTRAINT_ERROR_CODE,
   STAFF_MEMBER_ROLE,
+  STAFF_INVITABLE_ROLE_VALUES,
   STAFF_MEMBER_STATUS,
+  STAFF_MEMBER_ROLE_VALUES,
+  STAFF_OWNER_ADMIN_ROLE_VALUES,
   STAFF_INVITATION_AUDIT_ACTION,
   STAFF_INVITATION_AUDIT_SOURCE,
   STAFF_INVITATION_AUDIT_TARGET_TYPE,

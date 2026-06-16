@@ -9,17 +9,14 @@ describe("staff invitation role options", () => {
   it("allows owner/admin to select only inviteable staff roles", () => {
     expect(STAFF_INVITATION_ROLE_VALUES).toEqual([
       STAFF_MEMBER_ROLE.admin,
-      STAFF_MEMBER_ROLE.manager,
       STAFF_MEMBER_ROLE.receptionist,
       STAFF_MEMBER_ROLE.doctor,
     ]);
-    expect(STAFF_INVITATION_ROLE_VALUES).not.toContain(STAFF_MEMBER_ROLE.owner);
   });
 
   it("maps inviteable roles to localized role options", () => {
     expect(getStaffInvitationRoleOptions((role) => `role.${role}`)).toEqual([
       { label: "role.admin", value: STAFF_MEMBER_ROLE.admin },
-      { label: "role.manager", value: STAFF_MEMBER_ROLE.manager },
       { label: "role.receptionist", value: STAFF_MEMBER_ROLE.receptionist },
       { label: "role.doctor", value: STAFF_MEMBER_ROLE.doctor },
     ]);
@@ -27,7 +24,8 @@ describe("staff invitation role options", () => {
 
   it("checks whether a value is an allowed invitation role", () => {
     expect(isStaffInvitationRoleValue(STAFF_MEMBER_ROLE.doctor)).toBe(true);
-    expect(isStaffInvitationRoleValue(STAFF_MEMBER_ROLE.owner)).toBe(false);
+    expect(isStaffInvitationRoleValue("manager")).toBe(false);
+    expect(isStaffInvitationRoleValue("owner")).toBe(false);
     expect(isStaffInvitationRoleValue("patient")).toBe(false);
   });
 });

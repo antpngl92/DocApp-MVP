@@ -4,6 +4,7 @@ import {
   OWNER_BOOTSTRAP_MEMBERSHIP_STATUS,
   OWNER_BOOTSTRAP_ROLE,
   OWNER_BOOTSTRAP_STATUS,
+  STAFF_MEMBER_ROLE,
 } from "../consts";
 import type { LocalUserRecord, OwnerBootstrapDatabase } from "../type";
 import {
@@ -13,6 +14,8 @@ import {
   getLocalUserDisplayName,
   getStaffInvitationRedirectUrl,
   hasDocAppBootstrapMetadata,
+  isInvitableStaffMemberRole,
+  isStaffMemberRole,
   mapClerkBackendUserToBootstrapProfile,
   parseOwnerBootstrapRole,
   readClerkBootstrapProfile,
@@ -119,10 +122,10 @@ describe("auth utils", () => {
     expect(
       parseOwnerBootstrapRole({
         docapp: {
-          bootstrapRole: OWNER_BOOTSTRAP_ROLE.owner,
+          bootstrapRole: OWNER_BOOTSTRAP_ROLE.admin,
         },
       }),
-    ).toBe(OWNER_BOOTSTRAP_ROLE.owner);
+    ).toBe(OWNER_BOOTSTRAP_ROLE.admin);
     expect(hasDocAppBootstrapMetadata(null)).toBe(false);
     expect(
       hasDocAppBootstrapMetadata({
@@ -131,6 +134,21 @@ describe("auth utils", () => {
         },
       }),
     ).toBe(true);
+  });
+
+  it("recognizes only local OrganizationMember staff roles", () => {
+    expect(Object.values(STAFF_MEMBER_ROLE).every((role) => isStaffMemberRole(role))).toBe(true);
+    expect(isStaffMemberRole("patient")).toBe(false);
+    expect(isStaffMemberRole(null)).toBe(false);
+  });
+
+  it("allows invitations only for the MVP staff roles", () => {
+    expect(isInvitableStaffMemberRole(STAFF_MEMBER_ROLE.admin)).toBe(true);
+    expect(isInvitableStaffMemberRole(STAFF_MEMBER_ROLE.receptionist)).toBe(true);
+    expect(isInvitableStaffMemberRole(STAFF_MEMBER_ROLE.doctor)).toBe(true);
+    expect(isInvitableStaffMemberRole("manager")).toBe(false);
+    expect(isInvitableStaffMemberRole("owner")).toBe(false);
+    expect(isInvitableStaffMemberRole("patient")).toBe(false);
   });
 
   it("returns the default owner bootstrap database", async () => {
@@ -254,12 +272,12 @@ describe("auth utils", () => {
     });
   });
 
-  it("returns existing membership before creating a new owner/admin membership", async () => {
+  it("returns existing membership before creating a new admin membership", async () => {
     const localUser = createLocalUser();
     const database = createDatabase({
       existingMembership: {
         id: "member_123",
-        role: OWNER_BOOTSTRAP_ROLE.owner,
+        role: OWNER_BOOTSTRAP_ROLE.admin,
         status: OWNER_BOOTSTRAP_MEMBERSHIP_STATUS.active,
         userId: localUser.id,
       },
@@ -269,22 +287,22 @@ describe("auth utils", () => {
       createOwnerAdminMembership({
         database,
         localUser,
-        role: OWNER_BOOTSTRAP_ROLE.owner,
+        role: OWNER_BOOTSTRAP_ROLE.admin,
       }),
     ).resolves.toEqual({
       membership: {
         id: "member_123",
-        role: OWNER_BOOTSTRAP_ROLE.owner,
+        role: OWNER_BOOTSTRAP_ROLE.admin,
         status: OWNER_BOOTSTRAP_MEMBERSHIP_STATUS.active,
         userId: localUser.id,
       },
-      role: OWNER_BOOTSTRAP_ROLE.owner,
+      role: OWNER_BOOTSTRAP_ROLE.admin,
       status: OWNER_BOOTSTRAP_STATUS.existingMembership,
     });
     expect(database.organizationMember.create).not.toHaveBeenCalled();
   });
 
-  it("returns null role for an existing non-owner/admin membership", async () => {
+  it("returns null role for an existing non-admin membership", async () => {
     const localUser = createLocalUser();
     const database = createDatabase({
       existingMembership: {
@@ -299,7 +317,7 @@ describe("auth utils", () => {
       createOwnerAdminMembership({
         database,
         localUser,
-        role: OWNER_BOOTSTRAP_ROLE.owner,
+        role: OWNER_BOOTSTRAP_ROLE.admin,
       }),
     ).resolves.toMatchObject({
       role: null,

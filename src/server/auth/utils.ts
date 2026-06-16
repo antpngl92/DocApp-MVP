@@ -12,7 +12,8 @@ import {
   OWNER_BOOTSTRAP_ROLE,
   OWNER_BOOTSTRAP_STATUS,
   PRISMA_UNIQUE_CONSTRAINT_ERROR_CODE,
-  STAFF_MEMBER_ROLE,
+  STAFF_INVITABLE_ROLE_VALUES,
+  STAFF_MEMBER_ROLE_VALUES,
 } from "./consts";
 import type {
   ClerkBackendUser,
@@ -38,17 +39,15 @@ const isUniqueConstraintError = (error: unknown): boolean => {
 };
 
 const isOwnerBootstrapRole = (role: unknown): role is OwnerBootstrapRole => {
-  return role === OWNER_BOOTSTRAP_ROLE.owner || role === OWNER_BOOTSTRAP_ROLE.admin;
+  return role === OWNER_BOOTSTRAP_ROLE.admin;
 };
 
 const isStaffMemberRole = (role: unknown): role is StaffMemberRole => {
-  return (
-    role === STAFF_MEMBER_ROLE.owner ||
-    role === STAFF_MEMBER_ROLE.admin ||
-    role === STAFF_MEMBER_ROLE.manager ||
-    role === STAFF_MEMBER_ROLE.receptionist ||
-    role === STAFF_MEMBER_ROLE.doctor
-  );
+  return STAFF_MEMBER_ROLE_VALUES.includes(role as StaffMemberRole);
+};
+
+const isInvitableStaffMemberRole = (role: unknown): role is StaffMemberRole => {
+  return STAFF_INVITABLE_ROLE_VALUES.includes(role as StaffMemberRole);
 };
 
 const parseOwnerBootstrapRole = (privateMetadata: unknown): OwnerBootstrapRole | null => {
@@ -286,6 +285,7 @@ export {
   getLocalUserDisplayName,
   getStaffInvitationRedirectUrl,
   hasDocAppBootstrapMetadata,
+  isInvitableStaffMemberRole,
   isOwnerBootstrapRole,
   isStaffMemberRole,
   isUniqueConstraintError,

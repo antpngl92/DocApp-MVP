@@ -14,7 +14,7 @@ Do not position the MVP as a generic booking platform for every business.
 
 **Reason**
 
-Generic booking tools are saturated and often compete with free or low-cost scheduling products. The stronger wedge is deposit-based scheduling, Google Calendar sync, and manager control for small clinics.
+Generic booking tools are saturated and often compete with free or low-cost scheduling products. The stronger wedge is deposit-based scheduling, Google Calendar sync, and admin control for small clinics.
 
 **Implication**
 
@@ -538,7 +538,7 @@ Refund access should be permission-based.
 Default guidance:
 
 - owner: can issue refunds and override refund rules
-- admin/manager: can issue refunds if granted permission
+- admin: can issue refunds if granted permission
 - receptionist: can cancel appointments or flag refund review, but cannot issue money refunds by default
 - doctor: can mark appointment outcome where allowed, but cannot issue refunds by default
 
@@ -660,9 +660,7 @@ Patients can register/login, manage basic contact details, book appointments, vi
 
 The MVP should model clinic-side staff roles and patient ownership from the start:
 
-- owner
 - admin
-- manager
 - receptionist
 - doctor
 
@@ -674,7 +672,7 @@ Clinic-side users and patients both authenticate, so access separation is founda
 
 **Implication**
 
-Owner can manage clinic settings, staff, doctors, services, calendars, appointments, and billing configuration. Admin/manager can manage clinic operations and appointments according to configured permissions. Receptionist can create/manage appointments but should not manage billing/platform settings unless allowed. Doctor can view their own calendar/appointments where needed. Patient can view and manage only their own appointments/profile.
+Admin can manage clinic settings, staff, doctors, services, calendars, appointments, and billing configuration. Receptionist can create/manage appointments but should not manage billing/platform settings unless allowed. Doctor can view their own calendar/appointments where needed. Patient can view and manage only their own appointments/profile.
 
 ## 037 - Google Calendar Foundation Comes Early
 
