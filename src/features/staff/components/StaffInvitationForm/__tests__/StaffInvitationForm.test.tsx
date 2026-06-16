@@ -21,7 +21,6 @@ const content: StaffInvitationFormContent = {
 
 const roleOptions: readonly StaffInvitationRoleOption[] = [
   { label: "Admin", value: STAFF_MEMBER_ROLE.admin },
-  { label: "Manager", value: STAFF_MEMBER_ROLE.manager },
   { label: "Receptionist", value: STAFF_MEMBER_ROLE.receptionist },
   { label: "Doctor", value: STAFF_MEMBER_ROLE.doctor },
 ];
@@ -82,11 +81,12 @@ describe("StaffInvitationForm", () => {
     expect(screen.queryByText("Invitation sent.")).not.toBeInTheDocument();
   });
 
-  it("does not expose patient or owner self-registration content", () => {
+  it("does not expose patient, owner, or manager self-registration content", () => {
     render(<StaffInvitationForm content={content} roleOptions={roleOptions} />);
 
     expect(screen.queryByText(/patient/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/owner/i)).not.toBeInTheDocument();
     expect(screen.queryByRole("option", { name: /owner/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole("option", { name: /manager/i })).not.toBeInTheDocument();
   });
 });

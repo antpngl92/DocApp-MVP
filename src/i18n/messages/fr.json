@@ -119,7 +119,6 @@
       "successMessage": "Invitation envoyée.",
       "roles": {
         "admin": "Admin",
-        "manager": "Responsable",
         "receptionist": "Réceptionniste",
         "doctor": "Médecin"
       },

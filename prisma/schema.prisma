@@ -14,9 +14,7 @@ enum OrganizationStatus {
 }
 
 enum OrganizationMemberRole {
-  owner
   admin
-  manager
   receptionist
   doctor
 }

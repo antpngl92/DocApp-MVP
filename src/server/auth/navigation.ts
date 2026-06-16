@@ -5,8 +5,8 @@ import {
 } from "@/config/navigation";
 import { ROUTES } from "@/config/routes";
 
-import { hasOwnerAdminAccess } from "./admin-access";
-import { CURRENT_AUTHENTICATED_USER_STATUS, STAFF_MEMBER_STATUS } from "./consts";
+import { hasActiveStaffAccess } from "./admin-access";
+import { CURRENT_AUTHENTICATED_USER_STATUS } from "./consts";
 import { getCurrentAuthenticatedUser } from "./current-user";
 import type { GetPublicNavigationForCurrentUserOptions, PublicNavigationDatabase } from "./type";
 
@@ -40,7 +40,7 @@ const getPublicNavigationForCurrentUser = async ({
     },
   });
 
-  return membership?.status === STAFF_MEMBER_STATUS.active
+  return hasActiveStaffAccess(membership)
     ? PUBLIC_SIGNED_IN_ADMIN_NAVIGATION
     : PUBLIC_SIGNED_IN_PATIENT_NAVIGATION;
 };
@@ -65,7 +65,7 @@ const getAuthenticatedHomeForCurrentUser = async ({
     },
   });
 
-  return hasOwnerAdminAccess(membership) ? ROUTES.admin : ROUTES.patientAccount;
+  return hasActiveStaffAccess(membership) ? ROUTES.dashboard : ROUTES.patientAccount;
 };
 
 export {

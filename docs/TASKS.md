@@ -115,20 +115,20 @@ Complete tasks from top to bottom and one approved task/branch at a time. Do not
 - [x] Implement trusted clinic owner/admin local provisioning and link it to a trusted Clerk identity.
 - [x] Implement one staff-user onboarding flow with Clerk Invitations plus local membership validation.
 - [x] Build owner/admin staff invitation form with staff email input and role dropdown.
-- [x] Allow owner/admin to choose staff role during invitation, such as admin, manager, receptionist, or doctor.
+- [x] Allow owner/admin to choose staff role during invitation, limited to admin, receptionist, or doctor.
 - [x] Create staff invitation from a server-only action/route using Clerk Backend API `clerkClient.invitations.createInvitation`.
 - [x] Store Clerk invitation ID/status alongside the pending local invitation or membership record.
 - [x] Do not pass local organization, membership, invitation, or role metadata to Clerk invitations for MVP; match staff invitation acceptance by invited email against local `OrganizationMember` state only.
-- [ ] Support staff roles through local `OrganizationMember` state, including manager, receptionist, doctor, admin, and owner where applicable.
+- [x] Support staff roles through local `OrganizationMember` state, limited to admin, receptionist, and doctor for MVP.
 - [ ] Link a staff user with role `doctor` to a `Doctor` operational profile when that staff member is a bookable provider.
 - [ ] Ensure Clerk invitation metadata is treated as a hint and local `OrganizationMember` state remains the source of staff roles and permissions.
 - [x] Ensure staff cannot self-register into arbitrary clinics without invitation or owner/admin approval.
-- [ ] Model and enforce clinic-side roles plus patient ownership: owner, admin, manager, receptionist, doctor, and patient account access.
+- [ ] Model and enforce clinic-side roles plus patient ownership: admin, receptionist, doctor, and patient account access.
 - [ ] Add organization/clinic membership checks.
 - [ ] Add current-organization/current-clinic helper.
 - [x] Add admin/staff authorization guards.
 - [ ] Add patient ownership authorization guards.
-- [x] Protect admin routes with authenticated local user, active clinic membership, and an authorized clinic-side role.
+- [x] Protect dashboard routes with authenticated local user, active clinic membership, and an authorized clinic-side role.
 - [ ] Protect patient account routes with authenticated local user and patient ownership checks.
 - [x] Add route-level authorization boundaries for public, admin, staff, and patient surfaces.
 - [ ] Ensure patients can access only their own appointments/profile.
@@ -180,7 +180,7 @@ Complete tasks from top to bottom and one approved task/branch at a time. Do not
 ## Phase 9 - Clinic Admin Setup
 
 - [ ] Build admin dashboard shell.
-- [ ] Redirect authenticated staff/owner/admin users to the staff dashboard instead of the patient account area after login, registration, or invitation acceptance.
+- [x] Redirect authenticated staff users to `/dashboard` instead of the patient account area after login, registration, or invitation acceptance.
 - [ ] Use a dashboard sidebar layout for staff/admin pages; shadcn Sidebar is approved for this admin dashboard shell only unless explicitly expanded later.
 - [ ] Build clinic settings page.
 - [ ] Support booking page slug.
@@ -451,7 +451,7 @@ Focused component and logic tests must already have been added with every implem
 - [ ] Confirm duplicate webhooks do not duplicate events/emails.
 - [ ] Confirm no sensitive health data is stored unnecessarily.
 - [ ] Confirm no sensitive health data is written to Google Calendar.
-- [ ] Confirm admin routes are protected.
+- [ ] Confirm dashboard routes are protected.
 - [ ] Confirm patient routes are protected.
 - [ ] Confirm clinic/organization scoping is enforced.
 - [ ] Confirm patient ownership scoping is enforced.

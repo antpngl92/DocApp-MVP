@@ -23,11 +23,11 @@ Clerk authentication can exist before the local identity schema, but local-user 
 ## Goals
 
 - Support trusted clinic owner/admin provisioning and secure admin login.
-- Support one staff-user registration/onboarding flow through clinic invitation or approved clinic assignment, with receptionist, doctor, manager, admin, and owner represented as roles.
+- Support one staff-user registration/onboarding flow through clinic invitation or approved clinic assignment, with admin, receptionist, and doctor represented as roles.
 - Support patient registration/login for booking and appointment management.
 - Sync Clerk users into a local `User` table.
 - Scope all admin data to the local organization/clinic.
-- Support owner/admin/manager/receptionist/doctor/patient access boundaries.
+- Support admin/receptionist/doctor/patient access boundaries.
 - Enforce access control on the server.
 
 ## Local User Sync
@@ -113,14 +113,12 @@ OrganizationMember
 Possible roles:
 
 ```txt
-owner
 admin
-manager
 receptionist
 doctor
 ```
 
-Clinic-side MVP permissions can start simple, but the data model should support role expansion from the foundation.
+Clinic-side MVP permissions start with a compact role set. A clinic business owner uses the `admin` role in the application.
 
 A linked local `User` should have at most one `OrganizationMember` in this deployment. Patients do not use `OrganizationMember`; a patient account should be represented locally and linked to appointments through `PatientProfile` or patient ownership fields.
 
@@ -154,18 +152,18 @@ Implemented MVP bootstrap behavior:
 ```json
 {
   "docapp": {
-    "bootstrapRole": "owner"
+    "bootstrapRole": "admin"
   }
 }
 ```
 
-Allowed bootstrap roles are `owner` and `admin` only.
+Allowed bootstrap role is `admin` only. A clinic business owner/admin is represented by the local `admin` role.
 
 On authenticated admin app access, DocApp first resolves the Clerk identity to the local `User`. If the local `User` does not exist yet, DocApp may fetch the trusted Clerk Backend user, create or update the local `User` from Clerk ID, primary email, and display name, then continue bootstrap.
 
-DocApp reads Clerk private metadata server-side through Clerk's Backend API only when the local user has no existing `OrganizationMember`. If the local user has no existing membership and the deployment has an active local `Organization`, DocApp creates an active local owner/admin membership and writes an audit event.
+DocApp reads Clerk private metadata server-side through Clerk's Backend API only when the local user has no existing `OrganizationMember`. If the local user has no existing membership and the deployment has an active local `Organization`, DocApp creates an active local admin membership and writes an audit event.
 
-The admin route shell must not render for a signed-in user unless bootstrap returns or finds an active local membership with role `owner` or `admin`. A regular patient user with no `OrganizationMember`, or a staff user with another role/status, must not be able to render `/admin`.
+The staff dashboard route shell must not render for a signed-in user unless bootstrap returns or finds an active local membership with an allowed staff role: `admin`, `doctor`, or `receptionist`. A regular patient user with no `OrganizationMember`, or a staff user with an inactive/removed status, must not be able to render `/dashboard`.
 
 Clerk private metadata is a one-time bootstrap hint only. Once a local membership exists, DocApp ignores the bootstrap metadata and keeps `OrganizationMember.role` and `OrganizationMember.status` as the source of truth for authorization. Do not expose private metadata in UI, API responses, logs, public metadata, or session claims.
 
@@ -173,13 +171,13 @@ Patient accounts are appointment-management accounts only. They must not expose 
 
 ### Staff Invitations With Clerk
 
-Clerk Invitations are the preferred MVP mechanism for onboarding clinic-side staff users. Managers, receptionists, doctors, admins, and owners are roles or memberships under this staff-user flow, not separate onboarding products.
+Clerk Invitations are the preferred MVP mechanism for onboarding clinic-side staff users. Admin, receptionist, and doctor are roles under this staff-user flow, not separate onboarding products.
 
 Recommended flow:
 
 1. Authorized owner/admin creates a staff invitation from DocApp.
 2. The invitation form requires a staff email input and a role dropdown.
-3. Owner/admin selects the intended role, such as admin, manager, receptionist, or doctor.
+3. Owner/admin selects the intended role: admin, receptionist, or doctor.
 4. DocApp validates that the inviting user can assign the selected role.
 5. DocApp creates a pending local invitation or `OrganizationMember` record with organization, intended role, status, invited email, and inviter/audit details.
 6. DocApp creates a Clerk Invitation for that email from a server-only action or route.
@@ -188,18 +186,18 @@ Recommended flow:
 9. DocApp validates the pending local invitation or membership before activating clinic access.
 10. DocApp activates the local `OrganizationMember` and assigns the intended role.
 
-A staff member with role `doctor` may also be linked to a `Doctor` operational profile when that person is a bookable provider. Receptionists, managers, and other non-doctor staff normally need only the `OrganizationMember` record unless the product later adds a separate operational profile for them.
+A staff member with role `doctor` may also be linked to a `Doctor` operational profile when that person is a bookable provider. Receptionists and other non-doctor staff normally need only the `OrganizationMember` record unless the product later adds a separate operational profile for them.
 
 Implemented MVP foundation:
 
 - After a staff user accepts a Clerk invitation and the Clerk webhook has synced a local `User`, server-side onboarding can activate the pending local `OrganizationMember`.
 - Activation requires a signed-in Clerk session, an existing local `User`, a pending local membership with `status = invited`, and a normalized invited email matching the local user email.
-- Activation runs when the authenticated invited user reaches a protected app surface such as `/account` or `/admin` after sign-up/sign-in.
+- Activation runs when the authenticated invited user reaches a protected app surface such as `/account` or `/dashboard` after sign-up/sign-in.
 - Activation links `OrganizationMember.userId` to the local user, changes membership status to `active`, changes `clerkInvitationStatus` to `accepted`, and writes an audit event.
 - If the user is signed out, missing locally, already active, disabled/removed, missing a pending invitation, mismatched by email, or assigned an invalid role, staff access is not activated.
 - A regular patient account with no pending local invitation remains a patient-only account and receives no clinic-side staff access.
 - The admin overview includes the staff invitation form with a staff email field and role dropdown. It validates input locally and submits through a server action.
-- Staff invitation role options are centralized and intentionally limited to `admin`, `manager`, `receptionist`, and `doctor`; `owner` is not exposed as a selectable invitation role.
+- Staff invitation role options are centralized and intentionally limited to `admin`, `receptionist`, and `doctor`.
 - The staff invitation server action validates the signed-in local user, active owner/admin membership, active local organization, invite email, and inviteable role before calling Clerk.
 - The staff invitation server action uses Clerk's Backend API `clerkClient().invitations.createInvitation` from `@clerk/nextjs/server`. This must remain server-only because it depends on the Clerk secret key.
 - The invitation `redirectUrl` must be an absolute application URL built from `NEXT_PUBLIC_APP_URL` and `NEXT_PUBLIC_CLERK_SIGN_UP_URL`. A relative path is resolved against Clerk's Account Portal domain, so the invitation email would send staff to the hosted portal sign-up instead of the app's sign-up page.
@@ -208,7 +206,7 @@ Implemented MVP foundation:
 - If the email already has an `invited` or `active` membership in the organization, the server returns `already_invited` without calling Clerk. A database-level partial unique index also protects this rule under concurrent requests.
 - If the Clerk invitation call fails, the pending membership is removed so the email can be re-invited. If local tracking fails after Clerk creates an invitation, DocApp makes a best-effort attempt to revoke the Clerk invitation and remove the pending membership before surfacing the failure.
 - Invitation audit logging is best-effort after the invitation has been sent and tracked; audit failure must be monitored but must not report a failed invite to the admin.
-- Passing non-authoritative references in Clerk invitation metadata is handled by the following invitation metadata task.
+- Do not pass local organization, membership, invitation, or role metadata to Clerk invitations for MVP. Staff invitation acceptance is matched by normalized invited email against local `OrganizationMember` state only.
 
 Implementation note:
 
@@ -234,7 +232,7 @@ Refunds are privileged clinic-side actions.
 Default permission guidance:
 
 - owner can issue refunds and override refund rules
-- admin/manager can issue refunds if explicitly granted permission
+- admin can issue refunds if explicitly granted permission
 - receptionist can cancel appointments or flag refund review, but cannot issue money refunds by default
 - doctor can mark appointment outcome where allowed, but cannot issue refunds by default
 
@@ -249,7 +247,7 @@ The Phase 5 authentication foundation protects private routes in two places:
 
 This is an authentication boundary only. Local user lookup, clinic membership, role checks, and patient ownership checks are added after the database identity models exist.
 
-Authenticated admin routes must require:
+Authenticated dashboard routes must require:
 
 - signed-in user
 - active local user record

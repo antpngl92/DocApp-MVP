@@ -95,11 +95,11 @@ Phase 4 establishes these route foundations:
 /checkout/cancel
 /checkout/expired
 /checkout/status/[reference]
-/admin
+/dashboard
 /account
 ```
 
-The admin and patient route groups are prepared for authentication boundaries, but route protection is implemented in the authentication phase.
+The staff dashboard and patient route groups are prepared for authentication boundaries, but route protection is implemented in the authentication phase.
 
 A standalone public `/services` informational route is not part of the MVP foundation. Public service selection belongs inside the clinic-branded booking flow unless a later product decision adds a separate services page.
 

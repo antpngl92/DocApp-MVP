@@ -7,7 +7,6 @@ import {
   STAFF_INVITATION_AUDIT_TARGET_TYPE,
   STAFF_INVITATION_EMAIL_PATTERN,
   STAFF_INVITATION_RESULT_STATUS,
-  STAFF_MEMBER_ROLE,
   STAFF_MEMBER_STATUS,
 } from "./consts";
 import { hasOwnerAdminAccess } from "./admin-access";
@@ -25,7 +24,7 @@ import {
   createClerkStaffInvitation,
   getDefaultStaffInvitationDatabase,
   getStaffInvitationRedirectUrl,
-  isStaffMemberRole,
+  isInvitableStaffMemberRole,
   isUniqueConstraintError,
   normalizeEmail,
   revokeClerkStaffInvitation,
@@ -126,7 +125,7 @@ const createStaffInvitation = async ({
     };
   }
 
-  if (!isStaffMemberRole(role) || role === STAFF_MEMBER_ROLE.owner) {
+  if (!isInvitableStaffMemberRole(role)) {
     return {
       clerkInvitationId: null,
       membershipId: null,

@@ -12,7 +12,7 @@ const PUBLIC_ROUTES = {
 } as const;
 
 const PRIVATE_ROUTES = {
-  admin: "/admin",
+  dashboard: "/dashboard",
   patientAccount: "/account",
 } as const;
 

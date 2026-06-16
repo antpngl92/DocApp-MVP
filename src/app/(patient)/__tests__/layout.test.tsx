@@ -56,4 +56,24 @@ describe("PatientLayout", () => {
     expect(sessionBoundary.redirect).not.toHaveBeenCalled();
     expect(screen.getByTestId("patient-shell")).toHaveTextContent("Account content");
   });
+
+  it("redirects active staff users from account content to their dashboard", async () => {
+    sessionBoundary.requireAuthenticatedSession.mockResolvedValueOnce({
+      sessionId: "session_123",
+      userId: "user_123",
+    });
+    sessionBoundary.getAuthenticatedHomeForCurrentUser.mockResolvedValueOnce("/dashboard");
+    sessionBoundary.redirect.mockImplementationOnce(() => {
+      throw new Error("NEXT_REDIRECT");
+    });
+
+    await expect(
+      PatientLayout({
+        children: <div>Account content</div>,
+      }),
+    ).rejects.toThrow("NEXT_REDIRECT");
+
+    expect(sessionBoundary.activateStaffInvitationForCurrentUser).toHaveBeenCalledTimes(1);
+    expect(sessionBoundary.redirect).toHaveBeenCalledWith("/dashboard");
+  });
 });

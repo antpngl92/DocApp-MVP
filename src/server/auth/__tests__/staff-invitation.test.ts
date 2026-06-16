@@ -73,7 +73,7 @@ const createDatabase = ({
   existingInvitedMembership = null,
   localUser = createLocalUser(),
   membership = {
-    role: OWNER_BOOTSTRAP_ROLE.owner,
+    role: OWNER_BOOTSTRAP_ROLE.admin,
     status: OWNER_BOOTSTRAP_MEMBERSHIP_STATUS.active,
   },
   organization = { id: "org_123" },
@@ -398,7 +398,7 @@ describe("createStaffInvitation", () => {
         database: createDatabase(),
         email: "staff@example.com",
         invitationCreator,
-        role: STAFF_MEMBER_ROLE.owner,
+        role: "owner" as typeof STAFF_MEMBER_ROLE.doctor,
       }),
     ).resolves.toEqual({
       clerkInvitationId: null,
@@ -444,7 +444,7 @@ describe("createStaffInvitation", () => {
       createStaffInvitation({
         authReader: async () => ({ userId: "user_clerk_owner" }),
         database: createDatabase({
-          membership: { role: STAFF_MEMBER_ROLE.manager, status: "active" },
+          membership: { role: STAFF_MEMBER_ROLE.doctor, status: "active" },
         }),
         email: "staff@example.com",
         invitationCreator,

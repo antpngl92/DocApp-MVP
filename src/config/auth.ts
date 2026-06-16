@@ -42,8 +42,8 @@ const isDocumentedPublicRoute = (pathname: string) => {
 
 const isDocumentedProtectedRoute = (pathname: string) => {
   return (
-    pathname === "/admin" ||
-    pathname.startsWith("/admin/") ||
+    pathname === "/dashboard" ||
+    pathname.startsWith("/dashboard/") ||
     pathname === "/account" ||
     pathname.startsWith("/account/")
   );

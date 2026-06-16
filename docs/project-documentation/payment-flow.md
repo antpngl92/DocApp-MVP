@@ -131,8 +131,7 @@ Minimum MVP refund behavior:
 
 Default permission guidance:
 
-- owner can issue refunds and override refund rules
-- admin/manager can issue refunds if granted permission
+- admin can issue refunds and override refund rules if granted permission
 - receptionist can cancel appointments or flag refund review, but cannot issue money refunds by default
 - doctor can mark outcome where allowed, but cannot issue refunds by default
 

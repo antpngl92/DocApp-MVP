@@ -11,7 +11,7 @@ const PUBLIC_NAVIGATION: readonly NavigationItem[] = [
 ];
 
 const PUBLIC_SIGNED_IN_ADMIN_NAVIGATION: readonly NavigationItem[] = [
-  { href: ROUTES.admin, labelKey: "dashboard" },
+  { href: ROUTES.dashboard, labelKey: "dashboard" },
 ];
 
 const PUBLIC_SIGNED_IN_PATIENT_NAVIGATION: readonly NavigationItem[] = [
@@ -19,7 +19,9 @@ const PUBLIC_SIGNED_IN_PATIENT_NAVIGATION: readonly NavigationItem[] = [
   { href: ROUTES.patientAccount, labelKey: "appointments" },
 ];
 
-const ADMIN_NAVIGATION: readonly NavigationItem[] = [{ href: ROUTES.admin, labelKey: "dashboard" }];
+const ADMIN_NAVIGATION: readonly NavigationItem[] = [
+  { href: ROUTES.dashboard, labelKey: "dashboard" },
+];
 
 const PATIENT_NAVIGATION: readonly NavigationItem[] = [
   { href: ROUTES.patientAccount, labelKey: "appointments" },

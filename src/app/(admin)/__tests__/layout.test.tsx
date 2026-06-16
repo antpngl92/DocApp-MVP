@@ -8,11 +8,11 @@ const sessionBoundary = vi.hoisted(() => ({
   bootstrapOwnerAdminMembershipFromClerkPrivateMetadata: vi.fn(),
   getAuthenticatedSession: vi.fn(),
   notFound: vi.fn(),
-  requireOwnerAdminAccess: vi.fn(),
+  requireActiveStaffAccess: vi.fn(),
 }));
 
 vi.mock("@/server/auth/admin-access", () => ({
-  requireOwnerAdminAccess: sessionBoundary.requireOwnerAdminAccess,
+  requireActiveStaffAccess: sessionBoundary.requireActiveStaffAccess,
 }));
 
 vi.mock("@/server/auth/owner-bootstrap", () => ({
@@ -43,7 +43,7 @@ describe("AdminLayout", () => {
     vi.clearAllMocks();
   });
 
-  it("requires an authenticated session before rendering admin content", async () => {
+  it("requires an authenticated active staff session before rendering dashboard content", async () => {
     sessionBoundary.getAuthenticatedSession.mockResolvedValueOnce({
       sessionId: "session_123",
       userId: "user_123",
@@ -51,17 +51,17 @@ describe("AdminLayout", () => {
     sessionBoundary.bootstrapOwnerAdminMembershipFromClerkPrivateMetadata.mockResolvedValueOnce({
       membership: {
         id: "member_123",
-        role: "owner",
+        role: "doctor",
         status: "active",
         userId: "user_123",
       },
-      role: "owner",
+      role: null,
       status: "existing_membership",
     });
 
     render(
       await AdminLayout({
-        children: <div>Admin content</div>,
+        children: <div>Dashboard content</div>,
       }),
     );
 
@@ -70,18 +70,18 @@ describe("AdminLayout", () => {
     expect(
       sessionBoundary.bootstrapOwnerAdminMembershipFromClerkPrivateMetadata,
     ).toHaveBeenCalledTimes(1);
-    expect(sessionBoundary.requireOwnerAdminAccess).toHaveBeenCalledWith({
+    expect(sessionBoundary.requireActiveStaffAccess).toHaveBeenCalledWith({
       membership: {
         id: "member_123",
-        role: "owner",
+        role: "doctor",
         status: "active",
         userId: "user_123",
       },
     });
-    expect(screen.getByTestId("admin-shell")).toHaveTextContent("Admin content");
+    expect(screen.getByTestId("admin-shell")).toHaveTextContent("Dashboard content");
   });
 
-  it("does not render admin content when the signed-in user has no owner/admin membership", async () => {
+  it("does not render dashboard content when the signed-in user has no active staff membership", async () => {
     sessionBoundary.getAuthenticatedSession.mockResolvedValueOnce({
       sessionId: "session_123",
       userId: "user_123",
@@ -91,20 +91,20 @@ describe("AdminLayout", () => {
       role: null,
       status: "no_bootstrap_metadata",
     });
-    sessionBoundary.requireOwnerAdminAccess.mockImplementationOnce(() => {
+    sessionBoundary.requireActiveStaffAccess.mockImplementationOnce(() => {
       throw new Error("NEXT_NOT_FOUND");
     });
 
     await expect(
       AdminLayout({
-        children: <div>Admin content</div>,
+        children: <div>Dashboard content</div>,
       }),
     ).rejects.toThrow("NEXT_NOT_FOUND");
 
     expect(sessionBoundary.activateStaffInvitationForCurrentUser).toHaveBeenCalledTimes(1);
   });
 
-  it("returns not found for signed-out admin access", async () => {
+  it("returns not found for signed-out dashboard access", async () => {
     sessionBoundary.getAuthenticatedSession.mockResolvedValueOnce({
       sessionId: null,
       userId: null,
@@ -115,7 +115,7 @@ describe("AdminLayout", () => {
 
     await expect(
       AdminLayout({
-        children: <div>Admin content</div>,
+        children: <div>Dashboard content</div>,
       }),
     ).rejects.toThrow("NEXT_NOT_FOUND");
 
