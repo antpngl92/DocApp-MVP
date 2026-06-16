@@ -16,7 +16,7 @@ describe("handleClerkWebhookEvent", () => {
     vi.clearAllMocks();
   });
 
-  it("syncs Clerk user create and update events", async () => {
+  it("syncs Clerk user create events with public registration auditing", async () => {
     const event = {
       data: {
         id: "user_clerk_123",
@@ -30,7 +30,28 @@ describe("handleClerkWebhookEvent", () => {
       type: "user.created",
     });
 
-    expect(clerkUserSync.syncClerkUserToLocalUser).toHaveBeenCalledWith(event.data);
+    expect(clerkUserSync.syncClerkUserToLocalUser).toHaveBeenCalledWith(event.data, undefined, {
+      auditPublicRegistration: true,
+    });
+  });
+
+  it("syncs Clerk user update events without public registration auditing", async () => {
+    const event = {
+      data: {
+        id: "user_clerk_123",
+      },
+      type: "user.updated",
+    } as WebhookEvent;
+
+    await expect(handleClerkWebhookEvent(event)).resolves.toEqual({
+      action: "synced",
+      handled: true,
+      type: "user.updated",
+    });
+
+    expect(clerkUserSync.syncClerkUserToLocalUser).toHaveBeenCalledWith(event.data, undefined, {
+      auditPublicRegistration: false,
+    });
   });
 
   it("ignores unsupported events without mutating local users", async () => {
