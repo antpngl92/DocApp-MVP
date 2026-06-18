@@ -130,8 +130,24 @@
       "eyebrow": "Alta de doctor",
       "title": "Crea tu perfil de doctor",
       "description": "Tu acceso de personal está activo. Completa tu perfil de doctor antes de usar el panel médico.",
-      "panelTitle": "El formulario de perfil llegará después",
-      "panelDescription": "La siguiente tarea añadirá el formulario de perfil. Esta página ya es el destino obligatorio para doctores invitados sin un perfil de doctor vinculado."
+      "pendingTitle": "Esperando aprobación del administrador",
+      "pendingDescription": "Tu perfil de doctor ha sido enviado. Un administrador debe aprobarlo antes de que puedas usar el panel médico.",
+      "pendingPanelTitle": "Perfil enviado",
+      "pendingPanelDescription": "No necesitas enviar nada más por ahora. La administración de la clínica revisará y activará tu perfil de doctor.",
+      "form": {
+        "emailHelp": "El email de tu cuenta se usa para identidad y no se puede cambiar aquí.",
+        "emailLabel": "Email de la cuenta",
+        "nameError": "Introduce tu nombre visible.",
+        "nameLabel": "Nombre visible",
+        "namePlaceholder": "Dra. Elena Petrova",
+        "phoneLabel": "Teléfono",
+        "phonePlaceholder": "+359 2 000 0000",
+        "serverError": "No se pudo enviar el perfil. Revisa los datos e inténtalo de nuevo.",
+        "specialtyLabel": "Especialidad",
+        "specialtyPlaceholder": "Medicina general",
+        "submitLabel": "Enviar perfil de doctor",
+        "successMessage": "Perfil enviado. Esperando aprobación del administrador."
+      }
     }
   },
   "patient": {
