@@ -130,8 +130,24 @@
       "eyebrow": "Doctor onboarding",
       "title": "Create your doctor profile",
       "description": "Your staff access is active. Complete your doctor profile before using the doctor dashboard.",
-      "panelTitle": "Profile form coming next",
-      "panelDescription": "The next task will add the profile form. This page is now the required destination for invited doctors without a linked doctor profile."
+      "pendingTitle": "Waiting for admin approval",
+      "pendingDescription": "Your doctor profile has been submitted. An admin must approve it before you can use the doctor dashboard.",
+      "pendingPanelTitle": "Profile submitted",
+      "pendingPanelDescription": "You do not need to submit anything else right now. Clinic administration will review and activate your doctor profile.",
+      "form": {
+        "emailHelp": "Your account email is used for identity and cannot be changed here.",
+        "emailLabel": "Account email",
+        "nameError": "Enter your display name.",
+        "nameLabel": "Display name",
+        "namePlaceholder": "Dr. Elena Petrova",
+        "phoneLabel": "Phone",
+        "phonePlaceholder": "+359 2 000 0000",
+        "serverError": "The profile could not be submitted. Check the details and try again.",
+        "specialtyLabel": "Specialty",
+        "specialtyPlaceholder": "General practice",
+        "submitLabel": "Submit doctor profile",
+        "successMessage": "Profile submitted. Waiting for admin approval."
+      }
     }
   },
   "patient": {

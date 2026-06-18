@@ -26,7 +26,10 @@ const DoctorProfileOnboardingLayout = async ({ children }: DoctorProfileOnboardi
 
   const doctorProfileAccess = await getDoctorProfileAccessForCurrentUser();
 
-  if (doctorProfileAccess.status !== DOCTOR_PROFILE_ACCESS_STATUS.profileRequired) {
+  if (
+    doctorProfileAccess.status !== DOCTOR_PROFILE_ACCESS_STATUS.profileRequired &&
+    doctorProfileAccess.status !== DOCTOR_PROFILE_ACCESS_STATUS.pendingAdminApproval
+  ) {
     redirect(ROUTES.dashboard);
   }
 

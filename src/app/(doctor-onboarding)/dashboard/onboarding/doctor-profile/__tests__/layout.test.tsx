@@ -141,6 +141,47 @@ describe("DoctorProfileOnboardingLayout", () => {
     expect(sessionBoundary.redirect).toHaveBeenCalledWith("/dashboard");
   });
 
+  it("renders pending approval doctor staff on the onboarding route", async () => {
+    sessionBoundary.getAuthenticatedSession.mockResolvedValueOnce({
+      sessionId: "session_123",
+      userId: "user_123",
+    });
+    sessionBoundary.bootstrapOwnerAdminMembershipFromClerkPrivateMetadata.mockResolvedValueOnce({
+      membership: {
+        id: "member_123",
+        role: "doctor",
+        status: "active",
+        userId: "user_123",
+      },
+      role: null,
+      status: "existing_membership",
+    });
+    sessionBoundary.getDoctorProfileAccessForCurrentUser.mockResolvedValueOnce({
+      doctor: {
+        id: "doctor_123",
+      },
+      membership: {
+        id: "member_123",
+        role: "doctor",
+        status: "active",
+        userId: "user_123",
+      },
+      status: "pending_admin_approval",
+      user: {
+        id: "user_123",
+      },
+    });
+
+    render(
+      await DoctorProfileOnboardingLayout({
+        children: <div>Pending approval content</div>,
+      }),
+    );
+
+    expect(sessionBoundary.redirect).not.toHaveBeenCalled();
+    expect(screen.getByTestId("admin-shell")).toHaveTextContent("Pending approval content");
+  });
+
   it("returns not found for signed-out onboarding access", async () => {
     sessionBoundary.getAuthenticatedSession.mockResolvedValueOnce({
       sessionId: null,

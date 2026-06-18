@@ -130,8 +130,24 @@
       "eyebrow": "Intégration médecin",
       "title": "Créer votre profil médecin",
       "description": "Votre accès au personnel est actif. Complétez votre profil médecin avant d’utiliser le tableau de bord médecin.",
-      "panelTitle": "Le formulaire de profil arrive ensuite",
-      "panelDescription": "La prochaine tâche ajoutera le formulaire de profil. Cette page est maintenant la destination obligatoire pour les médecins invités sans profil médecin lié."
+      "pendingTitle": "En attente d’approbation admin",
+      "pendingDescription": "Votre profil médecin a été envoyé. Un admin doit l’approuver avant que vous puissiez utiliser le tableau de bord médecin.",
+      "pendingPanelTitle": "Profil envoyé",
+      "pendingPanelDescription": "Vous n’avez rien d’autre à envoyer pour le moment. L’administration de la clinique examinera et activera votre profil médecin.",
+      "form": {
+        "emailHelp": "L’e-mail de votre compte sert à l’identité et ne peut pas être modifié ici.",
+        "emailLabel": "E-mail du compte",
+        "nameError": "Saisissez votre nom affiché.",
+        "nameLabel": "Nom affiché",
+        "namePlaceholder": "Dr Elena Petrova",
+        "phoneLabel": "Téléphone",
+        "phonePlaceholder": "+359 2 000 0000",
+        "serverError": "Le profil n’a pas pu être envoyé. Vérifiez les informations et réessayez.",
+        "specialtyLabel": "Spécialité",
+        "specialtyPlaceholder": "Médecine générale",
+        "submitLabel": "Envoyer le profil médecin",
+        "successMessage": "Profil envoyé. En attente d’approbation admin."
+      }
     }
   },
   "patient": {

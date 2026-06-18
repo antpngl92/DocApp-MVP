@@ -145,6 +145,49 @@ describe("AdminLayout", () => {
     expect(sessionBoundary.redirect).toHaveBeenCalledWith("/dashboard/onboarding/doctor-profile");
   });
 
+  it("redirects active doctor staff with pending approval to onboarding", async () => {
+    sessionBoundary.getAuthenticatedSession.mockResolvedValueOnce({
+      sessionId: "session_123",
+      userId: "user_123",
+    });
+    sessionBoundary.bootstrapOwnerAdminMembershipFromClerkPrivateMetadata.mockResolvedValueOnce({
+      membership: {
+        id: "member_123",
+        role: "doctor",
+        status: "active",
+        userId: "user_123",
+      },
+      role: null,
+      status: "existing_membership",
+    });
+    sessionBoundary.getDoctorProfileAccessForCurrentUser.mockResolvedValueOnce({
+      doctor: {
+        id: "doctor_123",
+      },
+      membership: {
+        id: "member_123",
+        role: "doctor",
+        status: "active",
+        userId: "user_123",
+      },
+      status: "pending_admin_approval",
+      user: {
+        id: "user_123",
+      },
+    });
+    sessionBoundary.redirect.mockImplementationOnce(() => {
+      throw new Error("NEXT_REDIRECT");
+    });
+
+    await expect(
+      AdminLayout({
+        children: <div>Dashboard content</div>,
+      }),
+    ).rejects.toThrow("NEXT_REDIRECT");
+
+    expect(sessionBoundary.redirect).toHaveBeenCalledWith("/dashboard/onboarding/doctor-profile");
+  });
+
   it("does not render dashboard content when the signed-in user has no active staff membership", async () => {
     sessionBoundary.getAuthenticatedSession.mockResolvedValueOnce({
       sessionId: "session_123",

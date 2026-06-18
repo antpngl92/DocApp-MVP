@@ -130,8 +130,24 @@
       "eyebrow": "Onboarding medico",
       "title": "Crea il tuo profilo medico",
       "description": "Il tuo accesso staff è attivo. Completa il profilo medico prima di usare la dashboard medico.",
-      "panelTitle": "Il modulo profilo arriverà dopo",
-      "panelDescription": "La prossima attività aggiungerà il modulo profilo. Questa pagina è ora la destinazione obbligatoria per i medici invitati senza un profilo medico collegato."
+      "pendingTitle": "In attesa di approvazione admin",
+      "pendingDescription": "Il tuo profilo medico è stato inviato. Un admin deve approvarlo prima che tu possa usare la dashboard medico.",
+      "pendingPanelTitle": "Profilo inviato",
+      "pendingPanelDescription": "Per ora non devi inviare altro. L’amministrazione della clinica controllerà e attiverà il tuo profilo medico.",
+      "form": {
+        "emailHelp": "L’email dell’account viene usata per l’identità e non può essere modificata qui.",
+        "emailLabel": "Email account",
+        "nameError": "Inserisci il nome visualizzato.",
+        "nameLabel": "Nome visualizzato",
+        "namePlaceholder": "Dr. Elena Petrova",
+        "phoneLabel": "Telefono",
+        "phonePlaceholder": "+359 2 000 0000",
+        "serverError": "Non è stato possibile inviare il profilo. Controlla i dati e riprova.",
+        "specialtyLabel": "Specialità",
+        "specialtyPlaceholder": "Medicina generale",
+        "submitLabel": "Invia profilo medico",
+        "successMessage": "Profilo inviato. In attesa di approvazione admin."
+      }
     }
   },
   "patient": {

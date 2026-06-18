@@ -2,6 +2,7 @@ import type {
   CLERK_INVITATION_STATUS,
   CURRENT_AUTHENTICATED_USER_STATUS,
   DOCTOR_PROFILE_ACCESS_STATUS,
+  DOCTOR_PROFILE_CREATION_RESULT_STATUS,
   DOCTOR_PROFILE_ONBOARDING_STATUS,
   ORGANIZATION_STATUS,
   OWNER_BOOTSTRAP_MEMBERSHIP_STATUS,
@@ -246,6 +247,20 @@ type DoctorProfileAccessResult = {
   user: AuthenticatedUserRecord | null;
 };
 
+type DoctorProfileCreationResultStatus =
+  (typeof DOCTOR_PROFILE_CREATION_RESULT_STATUS)[keyof typeof DOCTOR_PROFILE_CREATION_RESULT_STATUS];
+
+type DoctorProfileCreationInput = {
+  name: string;
+  phone?: string | null;
+  specialty?: string | null;
+};
+
+type DoctorProfileCreationResult = {
+  doctorId: string | null;
+  status: DoctorProfileCreationResultStatus;
+};
+
 type DoctorProfileAccessDatabase = LocalUserLookupDatabase & {
   doctor: {
     findFirst: (args: {
@@ -271,9 +286,47 @@ type DoctorProfileAccessDatabase = LocalUserLookupDatabase & {
   };
 };
 
+type DoctorProfileCreationDatabase = DoctorProfileAccessDatabase & {
+  auditEvent: {
+    create: (args: {
+      data: {
+        action: string;
+        actorUserId: string;
+        metadata: {
+          source: string;
+        };
+        organizationId: string;
+        targetId: string;
+        targetType: string;
+      };
+    }) => Promise<unknown>;
+  };
+  doctor: DoctorProfileAccessDatabase["doctor"] & {
+    create: (args: {
+      data: {
+        email: string;
+        isActive: false;
+        isBookable: false;
+        name: string;
+        onboardingStatus: typeof DOCTOR_PROFILE_ONBOARDING_STATUS.pendingAdminApproval;
+        organizationId: string;
+        organizationMemberId: string;
+        phone: string | null;
+        specialty: string | null;
+        userId: string;
+      };
+    }) => Promise<DoctorProfileRecord>;
+  };
+};
+
 type GetDoctorProfileAccessForCurrentUserOptions = {
   authReader?: CurrentUserAuthReader;
   database?: DoctorProfileAccessDatabase;
+};
+
+type CreateDoctorProfileForCurrentUserOptions = DoctorProfileCreationInput & {
+  authReader?: CurrentUserAuthReader;
+  database?: DoctorProfileCreationDatabase;
 };
 
 type StaffInvitationResultStatus =
@@ -509,8 +562,13 @@ export type {
   DoctorProfileAccessDatabase,
   DoctorProfileAccessResult,
   DoctorProfileAccessStatus,
+  DoctorProfileCreationDatabase,
+  DoctorProfileCreationInput,
+  DoctorProfileCreationResult,
+  DoctorProfileCreationResultStatus,
   DoctorProfileOnboardingStatus,
   DoctorProfileRecord,
+  CreateDoctorProfileForCurrentUserOptions,
   GetDoctorProfileAccessForCurrentUserOptions,
   StaffInvitationDatabase,
   StaffInvitationPendingMembership,
