@@ -125,6 +125,15 @@
       "serverError": "Non è stato possibile inviare l’invito. Controlla l’email e riprova."
     }
   },
+  "doctorOnboarding": {
+    "profileRequired": {
+      "eyebrow": "Onboarding medico",
+      "title": "Crea il tuo profilo medico",
+      "description": "Il tuo accesso staff è attivo. Completa il profilo medico prima di usare la dashboard medico.",
+      "panelTitle": "Il modulo profilo arriverà dopo",
+      "panelDescription": "La prossima attività aggiungerà il modulo profilo. Questa pagina è ora la destinazione obbligatoria per i medici invitati senza un profilo medico collegato."
+    }
+  },
   "patient": {
     "eyebrow": "Account",
     "title": "I tuoi appuntamenti",

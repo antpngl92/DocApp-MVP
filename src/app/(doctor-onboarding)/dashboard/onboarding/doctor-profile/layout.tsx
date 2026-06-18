@@ -8,11 +8,11 @@ import { getAuthenticatedSession } from "@/server/auth/session";
 import { activateStaffInvitationForCurrentUser } from "@/server/auth/staff-onboarding";
 import { notFound, redirect } from "next/navigation";
 
-type AdminLayoutProps = Readonly<{
+type DoctorProfileOnboardingLayoutProps = Readonly<{
   children: React.ReactNode;
 }>;
 
-const AdminLayout = async ({ children }: AdminLayoutProps) => {
+const DoctorProfileOnboardingLayout = async ({ children }: DoctorProfileOnboardingLayoutProps) => {
   const session = await getAuthenticatedSession();
 
   if (!session.userId) {
@@ -26,11 +26,11 @@ const AdminLayout = async ({ children }: AdminLayoutProps) => {
 
   const doctorProfileAccess = await getDoctorProfileAccessForCurrentUser();
 
-  if (doctorProfileAccess.status === DOCTOR_PROFILE_ACCESS_STATUS.profileRequired) {
-    redirect(ROUTES.doctorProfileOnboarding);
+  if (doctorProfileAccess.status !== DOCTOR_PROFILE_ACCESS_STATUS.profileRequired) {
+    redirect(ROUTES.dashboard);
   }
 
   return <AdminShell>{children}</AdminShell>;
 };
 
-export default AdminLayout;
+export default DoctorProfileOnboardingLayout;

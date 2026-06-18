@@ -26,7 +26,11 @@ describe("routes", () => {
   });
 
   it("keeps private route keys in the private route group", () => {
-    expect(Object.keys(PRIVATE_ROUTES)).toEqual(["dashboard", "patientAccount"]);
+    expect(Object.keys(PRIVATE_ROUTES)).toEqual([
+      "dashboard",
+      "doctorProfileOnboarding",
+      "patientAccount",
+    ]);
   });
 
   it("does not duplicate route paths across public and private groups", () => {

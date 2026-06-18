@@ -125,6 +125,15 @@
       "serverError": "No se pudo enviar la invitación. Revisa el correo e inténtalo de nuevo."
     }
   },
+  "doctorOnboarding": {
+    "profileRequired": {
+      "eyebrow": "Alta de doctor",
+      "title": "Crea tu perfil de doctor",
+      "description": "Tu acceso de personal está activo. Completa tu perfil de doctor antes de usar el panel médico.",
+      "panelTitle": "El formulario de perfil llegará después",
+      "panelDescription": "La siguiente tarea añadirá el formulario de perfil. Esta página ya es el destino obligatorio para doctores invitados sin un perfil de doctor vinculado."
+    }
+  },
   "patient": {
     "eyebrow": "Cuenta",
     "title": "Tus citas",

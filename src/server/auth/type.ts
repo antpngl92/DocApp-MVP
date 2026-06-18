@@ -81,6 +81,21 @@ type RequireAdminAccessOptions = {
 };
 
 type PublicNavigationDatabase = LocalUserLookupDatabase & {
+  doctor: {
+    findFirst: (args: {
+      where: {
+        organizationId: string;
+        OR: Array<
+          | {
+              organizationMemberId: string;
+            }
+          | {
+              userId: string;
+            }
+        >;
+      };
+    }) => Promise<DoctorProfileRecord | null>;
+  };
   organizationMember: {
     findUnique: (args: {
       where: {
