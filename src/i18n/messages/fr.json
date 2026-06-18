@@ -125,6 +125,15 @@
       "serverError": "L’invitation n’a pas pu être envoyée. Vérifiez l’e-mail et réessayez."
     }
   },
+  "doctorOnboarding": {
+    "profileRequired": {
+      "eyebrow": "Intégration médecin",
+      "title": "Créer votre profil médecin",
+      "description": "Votre accès au personnel est actif. Complétez votre profil médecin avant d’utiliser le tableau de bord médecin.",
+      "panelTitle": "Le formulaire de profil arrive ensuite",
+      "panelDescription": "La prochaine tâche ajoutera le formulaire de profil. Cette page est maintenant la destination obligatoire pour les médecins invités sans profil médecin lié."
+    }
+  },
   "patient": {
     "eyebrow": "Compte",
     "title": "Vos rendez-vous",

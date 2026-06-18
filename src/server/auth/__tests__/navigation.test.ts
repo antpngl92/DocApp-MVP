@@ -17,6 +17,9 @@ import type { LocalUserRecord, PublicNavigationDatabase } from "../type";
 
 const prismaMock = vi.hoisted(() => ({
   prisma: {
+    doctor: {
+      findFirst: vi.fn(),
+    },
     organizationMember: {
       findUnique: vi.fn(),
     },
@@ -43,13 +46,18 @@ const createLocalUser = (overrides: Partial<LocalUserRecord> = {}): LocalUserRec
 };
 
 const createDatabase = ({
+  doctor = null,
   localUser = createLocalUser(),
   membership = null,
 }: {
+  doctor?: { id: string } | null;
   localUser?: LocalUserRecord | null;
-  membership?: { role: string; status: string } | null;
+  membership?: { id?: string; organizationId?: string; role: string; status: string } | null;
 } = {}): PublicNavigationDatabase => {
   return {
+    doctor: {
+      findFirst: vi.fn().mockResolvedValue(doctor),
+    },
     organizationMember: {
       findUnique: vi.fn().mockResolvedValue(membership),
     },
@@ -172,12 +180,63 @@ describe("getAuthenticatedHomeForCurrentUser", () => {
     ).resolves.toBe(ROUTES.dashboard);
   });
 
-  it("returns dashboard for signed-in users with active non-admin staff access", async () => {
+  it("returns dashboard for signed-in users with active receptionist staff access", async () => {
     await expect(
       getAuthenticatedHomeForCurrentUser({
         authReader: async () => ({ userId: "user_clerk_123" }),
         database: createDatabase({
           membership: {
+            role: "receptionist",
+            status: OWNER_BOOTSTRAP_MEMBERSHIP_STATUS.active,
+          },
+        }),
+      }),
+    ).resolves.toBe(ROUTES.dashboard);
+  });
+
+  it("returns doctor profile onboarding for signed-in doctor staff without a linked profile", async () => {
+    const database = createDatabase({
+      membership: {
+        id: "member_123",
+        organizationId: "org_123",
+        role: "doctor",
+        status: OWNER_BOOTSTRAP_MEMBERSHIP_STATUS.active,
+      },
+    });
+
+    await expect(
+      getAuthenticatedHomeForCurrentUser({
+        authReader: async () => ({ userId: "user_clerk_123" }),
+        database,
+      }),
+    ).resolves.toBe(ROUTES.doctorProfileOnboarding);
+
+    expect(database.doctor.findFirst).toHaveBeenCalledWith({
+      where: {
+        OR: [
+          {
+            organizationMemberId: "member_123",
+          },
+          {
+            userId: "user_local_123",
+          },
+        ],
+        organizationId: "org_123",
+      },
+    });
+  });
+
+  it("returns dashboard for signed-in doctor staff with a linked profile", async () => {
+    await expect(
+      getAuthenticatedHomeForCurrentUser({
+        authReader: async () => ({ userId: "user_clerk_123" }),
+        database: createDatabase({
+          doctor: {
+            id: "doctor_123",
+          },
+          membership: {
+            id: "member_123",
+            organizationId: "org_123",
             role: "doctor",
             status: OWNER_BOOTSTRAP_MEMBERSHIP_STATUS.active,
           },

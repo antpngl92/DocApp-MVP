@@ -125,6 +125,15 @@
       "serverError": "Die Einladung konnte nicht gesendet werden. Prüfen Sie die E-Mail-Adresse und versuchen Sie es erneut."
     }
   },
+  "doctorOnboarding": {
+    "profileRequired": {
+      "eyebrow": "Arzt-Onboarding",
+      "title": "Arztprofil erstellen",
+      "description": "Ihr Mitarbeiterzugang ist aktiv. Vervollständigen Sie Ihr Arztprofil, bevor Sie das Arzt-Dashboard verwenden.",
+      "panelTitle": "Profilformular folgt",
+      "panelDescription": "Die nächste Aufgabe fügt das Profilformular hinzu. Diese Seite ist jetzt das erforderliche Ziel für eingeladene Ärzte ohne verknüpftes Arztprofil."
+    }
+  },
   "patient": {
     "eyebrow": "Konto",
     "title": "Ihre Termine",

@@ -216,7 +216,7 @@ Required doctor flow:
 
 1. Admin invites the doctor through the staff invitation flow.
 2. Doctor accepts the Clerk invitation, signs up or signs in, and DocApp activates the local `OrganizationMember`.
-3. If the active membership role is `doctor` and no linked `Doctor` profile exists, redirect the doctor to a required doctor-profile onboarding page.
+3. If the active membership role is `doctor` and no linked `Doctor` profile exists, redirect the doctor to the required doctor-profile onboarding page at `/dashboard/onboarding/doctor-profile`.
 4. The doctor can access only the required onboarding surface, logout, and any explicitly safe account surfaces until the `Doctor` profile exists.
 5. Creating the profile links `Doctor` to the local organization, `OrganizationMember`, and local `User`.
 6. The new doctor profile starts inactive and pending admin approval. It must not be public/bookable immediately.

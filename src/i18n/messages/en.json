@@ -125,6 +125,15 @@
       "serverError": "The invitation could not be sent. Check the email and try again."
     }
   },
+  "doctorOnboarding": {
+    "profileRequired": {
+      "eyebrow": "Doctor onboarding",
+      "title": "Create your doctor profile",
+      "description": "Your staff access is active. Complete your doctor profile before using the doctor dashboard.",
+      "panelTitle": "Profile form coming next",
+      "panelDescription": "The next task will add the profile form. This page is now the required destination for invited doctors without a linked doctor profile."
+    }
+  },
   "patient": {
     "eyebrow": "Account",
     "title": "Your appointments",
