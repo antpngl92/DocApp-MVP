@@ -106,9 +106,11 @@ Patient routes must check that the signed-in user owns the patient profile or ap
 
 Checkout status pages should use a public-safe reference or token. Do not expose raw internal IDs where that would allow enumeration.
 
-Admin routes must require authenticated users with membership.
+Dashboard routes must require authenticated users with active staff membership.
 
-Manual booking creation must require an authorized clinic-side user. Receptionists and doctors should only get the actions their role allows. Manual override of availability or double-booking rules, if allowed, should require elevated admin permission, a visible warning, an override reason, and audit logging.
+Manual booking creation must require an authorized clinic-side user. Receptionists can create manual bookings and review booking details for each doctor. Doctors can create manual bookings and review booking details only for their own linked `Doctor` profile. Admin can perform these actions across the clinic. Manual override of availability or double-booking rules, if allowed, should require elevated admin permission, a visible warning, an override reason, and audit logging.
+
+Doctor profile and booking-setting access must check both role and target scope. A doctor can edit only their own profile/settings after admin approval. Receptionists cannot edit doctor profiles or booking settings. Admin controls doctor approval, clinic settings, Google Calendar connection, and doctor/resource calendar mappings.
 
 Webhook routes must verify provider signatures and never trust arbitrary user input.
 

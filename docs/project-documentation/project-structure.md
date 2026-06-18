@@ -92,7 +92,7 @@ src/app/
 │           └── page.tsx
 ├── (admin)/
 │   ├── layout.tsx
-│   └── admin/
+│   └── dashboard/
 │       ├── page.tsx
 │       ├── doctors/
 │       │   └── page.tsx

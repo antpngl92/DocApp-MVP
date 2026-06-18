@@ -187,11 +187,26 @@ Suggested fields:
 - email
 - phone
 - specialty
+- onboardingStatus
 - isActive
+- isBookable
 - createdAt
 - updatedAt
 
 A doctor can exist as a clinic operational profile before the doctor registers. Once the doctor registers or accepts an invitation, link the doctor profile to the local `User` and/or `OrganizationMember`.
+
+For invited doctors, the preferred MVP flow is doctor-led profile creation after invitation acceptance:
+
+- the doctor accepts the Clerk invitation and becomes an active local `OrganizationMember` with role `doctor`
+- if no linked `Doctor` profile exists, the doctor is forced through doctor-profile onboarding before normal doctor dashboard access
+- profile creation links `Doctor.organizationId`, `Doctor.organizationMemberId`, and the local `User`
+- the new `Doctor` starts inactive, not bookable, and pending admin approval
+- admin approval changes the doctor profile to active
+- after approval, the doctor can manage their own operational booking settings within clinic rules
+
+Operational status fields should distinguish account membership from provider readiness. `OrganizationMember.status = active` means the staff account is accepted and can authenticate as staff. A separate doctor profile status, such as `onboardingStatus = pending_admin_approval | approved | rejected` plus `isActive` and `isBookable`, controls whether the provider can appear in booking flows.
+
+Admin controls clinic infrastructure and calendar mapping. A doctor may manage their own services, availability, slot times, holidays, blocked time, and bookable on/off state after admin approval. Admin still manages Google Calendar connection, doctor/resource calendar mappings, clinic settings, staff invitations, and final activation/disable authority.
 
 Receptionists and other non-doctor staff can exist through `OrganizationMember` without a separate operational profile unless the product needs one later.
 
