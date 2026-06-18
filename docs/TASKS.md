@@ -120,10 +120,18 @@ Complete tasks from top to bottom and one approved task/branch at a time. Do not
 - [x] Store Clerk invitation ID/status alongside the pending local invitation or membership record.
 - [x] Do not pass local organization, membership, invitation, or role metadata to Clerk invitations for MVP; match staff invitation acceptance by invited email against local `OrganizationMember` state only.
 - [x] Support staff roles through local `OrganizationMember` state, limited to admin, receptionist, and doctor for MVP.
-- [ ] Link a staff user with role `doctor` to a `Doctor` operational profile when that staff member is a bookable provider.
+- [ ] Link a staff user with role `doctor` to a `Doctor` operational profile before normal doctor dashboard access.
+- [ ] Redirect invited doctors without a linked `Doctor` profile to required doctor-profile onboarding after invitation acceptance/login.
+- [ ] Create doctor profiles from doctor onboarding as inactive, not bookable, and pending admin approval.
+- [ ] Require admin approval before a doctor profile becomes active.
+- [ ] After approval, allow doctors to manage their own operational booking settings within clinic rules.
+- [ ] Keep Google Calendar connection and doctor/resource calendar mappings admin-managed.
 - [ ] Ensure Clerk invitation metadata is treated as a hint and local `OrganizationMember` state remains the source of staff roles and permissions.
 - [x] Ensure staff cannot self-register into arbitrary clinics without invitation or owner/admin approval.
 - [ ] Model and enforce clinic-side roles plus patient ownership: admin, receptionist, doctor, and patient account access.
+- [ ] Enforce scoped staff permissions: admin can act clinic-wide, receptionist can manage bookings/details for each doctor, and doctor can manage bookings/details only for their own linked doctor profile.
+- [ ] Ensure receptionists cannot edit doctor profiles, doctor booking settings, clinic settings, staff invitations, or calendar mappings.
+- [ ] Ensure doctors cannot perform admin-only actions or act on another doctor's settings/bookings.
 - [ ] Add organization/clinic membership checks.
 - [ ] Add current-organization/current-clinic helper.
 - [x] Add admin/staff authorization guards.

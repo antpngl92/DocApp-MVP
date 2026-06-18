@@ -202,6 +202,15 @@ Rescheduling is out of scope unless explicitly added later.
 
 Manual bookings should be created by authorized clinic-side users inside the admin/control panel. This supports patients who contact the clinic outside the public booking flow, such as by phone, message, or in person.
 
+Manual booking permissions are role and scope based:
+
+- admin can create and review manual bookings clinic-wide
+- receptionist can create manual bookings and review booking details for each doctor
+- doctor can create manual bookings and review booking details only for their own linked `Doctor` profile
+- patient cannot access manual booking workflows
+
+Receptionists cannot edit doctor profiles, doctor booking settings, clinic settings, staff invitations, or calendar mappings. Doctors cannot perform admin-only actions or manage another doctor's bookings/settings.
+
 Supported patient cases:
 
 - existing patient account: staff can search/select an existing patient account from a dropdown or patient search field

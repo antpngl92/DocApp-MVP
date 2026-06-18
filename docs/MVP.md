@@ -279,6 +279,10 @@ The MVP should allow an admin to:
 - mark no-shows
 - retry failed Google Calendar event creation
 
+Doctor staff users should complete a required doctor profile after accepting an invitation when no linked `Doctor` profile exists. The new profile starts inactive, not bookable, and pending admin approval. After admin approval, the doctor may manage their own operational booking settings, such as their services, availability, slots/times, holidays, blocked time, and own bookable state. Admin still manages clinic-level settings, staff invitations, Google Calendar connection, and doctor/resource calendar mappings.
+
+Receptionist users can create manual bookings and review booking details for each doctor, but cannot edit doctor profiles, doctor booking settings, clinic settings, staff invitations, calendar mappings, or admin-only actions. Doctor users can perform receptionist-like appointment work only for their own linked doctor profile.
+
 ## Manual Admin-Created Bookings
 
 Authorized clinic staff can create appointments inside the admin/control panel for patients who contact the clinic by phone, message, or in person.

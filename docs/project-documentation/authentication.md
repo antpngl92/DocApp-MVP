@@ -186,7 +186,7 @@ Recommended flow:
 9. DocApp validates the pending local invitation or membership before activating clinic access.
 10. DocApp activates the local `OrganizationMember` and assigns the intended role.
 
-A staff member with role `doctor` may also be linked to a `Doctor` operational profile when that person is a bookable provider. Receptionists and other non-doctor staff normally need only the `OrganizationMember` record unless the product later adds a separate operational profile for them.
+A staff member with role `doctor` must eventually be linked to a `Doctor` operational profile before receiving normal doctor dashboard access. Receptionists and other non-doctor staff normally need only the `OrganizationMember` record unless the product later adds a separate operational profile for them.
 
 Implemented MVP foundation:
 
@@ -208,6 +208,44 @@ Implemented MVP foundation:
 - Invitation audit logging is best-effort after the invitation has been sent and tracked; audit failure must be monitored but must not report a failed invite to the admin.
 - Do not pass local organization, membership, invitation, or role metadata to Clerk invitations for MVP. Staff invitation acceptance is matched by normalized invited email against local `OrganizationMember` state only.
 
+### Doctor Profile Onboarding Gate
+
+When a staff invitation is accepted with role `doctor`, the app should not immediately grant unrestricted doctor dashboard access.
+
+Required doctor flow:
+
+1. Admin invites the doctor through the staff invitation flow.
+2. Doctor accepts the Clerk invitation, signs up or signs in, and DocApp activates the local `OrganizationMember`.
+3. If the active membership role is `doctor` and no linked `Doctor` profile exists, redirect the doctor to a required doctor-profile onboarding page.
+4. The doctor can access only the required onboarding surface, logout, and any explicitly safe account surfaces until the `Doctor` profile exists.
+5. Creating the profile links `Doctor` to the local organization, `OrganizationMember`, and local `User`.
+6. The new doctor profile starts inactive and pending admin approval. It must not be public/bookable immediately.
+7. Admin reviews the pending doctor onboarding request and marks the doctor active.
+8. After admin approval, the doctor can manage their own operational booking settings within clinic rules.
+
+Doctor-managed settings after approval may include own services, own availability, slots/times, holidays, blocked time, and own bookable on/off state. Admin still manages clinic-level infrastructure, Google Calendar connection, and doctor/resource calendar mappings.
+
+Cabinets/rooms/resources remain clinic infrastructure. A doctor should not create or take over clinic resources during profile onboarding unless a later explicit task allows that.
+
+### Staff Permission Scope
+
+Permissions are role-based and scope-based.
+
+- `admin` can do what doctor and receptionist can do, plus clinic-level administration.
+- `doctor` can do receptionist-like appointment work only for appointments attached to their own linked `Doctor` profile. A doctor cannot manage another doctor's bookings/settings and cannot perform admin-only actions.
+- `receptionist` can create manual bookings and review booking details for each doctor. A receptionist cannot edit doctor profiles, doctor booking settings, clinic settings, staff invitations, calendar mappings, or admin-only actions.
+- `patient` access is separate from staff membership and must be limited to the patient's own profile and appointments.
+
+Future authorization helpers should check both role and target scope. For example, appointment permissions should be evaluated with the actor's role, actor doctor profile ID where applicable, and target doctor profile ID.
+
+Examples:
+
+- Admin can manage any doctor appointment or setting where admin permission is allowed.
+- Receptionist can manage manual booking and appointment details for any doctor, without editing doctor settings.
+- Doctor can manage manual booking and appointment details only when the target appointment belongs to that doctor's own linked profile.
+- Doctor can manage their own booking settings only after their profile is admin-approved and active.
+- Patient cannot access staff appointment management surfaces.
+
 Implementation note:
 
 ```ts
@@ -221,7 +259,7 @@ await clerkClient.invitations.createInvitation({
 
 The Clerk Backend API endpoint is `POST /v1/invitations`. It requires the Clerk secret key and must never run in a client component. Clerk sends the invitation email by default. Store the returned Clerk invitation ID and status locally so DocApp can track pending, accepted, expired, and revoked invitations.
 
-Clerk invitation metadata may include references such as `organizationId`, `membershipId`, or intended role, but it must be treated only as a hint. Local database records remain the source of truth for clinic membership, role, status, and permissions.
+Do not pass local organization, membership, invitation, or role metadata to Clerk invitations for MVP. If metadata is added later, it must be treated only as a hint. Local database records remain the source of truth for clinic membership, role, status, and permissions.
 
 Never grant staff permissions from user-controlled Clerk metadata, public form input, or invitation acceptance alone. If the local invitation is missing, expired, revoked, or mismatched, the signed-in user must not receive clinic-side access.
 
@@ -231,10 +269,9 @@ Refunds are privileged clinic-side actions.
 
 Default permission guidance:
 
-- owner can issue refunds and override refund rules
 - admin can issue refunds if explicitly granted permission
 - receptionist can cancel appointments or flag refund review, but cannot issue money refunds by default
-- doctor can mark appointment outcome where allowed, but cannot issue refunds by default
+- doctor can mark appointment outcome where allowed for their own linked doctor profile, but cannot issue refunds by default
 
 Patients cannot request or self-initiate refunds.
 

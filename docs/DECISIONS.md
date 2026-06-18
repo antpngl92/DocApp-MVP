@@ -672,7 +672,17 @@ Clinic-side users and patients both authenticate, so access separation is founda
 
 **Implication**
 
-Admin can manage clinic settings, staff, doctors, services, calendars, appointments, and billing configuration. Receptionist can create/manage appointments but should not manage billing/platform settings unless allowed. Doctor can view their own calendar/appointments where needed. Patient can view and manage only their own appointments/profile.
+Admin can do what doctor and receptionist can do, plus clinic-level administration such as staff invitations, doctor approval, clinic settings, Google Calendar connection, calendar mappings, and final activation/disable decisions.
+
+Receptionist can create manual bookings and review booking details for each doctor. Receptionist cannot edit doctor profiles, doctor booking settings, clinic settings, staff invitations, calendar mappings, or admin-only actions.
+
+Doctor can do receptionist-like appointment work only for appointments attached to their own linked `Doctor` profile. Doctor cannot manage another doctor's bookings/settings and cannot perform admin-only actions. After admin approval, doctor can manage their own operational booking settings such as services, availability, slots/times, holidays, blocked time, and own bookable state.
+
+Patient can view and manage only their own appointments/profile.
+
+Doctor-role staff require a linked `Doctor` operational profile before normal doctor dashboard access. Invited doctors should be redirected to required doctor-profile onboarding after invitation acceptance when no profile exists. The profile starts inactive, not bookable, and pending admin approval; only after approval can the doctor manage their own booking settings.
+
+Authorization helpers should check both role and target scope. For appointment-related actions, evaluate the actor role, actor doctor profile ID where applicable, and target doctor profile ID.
 
 ## 037 - Google Calendar Foundation Comes Early
 

@@ -50,6 +50,9 @@ Feature-specific documentation lives in `docs/project-documentation/`:
 - Staff-user and patient registration are part of MVP.
 - Staff joins clinics only through invitation or approved clinic assignment.
 - Prefer Clerk Invitations for staff-user onboarding, but local `OrganizationMember` records remain the source of clinic roles and permissions.
+- Invited doctors must complete a linked `Doctor` profile before normal doctor dashboard access; the profile starts inactive, not bookable, and pending admin approval.
+- Admin can act clinic-wide; receptionists can manage manual bookings and booking details for each doctor; doctors can do that only for their own linked doctor profile.
+- Doctors may manage their own booking settings after admin approval, but admin owns Google Calendar connection and doctor/resource calendar mappings.
 - Patients can register publicly and manage their own appointments.
 - Authorized clinic staff can create manual bookings from the admin panel for existing patient accounts or for people without accounts using manually entered contact details.
 - Patient accounts are in MVP and are appointment-management only.
