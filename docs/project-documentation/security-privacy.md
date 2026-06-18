@@ -137,6 +137,8 @@ Keep audit metadata minimal and avoid unnecessary patient details.
 
 Audit metadata must not store secrets, raw provider credential material, raw webhook payloads, medical details, or long patient notes. Prefer stable internal IDs, short reason codes, before/after role/status values, and user-safe summaries.
 
+Audit events, user-facing notifications, and infrastructure/backend request logs are separate concerns. MVP audit events should record important business/security actions inside the app. User-facing notifications may need their own notification records later. Full backend request/event logging should be evaluated after release through an external logging or observability service, not by storing every request in the product database by default.
+
 ## Rate Limiting
 
 Add basic rate limiting where appropriate:
