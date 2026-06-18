@@ -45,3 +45,12 @@ export const ClerkInvitationStatus = {
 } as const
 
 export type ClerkInvitationStatus = (typeof ClerkInvitationStatus)[keyof typeof ClerkInvitationStatus]
+
+
+export const DoctorOnboardingStatus = {
+  pending_admin_approval: 'pending_admin_approval',
+  approved: 'approved',
+  rejected: 'rejected'
+} as const
+
+export type DoctorOnboardingStatus = (typeof DoctorOnboardingStatus)[keyof typeof DoctorOnboardingStatus]

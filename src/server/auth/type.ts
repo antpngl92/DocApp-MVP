@@ -1,6 +1,8 @@
 import type {
   CLERK_INVITATION_STATUS,
   CURRENT_AUTHENTICATED_USER_STATUS,
+  DOCTOR_PROFILE_ACCESS_STATUS,
+  DOCTOR_PROFILE_ONBOARDING_STATUS,
   ORGANIZATION_STATUS,
   OWNER_BOOTSTRAP_MEMBERSHIP_STATUS,
   OWNER_BOOTSTRAP_ROLE,
@@ -68,6 +70,8 @@ type GetCurrentAuthenticatedUserOptions = {
 };
 
 type AdminAccessMembership = {
+  id?: string;
+  organizationId?: string;
   role: string;
   status: string;
 };
@@ -203,6 +207,59 @@ type BootstrapOwnerAdminMembershipOptions = {
 type StaffMemberRole = (typeof STAFF_MEMBER_ROLE)[keyof typeof STAFF_MEMBER_ROLE];
 type StaffMemberStatus = (typeof STAFF_MEMBER_STATUS)[keyof typeof STAFF_MEMBER_STATUS];
 type StaffOnboardingStatus = (typeof STAFF_ONBOARDING_STATUS)[keyof typeof STAFF_ONBOARDING_STATUS];
+
+type DoctorProfileOnboardingStatus =
+  (typeof DOCTOR_PROFILE_ONBOARDING_STATUS)[keyof typeof DOCTOR_PROFILE_ONBOARDING_STATUS];
+
+type DoctorProfileAccessStatus =
+  (typeof DOCTOR_PROFILE_ACCESS_STATUS)[keyof typeof DOCTOR_PROFILE_ACCESS_STATUS];
+
+type DoctorProfileRecord = {
+  id: string;
+  isActive: boolean;
+  isBookable: boolean;
+  onboardingStatus: string;
+  organizationId: string;
+  organizationMemberId: string | null;
+  userId: string | null;
+};
+
+type DoctorProfileAccessResult = {
+  doctor: DoctorProfileRecord | null;
+  membership: AdminAccessMembership | null;
+  status: DoctorProfileAccessStatus;
+  user: AuthenticatedUserRecord | null;
+};
+
+type DoctorProfileAccessDatabase = LocalUserLookupDatabase & {
+  doctor: {
+    findFirst: (args: {
+      where: {
+        organizationId: string;
+        OR: Array<
+          | {
+              organizationMemberId: string;
+            }
+          | {
+              userId: string;
+            }
+        >;
+      };
+    }) => Promise<DoctorProfileRecord | null>;
+  };
+  organizationMember: {
+    findUnique: (args: {
+      where: {
+        userId: string;
+      };
+    }) => Promise<AdminAccessMembership | null>;
+  };
+};
+
+type GetDoctorProfileAccessForCurrentUserOptions = {
+  authReader?: CurrentUserAuthReader;
+  database?: DoctorProfileAccessDatabase;
+};
 
 type StaffInvitationResultStatus =
   (typeof STAFF_INVITATION_RESULT_STATUS)[keyof typeof STAFF_INVITATION_RESULT_STATUS];
@@ -434,6 +491,12 @@ export type {
   ClerkInvitationRevoker,
   ClerkInvitationStatus,
   CreateStaffInvitationOptions,
+  DoctorProfileAccessDatabase,
+  DoctorProfileAccessResult,
+  DoctorProfileAccessStatus,
+  DoctorProfileOnboardingStatus,
+  DoctorProfileRecord,
+  GetDoctorProfileAccessForCurrentUserOptions,
   StaffInvitationDatabase,
   StaffInvitationPendingMembership,
   StaffInvitationResult,

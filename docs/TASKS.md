@@ -120,7 +120,7 @@ Complete tasks from top to bottom and one approved task/branch at a time. Do not
 - [x] Store Clerk invitation ID/status alongside the pending local invitation or membership record.
 - [x] Do not pass local organization, membership, invitation, or role metadata to Clerk invitations for MVP; match staff invitation acceptance by invited email against local `OrganizationMember` state only.
 - [x] Support staff roles through local `OrganizationMember` state, limited to admin, receptionist, and doctor for MVP.
-- [ ] Link a staff user with role `doctor` to a `Doctor` operational profile before normal doctor dashboard access.
+- [x] Link a staff user with role `doctor` to a `Doctor` operational profile before normal doctor dashboard access.
 - [ ] Redirect invited doctors without a linked `Doctor` profile to required doctor-profile onboarding after invitation acceptance/login.
 - [ ] Create doctor profiles from doctor onboarding as inactive, not bookable, and pending admin approval.
 - [ ] Require admin approval before a doctor profile becomes active.

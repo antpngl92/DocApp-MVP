@@ -178,6 +178,36 @@ export type EnumClerkInvitationStatusNullableWithAggregatesFilter<$PrismaModel =
   _max?: Prisma.NestedEnumClerkInvitationStatusNullableFilter<$PrismaModel>
 }
 
+export type EnumDoctorOnboardingStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.DoctorOnboardingStatus | Prisma.EnumDoctorOnboardingStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.DoctorOnboardingStatus[] | Prisma.ListEnumDoctorOnboardingStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.DoctorOnboardingStatus[] | Prisma.ListEnumDoctorOnboardingStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumDoctorOnboardingStatusFilter<$PrismaModel> | $Enums.DoctorOnboardingStatus
+}
+
+export type BoolFilter<$PrismaModel = never> = {
+  equals?: boolean | Prisma.BooleanFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedBoolFilter<$PrismaModel> | boolean
+}
+
+export type EnumDoctorOnboardingStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.DoctorOnboardingStatus | Prisma.EnumDoctorOnboardingStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.DoctorOnboardingStatus[] | Prisma.ListEnumDoctorOnboardingStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.DoctorOnboardingStatus[] | Prisma.ListEnumDoctorOnboardingStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumDoctorOnboardingStatusWithAggregatesFilter<$PrismaModel> | $Enums.DoctorOnboardingStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumDoctorOnboardingStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumDoctorOnboardingStatusFilter<$PrismaModel>
+}
+
+export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: boolean | Prisma.BooleanFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedBoolFilter<$PrismaModel>
+  _max?: Prisma.NestedBoolFilter<$PrismaModel>
+}
+
 export type JsonNullableFilter<$PrismaModel = never> =
 | Prisma.PatchUndefined<
     Prisma.Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
@@ -404,6 +434,36 @@ export type NestedEnumClerkInvitationStatusNullableWithAggregatesFilter<$PrismaM
   _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
   _min?: Prisma.NestedEnumClerkInvitationStatusNullableFilter<$PrismaModel>
   _max?: Prisma.NestedEnumClerkInvitationStatusNullableFilter<$PrismaModel>
+}
+
+export type NestedEnumDoctorOnboardingStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.DoctorOnboardingStatus | Prisma.EnumDoctorOnboardingStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.DoctorOnboardingStatus[] | Prisma.ListEnumDoctorOnboardingStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.DoctorOnboardingStatus[] | Prisma.ListEnumDoctorOnboardingStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumDoctorOnboardingStatusFilter<$PrismaModel> | $Enums.DoctorOnboardingStatus
+}
+
+export type NestedBoolFilter<$PrismaModel = never> = {
+  equals?: boolean | Prisma.BooleanFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedBoolFilter<$PrismaModel> | boolean
+}
+
+export type NestedEnumDoctorOnboardingStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.DoctorOnboardingStatus | Prisma.EnumDoctorOnboardingStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.DoctorOnboardingStatus[] | Prisma.ListEnumDoctorOnboardingStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.DoctorOnboardingStatus[] | Prisma.ListEnumDoctorOnboardingStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumDoctorOnboardingStatusWithAggregatesFilter<$PrismaModel> | $Enums.DoctorOnboardingStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumDoctorOnboardingStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumDoctorOnboardingStatusFilter<$PrismaModel>
+}
+
+export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: boolean | Prisma.BooleanFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedBoolFilter<$PrismaModel>
+  _max?: Prisma.NestedBoolFilter<$PrismaModel>
 }
 
 export type NestedJsonNullableFilter<$PrismaModel = never> =
