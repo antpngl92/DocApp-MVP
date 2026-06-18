@@ -244,6 +244,16 @@ The admin UI should emphasize:
 
 Admin pages should favor tables, daily agenda views, filters, and dense but readable information. Avoid marketing-style hero sections inside the admin app.
 
+Staff dashboard routes under `/dashboard` should use a dedicated dashboard layout, not the public/customer navbar. Use SuperDesign to explore and guide the collapsible sidebar, selected-item state, icon treatment, and role-specific information density before implementation. Do not introduce shadcn/Radix sidebar dependencies for the dashboard unless explicitly re-approved later.
+
+Sidebar items should be role-aware from the start:
+
+- Admin sees clinic-wide dashboard, staff members, notifications, logs placeholder, manual booking, and settings.
+- Doctor sees own dashboard, profile, notifications, manual booking for their own linked doctor profile, and settings after admin approval.
+- Receptionist sees schedule view, manual booking across doctors, and profile.
+
+Dashboard navigation should still use real Next.js routes so content changes like a SPA transition while routes remain bookmarkable, refresh-safe, and server-authorizable.
+
 Pilot dashboard cards should include:
 
 - today's bookings

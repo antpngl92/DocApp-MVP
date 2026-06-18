@@ -123,6 +123,9 @@ Complete tasks from top to bottom and one approved task/branch at a time. Do not
 - [x] Link a staff user with role `doctor` to a `Doctor` operational profile before normal doctor dashboard access.
 - [x] Redirect invited doctors without a linked `Doctor` profile to required doctor-profile onboarding after invitation acceptance/login.
 - [x] Create doctor profiles from doctor onboarding as inactive, not bookable, and pending admin approval.
+- [ ] Build the initial role-aware `/dashboard` shell with a SuperDesign-guided collapsible sidebar before implementing admin-only doctor approval workflows.
+- [ ] Show dashboard sidebar items by staff role: admin sees clinic-wide dashboard, staff members, notifications, logs placeholder, manual booking, and settings; doctor sees own dashboard, profile, notifications, manual booking, and settings after approval; receptionist sees schedule view, manual booking, and profile.
+- [ ] Keep the public/customer navbar out of staff dashboard routes and place logout at the bottom of the staff sidebar.
 - [ ] Require admin approval before a doctor profile becomes active.
 - [ ] After approval, allow doctors to manage their own operational booking settings within clinic rules.
 - [ ] Keep Google Calendar connection and doctor/resource calendar mappings admin-managed.
@@ -189,7 +192,7 @@ Complete tasks from top to bottom and one approved task/branch at a time. Do not
 
 - [ ] Build admin dashboard shell.
 - [x] Redirect authenticated staff users to `/dashboard` instead of the patient account area after login, registration, or invitation acceptance.
-- [ ] Use a dashboard sidebar layout for staff/admin pages; shadcn Sidebar is approved for this admin dashboard shell only unless explicitly expanded later.
+- [ ] Use the approved SuperDesign dashboard/sidebar direction for staff/admin pages; do not introduce shadcn/Radix sidebar dependencies unless explicitly re-approved later.
 - [ ] Build clinic settings page.
 - [ ] Support booking page slug.
 - [ ] Support clinic timezone.
@@ -427,6 +430,7 @@ Complete tasks from top to bottom and one approved task/branch at a time. Do not
 - [ ] Optionally add CAPTCHA later if abuse appears.
 - [ ] Add privacy policy, terms of use, cancellation policy, refund policy, and cookie policy pages.
 - [ ] Research production logging and alerting approach.
+- [ ] Post-release improvement: evaluate an external logging/observability service for backend request/event logs instead of storing every backend request in the app database.
 
 ## Phase 22 - Integration Testing, Coverage Audit, And Pilot Hardening
 
