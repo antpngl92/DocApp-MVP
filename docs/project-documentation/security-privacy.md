@@ -150,7 +150,14 @@ Add basic rate limiting where appropriate:
 - admin login-sensitive workflows if relevant
 - webhook endpoint monitoring/logging
 
-Prevent one user/session/IP from holding many slots at once. CAPTCHA can be considered later if abuse appears, but basic abuse prevention should be planned from the MVP.
+Prevent one anonymous browser/session/IP from holding many slots at once. MVP slot-hold abuse prevention should include:
+
+- one active hold per anonymous browser/session by default
+- release or expire the previous active hold when the same browser/session selects a different slot
+- conservative IP-hash based active hold limits, such as a small number of active holds per IP hash
+- rate limits on hold creation/release attempts
+
+Add user-based limits later only if needed. CAPTCHA can be considered later if abuse appears, but basic abuse prevention should be planned from the MVP.
 
 ## Production Checklist
 

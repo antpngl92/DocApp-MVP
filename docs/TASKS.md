@@ -250,16 +250,19 @@ Complete tasks from top to bottom and one approved task/branch at a time. Do not
 - [ ] Use clinic-configurable short form hold duration, with sensible default such as 2-5 minutes.
 - [ ] Release temporary slot holds immediately on modal/form close as best-effort.
 - [ ] Expire abandoned temporary slot holds automatically.
-- [ ] Validate SlotHold token/session/user ownership before booking submission.
-- [ ] Preserve pre-login SlotHold token/session through registration/login redirects.
-- [ ] Safely attach pre-login SlotHold to the authenticated patient before Checkout creation.
+- [ ] Allow only one active SlotHold per anonymous browser/session by default.
+- [ ] Release or expire a browser/session's previous active SlotHold when it selects a different slot.
+- [ ] Validate anonymous SlotHold token/session ownership before booking submission without storing patient/contact details on the hold.
+- [ ] Preserve pre-login anonymous SlotHold token/session through registration/login redirects.
+- [ ] Safely consume the validated anonymous SlotHold when creating the authenticated patient's pending appointment before Checkout creation.
 - [ ] Validate hold organization, service, doctor/resource, start/end time, active status, expiry, and conversion status.
 - [ ] Convert valid hold into pending-payment appointment on form submission.
 - [ ] Use longer checkout/payment lock duration, with sensible default such as 15-30 minutes.
 - [ ] Expire abandoned pending-payment appointments automatically.
 - [ ] Research and choose cleanup mechanism: Vercel Cron, database scheduled job, protected cleanup route, or background worker later.
 - [ ] Implement the chosen scheduled cleanup mechanism for expired holds and pending-payment appointments.
-- [ ] Add abuse prevention for one user/session/IP holding many slots at once.
+- [ ] Add abuse prevention for one anonymous browser/session/IP holding many slots at once; add user-based limits later only if needed.
+- [ ] Add conservative IP-hash based active hold limits to reduce public slot blocking abuse.
 - [ ] Rate-limit public slot hold creation.
 
 ## Phase 13 - Public/Patient Booking Flow
@@ -426,7 +429,7 @@ Complete tasks from top to bottom and one approved task/branch at a time. Do not
 - [ ] Verify Google Calendar event titles/descriptions avoid sensitive medical data.
 - [ ] Verify audit logs do not expose sensitive data unnecessarily.
 - [ ] Verify slot hold creation, booking submission, and Checkout Session creation rate limits implemented in their owning phases.
-- [ ] Verify one user/session/IP cannot hold many slots at once.
+- [ ] Verify one anonymous browser/session/IP cannot hold many slots at once.
 - [ ] Optionally add CAPTCHA later if abuse appears.
 - [ ] Add privacy policy, terms of use, cancellation policy, refund policy, and cookie policy pages.
 - [ ] Research production logging and alerting approach.

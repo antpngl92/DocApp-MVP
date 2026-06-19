@@ -46,7 +46,7 @@ The default non-refundable deposit behavior is a product default and must be sho
 When the patient submits the booking form:
 
 1. Server validates clinic/service/doctor/resource/slot.
-2. Server validates active `SlotHold` token/session/user ownership.
+2. Server validates active anonymous `SlotHold` token/session ownership without relying on patient/contact details stored on the hold.
 3. Server calculates price/deposit from database service data.
 4. Server creates pending `Appointment`.
 5. Server creates pending `AppointmentOrder`.

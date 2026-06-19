@@ -38,7 +38,15 @@ Important prototype gaps to correct:
 - No stored Google Calendar event ID or durable calendar sync record.
 - No notification log or audit/event log.
 
-The rebuild should treat prototype `Calendar` roughly as evidence that a bookable resource/cabinet with a Google Calendar ID is useful, but the production-shaped model should use explicit organization, service, appointment, order, and sync records.
+The rebuild should treat the prototype as evidence of useful booking concepts, not as a schema to copy directly. MVP data should stay local-first and Google-compatible:
+
+- prototype `Calendar` maps to local `Doctor` / `Resource` plus a separate `CalendarMapping`, not to the clinic itself
+- prototype `CalendarSettings` and `DayConfiguration` map to local booking settings, `AvailabilityRule`, blocked time, holidays, and service assignment behavior
+- prototype `CalendarEvent` maps to local `Appointment` plus calendar sync records; Google event payloads are derived after confirmation
+- prototype `EventOrder` maps to `AppointmentOrder`; payment state stays separate from appointment state and calendar sync state
+- prototype daily `rate` behavior should become service-level price/deposit configuration
+
+Google IDs, OAuth tokens, discovered calendar references, and sync status belong in integration/mapping records. Core doctors, resources, services, availability, appointments, and orders must remain local product data so booking can work with or without Google Calendar connected.
 
 ### Organization
 
@@ -270,7 +278,9 @@ Each active service must have at least one valid bookable assignment. This preve
 
 ### SlotHold
 
-Represents a short temporary hold created when a patient selects a time slot before submitting the booking form.
+Represents a short anonymous temporary lock created when a visitor/patient selects a time slot before submitting the booking form.
+
+The purpose of `SlotHold` is to prevent double booking during the public booking flow. It should not become a patient profile, draft appointment, or contact-details record.
 
 Suggested fields:
 
@@ -279,14 +289,12 @@ Suggested fields:
 - serviceId
 - doctorId
 - resourceId
-- patientProfileId
-- userId
-- sessionId
 - startTime
 - endTime
 - timezone
 - status
-- token
+- holdTokenHash
+- browserSessionKeyHash
 - ipHash
 - expiresAt
 - releasedAt
@@ -303,9 +311,13 @@ expired
 converted
 ```
 
-Hold duration should be configurable per clinic. Closing the booking modal/form should attempt immediate release, but expiry and cleanup are the source of truth. Before creating Checkout, the server must validate the hold token plus matching user/session/slot details.
+Do not store patient name, email, phone, `patientProfileId`, `userId`, or medical details on `SlotHold`. The hold can use an opaque token stored client-side and a hashed server-side value to prove the same browser/session is continuing the booking attempt. `ipHash` or similar anonymous abuse-prevention metadata is optional and must not be treated as identity.
 
-If a hold is created before login/register, the hold token/session must survive the authentication redirect and then be safely attached to the authenticated patient before Checkout creation. A hold must not be attachable to a different user/session without server validation.
+Hold duration should be configurable per clinic. Closing the booking modal/form should attempt immediate release, but expiry and cleanup are the source of truth. Before creating Checkout, the server must validate the hold token/session key plus matching organization, service, doctor/resource, start/end time, active status, expiry, and conversion state.
+
+If a hold is created before login/register, the anonymous hold token/session must survive the authentication redirect. After authentication, the validated hold is consumed when creating the pending appointment for the authenticated patient. Patient ownership starts on `Appointment` / `AppointmentOrder`, not on `SlotHold`.
+
+WebSockets may later be used to push hold updates to open booking pages, but they do not replace this persisted lock. Polling or WebSockets are transport/UI update mechanisms; the database `SlotHold` record remains the source of truth for double-booking prevention, expiry, conversion, and cleanup.
 
 ### AvailabilityRule
 

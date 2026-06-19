@@ -79,8 +79,8 @@ Create and review explorations for:
 
 - public booking page
 - service and slot selection
-- slot held by current patient
-- slot held by another patient
+- slot held by this browser/session
+- slot held by another browser/session
 - hold expiring soon
 - hold expired
 - patient booking form
@@ -136,18 +136,18 @@ For mobile, the Time step should show exactly three day columns: today, tomorrow
 The booking UI should clearly represent:
 
 - available
-- selected by current patient
-- held by current patient
-- held by another patient
+- selected in this browser/session
+- held by this browser/session
+- held by another browser/session
 - hold expiring soon
 - hold expired
 - pending payment
 - booking confirmed
 - booking confirmed with calendar sync failed
 
-If a slot is held by another patient, it should look unavailable without requiring a full page refresh. MVP can use polling to update this state.
+If a slot is held by another browser/session, it should look unavailable without requiring a full page refresh. MVP can use polling to update this state.
 
-If the current patient's hold is expiring soon, show a simple countdown or warning. If the patient closes the booking modal/form, release the hold immediately where possible. This immediate release is a convenience; the UI must still tolerate expiry-driven cleanup if the browser closes, network drops, or the user abandons the form.
+If this browser/session's hold is expiring soon, show a simple countdown or warning. If the patient closes the booking modal/form, release the hold immediately where possible. This immediate release is a convenience; the UI must still tolerate expiry-driven cleanup if the browser closes, network drops, or the user abandons the form.
 
 `slot_held` is a computed UI state from an active `SlotHold`. It is not required to be an appointment status.
 

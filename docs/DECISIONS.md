@@ -763,7 +763,7 @@ An attacker or careless user could hold many slots, spam Checkout creation, or i
 
 **Implication**
 
-Add rate limiting for hold creation, booking submission, and Checkout Session creation. Prevent one user/session/IP from holding many slots at once. Expire holds aggressively. CAPTCHA can be considered later if abuse appears.
+Add rate limiting for hold creation, booking submission, and Checkout Session creation. Prevent one anonymous browser/session/IP from holding many slots at once. By default, allow one active hold per anonymous browser/session and release or expire the previous active hold when that browser/session selects a different slot. Add conservative IP-hash based active hold limits, such as a small number of active holds per IP hash, to reduce abuse without over-blocking shared networks. Add user-based limits later only if needed. Expire holds aggressively. CAPTCHA can be considered later if abuse appears.
 
 ## 042 - Pending Cleanup Needs A Concrete Mechanism
 

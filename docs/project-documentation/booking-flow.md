@@ -41,7 +41,7 @@ Do not carry forward these prototype limitations:
 8. Patient confirms or updates name, email, phone, and optional non-sensitive note.
 9. App shows full appointment price, deposit due now, remaining balance, cancellation policy, and non-refundable deposit policy.
 10. Patient submits the form.
-11. Server validates the slot hold token/session/user and revalidates availability and price/deposit.
+11. Server validates the anonymous slot hold token/session and revalidates availability and price/deposit.
 12. Server creates pending appointment and pending order.
 13. Server converts the short slot hold into a longer pending-payment appointment lock.
 14. Server creates Stripe Checkout Session.
@@ -52,7 +52,7 @@ Do not carry forward these prototype limitations:
 19. Patient sees success/status page and receives confirmation.
 20. Appointment appears in the patient account.
 
-If the slot hold is created before login/register, the hold token/session must survive the authentication redirect and then be attached to the authenticated patient before Checkout. The server must reject stale, mismatched, expired, or already-converted holds.
+If the slot hold is created before login/register, the anonymous hold token/session must survive the authentication redirect. After authentication, the server consumes the validated hold when creating the pending appointment for the authenticated patient. The server must reject stale, mismatched, expired, or already-converted holds.
 
 ## Pending Appointment Creation
 
@@ -75,7 +75,7 @@ Both durations should be configurable per clinic.
 
 When a patient clicks/selects an available time slot, DocApp should immediately create a temporary slot hold.
 
-For MVP, slot hold updates should start with polling every few seconds. Full realtime infrastructure can be evaluated later.
+For MVP, slot hold updates should start with polling every few seconds. WebSockets may be evaluated later for faster UI updates, but WebSockets would only notify clients about hold changes. They do not replace the persisted `SlotHold` record, because the database lock is the source of truth for double-booking prevention, expiry, conversion, and cleanup.
 
 Slot hold requirements:
 
@@ -87,16 +87,19 @@ Slot hold requirements:
 - abandoned holds expire automatically
 - submitting the form converts the hold into a pending-payment appointment
 - failed or abandoned Checkout eventually releases the slot through expiration
-- hold token/session/user ownership must be validated before booking submission
-- pre-login hold tokens must survive login/register redirects and be bound safely to the authenticated patient before Checkout
-- one user/session/IP should not be able to hold many slots at once
+- hold token/session ownership must be validated before booking submission without storing patient or contact details on the hold
+- pre-login anonymous hold tokens must survive login/register redirects and be consumed safely when creating the authenticated patient's pending appointment
+- one anonymous browser/session should normally have only one active hold at a time
+- when the same browser/session selects a different slot, release or expire its previous active hold before creating the new one
+- one anonymous browser/session/IP should not be able to hold many slots at once
+- IP-hash based active hold limits should use a conservative MVP default, such as a small number of active holds per IP hash, to reduce abuse without blocking shared networks too aggressively
 
 Slot states to support in UI:
 
 - available
-- selected by current patient
-- held by current patient
-- held by another patient
+- selected in this browser/session
+- held by this browser/session
+- held by another browser/session
 - hold expiring soon
 - hold expired
 - pending payment
@@ -112,7 +115,7 @@ Before creating a Checkout Session, the server must re-check:
 - service belongs to the organization
 - doctor/resource belongs to the organization
 - selected slot is still available
-- submitted SlotHold exists, is active, is not expired, matches slot/service/doctor/resource, and belongs to the current session/user
+- submitted SlotHold exists, is active, is not expired, matches slot/service/doctor/resource, and belongs to the current anonymous hold token/session
 - pending locks do not conflict
 - price/deposit are calculated from server-side service data
 

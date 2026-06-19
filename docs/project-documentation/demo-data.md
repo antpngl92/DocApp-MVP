@@ -79,11 +79,11 @@ Include examples for:
 Include examples for:
 
 - available slot
-- current patient selected slot
-- current patient active hold
-- current patient hold expiring soon
-- current patient hold expired
-- held by another patient
+- selected in this browser/session
+- active hold in this browser/session
+- this browser/session's hold expiring soon
+- this browser/session's hold expired
+- held by another browser/session
 - pending payment lock
 
 ## Pilot Setup Checklist

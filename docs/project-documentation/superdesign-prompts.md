@@ -32,8 +32,8 @@ Screens/states to include:
 2. Service selection where the patient chooses the service
 3. Doctor/resource selection where the patient chooses a doctor/provider or resource that can perform the selected service
 4. Date/time slot selection
-5. Slot selected by current patient
-6. Slot held by another patient
+5. Slot selected in this browser/session
+6. Slot held by another browser/session
 7. Current hold expiring soon with countdown/warning
 8. Hold expired with clear recovery action
 9. Patient login/register step while preserving the selected hold
@@ -73,7 +73,7 @@ Mobile:
 Show exactly 3 columns instead of 7. The first column is today, the second is tomorrow, and the third is the day after tomorrow. Each column lists available slot buttons.
 
 Slot states:
-available, selected by current patient, held by another patient, current hold expiring soon, hold expired, no slots available.
+available, selected in this browser/session, held by another browser/session, current hold expiring soon, hold expired, no slots available.
 
 Constraints:
 Do not include booking fee, processing fee, platform fee, refund request, medical records, symptoms, diagnosis fields, chat, file uploads, ads, or rescheduling.

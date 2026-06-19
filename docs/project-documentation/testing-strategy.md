@@ -19,9 +19,11 @@ Add unit tests for:
 - availability generation
 - service duration and buffer handling
 - temporary slot hold creation
-- temporary slot hold token/session/user validation
+- one active temporary slot hold per anonymous browser/session
+- previous temporary slot hold release/expiry when the same browser/session selects a different slot
+- temporary anonymous slot hold token/session validation
 - pre-login slot hold survival across registration/login redirect
-- safe attachment of pre-login hold to authenticated patient
+- safe consumption of a validated pre-login hold when creating the authenticated patient's pending appointment
 - temporary slot hold immediate release
 - temporary slot hold expiration
 - short hold conversion into pending-payment appointment lock
@@ -38,6 +40,7 @@ Add unit tests for:
 - manual booking payment state separate from appointment state
 - patient registration/login booking ownership
 - stale or mismatched hold rejection after registration/login
+- anonymous browser/session and IP-hash active hold limit enforcement
 - patient profile update from booking contact details
 - deposit/full price/remaining balance calculation
 - appointment status transitions

@@ -44,6 +44,8 @@ The rebuild can reuse this integration knowledge, but must correct these prototy
 - Failed sync only sends an admin email; it does not create durable retry state.
 - Event payloads currently include more patient contact details than the MVP should place in Google Calendar.
 
+Do not copy the prototype `Calendar` / `CalendarEvent` / `EventOrder` shape directly. The MVP should keep doctor/resource/service/availability/appointment/order data local-first, then map confirmed local appointments to Google events through integration and sync records. Google Calendar should fit the local model, not define it.
+
 ## Core Rule
 
 Create Google Calendar events only after payment has been confirmed through the Stripe webhook or after an authorized clinic-side user creates or confirms a manual appointment.
