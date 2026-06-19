@@ -138,10 +138,11 @@ Complete tasks from top to bottom and one approved task/branch at a time. Do not
 - [x] Protect patient account routes with authenticated local user and patient profile ownership checks.
 - [x] Add route-level authorization boundaries for public, admin, staff, and patient surfaces.
 - [x] Ensure patients can access only their own patient profile.
-- [ ] Ensure clinic users can access only their clinic-scoped records.
-- [ ] Ensure webhook processing cannot mutate unrelated clinic/order records.
-- [ ] Add audit events for sensitive role/access changes.
-- [ ] Risk: access control must be enforced on the server, not only hidden in the UI.
+- [x] Add reusable server-side organization scope guard for clinic-owned records.
+- [x] Ensure current Phase 6 clinic-side reads and mutations are scoped to the active local organization.
+- [x] Ensure current Clerk webhook processing cannot mutate unrelated clinic/order records or accept untrusted clinic/order IDs.
+- [x] Add audit events for Phase 6 sensitive role/access changes.
+- [x] Risk: access control must be enforced on the server, not only hidden in the UI.
 
 ## Phase 7 - Home Page
 
@@ -284,6 +285,8 @@ This phase owns online payment initiation, Stripe webhook finalization, and publ
 - [ ] Verify Stripe webhook signatures using raw request body.
 - [ ] Handle `checkout.session.completed`.
 - [ ] Check session payment status before fulfillment.
+- [ ] Resolve appointment/order records from trusted Stripe metadata and local database state; never trust arbitrary clinic/user IDs from webhook input.
+- [ ] Ensure Stripe webhook processing cannot mutate unrelated clinic/order records.
 - [ ] Mark order `paid` only from webhook.
 - [ ] Mark appointment `confirmed` only after payment is confirmed.
 - [ ] Store Stripe Payment Intent ID where available.
