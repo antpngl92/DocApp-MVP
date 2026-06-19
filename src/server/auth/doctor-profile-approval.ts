@@ -16,6 +16,7 @@ import type {
   PendingDoctorApprovalRecord,
 } from "./type";
 import { hasOwnerAdminAccess } from "./admin-access";
+import { requireClinicRecordAccess } from "./clinic-scope";
 
 type DoctorProfileApprovalAdminMembership = AdminAccessMembership & {
   organizationId: string;
@@ -137,6 +138,11 @@ const approveDoctorProfileForCurrentAdmin = async ({
       status: DOCTOR_PROFILE_APPROVAL_RESULT_STATUS.notFound,
     };
   }
+
+  requireClinicRecordAccess({
+    expectedOrganizationId: context.membership.organizationId,
+    record: doctor,
+  });
 
   if (
     doctor.onboardingStatus === DOCTOR_PROFILE_ONBOARDING_STATUS.approved &&

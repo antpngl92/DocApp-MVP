@@ -322,6 +322,8 @@ Do not rely only on UI hiding.
 
 Every server action, route handler, and database query that reads or mutates clinic data must enforce organization ownership.
 
+Use the shared clinic-scope guard for clinic-owned records that expose `organizationId`. A record is accessible only when its `organizationId` matches the active local organization resolved for the signed-in staff user. In the single-clinic MVP this still matters because it prevents future code from accidentally trusting client-provided IDs or drifting toward shared multi-clinic assumptions.
+
 Examples:
 
 - creating a service
@@ -339,10 +341,18 @@ Stripe webhooks are not authenticated by Clerk. They must verify Stripe signatur
 
 Webhook handlers must not accept arbitrary clinic/user IDs from untrusted input.
 
+The current Clerk webhook only syncs local users by Clerk user ID and can create a public-registration audit event against the active local organization. It must not accept clinic IDs, order IDs, appointment IDs, or role assignments from the webhook payload. Stripe/order webhook scoping is implemented later with the payment models.
+
 ## Audit Events
 
 Create audit events for sensitive actions:
 
+- trusted admin bootstrap
+- staff invitation created
+- staff invitation accepted / membership activated
+- public account registration
+- doctor profile created
+- doctor profile approved
 - member added/removed
 - role changed
 - service price/deposit changed
