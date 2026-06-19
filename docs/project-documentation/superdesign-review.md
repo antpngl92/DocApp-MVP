@@ -273,3 +273,57 @@ The `.superdesign/init/` files were refreshed before homepage draft generation t
 - current extractable component candidates for SuperDesign, especially `AppHeader`
 
 No homepage drafts were generated in this step.
+
+### Phase 7 Homepage Explorations
+
+```txt
+Project: DocApp Phase 7 Home Page
+Project ID: d8caa855-58d2-4fe0-8265-2d2779034123
+Project URL: https://app.superdesign.dev/teams/77fd0ec7-d11c-4c10-b9a9-73e6904040a5/projects/d8caa855-58d2-4fe0-8265-2d2779034123
+```
+
+Ground-truth draft:
+
+```txt
+Draft: Current DocApp Home Page
+Draft ID: c0d289fd-420a-4176-aca4-bc6598019d66
+Preview: https://p.superdesign.dev/draft/c0d289fd-420a-4176-aca4-bc6598019d66
+```
+
+Generated explorations:
+
+```txt
+Draft: DocApp Homepage Exploration
+Draft ID: 48f200a8-e6f9-4ae8-b4da-41b280401211
+Preview: https://p.superdesign.dev/draft/48f200a8-e6f9-4ae8-b4da-41b280401211
+
+Draft: DocApp | Home Mobile-First Exploration
+Draft ID: 2e4c6a73-2405-4ebc-8758-3e70772173e3
+Preview: https://p.superdesign.dev/draft/2e4c6a73-2405-4ebc-8758-3e70772173e3
+```
+
+Explored homepage sections/states:
+
+- public marketing navbar
+- primary booking CTA
+- secondary support/learn-more CTA
+- hero section with a configurable visual placeholder
+- patient-facing booking value copy
+- clinic-facing operations value copy
+- deposit/remaining-balance messaging
+- Google Calendar-aware operations messaging
+- privacy-conscious appointment-management positioning
+- footer/legal/support link areas
+- admin-editable homepage marketing text areas, especially the large hero headline and supporting copy
+
+Review notes before implementation:
+
+- Neither exploration is approved for implementation yet.
+- The desktop exploration has the stronger clinic-operations story and richer homepage section structure.
+- The mobile-first exploration has useful compact CTA/nav treatment and better stacked mobile pacing.
+- The desktop exploration introduced an unverified `80%` no-show metric. Do not implement invented statistics unless replaced with approved, sourced, or product-safe copy.
+- The mobile-first exploration includes `Staff Login` footer copy. Do not expose staff/admin-specific account language on public marketing surfaces.
+- Both explorations propose `Inter` via a Google Fonts import. Treat this as a theme proposal only; approve and document any font change before implementation.
+- Booking CTA links must use the real route constant for the current booking placeholder, not generic `/booking`.
+- Homepage implementation must not hardcode the large hero headline or other key marketing copy as permanent source-only text. Authorized admins should be able to change homepage marketing text through the approved content/settings model or a documented admin editing follow-up if the UI is not built in the same branch.
+- The generated HTML remains design reference only and must be translated into maintainable Next.js components.
