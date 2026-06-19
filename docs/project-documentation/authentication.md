@@ -220,8 +220,8 @@ Required doctor flow:
 4. The doctor can access only the required onboarding surface, logout, and any explicitly safe account surfaces until the `Doctor` profile exists.
 5. Creating the profile links `Doctor` to the local organization, `OrganizationMember`, and local `User`.
 6. The new doctor profile starts inactive and pending admin approval. It must not be public/bookable immediately.
-7. Admin reviews the pending doctor onboarding request and marks the doctor active.
-8. After admin approval, the doctor can manage their own operational booking settings within clinic rules.
+7. Admin reviews the pending doctor onboarding request and marks the doctor active, while the doctor remains not bookable by default.
+8. After admin approval, the doctor can manage their own operational booking settings within clinic rules before becoming bookable.
 
 Doctor-managed settings after approval may include own services, own availability, slots/times, holidays, blocked time, and own bookable on/off state. Admin still manages clinic-level infrastructure, Google Calendar connection, and doctor/resource calendar mappings.
 

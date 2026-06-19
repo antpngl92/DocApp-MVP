@@ -201,7 +201,7 @@ For invited doctors, the preferred MVP flow is doctor-led profile creation after
 - if no linked `Doctor` profile exists, the doctor is forced through doctor-profile onboarding before normal doctor dashboard access
 - profile creation links `Doctor.organizationId`, `Doctor.organizationMemberId`, and the local `User`
 - the new `Doctor` starts inactive, not bookable, and pending admin approval
-- admin approval changes the doctor profile to active
+- admin approval changes the doctor profile to active while keeping `isBookable = false` until booking settings are configured
 - after approval, the doctor can manage their own operational booking settings within clinic rules
 
 Operational status fields should distinguish account membership from provider readiness. `OrganizationMember.status = active` means the staff account is accepted and can authenticate as staff. A separate doctor profile status, such as `onboardingStatus = pending_admin_approval | approved | rejected` plus `isActive` and `isBookable`, controls whether the provider can appear in booking flows.

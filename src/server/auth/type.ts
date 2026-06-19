@@ -1,6 +1,7 @@
 import type {
   CLERK_INVITATION_STATUS,
   CURRENT_AUTHENTICATED_USER_STATUS,
+  DOCTOR_PROFILE_APPROVAL_RESULT_STATUS,
   DOCTOR_PROFILE_ACCESS_STATUS,
   DOCTOR_PROFILE_CREATION_RESULT_STATUS,
   DOCTOR_PROFILE_ONBOARDING_STATUS,
@@ -261,6 +262,23 @@ type DoctorProfileCreationResult = {
   status: DoctorProfileCreationResultStatus;
 };
 
+type DoctorProfileApprovalResultStatus =
+  (typeof DOCTOR_PROFILE_APPROVAL_RESULT_STATUS)[keyof typeof DOCTOR_PROFILE_APPROVAL_RESULT_STATUS];
+
+type PendingDoctorApprovalRecord = {
+  createdAt: Date;
+  email: string;
+  id: string;
+  name: string;
+  phone: string | null;
+  specialty: string | null;
+};
+
+type DoctorProfileApprovalResult = {
+  doctorId: string | null;
+  status: DoctorProfileApprovalResultStatus;
+};
+
 type DoctorProfileAccessDatabase = LocalUserLookupDatabase & {
   doctor: {
     findFirst: (args: {
@@ -319,6 +337,65 @@ type DoctorProfileCreationDatabase = DoctorProfileAccessDatabase & {
   };
 };
 
+type DoctorProfileApprovalDatabase = LocalUserLookupDatabase & {
+  auditEvent: {
+    create: (args: {
+      data: {
+        action: string;
+        actorUserId: string;
+        metadata: {
+          source: string;
+        };
+        organizationId: string;
+        targetId: string;
+        targetType: string;
+      };
+    }) => Promise<unknown>;
+  };
+  doctor: {
+    findFirst: (args: {
+      where: {
+        id: string;
+        organizationId: string;
+      };
+    }) => Promise<DoctorProfileRecord | null>;
+    findMany: (args: {
+      orderBy: {
+        createdAt: "asc" | "desc";
+      };
+      select: {
+        createdAt: true;
+        email: true;
+        id: true;
+        name: true;
+        phone: true;
+        specialty: true;
+      };
+      where: {
+        onboardingStatus: typeof DOCTOR_PROFILE_ONBOARDING_STATUS.pendingAdminApproval;
+        organizationId: string;
+      };
+    }) => Promise<PendingDoctorApprovalRecord[]>;
+    update: (args: {
+      data: {
+        isActive: true;
+        isBookable: false;
+        onboardingStatus: typeof DOCTOR_PROFILE_ONBOARDING_STATUS.approved;
+      };
+      where: {
+        id: string;
+      };
+    }) => Promise<DoctorProfileRecord>;
+  };
+  organizationMember: {
+    findUnique: (args: {
+      where: {
+        userId: string;
+      };
+    }) => Promise<AdminAccessMembership | null>;
+  };
+};
+
 type GetDoctorProfileAccessForCurrentUserOptions = {
   authReader?: CurrentUserAuthReader;
   database?: DoctorProfileAccessDatabase;
@@ -327,6 +404,17 @@ type GetDoctorProfileAccessForCurrentUserOptions = {
 type CreateDoctorProfileForCurrentUserOptions = DoctorProfileCreationInput & {
   authReader?: CurrentUserAuthReader;
   database?: DoctorProfileCreationDatabase;
+};
+
+type GetPendingDoctorApprovalsForCurrentAdminOptions = {
+  authReader?: CurrentUserAuthReader;
+  database?: DoctorProfileApprovalDatabase;
+};
+
+type ApproveDoctorProfileForCurrentAdminOptions = {
+  authReader?: CurrentUserAuthReader;
+  database?: DoctorProfileApprovalDatabase;
+  doctorId: string;
 };
 
 type DashboardRoleAccessDatabase = LocalUserLookupDatabase & {
@@ -575,6 +663,10 @@ export type {
   ClerkInvitationRevoker,
   ClerkInvitationStatus,
   CreateStaffInvitationOptions,
+  ApproveDoctorProfileForCurrentAdminOptions,
+  DoctorProfileApprovalDatabase,
+  DoctorProfileApprovalResult,
+  DoctorProfileApprovalResultStatus,
   DoctorProfileAccessDatabase,
   DoctorProfileAccessResult,
   DoctorProfileAccessStatus,
@@ -585,9 +677,11 @@ export type {
   DoctorProfileOnboardingStatus,
   DoctorProfileRecord,
   CreateDoctorProfileForCurrentUserOptions,
+  GetPendingDoctorApprovalsForCurrentAdminOptions,
   DashboardRoleAccessDatabase,
   GetDoctorProfileAccessForCurrentUserOptions,
   RequireDashboardRoleAccessOptions,
+  PendingDoctorApprovalRecord,
   StaffInvitationDatabase,
   StaffInvitationPendingMembership,
   StaffInvitationResult,

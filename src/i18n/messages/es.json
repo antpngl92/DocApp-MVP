@@ -170,7 +170,19 @@
     "dashboard": {
       "eyebrow": "Panel",
       "title": "Panel operativo",
-      "description": "Este panel de personal está listo para resúmenes de clínica y tarjetas de trabajo según el rol."
+      "description": "Este panel de personal está listo para resúmenes de clínica y tarjetas de trabajo según el rol.",
+      "pendingApprovals": {
+        "heading": "Aprobaciones de doctores pendientes",
+        "emptyTitle": "No hay aprobaciones pendientes",
+        "emptyDescription": "Aquí aparecerán los perfiles de doctores que necesitan revisión de administración.",
+        "emailLabel": "Email",
+        "phoneLabel": "Teléfono",
+        "specialtyLabel": "Especialidad",
+        "createdLabel": "Enviado",
+        "approveLabel": "Aprobar",
+        "phoneFallback": "No indicado",
+        "specialtyFallback": "No indicada"
+      }
     },
     "staffMembers": {
       "eyebrow": "Personal",
