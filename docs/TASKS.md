@@ -148,7 +148,7 @@ Complete tasks from top to bottom and one approved task/branch at a time. Do not
 
 This phase owns the public home page as the first polished DocApp marketing surface. It should not implement the booking flow yet, but it must guide patients toward the future booking page and establish the approved visual direction for the rest of the app.
 
-- [ ] Reconnect/confirm SuperDesign access for this project before starting homepage design work.
+- [x] Reconnect/confirm SuperDesign access for this project before starting homepage design work.
 - [ ] Use SuperDesign with the existing DocApp context files, including `.superdesign/design-system.md`, `.superdesign/init/theme.md`, `docs/MVP.md`, `docs/DECISIONS.md`, `docs/project-documentation/ui-direction.md`, and `docs/project-documentation/superdesign-integration.md`.
 - [ ] Generate SuperDesign home page explorations for desktop and mobile.
 - [ ] Include homepage states/sections in SuperDesign review notes before implementation.
