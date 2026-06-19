@@ -6,7 +6,7 @@ SuperDesign can be used for visual exploration, but these docs remain the produc
 
 ## Product Feeling
 
-DocApp should feel calm, trustworthy, clean, and operational.
+DocApp should feel calm, trustworthy, clean, modern, and operational.
 
 It should not feel like a flashy marketplace, generic landing-page template, experimental AI product, or ad-heavy consumer site.
 
@@ -17,12 +17,14 @@ Use a neutral healthcare-adjacent clinic application direction:
 - light background
 - white or off-white surfaces
 - soft borders
-- restrained shadows
-- readable typography
+- restrained but intentional shadows
+- readable modern typography
 - muted clinical blue and green accents
 - clear primary actions
 - quiet warning colors for payment, hold expiry, and sync failure
 - compact but breathable admin layouts
+- polished homepage hero and product visual areas
+- refined spacing and card hierarchy that feels more modern than the current foundation placeholder UI
 
 Avoid:
 
@@ -32,6 +34,18 @@ Avoid:
 - dark, flashy, or marketplace-style UI
 - ad placements anywhere in the app
 - medical imagery that implies diagnosis, treatment notes, or clinical records
+
+## Approved Theme Direction
+
+Phase 7 approves a more modern version of the existing calm clinic direction:
+
+- Use `Inter` or a similarly neutral modern sans-serif as the implementation target.
+- Keep the current blue/green clinical palette but use it with stronger hierarchy and cleaner composition.
+- Use the desktop homepage exploration as the structural baseline.
+- Borrow the mobile-first exploration's compact mobile layout and CTA treatment.
+- Do not implement invented statistics, public staff-login copy, generic `/booking` links, or generic generated legal/footer copy without product review.
+- Do not make the homepage look like the current foundation panel grid with only copy changes.
+- Homepage text and hero visual content should be compatible with admin-editable content settings.
 
 ## UI Principles
 

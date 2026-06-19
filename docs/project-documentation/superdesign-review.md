@@ -327,3 +327,23 @@ Review notes before implementation:
 - Booking CTA links must use the real route constant for the current booking placeholder, not generic `/booking`.
 - Homepage implementation must not hardcode the large hero headline or other key marketing copy as permanent source-only text. Authorized admins should be able to change homepage marketing text through the approved content/settings model or a documented admin editing follow-up if the UI is not built in the same branch.
 - The generated HTML remains design reference only and must be translated into maintainable Next.js components.
+
+### Phase 7 Approved Theme Direction
+
+Approved for Phase 7 implementation:
+
+- Use the desktop homepage exploration as the primary structural baseline.
+- Use the mobile-first exploration for responsive stacking, compact navbar behavior, and CTA pacing.
+- Modernize beyond both drafts during implementation; the final page should feel more polished than the current foundation UI.
+- Keep the calm clinical blue/green palette, but improve hierarchy through spacing, surfaces, stronger CTA treatment, and a more deliberate hero composition.
+- Approve `Inter` as the target font direction, loaded through an approved app-level font strategy during implementation.
+- Use a configurable hero visual area. The visual can be a generated bitmap-style product/clinic operations image, but must not imply diagnosis, treatment notes, prescriptions, or medical records.
+- Use admin-editable homepage content for hero headline, supporting copy, key section copy, CTA labels, hero image URL, and hero image alt text.
+
+Rejected or not approved:
+
+- The current foundation panel grid as the final homepage design.
+- The desktop exploration's invented `80%` no-show metric.
+- The mobile exploration's `Staff Login` public footer copy.
+- Generic `/booking` links instead of route constants.
+- Heavy gradients, decorative blobs, marketplace-style doctor cards, ads, public refund-request copy, and medical-record-like copy.

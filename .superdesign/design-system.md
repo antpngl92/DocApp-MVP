@@ -29,13 +29,16 @@ DocApp must help:
 
 Use:
 
-- calm clinic SaaS styling
+- modern calm clinic SaaS styling
 - light neutral backgrounds
 - white/off-white panels
 - soft borders
-- restrained shadows
+- restrained but intentional shadows
 - readable typography
 - muted clinical blue and green accents
+- refined hero composition with a clear primary CTA
+- polished product/clinic-operations visual areas, especially on the homepage
+- more deliberate spacing and card hierarchy than the current foundation placeholder UI
 - clear warning states for holds, payment issues, and sync failures
 - desktop-friendly admin information density
 - mobile-first patient booking layouts
@@ -52,19 +55,24 @@ Avoid:
 
 ## Suggested Palette
 
-These are direction tokens for design exploration, not final CSS variables yet.
+These are approved direction tokens for modern clinic-focused design exploration. They should
+remain close to the current CSS tokens unless implementation explicitly updates global variables.
 
 ```txt
 Background: #f8fafc
 Surface: #ffffff
 Surface muted: #f1f5f9
+Surface elevated: #fbfdff
 Text strong: #0f172a
 Text default: #111827
 Text muted: #64748b
 Border: #dbe3ea
+Border strong: #cbd5e1
 Primary clinical blue: #2563eb
 Primary blue hover: #1d4ed8
+Primary soft: #dbeafe
 Secondary clinical green: #0f766e
+Secondary soft: #ccfbf1
 Success: #15803d
 Warning: #b45309
 Danger: #b91c1c
@@ -72,22 +80,41 @@ Info: #0369a1
 ```
 
 Use colors sparingly. Most screens should be neutral, with color reserved for actions and statuses.
+Subtle tonal section backgrounds are allowed when they improve hierarchy. Avoid heavy gradients as
+the main identity.
 
 ## Typography
 
-Current app fallback:
+Approved direction:
 
 ```txt
-Arial, Helvetica, sans-serif
+Inter, Arial, Helvetica, sans-serif
 ```
 
-Recommended direction:
+Use `Inter` or a similarly neutral modern sans-serif when implementation reaches the theme update.
+If web-font loading is introduced, use the Next.js font path rather than ad hoc client-side imports.
 
 - readable sans-serif
 - no decorative or serif display type
 - no negative letter spacing
-- compact headings in dashboards
+- stronger homepage display headings without feeling like a generic SaaS template
+- compact headings in dashboards and operational screens
 - clear labels and helper text in forms
+- consistent numeric/tabular treatment where useful for prices, counts, and schedules
+
+## Homepage Tone
+
+Phase 7 homepage design should not copy the current foundation layout too closely. It should use the
+existing palette as a base while feeling more modern, composed, and product-ready.
+
+Approved homepage direction:
+
+- use the desktop exploration as the structural starting point
+- borrow the mobile exploration's compact mobile pacing and CTA treatment
+- replace generic foundation cards with stronger value sections and a polished hero
+- include a hero visual area that can later be configured by admins
+- keep the homepage clinic/product-focused rather than marketplace-like
+- avoid fake metrics, public staff-login language, and staff/admin-specific copy
 
 ## Layout Rules
 
