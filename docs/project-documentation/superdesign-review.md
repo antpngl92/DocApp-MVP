@@ -260,3 +260,16 @@ SuperDesign CLI access was confirmed for the project before starting homepage de
 - `superdesign.cmd --help` completed without an authentication error
 
 Before generating homepage drafts, refresh or re-check `.superdesign/init/` context against the current app because the existing init snapshot was created earlier in the project and may not reflect the latest authenticated dashboard and patient-account route structure.
+
+### Phase 7 Context Refresh
+
+The `.superdesign/init/` files were refreshed before homepage draft generation to reflect the current MVP app structure:
+
+- current marketing home route: `src/app/(marketing)/page.tsx`
+- current public shell/header files: `PublicShell`, `AppShell`, `AppHeader`, `LanguageSelector`, `AuthControls`
+- current placeholder homepage dependency tree
+- current route map, including public, auth, patient, staff dashboard, doctor onboarding, and API routes
+- current CSS token values from `src/app/globals.css`
+- current extractable component candidates for SuperDesign, especially `AppHeader`
+
+No homepage drafts were generated in this step.
