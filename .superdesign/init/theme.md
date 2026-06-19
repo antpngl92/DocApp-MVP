@@ -55,13 +55,17 @@ body {
 - Background: `#f8fafc`
 - Surface: `#ffffff`
 - Surface muted: `#f1f5f9`
+- Surface elevated direction: `#fbfdff`
 - Text strong: `#0f172a`
 - Text default: `#111827`
 - Text muted: `#64748b`
 - Border: `#dbe3ea`
+- Border strong direction: `#cbd5e1`
 - Primary clinical blue: `#2563eb`
 - Primary hover: `#1d4ed8`
+- Primary soft direction: `#dbeafe`
 - Secondary clinical green: `#0f766e`
+- Secondary soft direction: `#ccfbf1`
 - Success: `#15803d`
 - Warning: `#b45309`
 - Danger: `#b91c1c`
@@ -76,8 +80,29 @@ Current app fallback:
 Arial, Helvetica, sans-serif
 ```
 
-Phase 7 may propose a more polished sans-serif direction through SuperDesign, but any approved font
-change must be documented and implemented deliberately.
+Approved Phase 7 direction:
+
+```txt
+Inter, Arial, Helvetica, sans-serif
+```
+
+If implementation adopts Inter, load it deliberately through the Next.js font path or another
+approved app-level font strategy. Do not add arbitrary generated Google Fonts imports directly to
+component code.
+
+## Modernization Direction
+
+Phase 7 homepage should feel more modern than the current foundation layout while keeping the same
+clinic trust boundary.
+
+Use:
+
+- stronger homepage display hierarchy
+- more intentional hero composition
+- refined card and section spacing
+- clear CTA hierarchy
+- polished clinic/product visual placeholder for the configurable hero image area
+- subtle tonal surfaces where hierarchy needs it
 
 ## Visual Guardrails
 
@@ -87,7 +112,7 @@ Use:
 - white/off-white surfaces
 - muted clinical blue and green accents
 - soft borders
-- restrained shadows
+- restrained but intentional shadows
 - visible status badges
 - readable typography
 

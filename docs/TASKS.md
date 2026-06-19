@@ -152,8 +152,8 @@ This phase owns the public home page as the first polished DocApp marketing surf
 - [x] Use SuperDesign with the existing DocApp context files, including `.superdesign/design-system.md`, `.superdesign/init/theme.md`, `docs/MVP.md`, `docs/DECISIONS.md`, `docs/project-documentation/ui-direction.md`, and `docs/project-documentation/superdesign-integration.md`.
 - [x] Generate SuperDesign home page explorations for desktop and mobile.
 - [x] Include homepage states/sections in SuperDesign review notes before implementation.
-- [ ] Define the approved application theme, color palette, typography direction, spacing, and component tone through SuperDesign review.
-- [ ] Update the relevant `.superdesign/` context files if the approved theme/colors change.
+- [x] Define the approved application theme, color palette, typography direction, spacing, and component tone through SuperDesign review.
+- [x] Update the relevant `.superdesign/` context files if the approved theme/colors change.
 - [ ] Treat the approved SuperDesign homepage direction as the UI source of truth for this phase while keeping product/security/privacy docs authoritative.
 - [ ] Build the polished public home page at `/`.
 - [ ] Use the approved SuperDesign homepage layout rather than old prototype UI or generic template sections.
