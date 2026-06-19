@@ -143,44 +143,40 @@ Complete tasks from top to bottom and one approved task/branch at a time. Do not
 - [ ] Add audit events for sensitive role/access changes.
 - [ ] Risk: access control must be enforced on the server, not only hidden in the UI.
 
-## Phase 7 - Clinic Calendar And Resource Setup
+## Phase 7 - Home Page
 
-This phase builds the clinic-side calendar/resource foundation that booking, doctor settings, and Google sync will depend on. It should be manually testable from staff/admin setup pages where possible.
+This phase owns the public home page as the first polished DocApp marketing surface. It should not implement the booking flow yet, but it must guide patients toward the future booking page and establish the approved visual direction for the rest of the app.
 
-- [ ] Review prototype Prisma models and map old `Calendar`, `CalendarSettings`, `DayConfiguration`, `CalendarEvent`, and `EventOrder` concepts to the new MVP schema.
-- [ ] Model clinic settings.
-- [ ] Model cabinets/rooms/resources.
-- [ ] Model the clinic-owned Google account connection separately from individual doctor/resource calendar mappings.
-- [ ] Model doctor/resource calendar mappings through `CalendarIntegration`, `CalendarMapping`, or equivalent records.
-- [ ] Choose and document required Google OAuth scopes before implementing the Google Calendar OAuth/connection flow.
-- [ ] Define the credential/token storage and refresh strategy for a clinic-owned Google account connection.
-- [ ] Add Google Calendar API client/server helpers.
-- [ ] Implement the server-side Google Calendar OAuth/connection foundation for an existing authorized organization.
-- [ ] Support one active connected Google account per clinic for MVP while keeping the integration model extensible.
-- [ ] Discover/list calendars from the clinic's connected Google account.
-- [ ] Store the connected Google account in a clinic-scoped connection record and discovered calendar references/mappings in `CalendarIntegration`, `CalendarMapping`, or equivalent records.
-- [ ] Build clinic settings page.
-- [ ] Support booking page slug.
-- [ ] Support clinic timezone.
-- [ ] Support default currency.
-- [ ] Support slot hold duration.
-- [ ] Support checkout lock duration.
-- [ ] Support cancellation policy.
-- [ ] Support refund policy.
-- [ ] Support public booking enabled/disabled.
-- [ ] Support clinic contact email, phone, and address.
-- [ ] Build cabinet/room/resource list and create/edit forms.
-- [ ] Build admin UI to connect/configure Google Calendar after local doctors/resources can be created.
-- [ ] Allow only authorized admin roles to connect, disconnect, or replace the clinic Google account.
-- [ ] Build admin UI to create/edit doctor/resource calendar mappings.
-- [ ] Map existing local doctors/resources to discovered calendars from the admin area.
-- [ ] Keep Google Calendar connection and doctor/resource calendar mappings admin-managed.
-- [ ] Keep doctor, resource, service, availability, and booking settings local even when they are mapped to Google calendars.
-- [ ] Keep Google Calendar as a sync target, not the source of truth.
-- [ ] Keep local database appointments as product source of truth.
-- [ ] Do not create final Google Calendar appointment events before webhook-confirmed payment or authorized manual confirmation.
-- [ ] Add indexes and ownership constraints for clinic settings, resources, Google account connections, and calendar mappings.
-- [ ] Add focused tests for calendar/resource authorization, mapping persistence, and Google connection helpers.
+- [ ] Reconnect/confirm SuperDesign access for this project before starting homepage design work.
+- [ ] Use SuperDesign with the existing DocApp context files, including `.superdesign/design-system.md`, `.superdesign/init/theme.md`, `docs/MVP.md`, `docs/DECISIONS.md`, `docs/project-documentation/ui-direction.md`, and `docs/project-documentation/superdesign-integration.md`.
+- [ ] Generate SuperDesign home page explorations for desktop and mobile.
+- [ ] Include homepage states/sections in SuperDesign review notes before implementation.
+- [ ] Define the approved application theme, color palette, typography direction, spacing, and component tone through SuperDesign review.
+- [ ] Update the relevant `.superdesign/` context files if the approved theme/colors change.
+- [ ] Treat the approved SuperDesign homepage direction as the UI source of truth for this phase while keeping product/security/privacy docs authoritative.
+- [ ] Build the polished public home page at `/`.
+- [ ] Use the approved SuperDesign homepage layout rather than old prototype UI or generic template sections.
+- [ ] Build a better public navbar for marketing/home use.
+- [ ] Include clear navigation to public-safe pages such as home, booking CTA, support/contact, and sign in/account where appropriate.
+- [ ] Add a primary CTA button that links to the booking route, even if the full booking flow is implemented in a later phase.
+- [ ] Add a secondary CTA or supporting action only if it improves the homepage design and does not distract from booking.
+- [ ] Add clinic-focused marketing copy explaining DocApp's value: deposit-based booking, fewer no-shows, clear appointment commitment, and Google Calendar-aware clinic operations.
+- [ ] Avoid positioning DocApp as a public doctor marketplace, medical-record system, diagnosis tool, prescription system, insurance workflow, or generic booking app.
+- [ ] Do not include ads, booking fees, platform fees, refund-request copy, medical-record copy, symptoms, diagnosis, chat, file upload, or rescheduling promises.
+- [ ] Add a homepage hero section with a real or generated bitmap-style visual direction approved through SuperDesign.
+- [ ] Make the homepage hero image/admin-facing visual configurable by authorized admin users.
+- [ ] Add or prepare a local homepage content/settings model or equivalent server-side configuration for editable hero image URL, hero image alt text, headline, supporting copy, and CTA label.
+- [ ] Do not store real patient data, credentials, private clinic data, or medical content in homepage content fields.
+- [ ] Add an admin-only path or clearly documented follow-up task for editing homepage hero/content settings if the full admin editing UI is not built in this phase.
+- [ ] Ensure homepage content supports the existing i18n languages or has a documented translation strategy before hardcoding copy.
+- [ ] Add SEO metadata for the home page, including title, description, and safe Open Graph basics.
+- [ ] Ensure the homepage is responsive and polished on mobile and desktop.
+- [ ] Ensure the homepage has accessible heading order, alt text, keyboard-safe navigation, and sufficient contrast.
+- [ ] Decide whether this phase introduces any non-essential cookies, analytics, tracking pixels, or third-party embeds.
+- [ ] Do not add a cookie consent banner in Phase 7 unless non-essential cookies, analytics, tracking pixels, or third-party embeds are actually introduced.
+- [ ] If non-essential cookies are introduced, add cookie consent behavior and link to cookie/privacy policy content.
+- [ ] Add focused tests for homepage rendering, navbar links, booking CTA href, translated copy where practical, and admin-editable hero/content data mapping.
+- [ ] Verify lint, typecheck, tests, coverage, and build before marking the phase complete.
 
 ## Phase 8 - Services And Bookable Configuration
 
