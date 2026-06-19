@@ -16,6 +16,22 @@
     "adminContext": "Clinic administration",
     "patientContext": "Your appointments"
   },
+  "dashboardShell": {
+    "collapseSidebar": "Collapse sidebar",
+    "expandSidebar": "Expand sidebar",
+    "navigationLabel": "Dashboard navigation",
+    "signOut": "Sign out",
+    "navigation": {
+      "dashboard": "Dashboard",
+      "staffMembers": "Staff Members",
+      "notifications": "Notifications",
+      "logs": "Logs",
+      "manualBooking": "Manual Booking",
+      "settings": "Settings",
+      "profile": "Profile",
+      "schedule": "Schedule View"
+    }
+  },
   "languageSelector": {
     "label": "Language"
   },
@@ -148,6 +164,48 @@
         "submitLabel": "Submit doctor profile",
         "successMessage": "Profile submitted. Waiting for admin approval."
       }
+    }
+  },
+  "dashboardPages": {
+    "dashboard": {
+      "eyebrow": "Dashboard",
+      "title": "Operational dashboard",
+      "description": "This staff dashboard shell is ready for role-specific clinic summaries and workflow cards."
+    },
+    "staffMembers": {
+      "eyebrow": "Staff",
+      "title": "Staff Members",
+      "description": "Manage staff invitations and prepare the staff table for admin-only actions."
+    },
+    "notifications": {
+      "eyebrow": "Notifications",
+      "title": "Notifications",
+      "description": "This area will show role-specific clinic notifications without mixing them with audit logs."
+    },
+    "logs": {
+      "eyebrow": "Logs",
+      "title": "Logs",
+      "description": "This placeholder is reserved for future operational log review. Full backend request logging should use external observability after release."
+    },
+    "manualBooking": {
+      "eyebrow": "Manual booking",
+      "title": "Book a manual appointment",
+      "description": "This area will support authorized staff-created bookings for phone, message, or in-person requests."
+    },
+    "settings": {
+      "eyebrow": "Settings",
+      "title": "Booking settings",
+      "description": "This area will hold clinic-wide or doctor-scoped booking settings based on the active staff role."
+    },
+    "profile": {
+      "eyebrow": "Profile",
+      "title": "Profile",
+      "description": "This area will let staff maintain the profile details allowed for their role."
+    },
+    "schedule": {
+      "eyebrow": "Schedule",
+      "title": "Schedule View",
+      "description": "This area will give receptionists a clinic schedule view across doctors."
     }
   },
   "patient": {

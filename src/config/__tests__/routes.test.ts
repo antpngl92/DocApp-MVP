@@ -28,6 +28,13 @@ describe("routes", () => {
   it("keeps private route keys in the private route group", () => {
     expect(Object.keys(PRIVATE_ROUTES)).toEqual([
       "dashboard",
+      "dashboardLogs",
+      "dashboardManualBooking",
+      "dashboardNotifications",
+      "dashboardProfile",
+      "dashboardSchedule",
+      "dashboardSettings",
+      "dashboardStaff",
       "doctorProfileOnboarding",
       "patientAccount",
     ]);

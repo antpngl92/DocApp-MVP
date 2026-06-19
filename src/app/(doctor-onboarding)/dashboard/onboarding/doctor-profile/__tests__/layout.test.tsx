@@ -14,8 +14,16 @@ const sessionBoundary = vi.hoisted(() => ({
 }));
 
 vi.mock("@/components/layout", () => ({
-  AdminShell: ({ children }: { children: React.ReactNode }) => (
-    <div data-testid="admin-shell">{children}</div>
+  AdminShell: ({
+    children,
+    membershipRole,
+  }: {
+    children: React.ReactNode;
+    membershipRole: string;
+  }) => (
+    <div data-membership-role={membershipRole} data-testid="admin-shell">
+      {children}
+    </div>
   ),
 }));
 
@@ -95,6 +103,7 @@ describe("DoctorProfileOnboardingLayout", () => {
       },
     });
     expect(sessionBoundary.redirect).not.toHaveBeenCalled();
+    expect(screen.getByTestId("admin-shell")).toHaveAttribute("data-membership-role", "doctor");
     expect(screen.getByTestId("admin-shell")).toHaveTextContent("Doctor onboarding content");
   });
 

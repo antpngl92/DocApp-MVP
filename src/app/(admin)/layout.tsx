@@ -21,8 +21,13 @@ const AdminLayout = async ({ children }: AdminLayoutProps) => {
 
   await activateStaffInvitationForCurrentUser();
   const bootstrapResult = await bootstrapOwnerAdminMembershipFromClerkPrivateMetadata();
+  const membership = bootstrapResult.membership;
 
-  requireActiveStaffAccess({ membership: bootstrapResult.membership });
+  requireActiveStaffAccess({ membership });
+
+  if (!membership) {
+    notFound();
+  }
 
   const doctorProfileAccess = await getDoctorProfileAccessForCurrentUser();
 
@@ -33,7 +38,7 @@ const AdminLayout = async ({ children }: AdminLayoutProps) => {
     redirect(ROUTES.doctorProfileOnboarding);
   }
 
-  return <AdminShell>{children}</AdminShell>;
+  return <AdminShell membershipRole={membership.role}>{children}</AdminShell>;
 };
 
 export default AdminLayout;

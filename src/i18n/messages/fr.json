@@ -16,6 +16,22 @@
     "adminContext": "Administration de la clinique",
     "patientContext": "Vos rendez-vous"
   },
+  "dashboardShell": {
+    "collapseSidebar": "Réduire la barre latérale",
+    "expandSidebar": "Développer la barre latérale",
+    "navigationLabel": "Navigation du tableau de bord",
+    "signOut": "Déconnexion",
+    "navigation": {
+      "dashboard": "Tableau de bord",
+      "staffMembers": "Personnel",
+      "notifications": "Notifications",
+      "logs": "Journaux",
+      "manualBooking": "Réservation manuelle",
+      "settings": "Paramètres",
+      "profile": "Profil",
+      "schedule": "Planning"
+    }
+  },
   "languageSelector": {
     "label": "Langue"
   },
@@ -148,6 +164,48 @@
         "submitLabel": "Envoyer le profil médecin",
         "successMessage": "Profil envoyé. En attente d’approbation admin."
       }
+    }
+  },
+  "dashboardPages": {
+    "dashboard": {
+      "eyebrow": "Tableau de bord",
+      "title": "Tableau de bord opérationnel",
+      "description": "Cette interface du personnel est prête pour les résumés de clinique et les cartes de travail selon le rôle."
+    },
+    "staffMembers": {
+      "eyebrow": "Personnel",
+      "title": "Personnel",
+      "description": "Gérez les invitations du personnel et préparez le tableau pour les actions réservées aux administrateurs."
+    },
+    "notifications": {
+      "eyebrow": "Notifications",
+      "title": "Notifications",
+      "description": "Cet espace affichera les notifications de clinique selon le rôle, séparées des journaux d'audit."
+    },
+    "logs": {
+      "eyebrow": "Journaux",
+      "title": "Journaux",
+      "description": "Cet espace est réservé à un futur suivi opérationnel. Le logging complet du backend doit utiliser une observabilité externe après le lancement."
+    },
+    "manualBooking": {
+      "eyebrow": "Réservation manuelle",
+      "title": "Créer une réservation manuelle",
+      "description": "Cet espace permettra au personnel autorisé de créer des réservations par téléphone, message ou en personne."
+    },
+    "settings": {
+      "eyebrow": "Paramètres",
+      "title": "Paramètres de réservation",
+      "description": "Cet espace contiendra les paramètres de réservation de la clinique ou du médecin selon le rôle actif."
+    },
+    "profile": {
+      "eyebrow": "Profil",
+      "title": "Profil",
+      "description": "Cet espace permettra au personnel de gérer les informations de profil autorisées pour son rôle."
+    },
+    "schedule": {
+      "eyebrow": "Planning",
+      "title": "Planning",
+      "description": "Cet espace donnera aux réceptionnistes une vue du planning de la clinique par médecin."
     }
   },
   "patient": {

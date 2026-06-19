@@ -2,6 +2,8 @@ import { describe, expect, it } from "vitest";
 
 import {
   ADMIN_NAVIGATION,
+  DASHBOARD_NAVIGATION,
+  getDashboardNavigationForRole,
   PATIENT_NAVIGATION,
   PUBLIC_NAVIGATION,
   PUBLIC_SIGNED_IN_ADMIN_NAVIGATION,
@@ -30,6 +32,30 @@ describe("navigation", () => {
 
   it("defines admin navigation links", () => {
     expect(ADMIN_NAVIGATION).toEqual([{ href: ROUTES.dashboard, labelKey: "dashboard" }]);
+  });
+
+  it("defines role-aware dashboard navigation links", () => {
+    expect(getDashboardNavigationForRole("admin").map((item) => item.href)).toEqual([
+      ROUTES.dashboard,
+      ROUTES.dashboardStaff,
+      ROUTES.dashboardNotifications,
+      ROUTES.dashboardLogs,
+      ROUTES.dashboardManualBooking,
+      ROUTES.dashboardSettings,
+    ]);
+    expect(getDashboardNavigationForRole("doctor").map((item) => item.href)).toEqual([
+      ROUTES.dashboard,
+      ROUTES.dashboardNotifications,
+      ROUTES.dashboardManualBooking,
+      ROUTES.dashboardSettings,
+      ROUTES.dashboardProfile,
+    ]);
+    expect(getDashboardNavigationForRole("receptionist").map((item) => item.href)).toEqual([
+      ROUTES.dashboardSchedule,
+      ROUTES.dashboardManualBooking,
+      ROUTES.dashboardProfile,
+    ]);
+    expect(DASHBOARD_NAVIGATION.every((item) => item.roles.length > 0)).toBe(true);
   });
 
   it("defines patient navigation links", () => {

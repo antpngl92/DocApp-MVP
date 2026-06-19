@@ -13,6 +13,13 @@ const PUBLIC_ROUTES = {
 
 const PRIVATE_ROUTES = {
   dashboard: "/dashboard",
+  dashboardLogs: "/dashboard/logs",
+  dashboardManualBooking: "/dashboard/manual-booking",
+  dashboardNotifications: "/dashboard/notifications",
+  dashboardProfile: "/dashboard/profile",
+  dashboardSchedule: "/dashboard/schedule",
+  dashboardSettings: "/dashboard/settings",
+  dashboardStaff: "/dashboard/staff",
   doctorProfileOnboarding: "/dashboard/onboarding/doctor-profile",
   patientAccount: "/account",
 } as const;

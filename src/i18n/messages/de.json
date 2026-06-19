@@ -16,6 +16,22 @@
     "adminContext": "Klinikverwaltung",
     "patientContext": "Ihre Termine"
   },
+  "dashboardShell": {
+    "collapseSidebar": "Seitenleiste einklappen",
+    "expandSidebar": "Seitenleiste ausklappen",
+    "navigationLabel": "Dashboard-Navigation",
+    "signOut": "Abmelden",
+    "navigation": {
+      "dashboard": "Dashboard",
+      "staffMembers": "Mitarbeiter",
+      "notifications": "Benachrichtigungen",
+      "logs": "Protokolle",
+      "manualBooking": "Manuelle Buchung",
+      "settings": "Einstellungen",
+      "profile": "Profil",
+      "schedule": "Terminplan"
+    }
+  },
   "languageSelector": {
     "label": "Sprache"
   },
@@ -148,6 +164,48 @@
         "submitLabel": "Arztprofil einreichen",
         "successMessage": "Profil eingereicht. Warten auf Admin-Freigabe."
       }
+    }
+  },
+  "dashboardPages": {
+    "dashboard": {
+      "eyebrow": "Dashboard",
+      "title": "Operatives Dashboard",
+      "description": "Diese Mitarbeiteransicht ist bereit für rollenbezogene Klinikübersichten und Arbeitskarten."
+    },
+    "staffMembers": {
+      "eyebrow": "Mitarbeiter",
+      "title": "Mitarbeiter",
+      "description": "Verwalten Sie Mitarbeitereinladungen und bereiten Sie die Tabelle für Admin-Aktionen vor."
+    },
+    "notifications": {
+      "eyebrow": "Benachrichtigungen",
+      "title": "Benachrichtigungen",
+      "description": "Hier erscheinen rollenbezogene Klinikbenachrichtigungen getrennt von Audit-Protokollen."
+    },
+    "logs": {
+      "eyebrow": "Protokolle",
+      "title": "Protokolle",
+      "description": "Dieser Bereich ist für spätere operative Protokolle reserviert. Vollständiges Backend-Logging sollte nach dem Release über externe Observability erfolgen."
+    },
+    "manualBooking": {
+      "eyebrow": "Manuelle Buchung",
+      "title": "Manuellen Termin buchen",
+      "description": "Hier werden berechtigte Mitarbeiter Termine für Telefon-, Nachrichten- oder Vor-Ort-Anfragen erstellen."
+    },
+    "settings": {
+      "eyebrow": "Einstellungen",
+      "title": "Buchungseinstellungen",
+      "description": "Hier werden klinikweite oder arztbezogene Buchungseinstellungen je nach aktiver Rolle verwaltet."
+    },
+    "profile": {
+      "eyebrow": "Profil",
+      "title": "Profil",
+      "description": "Hier können Mitarbeiter die für ihre Rolle erlaubten Profildaten pflegen."
+    },
+    "schedule": {
+      "eyebrow": "Terminplan",
+      "title": "Terminplan",
+      "description": "Hier erhalten Rezeptionisten eine klinikweite Terminansicht über Ärzte hinweg."
     }
   },
   "patient": {
