@@ -82,6 +82,88 @@ type RequireAdminAccessOptions = {
   membership: AdminAccessMembership | null;
 };
 
+type CurrentClinicRecord = {
+  id: string;
+  name?: string;
+  status?: string;
+};
+
+type CurrentClinicAccessResult = {
+  clinic: CurrentClinicRecord;
+  membership: AdminAccessMembership | null;
+  user: AuthenticatedUserRecord;
+};
+
+type CurrentClinicAccessDatabase = LocalUserLookupDatabase & {
+  organization: {
+    findFirst: (args: {
+      orderBy: {
+        createdAt: "asc";
+      };
+      where: {
+        id?: string;
+        status: typeof ORGANIZATION_STATUS.active;
+      };
+    }) => Promise<CurrentClinicRecord | null>;
+  };
+  organizationMember: {
+    findUnique: (args: {
+      where: {
+        userId: string;
+      };
+    }) => Promise<AdminAccessMembership | null>;
+  };
+};
+
+type RequireCurrentClinicAccessOptions = {
+  authReader?: CurrentUserAuthReader;
+  database?: CurrentClinicAccessDatabase;
+};
+
+type PatientProfileRecord = {
+  createdAt?: Date;
+  email: string;
+  id: string;
+  name: string | null;
+  phone: string | null;
+  updatedAt?: Date;
+  userId: string;
+};
+
+type PatientProfileAccessResult = {
+  patientProfile: PatientProfileRecord;
+  user: AuthenticatedUserRecord;
+};
+
+type PatientProfileAccessDatabase = LocalUserLookupDatabase & {
+  organizationMember: {
+    findUnique: (args: {
+      where: {
+        userId: string;
+      };
+    }) => Promise<AdminAccessMembership | null>;
+  };
+  patientProfile: {
+    create: (args: {
+      data: {
+        email: string;
+        name: string | null;
+        userId: string;
+      };
+    }) => Promise<PatientProfileRecord>;
+    findUnique: (args: {
+      where: {
+        userId: string;
+      };
+    }) => Promise<PatientProfileRecord | null>;
+  };
+};
+
+type RequirePatientProfileAccessOptions = {
+  authReader?: CurrentUserAuthReader;
+  database?: PatientProfileAccessDatabase;
+};
+
 type PublicNavigationDatabase = LocalUserLookupDatabase & {
   doctor: {
     findFirst: (args: {
@@ -640,6 +722,8 @@ export type {
   ClerkBootstrapProfileReader,
   CurrentAuthenticatedUserResult,
   CurrentAuthenticatedUserStatus,
+  CurrentClinicAccessDatabase,
+  CurrentClinicAccessResult,
   CurrentUserAuthReader,
   GetPublicNavigationForCurrentUserOptions,
   GetCurrentAuthenticatedUserOptions,
@@ -647,6 +731,9 @@ export type {
   LocalUserLookupDatabase as CurrentUserDatabase,
   LocalUserRecord,
   PublicNavigationDatabase,
+  PatientProfileAccessDatabase,
+  PatientProfileAccessResult,
+  PatientProfileRecord,
   OwnerBootstrapDatabase,
   OwnerBootstrapLocalUserInput,
   OwnerBootstrapMembership,
@@ -655,6 +742,8 @@ export type {
   OwnerBootstrapRole,
   OwnerBootstrapStatus,
   RequireAdminAccessOptions,
+  RequireCurrentClinicAccessOptions,
+  RequirePatientProfileAccessOptions,
   ActivateStaffInvitationOptions,
   StaffMemberRole,
   StaffMemberStatus,

@@ -88,6 +88,23 @@ Implemented MVP behavior:
 
 This keeps the Prisma query shape centralized for current-user resolution, trusted owner/admin provisioning, staff invitation acceptance, membership guards, and patient ownership guards.
 
+## Current Clinic Helper
+
+Because MVP is a single-clinic deployment, the current clinic helper resolves the active local `Organization` for the signed-in local user. Staff access additionally requires an active `OrganizationMember`; patient account access can resolve the active clinic without staff membership.
+
+Use current-clinic helpers for server-side code that needs the active local organization boundary before querying clinic-owned records. Do not rely on client-side route visibility or navigation links as authorization.
+
+## Patient Profile Ownership Guard
+
+Patient account routes must require:
+
+- an authenticated Clerk session
+- a synced local `User`
+- no active clinic-side staff membership for that patient surface
+- a local `PatientProfile` owned by the current local `User`
+
+If the local `PatientProfile` is missing on first account access, the guard may create the minimal profile from the local user email/name. This keeps public registration usable while still making patient profile ownership explicit. Future appointment queries must separately check that the appointment belongs to the current patient profile.
+
 ## Organization/Clinic Membership
 
 Staff users access clinic data through membership records.
@@ -221,9 +238,9 @@ Required doctor flow:
 5. Creating the profile links `Doctor` to the local organization, `OrganizationMember`, and local `User`.
 6. The new doctor profile starts inactive and pending admin approval. It must not be public/bookable immediately.
 7. Admin reviews the pending doctor onboarding request and marks the doctor active, while the doctor remains not bookable by default.
-8. After admin approval, the doctor can manage their own operational booking settings within clinic rules before becoming bookable.
+8. After admin approval, the doctor can manage their own operational booking settings within clinic rules only after the required calendar mapping, service assignment, availability, and slot/bookable models exist.
 
-Doctor-managed settings after approval may include own services, own availability, slots/times, holidays, blocked time, and own bookable on/off state. Admin still manages clinic-level infrastructure, Google Calendar connection, and doctor/resource calendar mappings.
+Doctor-managed settings after approval may include own services, own availability, slots/times, holidays, blocked time, and own bookable on/off state, but this workflow should be implemented after the calendar/availability/bookable-slot foundation is in place. Admin still manages clinic-level infrastructure, Google Calendar connection, and doctor/resource calendar mappings.
 
 Cabinets/rooms/resources remain clinic infrastructure. A doctor should not create or take over clinic resources during profile onboarding unless a later explicit task allows that.
 
@@ -243,7 +260,7 @@ Examples:
 - Admin can manage any doctor appointment or setting where admin permission is allowed.
 - Receptionist can manage manual booking and appointment details for any doctor, without editing doctor settings.
 - Doctor can manage manual booking and appointment details only when the target appointment belongs to that doctor's own linked profile.
-- Doctor can manage their own booking settings only after their profile is admin-approved and active.
+- Doctor can manage their own booking settings only after their profile is admin-approved and active and the required calendar/availability/bookable-slot foundation exists.
 - Patient cannot access staff appointment management surfaces.
 
 Implementation note:

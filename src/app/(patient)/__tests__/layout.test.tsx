@@ -6,12 +6,18 @@ import PatientLayout from "../layout";
 const sessionBoundary = vi.hoisted(() => ({
   activateStaffInvitationForCurrentUser: vi.fn(),
   getAuthenticatedHomeForCurrentUser: vi.fn(),
+  requirePatientProfileAccessForCurrentUser: vi.fn(),
   redirect: vi.fn(),
   requireAuthenticatedSession: vi.fn(),
 }));
 
 vi.mock("@/server/auth/navigation", () => ({
   getAuthenticatedHomeForCurrentUser: sessionBoundary.getAuthenticatedHomeForCurrentUser,
+}));
+
+vi.mock("@/server/auth/patient-access", () => ({
+  requirePatientProfileAccessForCurrentUser:
+    sessionBoundary.requirePatientProfileAccessForCurrentUser,
 }));
 
 vi.mock("@/server/auth/staff-onboarding", () => ({
@@ -53,6 +59,7 @@ describe("PatientLayout", () => {
     expect(sessionBoundary.requireAuthenticatedSession).toHaveBeenCalledTimes(1);
     expect(sessionBoundary.activateStaffInvitationForCurrentUser).toHaveBeenCalledTimes(1);
     expect(sessionBoundary.getAuthenticatedHomeForCurrentUser).toHaveBeenCalledTimes(1);
+    expect(sessionBoundary.requirePatientProfileAccessForCurrentUser).toHaveBeenCalledTimes(1);
     expect(sessionBoundary.redirect).not.toHaveBeenCalled();
     expect(screen.getByTestId("patient-shell")).toHaveTextContent("Account content");
   });
@@ -75,5 +82,6 @@ describe("PatientLayout", () => {
 
     expect(sessionBoundary.activateStaffInvitationForCurrentUser).toHaveBeenCalledTimes(1);
     expect(sessionBoundary.redirect).toHaveBeenCalledWith("/dashboard");
+    expect(sessionBoundary.requirePatientProfileAccessForCurrentUser).not.toHaveBeenCalled();
   });
 });
