@@ -127,53 +127,31 @@ Complete tasks from top to bottom and one approved task/branch at a time. Do not
 - [x] Show dashboard sidebar items by staff role: admin sees clinic-wide dashboard, staff members, notifications, logs placeholder, manual booking, and settings; doctor sees own dashboard, profile, notifications, manual booking, and settings after approval; receptionist sees schedule view, manual booking, and profile.
 - [x] Keep the public/customer navbar out of staff dashboard routes and place logout at the bottom of the staff sidebar.
 - [x] Require admin approval before a doctor profile becomes active.
-- [ ] After approval, allow doctors to manage their own operational booking settings within clinic rules.
-- [ ] Keep Google Calendar connection and doctor/resource calendar mappings admin-managed.
-- [ ] Ensure Clerk invitation metadata is treated as a hint and local `OrganizationMember` state remains the source of staff roles and permissions.
+- [x] Ensure Clerk invitation metadata is treated as a hint and local `OrganizationMember` state remains the source of staff roles and permissions.
 - [x] Ensure staff cannot self-register into arbitrary clinics without invitation or owner/admin approval.
-- [ ] Model and enforce clinic-side roles plus patient ownership: admin, receptionist, doctor, and patient account access.
-- [ ] Enforce scoped staff permissions: admin can act clinic-wide, receptionist can manage bookings/details for each doctor, and doctor can manage bookings/details only for their own linked doctor profile.
-- [ ] Ensure receptionists cannot edit doctor profiles, doctor booking settings, clinic settings, staff invitations, or calendar mappings.
-- [ ] Ensure doctors cannot perform admin-only actions or act on another doctor's settings/bookings.
-- [ ] Add organization/clinic membership checks.
-- [ ] Add current-organization/current-clinic helper.
+- [x] Model and enforce clinic-side roles plus patient profile ownership: admin, receptionist, doctor, and patient account access.
+- [x] Add organization/clinic membership checks.
+- [x] Add current-organization/current-clinic helper.
 - [x] Add admin/staff authorization guards.
-- [ ] Add patient ownership authorization guards.
+- [x] Add patient profile ownership authorization guards.
 - [x] Protect dashboard routes with authenticated local user, active clinic membership, and an authorized clinic-side role.
-- [ ] Protect patient account routes with authenticated local user and patient ownership checks.
+- [x] Protect patient account routes with authenticated local user and patient profile ownership checks.
 - [x] Add route-level authorization boundaries for public, admin, staff, and patient surfaces.
-- [ ] Ensure patients can access only their own appointments/profile.
+- [x] Ensure patients can access only their own patient profile.
 - [ ] Ensure clinic users can access only their clinic-scoped records.
 - [ ] Ensure webhook processing cannot mutate unrelated clinic/order records.
 - [ ] Add audit events for sensitive role/access changes.
 - [ ] Risk: access control must be enforced on the server, not only hidden in the UI.
 
-## Phase 7 - Core Operational Database And Prisma Model
+## Phase 7 - Clinic Calendar And Resource Setup
 
-- [ ] Review prototype Prisma models and map old `Calendar`, `CalendarEvent`, and `EventOrder` concepts to the new MVP schema.
+This phase builds the clinic-side calendar/resource foundation that booking, doctor settings, and Google sync will depend on. It should be manually testable from staff/admin setup pages where possible.
+
+- [ ] Review prototype Prisma models and map old `Calendar`, `CalendarSettings`, `DayConfiguration`, `CalendarEvent`, and `EventOrder` concepts to the new MVP schema.
 - [ ] Model clinic settings.
-- [ ] Model doctors/staff.
 - [ ] Model cabinets/rooms/resources.
-- [ ] Model services.
-- [ ] Model service assignments.
-- [ ] Model weekday availability rules.
-- [ ] Model blocked time and holidays.
-- [ ] Model temporary slot holds.
-- [ ] Model appointments.
-- [ ] Model appointment status history.
-- [ ] Model appointment orders.
-- [ ] Model pending appointment expiration.
-- [ ] Model Stripe metadata fields.
 - [ ] Model the clinic-owned Google account connection separately from individual doctor/resource calendar mappings.
 - [ ] Model doctor/resource calendar mappings through `CalendarIntegration`, `CalendarMapping`, or equivalent records.
-- [ ] Model Google Calendar sync attempts/status.
-- [ ] Model notification logs with idempotency keys where needed.
-- [ ] Extend indexes for patient, doctor, resource, appointment date/time, appointment status, order status, hold status/expiry, and timestamps.
-- [ ] Add ownership constraints wherever practical.
-- [ ] Add demo/seed data for local testing.
-
-## Phase 8 - Google Calendar Integration Foundation
-
 - [ ] Choose and document required Google OAuth scopes before implementing the Google Calendar OAuth/connection flow.
 - [ ] Define the credential/token storage and refresh strategy for a clinic-owned Google account connection.
 - [ ] Add Google Calendar API client/server helpers.
@@ -181,18 +159,6 @@ Complete tasks from top to bottom and one approved task/branch at a time. Do not
 - [ ] Support one active connected Google account per clinic for MVP while keeping the integration model extensible.
 - [ ] Discover/list calendars from the clinic's connected Google account.
 - [ ] Store the connected Google account in a clinic-scoped connection record and discovered calendar references/mappings in `CalendarIntegration`, `CalendarMapping`, or equivalent records.
-- [ ] Define and implement how existing local doctor and resource/cabinet records map to discovered Google Calendar IDs.
-- [ ] Keep doctor, resource, service, availability, and booking settings local even when they are mapped to Google calendars.
-- [ ] Design availability/reference behavior with Google Calendar in mind.
-- [ ] Do not create final Google Calendar appointment events before webhook-confirmed payment or authorized manual confirmation.
-- [ ] Keep Google Calendar as a sync target, not the source of truth.
-- [ ] Keep local database appointments as product source of truth.
-
-## Phase 9 - Clinic Admin Setup
-
-- [ ] Build admin dashboard shell.
-- [x] Redirect authenticated staff users to `/dashboard` instead of the patient account area after login, registration, or invitation acceptance.
-- [ ] Use the approved SuperDesign dashboard/sidebar direction for staff/admin pages; do not introduce shadcn/Radix sidebar dependencies unless explicitly re-approved later.
 - [ ] Build clinic settings page.
 - [ ] Support booking page slug.
 - [ ] Support clinic timezone.
@@ -203,30 +169,59 @@ Complete tasks from top to bottom and one approved task/branch at a time. Do not
 - [ ] Support refund policy.
 - [ ] Support public booking enabled/disabled.
 - [ ] Support clinic contact email, phone, and address.
-- [ ] Build doctor/staff list and create/edit forms.
 - [ ] Build cabinet/room/resource list and create/edit forms.
-- [ ] Build service list and create/edit forms.
-- [ ] Support service duration, full price, deposit, currency, and active/inactive state.
 - [ ] Build admin UI to connect/configure Google Calendar after local doctors/resources can be created.
-- [ ] Allow only authorized owner/admin roles to connect, disconnect, or replace the clinic Google account.
+- [ ] Allow only authorized admin roles to connect, disconnect, or replace the clinic Google account.
 - [ ] Build admin UI to create/edit doctor/resource calendar mappings.
 - [ ] Map existing local doctors/resources to discovered calendars from the admin area.
+- [ ] Keep Google Calendar connection and doctor/resource calendar mappings admin-managed.
+- [ ] Keep doctor, resource, service, availability, and booking settings local even when they are mapped to Google calendars.
+- [ ] Keep Google Calendar as a sync target, not the source of truth.
+- [ ] Keep local database appointments as product source of truth.
+- [ ] Do not create final Google Calendar appointment events before webhook-confirmed payment or authorized manual confirmation.
+- [ ] Add indexes and ownership constraints for clinic settings, resources, Google account connections, and calendar mappings.
+- [ ] Add focused tests for calendar/resource authorization, mapping persistence, and Google connection helpers.
+
+## Phase 8 - Services And Bookable Configuration
+
+This phase makes clinic services and bookable doctor/resource combinations configurable before the public booking page depends on them.
+
+- [ ] Model services.
+- [ ] Model service assignments.
+- [ ] Model weekday availability rules.
+- [ ] Model blocked time and holidays.
+- [ ] Build doctor/staff list and create/edit forms where still needed after the existing doctor onboarding foundation.
+- [ ] Build service list and create/edit forms.
+- [ ] Support service duration, full price, deposit, currency, and active/inactive state.
 - [ ] Build owner/admin-only doctor/resource calendar settings pages for booking configuration.
 - [ ] Build service assignment management after doctors/resources and required calendar mappings exist.
 - [ ] Require each active service to have at least one valid bookable assignment.
 - [ ] Build weekday availability configuration.
 - [ ] Build blocked time/holiday configuration.
+- [ ] Design availability/reference behavior with Google Calendar in mind.
+- [ ] After calendar mappings, service assignments, and availability models exist, allow approved doctors to manage their own operational booking settings within clinic rules.
+- [ ] Ensure receptionists cannot edit doctor profiles, doctor booking settings, clinic settings, staff invitations, or calendar mappings.
+- [ ] Ensure doctors cannot perform admin-only actions or act on another doctor's settings or calendar mappings.
 - [ ] Add validation on frontend and backend.
+- [ ] Add indexes and ownership constraints for services, assignments, availability rules, and blocked time.
+- [ ] Add demo/seed data for local testing of services, assignments, resources, and availability.
+- [ ] Add focused tests for service assignment rules, doctor-owned settings scope, receptionist restrictions, and admin-only calendar mapping controls.
 
-## Phase 10 - Patient Account Foundation
+## Phase 9 - Public Booking Flow And Availability
 
-- [ ] Build patient account shell.
-- [ ] Build patient profile/contact details page.
-- [ ] Add patient account navigation and protected placeholder states for the later appointment dashboard.
-- [ ] Ensure patient account does not expose medical records, prescriptions, treatment notes, insurance workflows, chat, or file uploads.
+This phase owns the public booking page, generated slots, temporary anonymous holds, and the handoff into pending appointment/payment state.
 
-## Phase 11 - Availability Rules And Slot Generation
-
+- [ ] Model temporary slot holds.
+- [ ] Model appointments.
+- [ ] Model appointment status history.
+- [ ] Model appointment orders.
+- [ ] Model pending appointment expiration.
+- [ ] Build clinic-branded public booking page.
+- [ ] Let patients browse available services and slots publicly.
+- [ ] Build service selection step.
+- [ ] Build doctor/cabinet/resource selection step.
+- [ ] Build responsive calendar/time-slot selection.
+- [ ] Use fewer days on mobile and full week/more context on desktop.
 - [ ] Implement server-side availability generation.
 - [ ] Generate slots from weekday rules.
 - [ ] Apply service duration.
@@ -239,11 +234,7 @@ Complete tasks from top to bottom and one approved task/branch at a time. Do not
 - [ ] Exclude blocked time and holidays.
 - [ ] Treat expired holds and expired pending appointments as available again.
 - [ ] Add transaction-safe booking creation checks where practical.
-- [ ] Confirm availability reads persisted active hold and pending-payment records without depending on the later public hold UI.
-- [ ] Add tests for slot generation, buffer behavior, timezone boundaries, hold exclusion, and pending lock exclusion.
-
-## Phase 12 - Temporary Slot Holds And Pending Appointment Locks
-
+- [ ] Confirm availability reads persisted active hold and pending-payment records without depending on the public hold UI.
 - [ ] Implement temporary slot hold creation when a patient selects a slot.
 - [ ] Start MVP slot hold visibility with polling every few seconds.
 - [ ] Show slots held by other users as unavailable without full page refresh.
@@ -254,9 +245,20 @@ Complete tasks from top to bottom and one approved task/branch at a time. Do not
 - [ ] Release or expire a browser/session's previous active SlotHold when it selects a different slot.
 - [ ] Validate anonymous SlotHold token/session ownership before booking submission without storing patient/contact details on the hold.
 - [ ] Preserve pre-login anonymous SlotHold token/session through registration/login redirects.
+- [ ] Require patient registration/login before final booking/payment.
+- [ ] Prefill booking form fields from patient profile.
+- [ ] Let patient update phone/email/contact details during booking.
+- [ ] Attach booking to authenticated patient account.
+- [ ] Build patient details form.
+- [ ] Collect name, email, phone, and optional non-sensitive note.
+- [ ] Discourage entering symptoms/medical details in optional note.
+- [ ] Show full price, deposit due now, and remaining balance.
+- [ ] Show cancellation/refund policy text.
+- [ ] Server re-checks price, availability, active service, active doctor/resource, and valid hold before Checkout.
 - [ ] Safely consume the validated anonymous SlotHold when creating the authenticated patient's pending appointment before Checkout creation.
 - [ ] Validate hold organization, service, doctor/resource, start/end time, active status, expiry, and conversion status.
 - [ ] Convert valid hold into pending-payment appointment on form submission.
+- [ ] Create the validated pending-payment appointment/order handoff required before Stripe Checkout Session creation.
 - [ ] Use longer checkout/payment lock duration, with sensible default such as 15-30 minutes.
 - [ ] Expire abandoned pending-payment appointments automatically.
 - [ ] Research and choose cleanup mechanism: Vercel Cron, database scheduled job, protected cleanup route, or background worker later.
@@ -264,32 +266,17 @@ Complete tasks from top to bottom and one approved task/branch at a time. Do not
 - [ ] Add abuse prevention for one anonymous browser/session/IP holding many slots at once; add user-based limits later only if needed.
 - [ ] Add conservative IP-hash based active hold limits to reduce public slot blocking abuse.
 - [ ] Rate-limit public slot hold creation.
-
-## Phase 13 - Public/Patient Booking Flow
-
-- [ ] Build clinic-branded public booking page.
-- [ ] Let patients browse available services and slots publicly.
-- [ ] Require patient registration/login before final booking/payment.
-- [ ] Prefill booking form fields from patient profile.
-- [ ] Let patient update phone/email/contact details during booking.
-- [ ] Attach booking to authenticated patient account.
-- [ ] Build service selection step.
-- [ ] Build doctor/cabinet/resource selection step.
-- [ ] Build responsive calendar/time-slot selection.
-- [ ] Use fewer days on mobile and full week/more context on desktop.
-- [ ] Build patient details form.
-- [ ] Collect name, email, phone, and optional non-sensitive note.
-- [ ] Discourage entering symptoms/medical details in optional note.
-- [ ] Show full price, deposit due now, and remaining balance.
-- [ ] Show cancellation/refund policy text.
-- [ ] Server re-checks price, availability, active service, active doctor/resource, and valid hold before Checkout.
-- [ ] Create the validated pending-payment appointment/order handoff required before Stripe Checkout Session creation.
 - [ ] Rate-limit public booking form submission.
 - [ ] Add user-readable errors for unavailable slot, inactive service, invalid hold, and payment setup failure.
 - [ ] Do not prioritize guest booking in MVP; document guest booking only as optional/later if needed.
+- [ ] Add indexes and ownership constraints for patient, doctor, resource, appointment date/time, appointment status, order status, hold status/expiry, and timestamps.
+- [ ] Add tests for slot generation, buffer behavior, timezone boundaries, hold exclusion, hold abuse limits, pending lock exclusion, and booking handoff validation.
 
-## Phase 14 - Stripe Checkout And Webhook Payment Finalization
+## Phase 10 - Stripe Checkout And Status Pages
 
+This phase owns online payment initiation, Stripe webhook finalization, and public-safe checkout status pages.
+
+- [ ] Model Stripe metadata fields.
 - [ ] Add Stripe server client.
 - [ ] Add environment validation for Stripe keys.
 - [ ] Create Checkout Session with metadata including `appointmentOrderId`.
@@ -313,9 +300,13 @@ Complete tasks from top to bottom and one approved task/branch at a time. Do not
 - [ ] Add public-safe status token/reference handling.
 - [ ] Ensure status pages do not expose arbitrary appointments or cross-clinic data.
 - [ ] Strengthen future Stripe Connect warning before any shared multi-clinic money movement.
+- [ ] Add tests for Checkout Session creation, webhook idempotency, status page safety, and pending expiration handling.
 
-## Phase 15 - Post-Payment Google Calendar Event Creation And Retry
+## Phase 11 - Google Calendar Appointment Sync
 
+This phase creates or updates Google Calendar events only after local appointment confirmation.
+
+- [ ] Model Google Calendar sync attempts/status.
 - [ ] Create Google Calendar event only after webhook-confirmed payment or authorized manual confirmation.
 - [ ] Map appointment to safe Google Calendar payload.
 - [ ] Store Google Calendar event ID.
@@ -328,10 +319,77 @@ Complete tasks from top to bottom and one approved task/branch at a time. Do not
 - [ ] Send admin notification if Google Calendar event creation fails.
 - [ ] Add admin retry action for failed sync.
 - [ ] Ensure retry is idempotent and does not duplicate calendar events.
-- [ ] Add tests for calendar payload mapping and sync failure state transitions.
+- [ ] Add tests for calendar payload mapping, idempotent retry, and sync failure state transitions.
 
-## Phase 16 - Notifications And Email Idempotency
+## Phase 12 - Patient Account Pages
 
+This phase owns the patient-facing account pages after registration/login.
+
+- [ ] Build patient account shell.
+- [ ] Build patient profile/contact details page.
+- [ ] Add patient account navigation and protected placeholder states for the appointment dashboard.
+- [ ] Ensure patient account does not expose medical records, prescriptions, treatment notes, insurance workflows, chat, or file uploads.
+- [ ] Protect patient account routes with authenticated local user and patient ownership checks.
+- [ ] Add patient ownership authorization guards.
+- [ ] Build patient dashboard page.
+- [ ] Show upcoming appointments.
+- [ ] Show past appointments.
+- [ ] Show appointment detail.
+- [ ] Show payment/deposit status.
+- [ ] Show remaining balance due at clinic.
+- [ ] Show cancellation policy.
+- [ ] Show request-cancellation option only when clinic policy allows it.
+- [ ] Prevent cross-patient appointment access.
+- [ ] Do not show clinic admin-only payment internals.
+- [ ] Ensure patients can access only their own appointments/profile.
+- [ ] Add tests for patient ownership, patient profile updates, and patient appointment visibility.
+
+## Phase 13 - Staff Appointment Management And Manual Booking
+
+This phase owns staff appointment operations inside `/dashboard`.
+
+- [ ] Build appointments overview page.
+- [ ] Build operational daily agenda view.
+- [ ] Build daily/weekly booked-hours view.
+- [ ] Filter appointments by doctor, cabinet/resource, service, status, and date.
+- [ ] Show payment status.
+- [ ] Show deposit amount paid.
+- [ ] Show remaining balance due at clinic.
+- [ ] Show Stripe session/payment reference where useful.
+- [ ] Show Google Calendar sync status.
+- [ ] Build appointment detail page/panel.
+- [ ] Show patient name, email, phone, service, doctor/resource, date/time, status, payment status, deposit, remaining balance, Stripe reference, Google sync status, created date, and status history.
+- [ ] Build manual admin/receptionist booking flow inside the admin panel.
+- [ ] Enforce scoped staff booking permissions: admin can act clinic-wide, receptionist can manage bookings/details for each doctor, and doctor can manage bookings/details only for their own linked doctor profile.
+- [ ] Ensure doctors cannot act on another doctor's bookings.
+- [ ] Allow authorized staff to create appointments for phone, message, or in-person requests.
+- [ ] Allow manual booking to search/select an existing patient account.
+- [ ] Attach manual booking to selected patient account when one exists.
+- [ ] Allow manual booking with manually entered patient name, email, and phone when no patient account exists.
+- [ ] Do not require automatic linking of historical manual appointments when a patient account is created later.
+- [ ] Support pay-at-clinic/manual booking status.
+- [ ] Support deposit paid externally/manual record if needed.
+- [ ] Keep manual booking payment state separate from appointment state.
+- [ ] Manual booking should respect availability by default.
+- [ ] Decide whether manual override is disallowed or admin-only.
+- [ ] If manual override is allowed, show warning and audit it.
+- [ ] Create or update Google Calendar event after authorized manual confirmation.
+- [ ] Audit manual booking creation, payment marking, override, and cancellation actions.
+- [ ] Build cancel appointment action.
+- [ ] Build mark no-show action.
+- [ ] Build mark completed action.
+- [ ] Track no-show and cancellation counts for dashboard reporting.
+- [ ] Add audit logs for status changes.
+- [ ] Ensure clinic users can access only their clinic-scoped records.
+- [ ] Ensure webhook processing cannot mutate unrelated clinic/order records.
+- [ ] Add audit events for sensitive role/access changes.
+- [ ] Add tests for staff scoping, manual bookings, status changes, payment/appointment state separation, and audit events.
+
+## Phase 14 - Notifications And Email
+
+This phase owns outbound notifications and idempotent notification logging.
+
+- [ ] Model notification logs with idempotency keys where needed.
 - [ ] Configure email provider.
 - [ ] Send patient booking confirmation after webhook-confirmed payment.
 - [ ] Include non-refundable deposit policy in patient confirmation email.
@@ -346,54 +404,11 @@ Complete tasks from top to bottom and one approved task/branch at a time. Do not
 - [ ] Ensure duplicate webhooks do not duplicate emails.
 - [ ] Avoid exposing sensitive medical data in emails.
 - [ ] Research whether SMS is required for the first pilot.
+- [ ] Add tests for notification idempotency and safe notification payloads.
 
-## Phase 17 - Admin Appointment Management
+## Phase 15 - Cancellation Requests And Refund Handling
 
-- [ ] Build appointments overview page.
-- [ ] Build operational daily agenda view.
-- [ ] Build daily/weekly booked-hours view.
-- [ ] Filter appointments by doctor, cabinet/resource, service, status, and date.
-- [ ] Show payment status.
-- [ ] Show deposit amount paid.
-- [ ] Show remaining balance due at clinic.
-- [ ] Show Stripe session/payment reference where useful.
-- [ ] Show Google Calendar sync status.
-- [ ] Build appointment detail page/panel.
-- [ ] Show patient name, email, phone, service, doctor/resource, date/time, status, payment status, deposit, remaining balance, Stripe reference, Google sync status, created date, and status history.
-- [ ] Build manual admin/receptionist booking flow inside the admin panel.
-- [ ] Allow authorized staff to create appointments for phone, message, or in-person requests.
-- [ ] Allow manual booking to search/select an existing patient account.
-- [ ] Attach manual booking to selected patient account when one exists.
-- [ ] Allow manual booking with manually entered patient name, email, and phone when no patient account exists.
-- [ ] Do not require automatic linking of historical manual appointments when a patient account is created later.
-- [ ] Support pay-at-clinic/manual booking status.
-- [ ] Support deposit paid externally/manual record if needed.
-- [ ] Keep manual booking payment state separate from appointment state.
-- [ ] Manual booking should respect availability by default.
-- [ ] Decide whether manual override is disallowed or owner/admin-only.
-- [ ] If manual override is allowed, show warning and audit it.
-- [ ] Create or update Google Calendar event after authorized manual confirmation.
-- [ ] Audit manual booking creation, payment marking, override, and cancellation actions.
-- [ ] Build cancel appointment action.
-- [ ] Build mark no-show action.
-- [ ] Build mark completed action.
-- [ ] Track no-show and cancellation counts for dashboard reporting.
-- [ ] Add audit logs for status changes.
-
-## Phase 18 - Patient Appointment Dashboard
-
-- [ ] Build patient dashboard page.
-- [ ] Show upcoming appointments.
-- [ ] Show past appointments.
-- [ ] Show appointment detail.
-- [ ] Show payment/deposit status.
-- [ ] Show remaining balance due at clinic.
-- [ ] Show cancellation policy.
-- [ ] Show request-cancellation option only when clinic policy allows it.
-- [ ] Prevent cross-patient appointment access.
-- [ ] Do not show clinic admin-only payment internals.
-
-## Phase 19 - Patient Cancellation Request Flow
+This phase owns cancellation request policy and refund workflows.
 
 - [ ] Implement patient cancellation-request evaluation using the policy already stored through clinic settings; do not introduce a second policy source.
 - [ ] Support request cancellation only N days/hours before appointment.
@@ -404,19 +419,19 @@ Complete tasks from top to bottom and one approved task/branch at a time. Do not
 - [ ] Notify clinic/admin when cancellation requires attention.
 - [ ] Notify patient of request outcome if implemented.
 - [ ] Keep rescheduling out of scope unless explicitly added later.
-
-## Phase 20 - Refund Handling
-
 - [ ] Ensure patients cannot request or self-initiate refunds.
 - [ ] Add admin-only refund review/issue/record workflow.
 - [ ] Add role/permission checks for refund actions.
 - [ ] Add refund reason and audit logging.
 - [ ] Keep paid appointment history visible after refunds.
 - [ ] Store refund status and Stripe refund ID if Stripe refund issuing is implemented.
-- [ ] Confirm owner/admin refund permissions.
+- [ ] Confirm admin refund permissions.
 - [ ] Confirm receptionist and doctor cannot issue money refunds by default.
+- [ ] Add tests for cancellation policy evaluation, no patient refund initiation, admin refund authorization, and audit logging.
 
-## Phase 21 - Privacy, Security, Legal, And Abuse Prevention
+## Phase 16 - Privacy, Security, Legal, And Abuse Prevention
+
+This phase audits the security, privacy, legal, and abuse boundaries implemented in the owning workflow phases.
 
 - [ ] Verify all clinic data queries are scoped by organization/clinic ownership.
 - [ ] Verify no cross-clinic switching or shared multi-clinic access exists in MVP.
@@ -435,7 +450,7 @@ Complete tasks from top to bottom and one approved task/branch at a time. Do not
 - [ ] Research production logging and alerting approach.
 - [ ] Post-release improvement: evaluate an external logging/observability service for backend request/event logs instead of storing every backend request in the app database.
 
-## Phase 22 - Integration Testing, Coverage Audit, And Pilot Hardening
+## Phase 17 - Integration Testing, Coverage Audit, And Pilot Hardening
 
 Focused component and logic tests must already have been added with every implementation task. This phase closes cross-feature coverage gaps, adds integration/E2E coverage, and performs pilot hardening.
 
@@ -448,7 +463,7 @@ Focused component and logic tests must already have been added with every implem
 - [ ] Add cross-feature integration coverage for rate limiting and abuse prevention where practical.
 - [ ] Add manual end-to-end test plan using Stripe test mode and test Google Calendar.
 
-## Phase 23 - Pre-Pilot Checklist
+## Phase 18 - Pre-Pilot Checklist
 
 - [ ] Confirm MVP scope matches `docs/MVP.md`.
 - [ ] Confirm decisions in `docs/DECISIONS.md` are implemented or intentionally deferred.
