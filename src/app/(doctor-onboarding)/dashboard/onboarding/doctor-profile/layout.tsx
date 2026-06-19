@@ -21,8 +21,13 @@ const DoctorProfileOnboardingLayout = async ({ children }: DoctorProfileOnboardi
 
   await activateStaffInvitationForCurrentUser();
   const bootstrapResult = await bootstrapOwnerAdminMembershipFromClerkPrivateMetadata();
+  const membership = bootstrapResult.membership;
 
-  requireActiveStaffAccess({ membership: bootstrapResult.membership });
+  requireActiveStaffAccess({ membership });
+
+  if (!membership) {
+    notFound();
+  }
 
   const doctorProfileAccess = await getDoctorProfileAccessForCurrentUser();
 
@@ -33,7 +38,7 @@ const DoctorProfileOnboardingLayout = async ({ children }: DoctorProfileOnboardi
     redirect(ROUTES.dashboard);
   }
 
-  return <AdminShell>{children}</AdminShell>;
+  return <AdminShell membershipRole={membership.role}>{children}</AdminShell>;
 };
 
 export default DoctorProfileOnboardingLayout;

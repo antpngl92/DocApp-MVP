@@ -329,6 +329,22 @@ type CreateDoctorProfileForCurrentUserOptions = DoctorProfileCreationInput & {
   database?: DoctorProfileCreationDatabase;
 };
 
+type DashboardRoleAccessDatabase = LocalUserLookupDatabase & {
+  organizationMember: {
+    findUnique: (args: {
+      where: {
+        userId: string;
+      };
+    }) => Promise<AdminAccessMembership | null>;
+  };
+};
+
+type RequireDashboardRoleAccessOptions = {
+  allowedRoles: readonly StaffMemberRole[];
+  authReader?: CurrentUserAuthReader;
+  database?: DashboardRoleAccessDatabase;
+};
+
 type StaffInvitationResultStatus =
   (typeof STAFF_INVITATION_RESULT_STATUS)[keyof typeof STAFF_INVITATION_RESULT_STATUS];
 
@@ -569,7 +585,9 @@ export type {
   DoctorProfileOnboardingStatus,
   DoctorProfileRecord,
   CreateDoctorProfileForCurrentUserOptions,
+  DashboardRoleAccessDatabase,
   GetDoctorProfileAccessForCurrentUserOptions,
+  RequireDashboardRoleAccessOptions,
   StaffInvitationDatabase,
   StaffInvitationPendingMembership,
   StaffInvitationResult,

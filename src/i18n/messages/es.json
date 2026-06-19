@@ -16,6 +16,22 @@
     "adminContext": "Administración de la clínica",
     "patientContext": "Tus citas"
   },
+  "dashboardShell": {
+    "collapseSidebar": "Contraer barra lateral",
+    "expandSidebar": "Expandir barra lateral",
+    "navigationLabel": "Navegación del panel",
+    "signOut": "Cerrar sesión",
+    "navigation": {
+      "dashboard": "Panel",
+      "staffMembers": "Personal",
+      "notifications": "Notificaciones",
+      "logs": "Registros",
+      "manualBooking": "Reserva manual",
+      "settings": "Ajustes",
+      "profile": "Perfil",
+      "schedule": "Agenda"
+    }
+  },
   "languageSelector": {
     "label": "Idioma"
   },
@@ -148,6 +164,48 @@
         "submitLabel": "Enviar perfil de doctor",
         "successMessage": "Perfil enviado. Esperando aprobación del administrador."
       }
+    }
+  },
+  "dashboardPages": {
+    "dashboard": {
+      "eyebrow": "Panel",
+      "title": "Panel operativo",
+      "description": "Este panel de personal está listo para resúmenes de clínica y tarjetas de trabajo según el rol."
+    },
+    "staffMembers": {
+      "eyebrow": "Personal",
+      "title": "Personal",
+      "description": "Gestiona invitaciones del personal y prepara la tabla para acciones solo de administración."
+    },
+    "notifications": {
+      "eyebrow": "Notificaciones",
+      "title": "Notificaciones",
+      "description": "Aquí se mostrarán notificaciones de clínica según el rol, separadas de los registros de auditoría."
+    },
+    "logs": {
+      "eyebrow": "Registros",
+      "title": "Registros",
+      "description": "Este espacio queda reservado para una revisión operativa futura. El registro completo del backend debe usar observabilidad externa después del lanzamiento."
+    },
+    "manualBooking": {
+      "eyebrow": "Reserva manual",
+      "title": "Crear una reserva manual",
+      "description": "Aquí el personal autorizado creará reservas por teléfono, mensaje o en persona."
+    },
+    "settings": {
+      "eyebrow": "Ajustes",
+      "title": "Ajustes de reservas",
+      "description": "Aquí estarán los ajustes de reservas de la clínica o del doctor según el rol activo."
+    },
+    "profile": {
+      "eyebrow": "Perfil",
+      "title": "Perfil",
+      "description": "Aquí el personal mantendrá los datos de perfil permitidos para su rol."
+    },
+    "schedule": {
+      "eyebrow": "Agenda",
+      "title": "Agenda",
+      "description": "Aquí recepción verá la agenda de la clínica para todos los doctores."
     }
   },
   "patient": {
