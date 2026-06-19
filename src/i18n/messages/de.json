@@ -170,7 +170,19 @@
     "dashboard": {
       "eyebrow": "Dashboard",
       "title": "Operatives Dashboard",
-      "description": "Diese Mitarbeiteransicht ist bereit für rollenbezogene Klinikübersichten und Arbeitskarten."
+      "description": "Diese Mitarbeiteransicht ist bereit für rollenbezogene Klinikübersichten und Arbeitskarten.",
+      "pendingApprovals": {
+        "heading": "Ausstehende Arztfreigaben",
+        "emptyTitle": "Keine ausstehenden Arztfreigaben",
+        "emptyDescription": "Arztprofile, die eine Admin-Prüfung benötigen, erscheinen hier.",
+        "emailLabel": "E-Mail",
+        "phoneLabel": "Telefon",
+        "specialtyLabel": "Fachgebiet",
+        "createdLabel": "Eingereicht",
+        "approveLabel": "Freigeben",
+        "phoneFallback": "Nicht angegeben",
+        "specialtyFallback": "Nicht angegeben"
+      }
     },
     "staffMembers": {
       "eyebrow": "Mitarbeiter",

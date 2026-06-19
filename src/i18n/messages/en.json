@@ -170,7 +170,19 @@
     "dashboard": {
       "eyebrow": "Dashboard",
       "title": "Operational dashboard",
-      "description": "This staff dashboard shell is ready for role-specific clinic summaries and workflow cards."
+      "description": "This staff dashboard shell is ready for role-specific clinic summaries and workflow cards.",
+      "pendingApprovals": {
+        "heading": "Pending doctor approvals",
+        "emptyTitle": "No pending doctor approvals",
+        "emptyDescription": "Doctor profiles that need admin review will appear here.",
+        "emailLabel": "Email",
+        "phoneLabel": "Phone",
+        "specialtyLabel": "Specialty",
+        "createdLabel": "Submitted",
+        "approveLabel": "Approve",
+        "phoneFallback": "Not provided",
+        "specialtyFallback": "Not provided"
+      }
     },
     "staffMembers": {
       "eyebrow": "Staff",

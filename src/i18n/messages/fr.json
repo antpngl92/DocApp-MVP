@@ -170,7 +170,19 @@
     "dashboard": {
       "eyebrow": "Tableau de bord",
       "title": "Tableau de bord opérationnel",
-      "description": "Cette interface du personnel est prête pour les résumés de clinique et les cartes de travail selon le rôle."
+      "description": "Cette interface du personnel est prête pour les résumés de clinique et les cartes de travail selon le rôle.",
+      "pendingApprovals": {
+        "heading": "Approbations médecin en attente",
+        "emptyTitle": "Aucune approbation en attente",
+        "emptyDescription": "Les profils médecin nécessitant une revue admin apparaîtront ici.",
+        "emailLabel": "E-mail",
+        "phoneLabel": "Téléphone",
+        "specialtyLabel": "Spécialité",
+        "createdLabel": "Soumis",
+        "approveLabel": "Approuver",
+        "phoneFallback": "Non renseigné",
+        "specialtyFallback": "Non renseignée"
+      }
     },
     "staffMembers": {
       "eyebrow": "Personnel",

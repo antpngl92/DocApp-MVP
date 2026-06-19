@@ -170,7 +170,19 @@
     "dashboard": {
       "eyebrow": "Табло",
       "title": "Оперативно табло",
-      "description": "Това табло за персонала е готово за обобщения и работни карти според ролята."
+      "description": "Това табло за персонала е готово за обобщения и работни карти според ролята.",
+      "pendingApprovals": {
+        "heading": "Чакащи одобрение лекари",
+        "emptyTitle": "Няма чакащи одобрения",
+        "emptyDescription": "Тук ще се показват лекарски профили, които чакат преглед от администратор.",
+        "emailLabel": "Имейл",
+        "phoneLabel": "Телефон",
+        "specialtyLabel": "Специалност",
+        "createdLabel": "Подаден",
+        "approveLabel": "Одобри",
+        "phoneFallback": "Не е посочен",
+        "specialtyFallback": "Не е посочена"
+      }
     },
     "staffMembers": {
       "eyebrow": "Персонал",

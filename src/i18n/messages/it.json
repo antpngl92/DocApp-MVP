@@ -170,7 +170,19 @@
     "dashboard": {
       "eyebrow": "Dashboard",
       "title": "Dashboard operativa",
-      "description": "Questa dashboard dello staff è pronta per riepiloghi clinici e schede operative in base al ruolo."
+      "description": "Questa dashboard dello staff è pronta per riepiloghi clinici e schede operative in base al ruolo.",
+      "pendingApprovals": {
+        "heading": "Approvazioni medici in sospeso",
+        "emptyTitle": "Nessuna approvazione in sospeso",
+        "emptyDescription": "I profili medico che richiedono revisione admin appariranno qui.",
+        "emailLabel": "Email",
+        "phoneLabel": "Telefono",
+        "specialtyLabel": "Specialità",
+        "createdLabel": "Inviato",
+        "approveLabel": "Approva",
+        "phoneFallback": "Non indicato",
+        "specialtyFallback": "Non indicata"
+      }
     },
     "staffMembers": {
       "eyebrow": "Staff",
