@@ -150,8 +150,8 @@ This phase owns the public home page as the first polished DocApp marketing surf
 
 - [x] Reconnect/confirm SuperDesign access for this project before starting homepage design work.
 - [x] Use SuperDesign with the existing DocApp context files, including `.superdesign/design-system.md`, `.superdesign/init/theme.md`, `docs/MVP.md`, `docs/DECISIONS.md`, `docs/project-documentation/ui-direction.md`, and `docs/project-documentation/superdesign-integration.md`.
-- [ ] Generate SuperDesign home page explorations for desktop and mobile.
-- [ ] Include homepage states/sections in SuperDesign review notes before implementation.
+- [x] Generate SuperDesign home page explorations for desktop and mobile.
+- [x] Include homepage states/sections in SuperDesign review notes before implementation.
 - [ ] Define the approved application theme, color palette, typography direction, spacing, and component tone through SuperDesign review.
 - [ ] Update the relevant `.superdesign/` context files if the approved theme/colors change.
 - [ ] Treat the approved SuperDesign homepage direction as the UI source of truth for this phase while keeping product/security/privacy docs authoritative.
@@ -166,7 +166,8 @@ This phase owns the public home page as the first polished DocApp marketing surf
 - [ ] Do not include ads, booking fees, platform fees, refund-request copy, medical-record copy, symptoms, diagnosis, chat, file upload, or rescheduling promises.
 - [ ] Add a homepage hero section with a real or generated bitmap-style visual direction approved through SuperDesign.
 - [ ] Make the homepage hero image/admin-facing visual configurable by authorized admin users.
-- [ ] Add or prepare a local homepage content/settings model or equivalent server-side configuration for editable hero image URL, hero image alt text, headline, supporting copy, and CTA label.
+- [ ] Make homepage marketing copy configurable by authorized admin users, especially the large hero headline, hero supporting copy, section headings, section descriptions, and CTA labels.
+- [ ] Add or prepare a local homepage content/settings model or equivalent server-side configuration for editable hero image URL, hero image alt text, hero headline, hero supporting copy, section copy, and CTA labels.
 - [ ] Do not store real patient data, credentials, private clinic data, or medical content in homepage content fields.
 - [ ] Add an admin-only path or clearly documented follow-up task for editing homepage hero/content settings if the full admin editing UI is not built in this phase.
 - [ ] Ensure homepage content supports the existing i18n languages or has a documented translation strategy before hardcoding copy.
@@ -176,7 +177,7 @@ This phase owns the public home page as the first polished DocApp marketing surf
 - [ ] Decide whether this phase introduces any non-essential cookies, analytics, tracking pixels, or third-party embeds.
 - [ ] Do not add a cookie consent banner in Phase 7 unless non-essential cookies, analytics, tracking pixels, or third-party embeds are actually introduced.
 - [ ] If non-essential cookies are introduced, add cookie consent behavior and link to cookie/privacy policy content.
-- [ ] Add focused tests for homepage rendering, navbar links, booking CTA href, translated copy where practical, and admin-editable hero/content data mapping.
+- [ ] Add focused tests for homepage rendering, navbar links, booking CTA href, translated copy where practical, and admin-editable homepage content data mapping.
 - [ ] Verify lint, typecheck, tests, coverage, and build before marking the phase complete.
 
 ## Phase 8 - Services And Bookable Configuration
