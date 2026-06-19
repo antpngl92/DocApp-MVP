@@ -250,3 +250,13 @@ Phase 4+ implementation should:
 - Which visual direction from the generated drafts should be treated as the primary implementation baseline?
 - Should admin manual booking override be disallowed in MVP or owner/admin-only?
 - Should demo data become actual seed data in a later phase, or remain docs-only until the data model exists?
+
+## Phase 7 Home Page Preparation
+
+SuperDesign CLI access was confirmed for the project before starting homepage design work:
+
+- CLI command: `superdesign.cmd`
+- CLI version: `0.3.3`
+- `superdesign.cmd --help` completed without an authentication error
+
+Before generating homepage drafts, refresh or re-check `.superdesign/init/` context against the current app because the existing init snapshot was created earlier in the project and may not reflect the latest authenticated dashboard and patient-account route structure.
