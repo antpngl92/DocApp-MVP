@@ -265,7 +265,7 @@ Before generating homepage drafts, refresh or re-check `.superdesign/init/` cont
 
 The `.superdesign/init/` files were refreshed before homepage draft generation to reflect the current MVP app structure:
 
-- current marketing home route: `src/app/(marketing)/page.tsx`
+- current clinic public home route: `src/app/(public)/page.tsx`
 - current public shell/header files: `PublicShell`, `AppShell`, `AppHeader`, `LanguageSelector`, `AuthControls`
 - current placeholder homepage dependency tree
 - current route map, including public, auth, patient, staff dashboard, doctor onboarding, and API routes

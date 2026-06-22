@@ -5,7 +5,11 @@ type PublicLayoutProps = Readonly<{
 }>;
 
 const PublicLayout = ({ children }: PublicLayoutProps) => {
-  return <PublicShell contextLabel="Sofia Care Clinic">{children}</PublicShell>;
+  return (
+    <PublicShell brandName="Sofia Care Clinic" showCreateAccount={false}>
+      {children}
+    </PublicShell>
+  );
 };
 
 export default PublicLayout;

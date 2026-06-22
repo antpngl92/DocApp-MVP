@@ -82,8 +82,8 @@ Pass these implementation files as SuperDesign context when designing the homepa
 - `.superdesign/design-system.md`
 - `src/app/globals.css`
 - `src/app/layout.tsx`
-- `src/app/(marketing)/layout.tsx`
-- `src/app/(marketing)/page.tsx`
+- `src/app/(public)/layout.tsx`
+- `src/app/(public)/page.tsx`
 - `src/components/layout/PublicShell/index.tsx`
 - `src/components/layout/AppShell/index.tsx`
 - `src/components/layout/AppHeader/index.tsx`

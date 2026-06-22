@@ -72,13 +72,15 @@ Example:
 ```txt
 src/app/
 ├── layout.tsx
-├── page.tsx
 ├── globals.css
-├── (marketing)/
-│   └── page.tsx
 ├── (public)/
-│   ├── booking/
+│   ├── layout.tsx
+│   ├── page.tsx
+│   ├── support/
 │   │   └── page.tsx
+│   ├── booking/
+│   │   └── [clinicSlug]/
+│   │       └── page.tsx
 │   └── checkout/
 │       ├── success/
 │       │   └── page.tsx

@@ -8,8 +8,8 @@ DocApp uses Next.js App Router with `src/app`.
 
 | URL path | File path | Rendering | Notes |
 | --- | --- | --- | --- |
-| `/` | `src/app/(marketing)/page.tsx` | Server component | Current foundation homepage placeholder; Phase 7 owns polished homepage replacement. |
-| `/support` | `src/app/(marketing)/support/page.tsx` | Server component | Public support/contact foundation. |
+| `/` | `src/app/(public)/page.tsx` | Server component | Clinic patient homepage. |
+| `/support` | `src/app/(public)/support/page.tsx` | Server component | Public support/contact foundation. |
 | `/booking/sofia-care` | `src/app/(public)/booking/[clinicSlug]/page.tsx` | Server component | Booking route placeholder. Full booking flow is later. |
 | `/checkout/success` | `src/app/(public)/checkout/success/page.tsx` | Server component | Read-only checkout status placeholder. |
 | `/checkout/cancel` | `src/app/(public)/checkout/cancel/page.tsx` | Server component | Read-only checkout status placeholder. |

@@ -23,9 +23,9 @@
 </html>
 ```
 
-## Public Marketing Layout
+## Clinic Public Layout
 
-- Path: `src/app/(marketing)/layout.tsx`
+- Path: `src/app/(public)/layout.tsx`
 - Uses: `src/components/layout/PublicShell/index.tsx`
 - Current scope: home page and support page.
 

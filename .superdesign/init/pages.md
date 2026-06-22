@@ -2,14 +2,14 @@
 
 ## `/` Home Page
 
-Entry: `src/app/(marketing)/page.tsx`
+Entry: `src/app/(public)/page.tsx`
 
 Current dependencies:
 
 - `src/app/layout.tsx`
 - `src/app/globals.css`
-- `src/app/(marketing)/layout.tsx`
-- `src/app/(marketing)/page.tsx`
+- `src/app/(public)/layout.tsx`
+- `src/app/(public)/page.tsx`
 - `src/components/layout/PublicShell/index.tsx`
 - `src/components/layout/AppShell/index.tsx`
 - `src/components/layout/AppHeader/index.tsx`
@@ -51,7 +51,7 @@ Phase 7 goal:
 
 ## `/support`
 
-Entry: `src/app/(marketing)/support/page.tsx`
+Entry: `src/app/(public)/support/page.tsx`
 
 Uses the same public shell and foundation overview pattern as `/`, with support-specific translated
 copy.
