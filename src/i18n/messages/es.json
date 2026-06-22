@@ -77,6 +77,94 @@
       }
     }
   },
+  "homePage": {
+    "eyebrow": "Sofia Care Clinic",
+    "title": "Su salud, según su horario.",
+    "subtitle": "Reserve su visita con horarios y depósitos claros mediante un proceso pensado para la comodidad del paciente.",
+    "primaryCta": "Reservar cita",
+    "secondaryCta": "Contactar",
+    "heroImageAlt": "Profesional sanitario apoyando a un paciente durante una visita clínica",
+    "footerNavigationLabel": "Navegación del pie de página",
+    "heroBadge": "Clínica local de confianza",
+    "stepEyebrow": "Cómo funciona la reserva",
+    "stepTitle": "Pasos claros antes de su visita",
+    "benefitEyebrow": "Experiencia del paciente",
+    "benefitTitle": "La experiencia Sofia Care",
+    "benefitDescription": "Disponibilidad, depósito y detalles de la cita claramente presentados.",
+    "closingCtaTitle": "¿Listo para reservar su cita?",
+    "closingCtaDescription": "Consulte el horario actual de la clínica y empiece la reserva en unos pasos claros.",
+    "processDescription": "Tres pasos le llevan desde la selección del servicio hasta la revisión de la cita.",
+    "processLinkLabel": "Iniciar reserva",
+    "policyTitle": "Política para pacientes",
+    "securityTitle": "Privacidad de la cita",
+    "securityBadge": "Portal solo para citas",
+    "footerClinicLabel": "Clínica",
+    "footerAccountLabel": "Cuenta",
+    "footerSignInLabel": "Iniciar sesión",
+    "footerRegisterLabel": "Crear cuenta",
+    "footerDescription": "Reserva de citas con información clara sobre el depósito y el saldo en la clínica.",
+    "footerCopyright": "© 2026 Sofia Care Clinic. Todos los derechos reservados.",
+    "contact": {
+      "online": {
+        "label": "Reserva online",
+        "value": "Disponible 24/7"
+      },
+      "deposit": {
+        "label": "Depósito claro",
+        "value": "Visible antes del pago"
+      },
+      "balance": {
+        "label": "Saldo en clínica",
+        "value": "El resto se paga en la clínica"
+      }
+    },
+    "services": {
+      "online": {
+        "title": "Reservas online 24/7",
+        "description": "Inicie una reserva cuando le convenga, sin esperar al horario telefónico de la clínica."
+      },
+      "deposit": {
+        "title": "Depósito claro",
+        "description": "Revise el depósito de ahora y el saldo restante en la clínica antes de pagar."
+      },
+      "privacy": {
+        "title": "Privacidad primero",
+        "description": "Sus datos de contacto se usan solo para gestionar su cita."
+      },
+      "details": {
+        "title": "Detalles claros",
+        "description": "Revise el servicio, horario, depósito y saldo antes de continuar."
+      }
+    },
+    "steps": {
+      "service": {
+        "title": "Elija un servicio",
+        "description": "Empiece con el tipo de visita que necesita y continúe con los horarios disponibles."
+      },
+      "time": {
+        "title": "Elija un horario disponible",
+        "description": "Seleccione una hora mostrada por la agenda de la clínica. El flujo completo llegará en fases posteriores."
+      },
+      "deposit": {
+        "title": "Revise depósito y detalles",
+        "description": "Antes del pago, la app mostrará el depósito de ahora y el saldo restante en la clínica."
+      }
+    },
+    "policy": {
+      "deposit": {
+        "title": "Política de depósito",
+        "description": "Los depósitos reservan la cita y por defecto no se reembolsan si el paciente no asiste."
+      },
+      "privacy": {
+        "title": "Cuenta solo para citas",
+        "description": "Use la app para reservas y estado de citas. No introduzca síntomas, diagnósticos ni notas médicas."
+      },
+      "attendance": {
+        "title": "Asistencia a la clínica",
+        "description": "Llegue a tiempo o contacte con la clínica si su visita necesita atención según la política de cancelación."
+      }
+    }
+  },
   "booking": {
     "eyebrow": "Reserva pública",
     "title": "Reservar una cita",

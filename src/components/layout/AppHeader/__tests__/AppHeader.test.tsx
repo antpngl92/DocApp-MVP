@@ -26,15 +26,18 @@ vi.mock("@/components/i18n", () => ({
 vi.mock("@/features/auth/components", () => ({
   AuthControls: ({
     createAccountLabel,
+    showCreateAccount,
     signInLabel,
     signOutLabel,
   }: {
     createAccountLabel: string;
+    showCreateAccount?: boolean;
     signInLabel: string;
     signOutLabel: string;
   }) => (
     <span>
-      Auth controls: {signInLabel}, {createAccountLabel}, {signOutLabel}
+      Auth controls: {signInLabel}, {createAccountLabel}, {signOutLabel}, show create account:{" "}
+      {String(showCreateAccount)}
     </span>
   ),
 }));
@@ -57,9 +60,32 @@ describe("AppHeader", () => {
       "/dashboard",
     );
     expect(
-      screen.getByText("Auth controls: Sign in, Create account, Sign out"),
+      screen.getByText(
+        "Auth controls: Sign in, Create account, Sign out, show create account: true",
+      ),
     ).toBeInTheDocument();
     expect(screen.getByText("Language selector")).toBeInTheDocument();
+  });
+
+  it("renders clinic branding and hides account creation when configured", async () => {
+    render(
+      await AppHeader({
+        brandName: "Sofia Care Clinic",
+        navigation: [{ href: "/booking/sofia-care", labelKey: "booking" }],
+        showCreateAccount: false,
+      }),
+    );
+
+    expect(screen.getByText("Sofia Care Clinic")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "booking" })).toHaveAttribute(
+      "href",
+      "/booking/sofia-care",
+    );
+    expect(
+      screen.getByText(
+        "Auth controls: Sign in, Create account, Sign out, show create account: false",
+      ),
+    ).toBeInTheDocument();
   });
 
   it("omits the context label when none is provided", async () => {

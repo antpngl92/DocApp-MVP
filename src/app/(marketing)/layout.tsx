@@ -5,7 +5,11 @@ type MarketingLayoutProps = Readonly<{
 }>;
 
 const MarketingLayout = ({ children }: MarketingLayoutProps) => {
-  return <PublicShell>{children}</PublicShell>;
+  return (
+    <PublicShell brandName="Sofia Care Clinic" showCreateAccount={false}>
+      {children}
+    </PublicShell>
+  );
 };
 
 export default MarketingLayout;

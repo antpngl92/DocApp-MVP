@@ -14,15 +14,15 @@ import { ROUTES } from "../routes";
 describe("navigation", () => {
   it("defines public navigation links", () => {
     expect(PUBLIC_NAVIGATION).toEqual([
-      { href: ROUTES.bookingDemo, labelKey: "booking" },
       { href: ROUTES.support, labelKey: "support" },
+      { href: ROUTES.bookingDemo, labelKey: "booking" },
     ]);
   });
 
   it("defines signed-in public navigation links for patient and admin destinations", () => {
     expect(PUBLIC_SIGNED_IN_PATIENT_NAVIGATION).toEqual([
-      { href: ROUTES.bookingDemo, labelKey: "booking" },
       { href: ROUTES.support, labelKey: "support" },
+      { href: ROUTES.bookingDemo, labelKey: "booking" },
       { href: ROUTES.patientAccount, labelKey: "appointments" },
     ]);
     expect(PUBLIC_SIGNED_IN_ADMIN_NAVIGATION).toEqual([

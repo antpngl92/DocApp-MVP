@@ -68,18 +68,19 @@ Avoid committing:
 Use this workflow for Phase 3 and later UI implementation:
 
 1. Install and log in to SuperDesign locally.
-2. Add the SuperDesign skill for this project.
-3. Pin or provide the DocApp context from:
+2. Open the actual SuperDesign project board in the default browser if it is not already open. Do not treat standalone draft preview links as a substitute for opening the project canvas.
+3. Add the SuperDesign skill for this project.
+4. Pin or provide the DocApp context from:
    - `docs/MVP.md`
    - `docs/DECISIONS.md`
    - `docs/project-documentation/ui-direction.md`
    - `docs/project-documentation/superdesign-prompts.md`
    - `docs/project-documentation/demo-data.md`
-4. Start with the base style prompt from `superdesign-prompts.md`.
-5. Use Branch to compare visual variations when exploring style.
-6. Once a style is accepted, use Flow for connected journeys.
-7. Export or copy design handoff prompts/HTML only after review.
-8. Translate approved designs into maintainable Next.js components that follow `project-structure.md` and `code-style.md`.
+5. Start with the base style prompt from `superdesign-prompts.md`.
+6. Use Branch to compare visual variations when exploring style.
+7. Once a style is accepted, use Flow for connected journeys.
+8. Export or copy design handoff prompts/HTML only after review.
+9. Translate approved designs into maintainable Next.js components that follow `project-structure.md` and `code-style.md`.
 
 ## Required SuperDesign Project Context
 

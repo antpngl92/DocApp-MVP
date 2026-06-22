@@ -77,6 +77,94 @@
       }
     }
   },
+  "homePage": {
+    "eyebrow": "Sofia Care Clinic",
+    "title": "Your health, on your schedule.",
+    "subtitle": "Book your visit with clear appointment times and deposit details, through a process designed around patient convenience.",
+    "primaryCta": "Book an appointment",
+    "secondaryCta": "Contact Us",
+    "heroImageAlt": "Healthcare professional supporting a patient during a clinic visit",
+    "footerNavigationLabel": "Footer navigation",
+    "heroBadge": "Trusted local clinic",
+    "stepEyebrow": "How booking works",
+    "stepTitle": "Clear steps before your visit",
+    "benefitEyebrow": "Patient experience",
+    "benefitTitle": "The Sofia Care experience",
+    "benefitDescription": "Clear availability, deposit information, and appointment details without unnecessary complexity.",
+    "closingCtaTitle": "Ready to book your appointment?",
+    "closingCtaDescription": "View the current clinic schedule and begin your booking in a few clear steps.",
+    "processDescription": "Three steps take you from service selection to reviewing your appointment details.",
+    "processLinkLabel": "Start your booking",
+    "policyTitle": "Patient policy",
+    "securityTitle": "Appointment privacy",
+    "securityBadge": "Appointment-only portal",
+    "footerClinicLabel": "Clinic",
+    "footerAccountLabel": "Account",
+    "footerSignInLabel": "Sign in",
+    "footerRegisterLabel": "Create account",
+    "footerDescription": "Convenient appointment booking with clear deposit and clinic balance information.",
+    "footerCopyright": "© 2026 Sofia Care Clinic. All rights reserved.",
+    "contact": {
+      "online": {
+        "label": "Online booking",
+        "value": "Available 24/7"
+      },
+      "deposit": {
+        "label": "Clear deposit",
+        "value": "Shown before payment"
+      },
+      "balance": {
+        "label": "Clinic balance",
+        "value": "Remaining amount paid at clinic"
+      }
+    },
+    "services": {
+      "online": {
+        "title": "24/7 online booking",
+        "description": "Browse available services and begin a booking whenever it is convenient."
+      },
+      "deposit": {
+        "title": "Clear deposits",
+        "description": "See the deposit due now and the remaining clinic balance before checkout."
+      },
+      "privacy": {
+        "title": "Privacy first",
+        "description": "Your contact details are used only to manage your appointment."
+      },
+      "details": {
+        "title": "Clear appointment details",
+        "description": "Review the selected service, time, deposit, and remaining balance before continuing."
+      }
+    },
+    "steps": {
+      "service": {
+        "title": "Choose a service",
+        "description": "Start with the type of visit you need and continue to the available clinic times."
+      },
+      "time": {
+        "title": "Pick an available slot",
+        "description": "Select a time shown by the clinic schedule. The full booking flow arrives in the next phases."
+      },
+      "deposit": {
+        "title": "Review deposit and details",
+        "description": "Before checkout, the app will show the deposit due now and the remaining balance due at the clinic."
+      }
+    },
+    "policy": {
+      "deposit": {
+        "title": "Deposit policy",
+        "description": "Deposits reserve appointment time and are non-refundable by default when a patient does not attend."
+      },
+      "privacy": {
+        "title": "Appointment-only account",
+        "description": "Use the app for bookings and appointment status. Do not enter symptoms, diagnoses, treatment notes, or medical-record details."
+      },
+      "attendance": {
+        "title": "Clinic attendance",
+        "description": "Please arrive on time or contact the clinic if your visit needs attention under the clinic cancellation policy."
+      }
+    }
+  },
   "booking": {
     "eyebrow": "Public booking",
     "title": "Book an appointment",
