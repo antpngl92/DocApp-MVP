@@ -63,4 +63,13 @@ describe("AuthControls", () => {
     expect(screen.queryByRole("button", { name: "Sign in" })).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Create account" })).not.toBeInTheDocument();
   });
+
+  it("can hide account creation on a public marketing surface", () => {
+    clerkState.isSignedIn = false;
+
+    render(<AuthControls {...defaultProps} showCreateAccount={false} />);
+
+    expect(screen.getByRole("button", { name: "Sign in" })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Create account" })).not.toBeInTheDocument();
+  });
 });

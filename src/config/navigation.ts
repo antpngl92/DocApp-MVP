@@ -36,8 +36,8 @@ type DashboardNavigationItem = Readonly<{
 }>;
 
 const PUBLIC_NAVIGATION: readonly NavigationItem[] = [
-  { href: ROUTES.bookingDemo, labelKey: "booking" },
   { href: ROUTES.support, labelKey: "support" },
+  { href: ROUTES.bookingDemo, labelKey: "booking" },
 ];
 
 const PUBLIC_SIGNED_IN_ADMIN_NAVIGATION: readonly NavigationItem[] = [

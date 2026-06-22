@@ -77,6 +77,94 @@
       }
     }
   },
+  "homePage": {
+    "eyebrow": "Sofia Care Clinic",
+    "title": "Votre santé, selon votre emploi du temps.",
+    "subtitle": "Réservez votre visite avec des horaires et un acompte clairement présentés, dans un parcours pensé pour le patient.",
+    "primaryCta": "Prendre rendez-vous",
+    "secondaryCta": "Nous contacter",
+    "heroImageAlt": "Professionnel de santé accompagnant un patient pendant une visite à la clinique",
+    "footerNavigationLabel": "Navigation du pied de page",
+    "heroBadge": "Clinique locale de confiance",
+    "stepEyebrow": "Fonctionnement de la réservation",
+    "stepTitle": "Étapes claires avant votre visite",
+    "benefitEyebrow": "Expérience patient",
+    "benefitTitle": "L'expérience Sofia Care",
+    "benefitDescription": "Disponibilités, acompte et détails du rendez-vous clairement présentés.",
+    "closingCtaTitle": "Prêt à prendre rendez-vous ?",
+    "closingCtaDescription": "Consultez le planning actuel de la clinique et commencez votre réservation en quelques étapes.",
+    "processDescription": "Trois étapes vous conduisent du choix du service à la vérification du rendez-vous.",
+    "processLinkLabel": "Commencer la réservation",
+    "policyTitle": "Politique patient",
+    "securityTitle": "Confidentialité du rendez-vous",
+    "securityBadge": "Portail réservé aux rendez-vous",
+    "footerClinicLabel": "Clinique",
+    "footerAccountLabel": "Compte",
+    "footerSignInLabel": "Se connecter",
+    "footerRegisterLabel": "Créer un compte",
+    "footerDescription": "Réservation pratique avec des informations claires sur l'acompte et le solde en clinique.",
+    "footerCopyright": "© 2026 Sofia Care Clinic. Tous droits réservés.",
+    "contact": {
+      "online": {
+        "label": "Réservation en ligne",
+        "value": "Disponible 24 h/24"
+      },
+      "deposit": {
+        "label": "Acompte clair",
+        "value": "Affiché avant le paiement"
+      },
+      "balance": {
+        "label": "Solde en clinique",
+        "value": "Le solde est payé à la clinique"
+      }
+    },
+    "services": {
+      "online": {
+        "title": "Réservation en ligne 24 h/24",
+        "description": "Commencez une réservation quand vous le souhaitez, sans attendre les horaires téléphoniques."
+      },
+      "deposit": {
+        "title": "Acompte clairement présenté",
+        "description": "Consultez l'acompte dû maintenant et le solde restant avant le paiement."
+      },
+      "privacy": {
+        "title": "Confidentialité d'abord",
+        "description": "Vos coordonnées sont utilisées uniquement pour gérer votre rendez-vous."
+      },
+      "details": {
+        "title": "Détails clairs",
+        "description": "Vérifiez le service, l'heure, l'acompte et le solde avant de continuer."
+      }
+    },
+    "steps": {
+      "service": {
+        "title": "Choisir un service",
+        "description": "Commencez par le type de visite nécessaire, puis consultez les horaires disponibles."
+      },
+      "time": {
+        "title": "Choisir un créneau",
+        "description": "Sélectionnez un horaire affiché par le planning de la clinique. Le parcours complet arrive dans les phases suivantes."
+      },
+      "deposit": {
+        "title": "Vérifier acompte et détails",
+        "description": "Avant le paiement, l'app affichera l'acompte dû maintenant et le solde restant à la clinique."
+      }
+    },
+    "policy": {
+      "deposit": {
+        "title": "Politique d'acompte",
+        "description": "Les acomptes réservent le rendez-vous et ne sont pas remboursables par défaut si le patient ne vient pas."
+      },
+      "privacy": {
+        "title": "Compte réservé aux rendez-vous",
+        "description": "Utilisez l'app pour les réservations et le statut des rendez-vous. N'ajoutez pas de symptômes, diagnostics ou notes médicales."
+      },
+      "attendance": {
+        "title": "Présence à la clinique",
+        "description": "Merci d'arriver à l'heure ou de contacter la clinique si votre visite nécessite une attention selon la politique d'annulation."
+      }
+    }
+  },
   "booking": {
     "eyebrow": "Réservation publique",
     "title": "Prendre rendez-vous",

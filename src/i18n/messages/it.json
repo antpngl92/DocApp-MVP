@@ -77,6 +77,94 @@
       }
     }
   },
+  "homePage": {
+    "eyebrow": "Sofia Care Clinic",
+    "title": "La tua salute, secondo i tuoi orari.",
+    "subtitle": "Prenota la visita con orari e deposito chiari, attraverso un percorso pensato per la comodità del paziente.",
+    "primaryCta": "Prenota appuntamento",
+    "secondaryCta": "Contattaci",
+    "heroImageAlt": "Professionista sanitario che sostiene un paziente durante una visita in clinica",
+    "footerNavigationLabel": "Navigazione del piè di pagina",
+    "heroBadge": "Clinica locale di fiducia",
+    "stepEyebrow": "Come funziona la prenotazione",
+    "stepTitle": "Passaggi chiari prima della visita",
+    "benefitEyebrow": "Esperienza del paziente",
+    "benefitTitle": "L'esperienza Sofia Care",
+    "benefitDescription": "Disponibilità, deposito e dettagli dell'appuntamento presentati in modo chiaro.",
+    "closingCtaTitle": "Pronto a prenotare il tuo appuntamento?",
+    "closingCtaDescription": "Consulta il calendario attuale della clinica e inizia la prenotazione in pochi passaggi.",
+    "processDescription": "Tre passaggi portano dalla scelta del servizio alla verifica dei dettagli dell'appuntamento.",
+    "processLinkLabel": "Inizia la prenotazione",
+    "policyTitle": "Politica per i pazienti",
+    "securityTitle": "Privacy dell'appuntamento",
+    "securityBadge": "Portale solo per appuntamenti",
+    "footerClinicLabel": "Clinica",
+    "footerAccountLabel": "Account",
+    "footerSignInLabel": "Accedi",
+    "footerRegisterLabel": "Crea account",
+    "footerDescription": "Prenotazione comoda con informazioni chiare su deposito e saldo in clinica.",
+    "footerCopyright": "© 2026 Sofia Care Clinic. Tutti i diritti riservati.",
+    "contact": {
+      "online": {
+        "label": "Prenotazione online",
+        "value": "Disponibile 24/7"
+      },
+      "deposit": {
+        "label": "Deposito chiaro",
+        "value": "Mostrato prima del pagamento"
+      },
+      "balance": {
+        "label": "Saldo in clinica",
+        "value": "Il saldo viene pagato in clinica"
+      }
+    },
+    "services": {
+      "online": {
+        "title": "Prenotazione online 24/7",
+        "description": "Inizia una prenotazione quando preferisci, senza attendere gli orari telefonici della clinica."
+      },
+      "deposit": {
+        "title": "Deposito trasparente",
+        "description": "Controlla il deposito dovuto ora e il saldo restante prima del pagamento."
+      },
+      "privacy": {
+        "title": "Privacy prima di tutto",
+        "description": "I tuoi dati di contatto sono usati solo per gestire l'appuntamento."
+      },
+      "details": {
+        "title": "Dettagli chiari",
+        "description": "Controlla servizio, orario, deposito e saldo prima di continuare."
+      }
+    },
+    "steps": {
+      "service": {
+        "title": "Scegli un servizio",
+        "description": "Inizia dal tipo di visita necessario e prosegui con gli orari disponibili."
+      },
+      "time": {
+        "title": "Scegli uno slot disponibile",
+        "description": "Seleziona un orario mostrato dal calendario della clinica. Il flusso completo arriverà nelle prossime fasi."
+      },
+      "deposit": {
+        "title": "Rivedi deposito e dettagli",
+        "description": "Prima del pagamento, l'app mostrerà il deposito dovuto ora e il saldo restante in clinica."
+      }
+    },
+    "policy": {
+      "deposit": {
+        "title": "Politica del deposito",
+        "description": "I depositi riservano l'orario dell'appuntamento e di default non sono rimborsabili se il paziente non si presenta."
+      },
+      "privacy": {
+        "title": "Account solo per appuntamenti",
+        "description": "Usa l'app per prenotazioni e stato degli appuntamenti. Non inserire sintomi, diagnosi o note mediche."
+      },
+      "attendance": {
+        "title": "Presenza in clinica",
+        "description": "Arriva puntuale o contatta la clinica se la visita richiede attenzione secondo la politica di cancellazione."
+      }
+    }
+  },
   "booking": {
     "eyebrow": "Prenotazione pubblica",
     "title": "Prenota un appuntamento",

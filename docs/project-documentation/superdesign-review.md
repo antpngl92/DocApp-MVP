@@ -265,7 +265,7 @@ Before generating homepage drafts, refresh or re-check `.superdesign/init/` cont
 
 The `.superdesign/init/` files were refreshed before homepage draft generation to reflect the current MVP app structure:
 
-- current marketing home route: `src/app/(marketing)/page.tsx`
+- current clinic public home route: `src/app/(public)/page.tsx`
 - current public shell/header files: `PublicShell`, `AppShell`, `AppHeader`, `LanguageSelector`, `AuthControls`
 - current placeholder homepage dependency tree
 - current route map, including public, auth, patient, staff dashboard, doctor onboarding, and API routes
@@ -347,3 +347,118 @@ Rejected or not approved:
 - The mobile exploration's `Staff Login` public footer copy.
 - Generic `/booking` links instead of route constants.
 - Heavy gradients, decorative blobs, marketplace-style doctor cards, ads, public refund-request copy, and medical-record-like copy.
+
+### Phase 7 Refined Modern Homepage Drafts
+
+The initial desktop and mobile explorations were too close to the foundation UI, so additional modern refinements were generated before implementation.
+
+Intermediate refined draft:
+
+```txt
+Draft: Refined Modern DocApp Homepage
+Draft ID: 58f4cce9-c4b9-4ccd-9c60-b5fd06921480
+Preview: https://p.superdesign.dev/draft/58f4cce9-c4b9-4ccd-9c60-b5fd06921480
+```
+
+Review notes:
+
+- Better modern visual polish than the first two explorations.
+- Rejected as final source because it still used a stock photo, decorative blur accents, `Get started for free`, `Pricing`, and rough public copy.
+
+Corrected refined draft:
+
+```txt
+Draft: Corrected Refined DocApp Homepage
+Draft ID: c96459cf-a847-40fe-89cd-73d919e8655a
+Preview: https://p.superdesign.dev/draft/c96459cf-a847-40fe-89cd-73d919e8655a
+```
+
+Review notes:
+
+- Removed the stock photo and pricing/free-plan copy.
+- Rejected as final source because it still had rough public copy such as `Clinic Management System`, `Audit Logs`, `admins`, and `DocApp System`.
+
+Recommended review candidate:
+
+```txt
+Draft: Copy-Safe Refined Modern DocApp Homepage
+Draft ID: e82aabc0-6091-44f8-8446-9f733a8229d9
+Preview: https://p.superdesign.dev/draft/e82aabc0-6091-44f8-8446-9f733a8229d9
+```
+
+Review notes:
+
+- This was the recommended modern DocApp product-marketing candidate before the Phase 7 scope correction.
+- It keeps the modernized structure, Inter direction, stronger hero composition, refined cards, safe public navigation, booking CTA, support CTA, configurable hero visual placeholder, and safer public copy.
+- It should not be used as the Phase 7 clinic patient homepage source of truth.
+- Keep this draft as future DocApp product marketing material with small adjustments if/when a separate DocApp marketing site is needed.
+- Before implementation, replace any generated legal/footer placeholders with approved product copy and route constants.
+
+### Phase 7 Scope Correction - Clinic Patient Home Page
+
+Phase 7 is now clarified as the deployed clinic's patient-facing home page, not a DocApp product marketing page.
+
+The home page should answer patient questions such as:
+
+- Which clinic is this?
+- What kind of appointments/services can I book?
+- How do I book an appointment?
+- What should I know about deposits, attendance, cancellation/request policy, and remaining balance?
+- How do I contact or find the clinic?
+
+The home page should not sell DocApp as a SaaS product to clinic owners. It should present the clinic's public information and guide patients toward booking.
+
+The existing modern DocApp marketing drafts remain useful for a future DocApp sales/marketing site, but they are not approved for the Phase 7 implementation.
+
+### Phase 7 Clinic Patient Homepage Draft
+
+After the scope correction, a new SuperDesign draft was generated specifically for the deployed clinic's patient-facing home page.
+
+```txt
+Draft: Sofia Care Clinic - Patient Homepage
+Draft ID: 76bd0f6d-2fcc-471c-bf38-e613416cd8e8
+Preview: https://p.superdesign.dev/draft/76bd0f6d-2fcc-471c-bf38-e613416cd8e8
+Project node: https://app.superdesign.dev/teams/77fd0ec7-d11c-4c10-b9a9-73e6904040a5/projects/d8caa855-58d2-4fe0-8265-2d2779034123?node=draft-variant-76bd0f6d-2fcc-471c-bf38-e613416cd8e8
+```
+
+Review notes:
+
+- This draft is the current Phase 7 review candidate because it presents a clinic home page for patients, not a DocApp SaaS marketing page.
+- It includes a patient-facing clinic hero, booking CTA, clinic/services summary, deposit/attendance/policy messaging, visit expectations, and contact/location-style content.
+- It includes a configurable hero image placeholder. During implementation, this must connect to the approved homepage content/settings model rather than being hardcoded permanently.
+- The generated HTML contains an internal comment mentioning an admin-configurable hero image placeholder. This is acceptable as design intent only and should not become patient-visible public copy.
+- Keep the copy focused on the clinic and its appointment process. Do not introduce product-marketing language such as SaaS, pricing, marketplace, admin dashboard, audit logs, or staff login.
+- Do not mark this draft as the final UI source of truth until it is reviewed and approved.
+
+### Phase 7 Design Fallback
+
+SuperDesign access was restored after the temporary fallback period. The in-repository design pass was treated as a temporary reference and was replaced by the final approved SuperDesign direction below.
+
+Design requirements remain unchanged:
+
+- The home page is for the deployed clinic's patients, not DocApp product buyers.
+- The page should feel modern, calm, and clinic-specific.
+- The page must guide patients toward booking without implementing the full booking flow yet.
+- Patient-facing copy must avoid medical-record, diagnosis, prescription, insurance, public staff/admin, refund-request, and product-pricing language.
+- Hero copy, hero image direction, service text, policy summaries, contact details, and CTA labels must remain ready for later admin configuration.
+
+### Phase 7 Final Approved Clinic Homepage
+
+```txt
+Draft: Sofia Care Clinic - Hero with Secondary CTA
+Draft ID: 211d38db-7f1f-4e42-8cdc-23a259aa1945
+Preview: https://p.superdesign.dev/draft/211d38db-7f1f-4e42-8cdc-23a259aa1945
+Project board: https://app.superdesign.dev/teams/77fd0ec7-d11c-4c10-b9a9-73e6904040a5/projects/d8caa855-58d2-4fe0-8265-2d2779034123?node=draft-variant-211d38db-7f1f-4e42-8cdc-23a259aa1945
+```
+
+Approved implementation direction:
+
+- Use one consistent clinical blue, teal, white, and neutral palette from the design system.
+- Use an image-led, full-width clinic hero with `Book an Appointment` as the primary action and `Contact Us` as the secondary action.
+- Keep the abbreviation-based language selector in the public navbar for BG, EN, ES, DE, FR, and IT.
+- Do not show the decorative or blinking `Slots available today` pill.
+- Use the overlapping three-column booking-fact strip for online booking availability, deposit visibility, and remaining clinic balance.
+- Use the approved patient-experience, three-step booking, policy/privacy, closing CTA, and compact footer structure.
+- Translate generated HTML into maintainable app components; do not copy Petite-Vue/Iconify markup into production.
+- Replace unsupported generated claims such as instant confirmation, recovery, or functionality not yet implemented with product-safe MVP copy.
+- Keep existing route constants and the existing functional Clerk auth and language controls.

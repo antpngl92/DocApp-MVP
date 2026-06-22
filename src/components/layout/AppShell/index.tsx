@@ -7,10 +7,12 @@ import {
 import { getLocalUserDisplayName } from "@/server/auth/utils";
 
 const AppShell = async ({
+  brandName,
   children,
   contextLabel,
   navigation,
   showCurrentUserName = false,
+  showCreateAccount = true,
 }: AppShellProps) => {
   const currentUser = showCurrentUserName ? await getCurrentAuthenticatedUser() : null;
   const currentUserName =
@@ -21,9 +23,11 @@ const AppShell = async ({
   return (
     <div className="min-h-screen bg-[var(--background)]">
       <AppHeader
+        brandName={brandName}
         contextLabel={contextLabel}
         currentUserName={currentUserName}
         navigation={navigation}
+        showCreateAccount={showCreateAccount}
       />
       <main className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 sm:py-10">{children}</main>
     </div>

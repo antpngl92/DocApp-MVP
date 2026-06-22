@@ -73,8 +73,10 @@ Prototype issues that the MVP architecture must correct:
 
 ```txt
 src/app/
-├── (marketing)/
 ├── (public)/
+│   ├── layout.tsx
+│   ├── page.tsx
+│   ├── support/
 │   ├── booking/
 │   └── checkout/
 ├── (patient)/

@@ -1,0 +1,1 @@
+export { ClinicHomePage } from "./components";

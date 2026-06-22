@@ -144,9 +144,9 @@ Complete tasks from top to bottom and one approved task/branch at a time. Do not
 - [x] Add audit events for Phase 6 sensitive role/access changes.
 - [x] Risk: access control must be enforced on the server, not only hidden in the UI.
 
-## Phase 7 - Home Page
+## Phase 7 - Clinic Patient Home Page
 
-This phase owns the public home page as the first polished DocApp marketing surface. It should not implement the booking flow yet, but it must guide patients toward the future booking page and establish the approved visual direction for the rest of the app.
+This phase owns the public home page for the deployed clinic. It is not the DocApp product marketing site. The page should help a clinic's patients understand the clinic, see patient-safe appointment information, and move toward booking. It should not implement the full booking flow yet, but it must guide patients toward the future booking page and establish the approved visual direction for clinic-facing public pages.
 
 - [x] Reconnect/confirm SuperDesign access for this project before starting homepage design work.
 - [x] Use SuperDesign with the existing DocApp context files, including `.superdesign/design-system.md`, `.superdesign/init/theme.md`, `docs/MVP.md`, `docs/DECISIONS.md`, `docs/project-documentation/ui-direction.md`, and `docs/project-documentation/superdesign-integration.md`.
@@ -154,23 +154,23 @@ This phase owns the public home page as the first polished DocApp marketing surf
 - [x] Include homepage states/sections in SuperDesign review notes before implementation.
 - [x] Define the approved application theme, color palette, typography direction, spacing, and component tone through SuperDesign review.
 - [x] Update the relevant `.superdesign/` context files if the approved theme/colors change.
-- [ ] Treat the approved SuperDesign homepage direction as the UI source of truth for this phase while keeping product/security/privacy docs authoritative.
-- [ ] Build the polished public home page at `/`.
-- [ ] Use the approved SuperDesign homepage layout rather than old prototype UI or generic template sections.
-- [ ] Build a better public navbar for marketing/home use.
-- [ ] Include clear navigation to public-safe pages such as home, booking CTA, support/contact, and sign in/account where appropriate.
-- [ ] Add a primary CTA button that links to the booking route, even if the full booking flow is implemented in a later phase.
-- [ ] Add a secondary CTA or supporting action only if it improves the homepage design and does not distract from booking.
-- [ ] Add clinic-focused marketing copy explaining DocApp's value: deposit-based booking, fewer no-shows, clear appointment commitment, and Google Calendar-aware clinic operations.
-- [ ] Avoid positioning DocApp as a public doctor marketplace, medical-record system, diagnosis tool, prescription system, insurance workflow, or generic booking app.
-- [ ] Do not include ads, booking fees, platform fees, refund-request copy, medical-record copy, symptoms, diagnosis, chat, file upload, or rescheduling promises.
-- [ ] Add a homepage hero section with a real or generated bitmap-style visual direction approved through SuperDesign.
+- [x] Treat the approved clinic patient homepage direction as the UI source of truth for this phase while keeping product/security/privacy docs authoritative; SuperDesign drafts may be used as archived references only if access is unavailable.
+- [x] Build the polished public home page at `/`.
+- [x] Use the approved SuperDesign homepage layout rather than old prototype UI or generic template sections.
+- [x] Build a better public navbar for the clinic patient home page.
+- [x] Include clear navigation to public-safe clinic pages such as home, booking CTA, clinic information/about, support/contact, and sign in/account where appropriate.
+- [x] Add a primary CTA button that links to the booking route, even if the full booking flow is implemented in a later phase.
+- [x] Add a secondary CTA or supporting action only if it improves the homepage design and does not distract from booking.
+- [x] Add patient-facing clinic homepage copy, such as clinic introduction, services summary, appointment booking expectations, deposit/attendance policy summary, contact/location details, working hours where available, and how to book.
+- [x] Avoid positioning the clinic homepage as a DocApp product marketing page, public doctor marketplace, medical-record system, diagnosis tool, prescription system, insurance workflow, or generic booking app.
+- [x] Do not include ads, booking fees, platform fees, refund-request copy, medical-record copy, symptoms, diagnosis, chat, file upload, or rescheduling promises.
+- [x] Add a homepage hero section with a real or generated bitmap-style visual direction approved through SuperDesign.
 - [ ] Make the homepage hero image/admin-facing visual configurable by authorized admin users.
-- [ ] Make homepage marketing copy configurable by authorized admin users, especially the large hero headline, hero supporting copy, section headings, section descriptions, and CTA labels.
+- [ ] Make homepage patient-facing clinic copy configurable by authorized admin users, especially the large hero headline, hero supporting copy, section headings, section descriptions, contact details, policy summary, and CTA labels.
 - [ ] Add or prepare a local homepage content/settings model or equivalent server-side configuration for editable hero image URL, hero image alt text, hero headline, hero supporting copy, section copy, and CTA labels.
 - [ ] Do not store real patient data, credentials, private clinic data, or medical content in homepage content fields.
 - [ ] Add an admin-only path or clearly documented follow-up task for editing homepage hero/content settings if the full admin editing UI is not built in this phase.
-- [ ] Ensure homepage content supports the existing i18n languages or has a documented translation strategy before hardcoding copy.
+- [x] Ensure homepage content supports the existing i18n languages or has a documented translation strategy before hardcoding copy.
 - [ ] Add SEO metadata for the home page, including title, description, and safe Open Graph basics.
 - [ ] Ensure the homepage is responsive and polished on mobile and desktop.
 - [ ] Ensure the homepage has accessible heading order, alt text, keyboard-safe navigation, and sufficient contrast.

@@ -77,6 +77,94 @@
       }
     }
   },
+  "homePage": {
+    "eyebrow": "Sofia Care Clinic",
+    "title": "Ihre Gesundheit, passend zu Ihrem Zeitplan.",
+    "subtitle": "Buchen Sie Ihren Besuch mit klaren Terminen und Anzahlungsdetails in einem patientenfreundlichen Ablauf.",
+    "primaryCta": "Termin buchen",
+    "secondaryCta": "Kontakt",
+    "heroImageAlt": "Medizinische Fachkraft unterstützt einen Patienten während eines Klinikbesuchs",
+    "footerNavigationLabel": "Fußzeilennavigation",
+    "heroBadge": "Vertrauenswürdige lokale Klinik",
+    "stepEyebrow": "So funktioniert die Buchung",
+    "stepTitle": "Klare Schritte vor Ihrem Besuch",
+    "benefitEyebrow": "Patientenerlebnis",
+    "benefitTitle": "Das Sofia Care Erlebnis",
+    "benefitDescription": "Klare Verfügbarkeit, Anzahlungsinformationen und Termindetails ohne unnötige Komplexität.",
+    "closingCtaTitle": "Bereit, Ihren Termin zu buchen?",
+    "closingCtaDescription": "Sehen Sie den aktuellen Klinikplan und beginnen Sie Ihre Buchung in wenigen Schritten.",
+    "processDescription": "Drei Schritte führen von der Leistungsauswahl bis zur Prüfung Ihrer Termindetails.",
+    "processLinkLabel": "Buchung starten",
+    "policyTitle": "Patientenrichtlinie",
+    "securityTitle": "Termin-Datenschutz",
+    "securityBadge": "Portal nur für Termine",
+    "footerClinicLabel": "Klinik",
+    "footerAccountLabel": "Konto",
+    "footerSignInLabel": "Anmelden",
+    "footerRegisterLabel": "Konto erstellen",
+    "footerDescription": "Bequeme Terminbuchung mit klaren Angaben zu Anzahlung und Kliniksaldo.",
+    "footerCopyright": "© 2026 Sofia Care Clinic. Alle Rechte vorbehalten.",
+    "contact": {
+      "online": {
+        "label": "Online-Buchung",
+        "value": "Rund um die Uhr verfügbar"
+      },
+      "deposit": {
+        "label": "Klare Anzahlung",
+        "value": "Vor der Zahlung sichtbar"
+      },
+      "balance": {
+        "label": "Kliniksaldo",
+        "value": "Restbetrag wird in der Klinik bezahlt"
+      }
+    },
+    "services": {
+      "online": {
+        "title": "Online-Buchung rund um die Uhr",
+        "description": "Starten Sie eine Buchung jederzeit, ohne auf die telefonischen Öffnungszeiten zu warten."
+      },
+      "deposit": {
+        "title": "Klare Anzahlungsdetails",
+        "description": "Sehen Sie die jetzt fällige Anzahlung und den Restbetrag vor der Zahlung."
+      },
+      "privacy": {
+        "title": "Datenschutz zuerst",
+        "description": "Ihre Kontaktdaten werden nur zur Verwaltung Ihres Termins verwendet."
+      },
+      "details": {
+        "title": "Klare Termindetails",
+        "description": "Prüfen Sie Leistung, Zeit, Anzahlung und Restbetrag, bevor Sie fortfahren."
+      }
+    },
+    "steps": {
+      "service": {
+        "title": "Service wählen",
+        "description": "Beginnen Sie mit der gewünschten Besuchsart und fahren Sie mit den verfügbaren Zeiten fort."
+      },
+      "time": {
+        "title": "Verfügbaren Termin wählen",
+        "description": "Wählen Sie eine Zeit aus dem Klinikplan. Der vollständige Buchungsablauf folgt in späteren Phasen."
+      },
+      "deposit": {
+        "title": "Anzahlung und Details prüfen",
+        "description": "Vor dem Checkout zeigt die App die jetzt fällige Anzahlung und den Restbetrag in der Klinik."
+      }
+    },
+    "policy": {
+      "deposit": {
+        "title": "Anzahlungsregel",
+        "description": "Anzahlungen reservieren den Termin und sind standardmäßig nicht erstattbar, wenn der Patient nicht erscheint."
+      },
+      "privacy": {
+        "title": "Konto nur für Termine",
+        "description": "Nutzen Sie die App für Buchungen und Terminstatus. Geben Sie keine Symptome, Diagnosen oder Behandlungsnotizen ein."
+      },
+      "attendance": {
+        "title": "Klinikbesuch",
+        "description": "Bitte kommen Sie pünktlich oder kontaktieren Sie die Klinik, wenn Ihr Besuch nach der Stornierungsregel Aufmerksamkeit benötigt."
+      }
+    }
+  },
   "booking": {
     "eyebrow": "Öffentliche Buchung",
     "title": "Termin buchen",
