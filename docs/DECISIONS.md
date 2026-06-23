@@ -6,9 +6,9 @@ The source of scope is `docs/MVP.md`. Decisions here should prevent the team fro
 
 ## Current Product Direction
 
-Decision `048` is the current product boundary and supersedes earlier clinic-workforce or doctor-resource assumptions wherever they conflict.
+Decision `048` is the current product boundary and supersedes earlier clinic-workforce or provider-resource assumptions wherever they conflict.
 
-DocApp targets one independent healthcare professional operating one or more cabinets/offices. Each deployment represents one practice. `Cabinet` is the primary bookable entity; the target architecture has no separate operational `Doctor` model or staff `doctor` role. The professional uses the `admin` role, optional invited staff use `receptionist`, and patients use patient profiles.
+DocApp targets one independent healthcare professional operating one or more cabinets/offices. Each deployment represents one practice. `Cabinet` is the primary bookable entity; the target architecture has no separate operational provider profile or provider staff role. The professional uses the `admin` role, optional invited staff use `receptionist`, and patients use patient profiles.
 
 Earlier completed implementation remains visible in task and Git history, but it must be removed or adapted through the cabinet-focused reset before new booking features are built.
 
@@ -235,7 +235,7 @@ Models should still use `organizationId` or equivalent ownership fields where th
 
 **Reason**
 
-The local organization record anchors clinic settings, Google Calendar connection, staff membership, doctors, resources, services, appointments, orders, sync records, notification logs, and audit events. Keeping that ownership explicit makes joins, authorization, data export, support, and future migration safer without implying that one deployment serves many clinics.
+The local organization record anchors practice settings, Google Calendar connection, staff membership, cabinets, services, appointments, orders, sync records, notification logs, and audit events. Keeping that ownership explicit makes joins, authorization, data export, support, and future migration safer without implying that one deployment serves many practices.
 
 **Implication**
 
@@ -331,7 +331,7 @@ Client-side data can be manipulated. Payment amounts and appointment slots must 
 
 **Implication**
 
-Before creating a Checkout Session, the server must re-check service price, deposit amount, selected slot availability, clinic ownership, active doctor/resource state, and pending lock status.
+Before creating a Checkout Session, the server must re-check service price, deposit amount, selected slot availability, practice ownership, active cabinet/service assignment, and pending lock status.
 
 ## 019 - Store Stripe And Google IDs For Traceability
 
@@ -351,9 +351,9 @@ Admin views may show internal references where useful, but avoid exposing unnece
 
 **Decision**
 
-Do not fetch all clinic, doctor, booking, service, payment, and calendar data at login and store it in one large Redux store.
+Do not fetch all practice, cabinet, booking, service, payment, and calendar data at login and store it in one large Redux store.
 
-Use the database as the source of truth. Use server-state caching on the frontend for fetched data such as clinics, doctors, services, appointments, payments, sync states, and notifications.
+Use the database as the source of truth. Use server-state caching on the frontend for fetched data such as cabinets, services, appointments, payments, sync states, and notifications.
 
 Use a small client-side store or React context only for UI state such as selected date, open panels, filters that are not encoded in the URL, temporary form state, and toast display.
 
@@ -545,10 +545,8 @@ Refund access should be permission-based.
 
 Default guidance:
 
-- owner: can issue refunds and override refund rules
 - admin: can issue refunds if granted permission
 - receptionist: can cancel appointments or flag refund review, but cannot issue money refunds by default
-- doctor: can mark appointment outcome where allowed, but cannot issue refunds by default
 
 **Reason**
 
@@ -662,35 +660,30 @@ Authenticated patient ownership makes booking status pages, appointment history,
 
 Patients can register/login, manage basic contact details, book appointments, view their own appointments, view deposit/payment state, and request cancellation when clinic policy allows it. Do not build medical records, diagnosis history, prescriptions, chat, file uploads, or treatment notes.
 
-## 036 - Role-Based Access Starts In The Foundation (Role Set Superseded By 048)
+## 036 - Role-Based Access Starts In The Foundation
 
 **Decision**
 
-The MVP should model clinic-side staff roles and patient ownership from the start:
+The MVP should model practice staff roles and patient ownership from the start:
 
 - admin
 - receptionist
-- doctor
 
 Patients are represented through patient ownership/profile records, not `OrganizationMember` staff memberships.
 
 **Reason**
 
-Clinic-side users and patients both authenticate, so access separation is foundational rather than a later polish step.
+Staff users (admin/receptionist) and patients both authenticate, so access separation is foundational rather than a later polish step.
 
 **Implication**
 
-Admin can do what doctor and receptionist can do, plus clinic-level administration such as staff invitations, doctor approval, clinic settings, Google Calendar connection, calendar mappings, and final activation/disable decisions.
+Admin controls practice settings, staff invitations, cabinets, services, availability, Google Calendar connection/mappings, appointments, and privileged financial actions.
 
-Receptionist can create manual bookings and review booking details for each doctor. Receptionist cannot edit doctor profiles, doctor booking settings, clinic settings, staff invitations, calendar mappings, or admin-only actions.
-
-Doctor can do receptionist-like appointment work only for appointments attached to their own linked `Doctor` profile. Doctor cannot manage another doctor's bookings/settings and cannot perform admin-only actions. After admin approval, doctor can manage their own operational booking settings such as services, availability, slots/times, holidays, blocked time, and own bookable state.
+Receptionist can create manual bookings and review allowed booking details across cabinets. Receptionist cannot edit practice settings, staff invitations, calendar mappings, payment credentials, or other admin-only configuration.
 
 Patient can view and manage only their own appointments/profile.
 
-Doctor-role staff require a linked `Doctor` operational profile before normal doctor dashboard access. Invited doctors should be redirected to required doctor-profile onboarding after invitation acceptance when no profile exists. The profile starts inactive, not bookable, and pending admin approval; only after approval can the doctor manage their own booking settings.
-
-Authorization helpers should check both role and target scope. For appointment-related actions, evaluate the actor role, actor doctor profile ID where applicable, and target doctor profile ID.
+Authorization helpers should check both role and target practice/cabinet ownership. UI visibility never replaces server authorization.
 
 ## 037 - Google Calendar Foundation Comes Early (Mapping Target Superseded By 048)
 
@@ -702,7 +695,7 @@ Creating final Google Calendar appointment events still happens only after Strip
 
 **Reason**
 
-DocApp depends on clinic calendars, doctor calendars, resource/cabinet calendars, and appointment sync. The integration shape affects the data model and admin setup.
+DocApp depends on cabinet calendars and appointment sync. The integration shape affects the data model and admin setup.
 
 **Implication**
 
@@ -733,7 +726,7 @@ Closing the form should release the hold as a best-effort optimization, but expi
 
 Temporary slot holds are server-side records, not only visual UI state.
 
-When the patient submits the booking form, the server must verify that the hold exists, belongs to the same user/session flow, is active, is not expired, matches organization/service/doctor/resource/start/end time, and has not already been converted.
+When the patient submits the booking form, the server must verify that the hold exists, belongs to the same user/session flow, is active, is not expired, matches organization/cabinet/service/start/end time, and has not already been converted.
 
 **Reason**
 
@@ -747,7 +740,7 @@ Checkout creation is rejected if the hold is invalid, expired, mismatched, or al
 
 **Decision**
 
-Local doctor/resource/cabinet records should not be tightly coupled to Google-specific fields.
+Local cabinet records should not be tightly coupled to Google-specific fields.
 
 Use `CalendarIntegration` or equivalent mapping records for external Google Calendar IDs.
 
@@ -757,7 +750,7 @@ The local data model should describe clinic operations. Google Calendar is an ex
 
 **Implication**
 
-`Resource` / `Cabinet` represents local clinic resources. `Doctor` / staff represents local people. `CalendarIntegration` maps organizations/doctors/resources to Google Calendar identifiers.
+`Cabinet` represents the local bookable location. `CalendarIntegration` maps cabinets to Google Calendar identifiers.
 
 ## 041 - Public Booking Requires Abuse Prevention
 
@@ -799,7 +792,7 @@ Availability, patient display, admin scheduling, and Google Calendar sync must a
 
 **Implication**
 
-Organization/clinic has a timezone. Availability rules are interpreted in clinic timezone. Appointment start/end are stored consistently. Patient/admin/doctor displays use clinic timezone unless later configured otherwise. Google Calendar sync uses the clinic/calendar timezone consistently. Tests should cover timezone boundaries.
+The practice has a timezone. Availability rules are interpreted in that timezone. Appointment start/end are stored consistently. Patient and staff displays use the practice timezone unless later configured otherwise. Google Calendar sync uses the practice/calendar timezone consistently. Tests should cover timezone boundaries.
 
 ## 044 - Rescheduling Is Out Of Scope Until Explicitly Added
 
@@ -833,7 +826,7 @@ Owner/admin roles and organization memberships are assigned only through trusted
 
 **Decision**
 
-The local `Organization` is the single clinic profile and product source of truth for this deployment. For MVP, an existing clinic may have one active connected Google account containing multiple calendars. Store the account connection separately from individual calendar mappings. Calendars are mapped through integration records to existing local doctors, resources/cabinets, or an explicitly documented clinic-default purpose.
+The local `Organization` is the single practice profile and product source of truth for this deployment. For MVP, a practice may have one active connected Google account containing multiple calendars. Store the account connection separately from individual calendar mappings. Calendars are mapped through integration records to local cabinets.
 
 **Reason**
 
@@ -841,7 +834,7 @@ Clinic identity, authorization, services, booking policies, availability, appoin
 
 **Implication**
 
-Create the organization, authorized membership, doctors, resources, and calendar integration schema before implementing the Google connection flow. Keep doctor/resource booking settings local. Only authorized owner/admin roles may manage the clinic Google connection and mappings. Disconnecting or replacing Google Calendar must not delete local clinic records.
+Create the organization, authorized membership, cabinets, and calendar integration schema before implementing the Google connection flow. Keep cabinet booking settings local. Only admin may manage the practice Google connection and mappings. Disconnecting or replacing Google Calendar must not delete local practice records.
 
 ## 047 - Implementation Tasks Follow Explicit Dependencies
 
@@ -865,21 +858,20 @@ DocApp MVP targets an independent healthcare professional operating one or more 
 
 `Cabinet` is the primary bookable operational entity. It represents the professional/location combination patients choose and owns or references its public identity, address, contact details, services, pricing, deposits, availability, blocked time, booking settings, calendar mapping, and appointments.
 
-The target architecture must not contain a separate operational `Doctor` model or staff `doctor` role. The professional uses `admin`, optional invited staff use `receptionist`, and patients use patient profiles.
+The target architecture must not contain a separate operational provider-profile model or provider staff role. The professional uses `admin`, optional invited staff use `receptionist`, and patients use patient profiles.
 
 One practice-owned Stripe account receives deposits for all cabinets. One practice-owned Google account may expose multiple calendars, normally one calendar mapped to each cabinet. Payments and calendars do not create separate practice ownership boundaries.
 
 **Reason**
 
-The strongest initial use case is a doctor or healthcare professional who works in multiple places on different days and needs cabinet-specific availability, deposits, and calendars. A clinic-workforce model introduces salaried doctors, room rental, split revenue, and management concerns that do not serve this initial customer and substantially increase product complexity.
+The strongest initial use case is an independent healthcare professional who works in multiple places on different days and needs cabinet-specific availability, deposits, and calendars. A clinic-workforce model introduces salaried providers, room rental, split revenue, and management concerns that do not serve this initial customer and substantially increase product complexity.
 
 **Implication**
 
-- Remove the existing `Doctor` model, doctor onboarding/approval flow, doctor role, doctor-specific navigation, and doctor-scoped authorization before building the booking domain.
-- Keep completed historical tasks visible, but add explicit reset tasks and do not build new features on obsolete doctor assumptions.
+- Keep the provider-profile domain removed and do not rebuild booking features around provider-scoped assumptions.
 - Model services, availability, holds, appointments, and Google Calendar mappings around `Cabinet`.
 - Scope admin and receptionist operations to the single practice and its cabinets.
 - Present cabinet names clearly enough to identify both professional and location, for example `Dr. Anton - Pleven`.
-- Do not add clinic payroll, doctor compensation, room-rental accounting, revenue sharing, multi-doctor workforce management, or Stripe Connect to MVP.
+- Do not add clinic payroll, provider compensation, room-rental accounting, revenue sharing, multi-provider workforce management, or Stripe Connect to MVP.
 
-This decision supersedes Decisions `001`, `012`, `013`, `036`, `037`, `040`, `043`, `045`, and `046` only where their clinic, doctor, resource, role, or terminology assumptions conflict with this cabinet-focused direction. Their unaffected security, integration, payment, and dependency principles still apply.
+This decision supersedes Decisions `001`, `012`, `013`, `036`, `037`, `040`, `043`, `045`, and `046` only where their clinic, provider, resource, role, or terminology assumptions conflict with this cabinet-focused direction. Their unaffected security, integration, payment, and dependency principles still apply.

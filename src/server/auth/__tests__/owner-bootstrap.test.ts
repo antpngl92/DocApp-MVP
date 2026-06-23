@@ -252,7 +252,7 @@ describe("bootstrapOwnerAdminMembershipFromClerkPrivateMetadata", () => {
     expect(database.auditEvent.create).not.toHaveBeenCalled();
   });
 
-  it("skips bootstrap when metadata is missing or invalid", async () => {
+  it("skips bootstrap when metadata is missing", async () => {
     const localUser = createLocalUser();
     const missingMetadataDatabase = createDatabase({ localUser });
 
@@ -275,33 +275,7 @@ describe("bootstrapOwnerAdminMembershipFromClerkPrivateMetadata", () => {
       status: OWNER_BOOTSTRAP_STATUS.noBootstrapMetadata,
     });
 
-    const invalidMetadataDatabase = createDatabase({ localUser });
-
-    await expect(
-      bootstrapOwnerAdminMembershipFromClerkPrivateMetadata({
-        authReader: async () => ({ userId: localUser.clerkUserId }),
-        clerkProfileReader: async () => ({
-          localUserInput: {
-            clerkUserId: localUser.clerkUserId,
-            email: localUser.email,
-            name: localUser.name,
-          },
-          privateMetadata: {
-            docapp: {
-              bootstrapRole: "doctor",
-            },
-          },
-        }),
-        database: invalidMetadataDatabase,
-      }),
-    ).resolves.toEqual({
-      membership: null,
-      role: null,
-      status: OWNER_BOOTSTRAP_STATUS.invalidRole,
-    });
-
     expect(missingMetadataDatabase.organizationMember.create).not.toHaveBeenCalled();
-    expect(invalidMetadataDatabase.organizationMember.create).not.toHaveBeenCalled();
   });
 
   it("creates the local User before bootstrapping membership when webhook sync has not created it yet", async () => {

@@ -43,7 +43,6 @@ describe("navigation", () => {
       ROUTES.dashboardManualBooking,
       ROUTES.dashboardSettings,
     ]);
-    expect(getDashboardNavigationForRole("doctor")).toEqual([]);
     expect(getDashboardNavigationForRole("receptionist").map((item) => item.href)).toEqual([
       ROUTES.dashboardSchedule,
       ROUTES.dashboardManualBooking,

@@ -28,7 +28,7 @@ After acceptance:
 4. mark it active and invitation accepted
 5. create an audit event
 
-The target MVP has no staff `doctor` role and no doctor-profile onboarding or approval gate.
+The target MVP has no additional provider staff role and no provider-profile onboarding or approval gate.
 
 ### Patient
 
@@ -78,26 +78,6 @@ Public registration, staff invitation, invitation acceptance, role change, suspe
 ## Practice Scoping
 
 Even with one practice per deployment, every practice-owned server query should verify `organizationId` or follow a relation rooted in the current practice. This prevents accidental IDOR bugs and keeps webhook/action code from trusting client-provided ownership IDs.
-
-## Cabinet-Focused Reset
-
-Remove from the current implementation:
-
-- doctor membership role
-- doctor onboarding and approval helpers
-- Doctor-profile linkage requirements
-- doctor-specific post-auth destinations
-- doctor-scoped navigation and permissions
-
-Preserve:
-
-- controlled admin provisioning
-- Clerk/local user mapping
-- receptionist invitation security
-- local membership authority
-- patient ownership guards
-- server-side practice scoping
-- audit history
 
 ## Security Rules
 

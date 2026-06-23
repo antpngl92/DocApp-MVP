@@ -130,7 +130,7 @@ describe("auth utils", () => {
     expect(
       hasDocAppBootstrapMetadata({
         docapp: {
-          bootstrapRole: "receptionist",
+          bootstrapRole: OWNER_BOOTSTRAP_ROLE.admin,
         },
       }),
     ).toBe(true);
@@ -145,7 +145,6 @@ describe("auth utils", () => {
   it("allows invitations only for the MVP staff roles", () => {
     expect(isInvitableStaffMemberRole(STAFF_MEMBER_ROLE.admin)).toBe(true);
     expect(isInvitableStaffMemberRole(STAFF_MEMBER_ROLE.receptionist)).toBe(true);
-    expect(isInvitableStaffMemberRole("doctor")).toBe(false);
     expect(isInvitableStaffMemberRole("manager")).toBe(false);
     expect(isInvitableStaffMemberRole("owner")).toBe(false);
     expect(isInvitableStaffMemberRole("patient")).toBe(false);

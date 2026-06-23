@@ -1,6 +1,6 @@
 # SuperDesign Review
 
-> Historical design record: drafts below preserve the terminology used when they were created. Decision `048` supersedes clinic-workforce, doctor/provider-selection, and doctor-resource assumptions. New implementation must adapt the approved visual language to the cabinet-centered practice model and must not restore a Doctor domain model.
+> Historical design record: drafts below preserve the terminology used when they were created. Decision `048` supersedes clinic-workforce and provider/resource-selection assumptions. New implementation must adapt the approved visual language to the cabinet-centered practice model and must not restore a separate provider domain.
 
 This file records the Phase 3 SuperDesign exploration for DocApp.
 
@@ -28,7 +28,6 @@ Coverage:
 
 - clinic-branded public booking flow
 - service summary
-- doctor/provider summary
 - patient details form
 - selected appointment date/time
 - active slot hold warning
@@ -56,7 +55,7 @@ Preview: https://p.superdesign.dev/draft/fc9ef42e-5d2d-4247-94f7-0dc860c89db5
 Coverage:
 
 - Service step where the patient chooses a service
-- doctor/provider or resource selection for the chosen service
+- provider/resource selection for the chosen service (superseded by cabinet selection)
 - service cards with duration, full appointment price, deposit due now, and remaining balance at clinic
 - Time step with desktop weekly calendar view
 - Monday-to-Sunday desktop columns
@@ -270,7 +269,7 @@ The `.superdesign/init/` files were refreshed before homepage draft generation t
 - current clinic public home route: `src/app/(public)/page.tsx`
 - current public shell/header files: `PublicShell`, `AppShell`, `AppHeader`, `LanguageSelector`, `AuthControls`
 - current placeholder homepage dependency tree
-- current route map, including public, auth, patient, staff dashboard, doctor onboarding, and API routes
+- current route map at the time, including public, auth, patient, staff dashboard, and API routes
 - current CSS token values from `src/app/globals.css`
 - current extractable component candidates for SuperDesign, especially `AppHeader`
 
@@ -348,7 +347,7 @@ Rejected or not approved:
 - The desktop exploration's invented `80%` no-show metric.
 - The mobile exploration's `Staff Login` public footer copy.
 - Generic `/booking` links instead of route constants.
-- Heavy gradients, decorative blobs, marketplace-style doctor cards, ads, public refund-request copy, and medical-record-like copy.
+- Heavy gradients, decorative blobs, marketplace-style provider cards, ads, public refund-request copy, and medical-record-like copy.
 
 ### Phase 7 Refined Modern Homepage Drafts
 

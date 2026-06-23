@@ -115,21 +115,17 @@ Complete tasks from top to bottom and one approved task/branch at a time. Do not
 - [x] Implement trusted clinic owner/admin local provisioning and link it to a trusted Clerk identity.
 - [x] Implement one staff-user onboarding flow with Clerk Invitations plus local membership validation.
 - [x] Build owner/admin staff invitation form with staff email input and role dropdown.
-- [x] Allow owner/admin to choose staff role during invitation, limited to admin, receptionist, or doctor.
+- [x] Allow owner/admin to choose staff role during invitation, limited to admin or receptionist.
 - [x] Create staff invitation from a server-only action/route using Clerk Backend API `clerkClient.invitations.createInvitation`.
 - [x] Store Clerk invitation ID/status alongside the pending local invitation or membership record.
 - [x] Do not pass local organization, membership, invitation, or role metadata to Clerk invitations for MVP; match staff invitation acceptance by invited email against local `OrganizationMember` state only.
-- [x] Support staff roles through local `OrganizationMember` state, limited to admin, receptionist, and doctor for MVP.
-- [x] Link a staff user with role `doctor` to a `Doctor` operational profile before normal doctor dashboard access.
-- [x] Redirect invited doctors without a linked `Doctor` profile to required doctor-profile onboarding after invitation acceptance/login.
-- [x] Create doctor profiles from doctor onboarding as inactive, not bookable, and pending admin approval.
-- [x] Build the initial role-aware `/dashboard` shell with a SuperDesign-guided collapsible sidebar before implementing admin-only doctor approval workflows.
-- [x] Show dashboard sidebar items by staff role: admin sees clinic-wide dashboard, staff members, notifications, logs placeholder, manual booking, and settings; doctor sees own dashboard, profile, notifications, manual booking, and settings after approval; receptionist sees schedule view, manual booking, and profile.
+- [x] Support staff roles through local `OrganizationMember` state, limited to admin and receptionist for MVP.
+- [x] Build the role-aware `/dashboard` shell with a SuperDesign-guided collapsible sidebar.
+- [x] Show dashboard sidebar items by staff role: admin sees practice-wide administration; receptionist sees schedule, manual booking, and profile.
 - [x] Keep the public/customer navbar out of staff dashboard routes and place logout at the bottom of the staff sidebar.
-- [x] Require admin approval before a doctor profile becomes active.
 - [x] Ensure Clerk invitation metadata is treated as a hint and local `OrganizationMember` state remains the source of staff roles and permissions.
 - [x] Ensure staff cannot self-register into arbitrary clinics without invitation or owner/admin approval.
-- [x] Model and enforce clinic-side roles plus patient profile ownership: admin, receptionist, doctor, and patient account access.
+- [x] Model and enforce staff roles plus patient profile ownership: admin, receptionist, and patient account access.
 - [x] Add organization/clinic membership checks.
 - [x] Add current-organization/current-clinic helper.
 - [x] Add admin/staff authorization guards.
@@ -146,17 +142,17 @@ Complete tasks from top to bottom and one approved task/branch at a time. Do not
 
 ### Cabinet-Focused Domain Reset
 
-The checked doctor/clinic tasks above record implementation history. Decision `048` changes the target product, so the reset below must be completed before Phase 8 or any new booking-domain work.
+Decision `048` changed the product direction. Complete this reset before Phase 8 or any new booking-domain work.
 
 - [ ] Rename current-clinic concepts and product-facing copy to current-practice concepts while keeping `Organization` as the technical ownership root.
-- [x] Remove the `Doctor` Prisma model and all relations, migrations where appropriate, generated Prisma client references, seed data, and schema tests that depend on it.
-- [x] Remove `doctor` from staff role enums, invitation options, validation, authorization, navigation, and audit logic.
+- [x] Remove the superseded provider-profile model and all related schema, generated client, seed, and test dependencies.
+- [x] Remove the superseded provider staff role from enums, invitations, validation, authorization, navigation, and audit logic.
 - [x] Keep only `admin` and `receptionist` as staff membership roles; patients remain represented by `PatientProfile`, not `OrganizationMember`.
-- [x] Remove doctor-profile onboarding, approval, activation, and bookable-state routes, components, server helpers, actions, tests, and documentation references.
-- [x] Remove doctor-scoped dashboard navigation and permissions; admin operates the practice and all cabinets, while receptionist receives only explicitly allowed appointment operations.
+- [x] Remove obsolete provider onboarding, approval, activation, and bookable-state routes, components, server helpers, actions, tests, and documentation references.
+- [x] Remove obsolete provider-scoped dashboard navigation and permissions; admin operates the practice and all cabinets, while receptionist receives only explicitly allowed appointment operations.
 - [x] Preserve secure Clerk invitation matching, local membership authority, patient ownership checks, audit events, and server-side practice scoping during the reset.
 - [x] Add or update focused tests for the simplified admin, receptionist, and patient access model.
-- [x] Run Prisma migration/generation and verify no stale `Doctor` or doctor-role symbols remain in source or generated client files.
+- [x] Run Prisma migration/generation and verify no stale provider-profile symbols remain in source or generated client files.
 
 ## Phase 7 - Practice Patient Home Page
 

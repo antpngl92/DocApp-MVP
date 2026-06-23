@@ -24,7 +24,7 @@ Organization (technical practice root)
 
 `Cabinet` is the primary bookable entity. It identifies the professional/location combination patients select, for example `Dr. Anton - Pleven` or `Dr. Anton - Pordim`.
 
-The target architecture has no operational `Doctor` model. The practice owner is represented by an active `OrganizationMember` with role `admin`. Optional invited staff use role `receptionist`. Patients use `PatientProfile` and are not staff members.
+The target architecture has no separate provider-profile model. The practice owner is represented by an active `OrganizationMember` with role `admin`. Optional invited staff use role `receptionist`. Patients use `PatientProfile` and are not staff members.
 
 ## Main Domains
 
@@ -83,7 +83,7 @@ Persist slot holds because double-booking prevention must work across browsers a
 
 ## Prototype Reference
 
-The old `D:\Projects\DocApp` prototype may be inspected for integration names, scripts, and behavior. It is not the architecture source of truth and its doctor/clinic/resource assumptions must not be copied into the MVP.
+The old `D:\Projects\DocApp` prototype may be inspected for integration names, scripts, and behavior. It is not the architecture source of truth and its workforce/resource assumptions must not be copied into the MVP.
 
 ## Dependency Order
 

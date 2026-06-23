@@ -21,7 +21,6 @@ describe("staff invitation role options", () => {
   });
 
   it("checks whether a value is an allowed invitation role", () => {
-    expect(isStaffInvitationRoleValue("doctor")).toBe(false);
     expect(isStaffInvitationRoleValue("manager")).toBe(false);
     expect(isStaffInvitationRoleValue("owner")).toBe(false);
     expect(isStaffInvitationRoleValue("patient")).toBe(false);

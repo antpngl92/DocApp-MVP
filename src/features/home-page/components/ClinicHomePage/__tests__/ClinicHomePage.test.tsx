@@ -94,4 +94,22 @@ describe("ClinicHomePage", () => {
       content.signUpHref,
     );
   });
+
+  it("renders additional configurable contact and service items", () => {
+    render(
+      <ClinicHomePage
+        content={{
+          ...content,
+          contact: [...content.contact, { label: "Accessibility", value: "Step-free entrance" }],
+          services: [
+            ...content.services,
+            { description: "Ask before your visit.", title: "Accessibility support" },
+          ],
+        }}
+      />,
+    );
+
+    expect(screen.getByText("Step-free entrance")).toBeInTheDocument();
+    expect(screen.getByText("Accessibility support")).toBeInTheDocument();
+  });
 });

@@ -8,7 +8,7 @@ Stripe webhooks are the only payment-finalization authority. Browser redirects a
 
 Each deployment uses one practice-owned Stripe account. Deposits from every cabinet are paid into that account.
 
-MVP does not split money by cabinet, pay employed/renting doctors, calculate wages, perform revenue sharing, or use Stripe Connect.
+MVP does not split money by cabinet, pay employed/renting providers, calculate wages, perform revenue sharing, or use Stripe Connect.
 
 ## Checkout Creation
 

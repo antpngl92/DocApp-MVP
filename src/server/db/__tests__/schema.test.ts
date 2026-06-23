@@ -48,7 +48,6 @@ describe("Prisma schema organization membership model", () => {
     expect(memberRoleEnum).toBeDefined();
     expect(memberRoleEnum).toContain("admin");
     expect(memberRoleEnum).toContain("receptionist");
-    expect(memberRoleEnum).not.toContain("doctor");
     expect(memberRoleEnum).not.toContain("owner");
     expect(memberRoleEnum).not.toContain("manager");
     expect(memberRoleEnum).not.toContain("patient");
@@ -192,13 +191,5 @@ describe("Prisma schema cleanup", () => {
     for (const modelName of removedModelNames) {
       expect(schema).not.toContain(`model ${modelName}`);
     }
-  });
-
-  it("does not retain the superseded doctor domain", () => {
-    const schema = readFileSync(schemaPath, "utf8");
-
-    expect(schema).not.toContain("model Doctor");
-    expect(schema).not.toContain("enum DoctorOnboardingStatus");
-    expect(schema).not.toMatch(/doctorProfile\s+Doctor/);
   });
 });

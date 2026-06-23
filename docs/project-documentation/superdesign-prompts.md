@@ -6,7 +6,7 @@ Design DocApp as the public booking and operational application for one independ
 
 Patients choose a cabinet such as `Dr. Anton - Pleven` or `Dr. Anton - Pordim`, then a service and available time. The product collects an appointment deposit, tracks the remaining balance, and optionally syncs each cabinet to its own Google calendar.
 
-Do not design a clinic workforce platform, public doctor marketplace, medical-record system, SaaS marketing page, or hospital dashboard. Do not add doctor selection, doctor cards, payroll, room rental, revenue sharing, ads, diagnosis, prescriptions, medical files, chat, or insurance workflows.
+Do not design a clinic workforce platform, public provider marketplace, medical-record system, SaaS marketing page, or hospital dashboard. Do not add provider selection/cards, payroll, room rental, revenue sharing, ads, diagnosis, prescriptions, medical files, chat, or insurance workflows.
 
 Use the approved modern clinical theme consistently. Keep colors purposeful rather than assigning random colors to sections. Public pages should feel calm, trustworthy, modern, and specific to the professional's practice.
 
@@ -52,7 +52,7 @@ Admin navigation may include dashboard, cabinets, services, schedule, manual boo
 
 Receptionist navigation may include schedule, appointments/manual booking, notifications relevant to operations, and profile. Do not show admin-only integration, staff, payment, or configuration controls.
 
-There is no doctor role or doctor onboarding surface.
+There is no separate provider role or provider onboarding surface.
 
 ## Patient Account
 

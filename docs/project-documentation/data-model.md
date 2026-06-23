@@ -42,7 +42,7 @@ Target MVP roles:
 
 Target statuses may include `invited`, `active`, `suspended`, and `revoked`.
 
-There is no target staff `doctor` role. Patients are not organization members.
+Only admin and receptionist are staff roles. Patients are not organization members.
 
 ### PatientProfile
 
@@ -70,7 +70,7 @@ Suggested fields:
 - `isBookingEnabled`
 - timestamps
 
-There is no separate operational `Doctor` model. Professional identity is expressed through the practice owner and cabinet public content.
+There is no separate operational provider-profile model. Professional identity is expressed through the practice owner and cabinet public content.
 
 ### Service
 
@@ -151,7 +151,7 @@ One active server-side Google account connection per practice for MVP. Store cre
 
 ### CabinetCalendarMapping
 
-Maps a local cabinet to a discovered Google calendar ID. Calendar IDs and sync configuration belong here, not on `Organization` or in a Doctor model.
+Maps a local cabinet to a discovered Google calendar ID. Calendar IDs and sync configuration belong here, not on `Organization` or a separate provider profile.
 
 ### CalendarSyncRecord
 
@@ -178,12 +178,6 @@ At minimum, plan constraints/indexes for:
 - Google event IDs and cabinet calendar mapping
 - status/expiry cleanup queries
 
-## Migration From Current Code
+## Migration State
 
-Before new booking models are added:
-
-1. Remove the existing `Doctor` model and relations.
-2. Remove doctor role values and doctor onboarding/approval state.
-3. Regenerate Prisma Client and remove stale generated Doctor symbols.
-4. Introduce `Cabinet` as the sole bookable operational entity.
-5. Update authorization and tests to admin/receptionist/patient semantics.
+The superseded provider-profile domain and role have been removed. `Cabinet` is the sole future bookable operational entity, and authorization uses admin/receptionist/patient semantics.

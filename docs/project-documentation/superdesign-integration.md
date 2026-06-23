@@ -87,7 +87,7 @@ Use this workflow for Phase 3 and later UI implementation:
 Every SuperDesign session for DocApp should include these rules:
 
 - DocApp is a cabinet-based booking and deposit-management product for one independent healthcare practice.
-- It is not a public doctor marketplace.
+- It is not a public provider marketplace.
 - It is not a medical-record system.
 - Patients can register, book appointments, view appointments, and request cancellation only where policy allows.
 - Patients cannot request or self-initiate refunds.
@@ -96,7 +96,7 @@ Every SuperDesign session for DocApp should include these rules:
 - Checkout success pages are read-only.
 - Google Calendar events are created after webhook-confirmed payment or authorized manual confirmation.
 - Google Calendar sync failure must not erase or cancel a paid booking.
-- Patients choose a cabinet, then a service and time; there is no doctor-selection step.
+- Patients choose a cabinet, then a service and time; there is no separate provider-selection step.
 - Manual bookings are staff-side only.
 - No ads anywhere in the app.
 - No Radix/shadcn or old prototype UI components should be ported.
