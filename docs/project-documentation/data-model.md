@@ -1,600 +1,189 @@
 # Data Model
 
-This document describes the intended DocApp MVP data model.
+## Ownership Model
 
-Model names are suggestions and may change during implementation, but the concepts should remain stable.
+DocApp uses one database per independent practice deployment. `Organization` remains the technical ownership root, but it represents the single practice rather than one tenant in a shared SaaS database.
 
-## Single-Clinic Deployment Model
+Practice-owned records should retain `organizationId` where it provides explicit ownership, referential integrity, safer queries, or future-proof constraints. This does not imply cross-practice switching.
 
-DocApp MVP is deployed per clinic. Each clinic has its own application deployment, database, Prisma configuration, and integration credentials.
-
-The local `Organization` record is the clinic profile and product source of truth for that deployment. It is not one tenant in a shared multi-clinic database, and it is not a Google account.
-
-Use `organizationId` on clinic-owned records as a local ownership and consistency boundary. Do not build cross-clinic switching, shared-database multi-tenant queries, or multiple active clinic memberships for one local user in the MVP.
-
-## Prototype Schema Reference
-
-The current prototype schema contains these models:
-
-- `User`
-- `Calendar`
-- `CalendarSettings`
-- `DayConfiguration`
-- `CalendarEvent`
-- `EventOrder`
-
-These proved useful concepts, but they are not sufficient for the MVP rebuild as-is.
-
-Important prototype gaps to correct:
-
-- No local `Organization` / `Clinic` profile model.
-- No membership or role model beyond Clerk metadata checks.
-- No separate doctor model.
-- No separate cabinet/resource model beyond `Calendar`.
-- No service model; pricing is based on day configuration rate or fallback amount.
-- No separate appointment lifecycle status.
-- Payment status is stored on `EventOrder`, but appointment state and calendar sync state are not separated.
-- No explicit pending lock expiration field.
-- No stored Google Calendar event ID or durable calendar sync record.
-- No notification log or audit/event log.
-
-The rebuild should treat the prototype as evidence of useful booking concepts, not as a schema to copy directly. MVP data should stay local-first and Google-compatible:
-
-- prototype `Calendar` maps to local `Doctor` / `Resource` plus a separate `CalendarMapping`, not to the clinic itself
-- prototype `CalendarSettings` and `DayConfiguration` map to local booking settings, `AvailabilityRule`, blocked time, holidays, and service assignment behavior
-- prototype `CalendarEvent` maps to local `Appointment` plus calendar sync records; Google event payloads are derived after confirmation
-- prototype `EventOrder` maps to `AppointmentOrder`; payment state stays separate from appointment state and calendar sync state
-- prototype daily `rate` behavior should become service-level price/deposit configuration
-
-Google IDs, OAuth tokens, discovered calendar references, and sync status belong in integration/mapping records. Core doctors, resources, services, availability, appointments, and orders must remain local product data so booking can work with or without Google Calendar connected.
-
-### Organization
-
-Represents the clinic profile for this deployment.
-
-Suggested fields:
-
-- id
-- name
-- slug
-- timezone
-- defaultCurrency
-- status
-- createdAt
-- updatedAt
-
-### ClinicSettings
-
-Stores configurable operational policy for the clinic.
-
-Suggested fields:
-
-- id
-- organizationId
-- timezone
-- defaultCurrency
-- shortSlotHoldMinutes
-- pendingPaymentLockMinutes
-- cancellationPolicy
-- cancellationRequestCutoffMinutes
-- refundPolicyText
-- bookingRateLimitConfig
-- createdAt
-- updatedAt
-
-Organization can keep simple default fields, but operational behavior should be centralized in clinic settings as it grows.
-
-An organization is the local clinic product source of truth. It does not represent a Google account. The clinic may connect a Google account through integration records after authorized membership, doctor, and resource records exist.
+## Identity
 
 ### User
 
-Local user synced from Clerk.
+Local identity synchronized from Clerk.
 
-Suggested fields:
+Core fields:
 
-- id
-- clerkUserId
-- email
-- name
-- createdAt
-- updatedAt
+- `id`
+- unique `clerkUserId`
+- email and display name
+- timestamps
 
-`clerkUserId` must be unique. Clerk `user.created` and `user.updated` webhooks should upsert this model by `clerkUserId`, making repeated webhook deliveries safe. The local `User` record proves identity mapping only; clinic-side access still comes from `OrganizationMember`, and patient ownership still comes from `PatientProfile` plus appointment ownership fields.
+### Organization
+
+Technical root for the independent practice.
+
+Core fields:
+
+- `id`
+- practice name/slug
+- timezone and default currency
+- contact and policy settings
+- timestamps
 
 ### OrganizationMember
 
-Connects a local staff user or pending staff invitation to the clinic and a clinic-side role.
+Links staff identities to the practice.
 
-Suggested fields:
+Target MVP roles:
 
-- id
-- organizationId
-- userId, nullable while an invitation is pending
-- role
-- status
-- invitedEmail
-- clerkInvitationId, nullable and unique, stores the Clerk Backend API invitation ID
-- clerkInvitationStatus, nullable, mirrors the Clerk invitation lifecycle (`pending`, `accepted`, `revoked`, `expired`)
-- createdAt
-- updatedAt
+- `admin`: owner/professional with full practice control
+- `receptionist`: invited operational staff with limited permissions
 
-Suggested roles:
+Target statuses may include `invited`, `active`, `suspended`, and `revoked`.
 
-```txt
-admin
-receptionist
-doctor
-```
-
-Suggested statuses:
-
-```txt
-invited
-active
-disabled
-removed
-```
-
-The MVP deployment supports one clinic. A linked local `User` should have at most one `OrganizationMember` record in that deployment. Pending invitations may exist without a linked user until Clerk creates/syncs the user.
-
-Patients are not organization members. Patient access is represented through `PatientProfile` and patient-owned appointment records.
-
-Staff invitation activation links a synced local `User` to an invited `OrganizationMember` only when the signed-in user's normalized email matches the pending invited email and the pending membership has `status = invited`. Activation runs after Clerk authentication when the user reaches a protected app surface. Activation changes the membership to `active`, changes `clerkInvitationStatus` to `accepted`, and audits the transition. Local membership remains the source of truth; Clerk invitation acceptance alone does not grant access.
-
-For staff invitations, the implemented MVP foundation represents pending access through `OrganizationMember.status = invited` and stores the Clerk invitation ID and mirrored status on the same record. A separate `StaffInvitation` / `OrganizationInvitation` model remains a possible later refactor.
-
-Sending a staff invitation creates the pending membership with the normalized invited email, intended role, and `status = invited`, then stores the returned `clerkInvitationId` with `clerkInvitationStatus = pending` and writes an audit event. If the Clerk invitation call fails, the pending membership is removed so the email is not blocked from re-invites. An email that already has an `invited` or `active` membership in the organization is rejected before calling Clerk and protected by a database partial unique index on active/invited membership email per organization.
-
-Suggested invitation tracking fields:
-
-- organizationId
-- invitedEmail
-- intendedRole
-- status
-- clerkInvitationId
-- clerkInvitationStatus
-- invitedByUserId
-- acceptedByUserId
-- expiresAt
-- createdAt
-- updatedAt
-
-Do not pass local organization, membership, invitation, or role metadata to Clerk invitations for MVP. Staff invitation acceptance is matched by normalized invited email against local `OrganizationMember` state only.
-
-For trusted initial clinic admin bootstrap, Clerk private metadata may contain `docapp.bootstrapRole = admin`. This metadata is a one-time server-side bootstrap hint only. A clinic business owner/admin is represented by the local `admin` role. Once an `OrganizationMember` exists for the local user, role and status changes must be controlled by local database state and audited application workflows, not continuous metadata sync.
+There is no target staff `doctor` role. Patients are not organization members.
 
 ### PatientProfile
 
-Represents a patient account for booking and appointment management.
+Minimal appointment-management profile linked one-to-one to a local `User`.
+
+Store only necessary contact data. Do not store diagnoses, treatment notes, prescriptions, medical documents, insurance records, or clinical history.
+
+## Cabinet Domain
+
+### Cabinet
+
+The primary public bookable entity.
 
 Suggested fields:
 
-- id
-- userId, unique
-- email
-- name
-- phone
-- createdAt
-- updatedAt
+- `id`
+- `organizationId`
+- public `name`, such as `Dr. Anton - Pleven`
+- unique public `slug`
+- optional description
+- address/location fields
+- public phone/email where needed
+- optional timezone override only if the product explicitly supports cabinets in different timezones
+- `isActive`
+- `isBookingEnabled`
+- timestamps
 
-Patient profile data must stay minimal. A patient profile is owned by one local `User` and must not grant clinic-side staff permissions. Do not store medical records, symptoms, diagnoses, prescriptions, treatment notes, insurance data, chat history, or file uploads in MVP.
-
-## Clinic Resources
-
-### Doctor
-
-Represents a doctor/practitioner.
-
-Suggested fields:
-
-- id
-- organizationId
-- userId
-- organizationMemberId
-- name
-- email
-- phone
-- specialty
-- onboardingStatus
-- isActive
-- isBookable
-- createdAt
-- updatedAt
-
-A doctor can exist as a clinic operational profile before the doctor registers. Once the doctor registers or accepts an invitation, link the doctor profile to the local `User` and/or `OrganizationMember`.
-
-For invited doctors, the preferred MVP flow is doctor-led profile creation after invitation acceptance:
-
-- the doctor accepts the Clerk invitation and becomes an active local `OrganizationMember` with role `doctor`
-- if no linked `Doctor` profile exists, the doctor is forced through doctor-profile onboarding before normal doctor dashboard access
-- profile creation links `Doctor.organizationId`, `Doctor.organizationMemberId`, and the local `User`
-- the new `Doctor` starts inactive, not bookable, and pending admin approval
-- admin approval changes the doctor profile to active while keeping `isBookable = false` until booking settings are configured
-- after approval, the doctor can manage their own operational booking settings within clinic rules only after calendar mappings, service assignments, availability, and slot/bookable models exist
-
-Operational status fields should distinguish account membership from provider readiness. `OrganizationMember.status = active` means the staff account is accepted and can authenticate as staff. A separate doctor profile status, such as `onboardingStatus = pending_admin_approval | approved | rejected` plus `isActive` and `isBookable`, controls whether the provider can appear in booking flows.
-
-Admin controls clinic infrastructure and calendar mapping. A doctor may manage their own services, availability, slot times, holidays, blocked time, and bookable on/off state after admin approval and after the calendar/availability/bookable-slot foundation exists. Admin still manages Google Calendar connection, doctor/resource calendar mappings, clinic settings, staff invitations, and final activation/disable authority.
-
-Receptionists and other non-doctor staff can exist through `OrganizationMember` without a separate operational profile unless the product needs one later.
-
-Patient users exist through `PatientProfile`, not `OrganizationMember`, unless a later implementation intentionally chooses a unified membership model.
-
-### Resource / Cabinet
-
-Represents a cabinet, room, office, or bookable calendar/resource.
-
-Suggested fields:
-
-- id
-- organizationId
-- name
-- isActive
-- createdAt
-- updatedAt
-
-The product can call this a cabinet/room in the UI while using a generic `Resource` model internally.
-
-Google Calendar IDs should not live directly on `Resource`. Store provider-specific calendar mapping in `CalendarIntegration`.
+There is no separate operational `Doctor` model. Professional identity is expressed through the practice owner and cabinet public content.
 
 ### Service
 
-Represents a bookable appointment type.
+Reusable appointment offering owned by the practice.
 
 Suggested fields:
 
-- id
-- organizationId
-- name
-- description
-- durationMinutes
-- fullPriceCents
-- depositAmountCents
-- depositPercentage
+- name and description
+- duration
+- buffer before/after
+- full price
+- deposit amount or percentage
 - currency
-- bufferBeforeMinutes
-- bufferAfterMinutes
-- isActive
-- createdAt
-- updatedAt
+- active state
+- cancellation/refund policy reference
 
-Use either fixed deposit amount or percentage. Start with fixed deposit amount if simpler.
+### CabinetService
 
-### ServiceAssignment
+Explicit assignment connecting a service to a cabinet.
 
-Required join model that defines which doctor/resource/calendar combination can provide an active service.
-
-Suggested fields:
-
-- id
-- organizationId
-- serviceId
-- doctorId
-- resourceId
-
-Each active service must have at least one valid bookable assignment. This prevents the booking flow from offering services that have no clinic-approved doctor/resource/calendar combination.
+It may override cabinet-specific price, deposit, duration, or active state only if that flexibility is intentionally approved. Every publicly bookable service must have at least one active cabinet assignment.
 
 ## Availability
 
-### SlotHold
-
-Represents a short anonymous temporary lock created when a visitor/patient selects a time slot before submitting the booking form.
-
-The purpose of `SlotHold` is to prevent double booking during the public booking flow. It should not become a patient profile, draft appointment, or contact-details record.
-
-Suggested fields:
-
-- id
-- organizationId
-- serviceId
-- doctorId
-- resourceId
-- startTime
-- endTime
-- timezone
-- status
-- holdTokenHash
-- browserSessionKeyHash
-- ipHash
-- expiresAt
-- releasedAt
-- convertedAppointmentId
-- createdAt
-- updatedAt
-
-Possible status values:
-
-```txt
-active
-released
-expired
-converted
-```
-
-Do not store patient name, email, phone, `patientProfileId`, `userId`, or medical details on `SlotHold`. The hold can use an opaque token stored client-side and a hashed server-side value to prove the same browser/session is continuing the booking attempt. `ipHash` or similar anonymous abuse-prevention metadata is optional and must not be treated as identity.
-
-Hold duration should be configurable per clinic. Closing the booking modal/form should attempt immediate release, but expiry and cleanup are the source of truth. Before creating Checkout, the server must validate the hold token/session key plus matching organization, service, doctor/resource, start/end time, active status, expiry, and conversion state.
-
-If a hold is created before login/register, the anonymous hold token/session must survive the authentication redirect. After authentication, the validated hold is consumed when creating the pending appointment for the authenticated patient. Patient ownership starts on `Appointment` / `AppointmentOrder`, not on `SlotHold`.
-
-WebSockets may later be used to push hold updates to open booking pages, but they do not replace this persisted lock. Polling or WebSockets are transport/UI update mechanisms; the database `SlotHold` record remains the source of truth for double-booking prevention, expiry, conversion, and cleanup.
-
 ### AvailabilityRule
 
-Represents recurring weekly availability.
-
-Suggested fields:
-
-- id
-- organizationId
-- doctorId
-- resourceId
-- weekday
-- startTime
-- endTime
-- isActive
-- createdAt
-- updatedAt
-
-Depending on implementation, availability may belong to a doctor, resource, or doctor-resource combination.
-
-### AvailabilityException
-
-Optional MVP/future model for closed days or one-off changes.
-
-Suggested fields:
-
-- id
-- organizationId
-- doctorId
-- resourceId
-- date
-- startTime
-- endTime
-- type
-- reason
+Recurring weekday schedule for a cabinet, including working interval and optional effective dates.
 
 ### BlockedTime
 
-Represents unavailable periods such as doctor vacation, clinic holiday, lunch break, sick day, cabinet maintenance, private blocked time, or internal meeting.
+Cabinet-specific exception for breaks, holidays, closures, or manually blocked intervals.
 
-Suggested fields:
+### SlotHold
 
-- id
-- organizationId
-- doctorId
-- resourceId
-- startsAt
-- endsAt
-- reason
-- isActive
-- createdAt
-- updatedAt
+Short-lived server-side lock preventing two visitors from booking the same cabinet/time.
 
-## Appointments
+Minimum data:
+
+- `organizationId`
+- `cabinetId`
+- `serviceId` or cabinet-service assignment ID
+- start/end time
+- opaque browser/session token hash
+- status
+- expiry and conversion timestamp
+
+Do not store patient name, email, phone, Clerk ID, symptoms, or medical details in a hold. Use uniqueness/transaction constraints to prevent overlapping active holds and appointments.
+
+## Appointments And Payments
 
 ### Appointment
 
-Represents the local appointment after a temporary hold has been converted or after an authorized clinic-side user creates a manual booking.
+Belongs to one practice and one cabinet, with a selected service snapshot and optional patient ownership.
 
-Suggested fields:
+Keep separate fields/enums for:
 
-- id
-- organizationId
-- serviceId
-- doctorId
-- resourceId
-- patientProfileId
-- createdByUserId
-- createdByRole
-- source
-- patientName
-- patientEmail
-- patientPhone
-- patientNote
-- startTime
-- endTime
-- timezone
-- status
-- paymentMode
-- visibleToPatient
-- pendingExpiresAt
-- paymentConfirmedAt
-- cancellationRequestedAt
-- cancellationRequestReason
-- confirmedAt
-- cancelledAt
-- noShowAt
-- completedAt
-- createdAt
-- updatedAt
+- appointment lifecycle
+- payment lifecycle
+- Google sync lifecycle
 
-Possible status values:
+Manual appointments without patient accounts store minimal contact snapshots. Patient-created appointments link to `PatientProfile`.
 
-```txt
-pending_payment
-confirmed
-cancel_requested
-cancelled
-expired
-no_show
-completed
-```
+### AppointmentStatusHistory
 
-Avoid storing sensitive health details in `patientNote`.
-
-`slot_held` is a temporary booking UI/computed state derived from an active `SlotHold`. It does not have to be stored as `Appointment.status`. Appointments begin once a hold is converted into a `pending_payment` booking or when an authorized clinic-side user creates a manual confirmed/pay-at-clinic booking.
-
-For manual bookings, `patientProfileId` can be set when staff selects an existing patient account. If staff only enters contact details, keep `patientProfileId` empty and store minimal `patientName`, `patientEmail`, and `patientPhone`. Later historical linking by email/phone can be added, but automatic linking is not required in MVP.
+Append-only history for meaningful appointment state changes, including actor and safe reason metadata.
 
 ### AppointmentOrder
 
-Represents payment/deposit state.
+Tracks the deposit payment independently from appointment state.
 
-Suggested fields:
+Store server-calculated amounts, currency, Stripe Checkout Session ID, Payment Intent ID where available, order status, expiry, and refund references.
 
-- id
-- organizationId
-- appointmentId
-- status
-- currency
-- fullAmountCents
-- depositAmountCents
-- remainingAmountCents
-- paymentMode
-- paymentSource
-- markedPaidByUserId
-- stripeCheckoutSessionId
-- stripePaymentIntentId
-- stripeCustomerEmail
-- paidAt
-- cancelledAt
-- expiredAt
-- refundedAt
-- refundRequiredAt
-- refundReason
-- refundIssuedByUserId
-- refundStripeId
-- createdAt
-- updatedAt
-
-Possible status values:
-
-```txt
-pending
-paid
-cancelled
-expired
-refunded
-failed
-```
-
-## Google Calendar Sync
+## Google Calendar
 
 ### GoogleAccountConnection
 
-Stores the clinic-owned Google account connection and server-side authorization state.
+One active server-side Google account connection per practice for MVP. Store credentials/tokens securely and never expose them to the browser.
 
-Suggested fields:
+### CabinetCalendarMapping
 
-- id
-- organizationId
-- provider
-- providerAccountId
-- credential/token reference or encrypted token fields
-- grantedScopes
-- connectionStatus
-- lastRefreshedAt
-- createdAt
-- updatedAt
-
-For MVP, one organization may have one active connected Google account. Keep provider credentials/tokens server-side. The model should remain extensible so a clinic can reconnect or support additional provider accounts later.
-
-### CalendarIntegration / CalendarMapping
-
-Stores an individual discovered Google Calendar reference and its optional mapping to an organization/resource/doctor.
-
-Suggested fields:
-
-- id
-- organizationId
-- googleAccountConnectionId
-- doctorId
-- resourceId
-- googleCalendarId
-- displayName
-- isActive
-- createdAt
-- updatedAt
-
-Each discovered calendar may be mapped to a local doctor, a local resource/cabinet, or an explicitly documented clinic-default purpose. Keep calendar mappings separate from local doctor/resource settings. Disconnecting or replacing a Google account must not delete the organization, doctors, resources, services, availability rules, appointments, or booking policies.
+Maps a local cabinet to a discovered Google calendar ID. Calendar IDs and sync configuration belong here, not on `Organization` or in a Doctor model.
 
 ### CalendarSyncRecord
 
-Stores sync state for an appointment.
+Tracks event ID, sync status, attempts, timestamps, and sanitized failure details for an appointment.
 
-Suggested fields:
+## Audit And Notifications
 
-- id
-- organizationId
-- appointmentId
-- provider
-- status
-- externalEventId
-- lastAttemptAt
-- lastSuccessAt
-- errorCode
-- errorMessage
-- retryCount
-- createdAt
-- updatedAt
+`AuditEvent` records sensitive identity, role, settings, appointment, payment, and integration changes. `NotificationLog` tracks idempotent email delivery.
 
-Possible status values:
+Audit and notification payloads must avoid secrets and unnecessary patient data.
 
-```txt
-not_created
-created
-failed
-retry_pending
-```
+## Constraints And Indexes
 
-## Notifications And Audit
+At minimum, plan constraints/indexes for:
 
-### NotificationLog
+- unique `User.clerkUserId`
+- unique active/invited membership per normalized email/practice
+- unique cabinet slug within the practice
+- unique cabinet/service assignment
+- cabinet availability and blocked-time lookups
+- appointment and active-hold cabinet/time lookups
+- patient appointment lookups
+- Stripe IDs
+- Google event IDs and cabinet calendar mapping
+- status/expiry cleanup queries
 
-Suggested fields:
+## Migration From Current Code
 
-- id
-- organizationId
-- appointmentId
-- type
-- recipient
-- idempotencyKey
-- status
-- providerMessageId
-- errorMessage
-- sentAt
-- createdAt
-- updatedAt
+Before new booking models are added:
 
-Use `idempotencyKey` to prevent duplicate booking confirmations, cancellation notices, refund notices, and admin failure alerts.
-
-### AuditEvent
-
-Suggested fields:
-
-- id
-- organizationId
-- actorUserId, nullable for trusted system/provider events
-- action
-- targetType
-- targetId, nullable when the target is not yet local or not applicable
-- metadata, optional JSON
-- createdAt
-
-Audit events should support identity sync, membership creation/removal, invitation lifecycle, role changes, trusted owner/admin provisioning, and later sensitive appointment/payment actions. Index by clinic/time, actor, action, and target lookup.
-
-Do not store unnecessary patient details, secrets, raw webhook payloads, or credential material in audit metadata.
-
-## Indexes
-
-Add indexes for:
-
-- organizationId on all clinic-scoped models
-- organization membership lookup by organizationId + userId
-- organization staff list filtering by organizationId + status
-- organization staff list filtering by organizationId + role
-- appointment start/end time
-- appointment status
-- order status
-- Stripe Checkout Session ID
-- Stripe Payment Intent ID
-- Google external event ID
-- notification idempotency key
-- doctor/resource/date lookup for availability
-
-## Ownership And Safety
-
-Every clinic-scoped record should include `organizationId` unless it is globally shared.
-
-Webhooks should resolve records by trusted internal IDs stored in metadata and verify that related records belong together.
+1. Remove the existing `Doctor` model and relations.
+2. Remove doctor role values and doctor onboarding/approval state.
+3. Regenerate Prisma Client and remove stale generated Doctor symbols.
+4. Introduce `Cabinet` as the sole bookable operational entity.
+5. Update authorization and tests to admin/receptionist/patient semantics.

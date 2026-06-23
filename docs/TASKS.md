@@ -96,7 +96,7 @@ Complete tasks from top to bottom and one approved task/branch at a time. Do not
 - [x] Add Clerk signed-in boundaries for private admin and patient route groups.
 - [x] Keep public marketing, booking discovery, support, and public-safe checkout status routes accessible without login.
 
-## Phase 6 - Identity Database, Provisioning, Roles, And Clinic Scoping
+## Phase 6 - Identity Database, Provisioning, Roles, And Practice Scoping
 
 - [x] Add database connection configuration and guide user step by step on how to setup Prisma.
 - [x] Add Prisma setup.
@@ -144,9 +144,23 @@ Complete tasks from top to bottom and one approved task/branch at a time. Do not
 - [x] Add audit events for Phase 6 sensitive role/access changes.
 - [x] Risk: access control must be enforced on the server, not only hidden in the UI.
 
-## Phase 7 - Clinic Patient Home Page
+### Cabinet-Focused Domain Reset
 
-This phase owns the public home page for the deployed clinic. It is not the DocApp product marketing site. The page should help a clinic's patients understand the clinic, see patient-safe appointment information, and move toward booking. It should not implement the full booking flow yet, but it must guide patients toward the future booking page and establish the approved visual direction for clinic-facing public pages.
+The checked doctor/clinic tasks above record implementation history. Decision `048` changes the target product, so the reset below must be completed before Phase 8 or any new booking-domain work.
+
+- [ ] Rename current-clinic concepts and product-facing copy to current-practice concepts while keeping `Organization` as the technical ownership root.
+- [ ] Remove the `Doctor` Prisma model and all relations, migrations where appropriate, generated Prisma client references, seed data, and schema tests that depend on it.
+- [ ] Remove `doctor` from staff role enums, invitation options, validation, authorization, navigation, and audit logic.
+- [ ] Keep only `admin` and `receptionist` as staff membership roles; patients remain represented by `PatientProfile`, not `OrganizationMember`.
+- [ ] Remove doctor-profile onboarding, approval, activation, and bookable-state routes, components, server helpers, actions, tests, and documentation references.
+- [ ] Remove doctor-scoped dashboard navigation and permissions; admin operates the practice and all cabinets, while receptionist receives only explicitly allowed appointment operations.
+- [ ] Preserve secure Clerk invitation matching, local membership authority, patient ownership checks, audit events, and server-side practice scoping during the reset.
+- [ ] Add or update focused tests for the simplified admin, receptionist, and patient access model.
+- [ ] Run Prisma migration/generation and verify no stale `Doctor` or doctor-role symbols remain in source or generated client files.
+
+## Phase 7 - Practice Patient Home Page
+
+This phase owns the public home page for the deployed independent practice. It is not the DocApp product marketing site. The page should help patients understand the professional and available cabinets, see patient-safe appointment information, and move toward booking. It should not implement the full booking flow yet, but it must guide patients toward the future booking page and establish the approved visual direction for public practice pages.
 
 - [x] Reconnect/confirm SuperDesign access for this project before starting homepage design work.
 - [x] Use SuperDesign with the existing DocApp context files, including `.superdesign/design-system.md`, `.superdesign/init/theme.md`, `docs/MVP.md`, `docs/DECISIONS.md`, `docs/project-documentation/ui-direction.md`, and `docs/project-documentation/superdesign-integration.md`.
@@ -154,21 +168,21 @@ This phase owns the public home page for the deployed clinic. It is not the DocA
 - [x] Include homepage states/sections in SuperDesign review notes before implementation.
 - [x] Define the approved application theme, color palette, typography direction, spacing, and component tone through SuperDesign review.
 - [x] Update the relevant `.superdesign/` context files if the approved theme/colors change.
-- [x] Treat the approved clinic patient homepage direction as the UI source of truth for this phase while keeping product/security/privacy docs authoritative; SuperDesign drafts may be used as archived references only if access is unavailable.
+- [x] Treat the approved practice patient homepage direction as the UI source of truth for this phase while keeping product/security/privacy docs authoritative; SuperDesign drafts may be used as archived references only if access is unavailable.
 - [x] Build the polished public home page at `/`.
 - [x] Use the approved SuperDesign homepage layout rather than old prototype UI or generic template sections.
-- [x] Build a better public navbar for the clinic patient home page.
-- [x] Include clear navigation to public-safe clinic pages such as home, booking CTA, clinic information/about, support/contact, and sign in/account where appropriate.
+- [x] Build a better public navbar for the practice patient home page.
+- [x] Include clear navigation to public-safe practice pages such as home, booking CTA, practice/cabinet information, support/contact, and sign in/account where appropriate.
 - [x] Add a primary CTA button that links to the booking route, even if the full booking flow is implemented in a later phase.
 - [x] Add a secondary CTA or supporting action only if it improves the homepage design and does not distract from booking.
-- [x] Add patient-facing clinic homepage copy, such as clinic introduction, services summary, appointment booking expectations, deposit/attendance policy summary, contact/location details, working hours where available, and how to book.
-- [x] Avoid positioning the clinic homepage as a DocApp product marketing page, public doctor marketplace, medical-record system, diagnosis tool, prescription system, insurance workflow, or generic booking app.
+- [x] Add patient-facing practice homepage copy, such as professional introduction, cabinet/location summary, services summary, appointment booking expectations, deposit/attendance policy summary, contact details, working hours where available, and how to book.
+- [x] Avoid positioning the practice homepage as a DocApp product marketing page, clinic workforce platform, public doctor marketplace, medical-record system, diagnosis tool, prescription system, insurance workflow, or generic booking app.
 - [x] Do not include ads, booking fees, platform fees, refund-request copy, medical-record copy, symptoms, diagnosis, chat, file upload, or rescheduling promises.
 - [x] Add a homepage hero section with a real or generated bitmap-style visual direction approved through SuperDesign.
 - [ ] Make the homepage hero image/admin-facing visual configurable by authorized admin users.
-- [ ] Make homepage patient-facing clinic copy configurable by authorized admin users, especially the large hero headline, hero supporting copy, section headings, section descriptions, contact details, policy summary, and CTA labels.
+- [ ] Make homepage patient-facing practice copy configurable by authorized admin users, especially the large hero headline, hero supporting copy, section headings, section descriptions, contact details, policy summary, and CTA labels.
 - [ ] Add or prepare a local homepage content/settings model or equivalent server-side configuration for editable hero image URL, hero image alt text, hero headline, hero supporting copy, section copy, and CTA labels.
-- [ ] Do not store real patient data, credentials, private clinic data, or medical content in homepage content fields.
+- [ ] Do not store real patient data, credentials, private practice data, or medical content in homepage content fields.
 - [ ] Add an admin-only path or clearly documented follow-up task for editing homepage hero/content settings if the full admin editing UI is not built in this phase.
 - [x] Ensure homepage content supports the existing i18n languages or has a documented translation strategy before hardcoding copy.
 - [ ] Add SEO metadata for the home page, including title, description, and safe Open Graph basics.
@@ -180,30 +194,30 @@ This phase owns the public home page for the deployed clinic. It is not the DocA
 - [ ] Add focused tests for homepage rendering, navbar links, booking CTA href, translated copy where practical, and admin-editable homepage content data mapping.
 - [ ] Verify lint, typecheck, tests, coverage, and build before marking the phase complete.
 
-## Phase 8 - Services And Bookable Configuration
+## Phase 8 - Cabinets, Services, And Bookable Configuration
 
-This phase makes clinic services and bookable doctor/resource combinations configurable before the public booking page depends on them.
+This phase creates the cabinet-centered booking domain before the public booking page depends on it.
 
+- [ ] Model cabinets as the primary bookable entity owned by the local practice/`Organization`.
+- [ ] Store cabinet public name, slug, address/location, contact details, timezone where needed, active state, and booking-enabled state.
+- [ ] Build admin cabinet list and create/edit forms.
 - [ ] Model services.
-- [ ] Model service assignments.
-- [ ] Model weekday availability rules.
-- [ ] Model blocked time and holidays.
-- [ ] Build doctor/staff list and create/edit forms where still needed after the existing doctor onboarding foundation.
+- [ ] Model cabinet-service assignments so each cabinet explicitly defines the services it offers.
+- [ ] Model weekday availability rules per cabinet.
+- [ ] Model blocked time, breaks, and holidays per cabinet.
 - [ ] Build service list and create/edit forms.
 - [ ] Support service duration, full price, deposit, currency, and active/inactive state.
-- [ ] Build owner/admin-only doctor/resource calendar settings pages for booking configuration.
-- [ ] Build service assignment management after doctors/resources and required calendar mappings exist.
-- [ ] Require each active service to have at least one valid bookable assignment.
-- [ ] Build weekday availability configuration.
-- [ ] Build blocked time/holiday configuration.
+- [ ] Build cabinet-service assignment management.
+- [ ] Require each active public service to have at least one active cabinet assignment.
+- [ ] Build cabinet weekday availability configuration.
+- [ ] Build cabinet break, blocked-time, and holiday configuration.
 - [ ] Design availability/reference behavior with Google Calendar in mind.
-- [ ] After calendar mappings, service assignments, and availability models exist, allow approved doctors to manage their own operational booking settings within clinic rules.
-- [ ] Ensure receptionists cannot edit doctor profiles, doctor booking settings, clinic settings, staff invitations, or calendar mappings.
-- [ ] Ensure doctors cannot perform admin-only actions or act on another doctor's settings or calendar mappings.
+- [ ] Allow admin to manage every cabinet and its booking settings.
+- [ ] Keep receptionist access read-only for cabinet configuration unless a later explicit permission is approved.
 - [ ] Add validation on frontend and backend.
-- [ ] Add indexes and ownership constraints for services, assignments, availability rules, and blocked time.
-- [ ] Add demo/seed data for local testing of services, assignments, resources, and availability.
-- [ ] Add focused tests for service assignment rules, doctor-owned settings scope, receptionist restrictions, and admin-only calendar mapping controls.
+- [ ] Add indexes and ownership constraints for cabinets, services, assignments, availability rules, and blocked time.
+- [ ] Add demo/seed data for one practice with at least two cabinets, such as Pleven and Pordim, with different schedules.
+- [ ] Add focused tests for cabinet ownership, cabinet-service assignments, availability rules, receptionist restrictions, and admin-only configuration.
 
 ## Phase 9 - Public Booking Flow And Availability
 
@@ -214,18 +228,18 @@ This phase owns the public booking page, generated slots, temporary anonymous ho
 - [ ] Model appointment status history.
 - [ ] Model appointment orders.
 - [ ] Model pending appointment expiration.
-- [ ] Build clinic-branded public booking page.
+- [ ] Build practice-branded public booking page.
 - [ ] Let patients browse available services and slots publicly.
-- [ ] Build service selection step.
-- [ ] Build doctor/cabinet/resource selection step.
+- [ ] Build cabinet selection step.
+- [ ] Build service selection scoped to the selected cabinet.
 - [ ] Build responsive calendar/time-slot selection.
 - [ ] Use fewer days on mobile and full week/more context on desktop.
 - [ ] Implement server-side availability generation.
 - [ ] Generate slots from weekday rules.
 - [ ] Apply service duration.
 - [ ] Apply buffer time.
-- [ ] Apply clinic timezone.
-- [ ] Exclude inactive doctors/resources/services.
+- [ ] Apply the practice/cabinet timezone policy.
+- [ ] Exclude inactive cabinets, assignments, and services.
 - [ ] Exclude confirmed appointments.
 - [ ] Exclude active temporary slot holds.
 - [ ] Exclude non-expired pending payment appointments.
@@ -236,7 +250,7 @@ This phase owns the public booking page, generated slots, temporary anonymous ho
 - [ ] Implement temporary slot hold creation when a patient selects a slot.
 - [ ] Start MVP slot hold visibility with polling every few seconds.
 - [ ] Show slots held by other users as unavailable without full page refresh.
-- [ ] Use clinic-configurable short form hold duration, with sensible default such as 2-5 minutes.
+- [ ] Use practice-configurable short form hold duration, with sensible default such as 2-5 minutes.
 - [ ] Release temporary slot holds immediately on modal/form close as best-effort.
 - [ ] Expire abandoned temporary slot holds automatically.
 - [ ] Allow only one active SlotHold per anonymous browser/session by default.
@@ -252,9 +266,9 @@ This phase owns the public booking page, generated slots, temporary anonymous ho
 - [ ] Discourage entering symptoms/medical details in optional note.
 - [ ] Show full price, deposit due now, and remaining balance.
 - [ ] Show cancellation/refund policy text.
-- [ ] Server re-checks price, availability, active service, active doctor/resource, and valid hold before Checkout.
+- [ ] Server re-checks price, availability, active cabinet-service assignment, and valid hold before Checkout.
 - [ ] Safely consume the validated anonymous SlotHold when creating the authenticated patient's pending appointment before Checkout creation.
-- [ ] Validate hold organization, service, doctor/resource, start/end time, active status, expiry, and conversion status.
+- [ ] Validate hold practice/organization, cabinet, service, start/end time, active status, expiry, and conversion status.
 - [ ] Convert valid hold into pending-payment appointment on form submission.
 - [ ] Create the validated pending-payment appointment/order handoff required before Stripe Checkout Session creation.
 - [ ] Use longer checkout/payment lock duration, with sensible default such as 15-30 minutes.
@@ -267,7 +281,7 @@ This phase owns the public booking page, generated slots, temporary anonymous ho
 - [ ] Rate-limit public booking form submission.
 - [ ] Add user-readable errors for unavailable slot, inactive service, invalid hold, and payment setup failure.
 - [ ] Do not prioritize guest booking in MVP; document guest booking only as optional/later if needed.
-- [ ] Add indexes and ownership constraints for patient, doctor, resource, appointment date/time, appointment status, order status, hold status/expiry, and timestamps.
+- [ ] Add indexes and ownership constraints for patient, cabinet, service, appointment date/time, appointment status, order status, hold status/expiry, and timestamps.
 - [ ] Add tests for slot generation, buffer behavior, timezone boundaries, hold exclusion, hold abuse limits, pending lock exclusion, and booking handoff validation.
 
 ## Phase 10 - Stripe Checkout And Status Pages
@@ -286,8 +300,8 @@ This phase owns online payment initiation, Stripe webhook finalization, and publ
 - [ ] Verify Stripe webhook signatures using raw request body.
 - [ ] Handle `checkout.session.completed`.
 - [ ] Check session payment status before fulfillment.
-- [ ] Resolve appointment/order records from trusted Stripe metadata and local database state; never trust arbitrary clinic/user IDs from webhook input.
-- [ ] Ensure Stripe webhook processing cannot mutate unrelated clinic/order records.
+- [ ] Resolve appointment/order records from trusted Stripe metadata and local database state; never trust arbitrary practice/user IDs from webhook input.
+- [ ] Ensure Stripe webhook processing cannot mutate unrelated practice/order records.
 - [ ] Mark order `paid` only from webhook.
 - [ ] Mark appointment `confirmed` only after payment is confirmed.
 - [ ] Store Stripe Payment Intent ID where available.
@@ -298,14 +312,21 @@ This phase owns online payment initiation, Stripe webhook finalization, and publ
 - [ ] Add success/status page that reads local status only.
 - [ ] Add cancel/expired page that reads local status only.
 - [ ] Add public-safe status token/reference handling.
-- [ ] Ensure status pages do not expose arbitrary appointments or cross-clinic data.
-- [ ] Strengthen future Stripe Connect warning before any shared multi-clinic money movement.
+- [ ] Ensure status pages do not expose arbitrary appointments or cross-practice data.
+- [ ] Use the deployment's one practice-owned Stripe account for deposits from every cabinet; do not add split payments or Stripe Connect.
 - [ ] Add tests for Checkout Session creation, webhook idempotency, status page safety, and pending expiration handling.
 
 ## Phase 11 - Google Calendar Appointment Sync
 
-This phase creates or updates Google Calendar events only after local appointment confirmation.
+This phase connects the practice-owned Google account, maps calendars to cabinets, and creates or updates events only after local appointment confirmation.
 
+- [ ] Choose and document the required Google OAuth scopes.
+- [ ] Define secure server-side credential/token storage and refresh behavior.
+- [ ] Model one active Google account connection for the practice.
+- [ ] Discover/list calendars from the connected Google account.
+- [ ] Model explicit cabinet-to-Google-calendar mappings.
+- [ ] Build admin-only connection and cabinet calendar-mapping controls.
+- [ ] Require a valid cabinet calendar mapping before enabling Google sync for that cabinet, while allowing local booking to work without Google integration.
 - [ ] Model Google Calendar sync attempts/status.
 - [ ] Create Google Calendar event only after webhook-confirmed payment or authorized manual confirmation.
 - [ ] Map appointment to safe Google Calendar payload.
@@ -336,11 +357,11 @@ This phase owns the patient-facing account pages after registration/login.
 - [ ] Show past appointments.
 - [ ] Show appointment detail.
 - [ ] Show payment/deposit status.
-- [ ] Show remaining balance due at clinic.
+- [ ] Show remaining balance due at the appointment.
 - [ ] Show cancellation policy.
-- [ ] Show request-cancellation option only when clinic policy allows it.
+- [ ] Show request-cancellation option only when practice policy allows it.
 - [ ] Prevent cross-patient appointment access.
-- [ ] Do not show clinic admin-only payment internals.
+- [ ] Do not show practice admin-only payment internals.
 - [ ] Ensure patients can access only their own appointments/profile.
 - [ ] Add tests for patient ownership, patient profile updates, and patient appointment visibility.
 
@@ -351,17 +372,16 @@ This phase owns staff appointment operations inside `/dashboard`.
 - [ ] Build appointments overview page.
 - [ ] Build operational daily agenda view.
 - [ ] Build daily/weekly booked-hours view.
-- [ ] Filter appointments by doctor, cabinet/resource, service, status, and date.
+- [ ] Filter appointments by cabinet, service, status, and date.
 - [ ] Show payment status.
 - [ ] Show deposit amount paid.
-- [ ] Show remaining balance due at clinic.
+- [ ] Show remaining balance due at the appointment.
 - [ ] Show Stripe session/payment reference where useful.
 - [ ] Show Google Calendar sync status.
 - [ ] Build appointment detail page/panel.
-- [ ] Show patient name, email, phone, service, doctor/resource, date/time, status, payment status, deposit, remaining balance, Stripe reference, Google sync status, created date, and status history.
+- [ ] Show patient name, email, phone, cabinet, service, date/time, status, payment status, deposit, remaining balance, Stripe reference, Google sync status, created date, and status history.
 - [ ] Build manual admin/receptionist booking flow inside the admin panel.
-- [ ] Enforce scoped staff booking permissions: admin can act clinic-wide, receptionist can manage bookings/details for each doctor, and doctor can manage bookings/details only for their own linked doctor profile.
-- [ ] Ensure doctors cannot act on another doctor's bookings.
+- [ ] Enforce scoped staff booking permissions: admin can manage all practice and cabinet operations; receptionist can manage allowed booking/details operations across all cabinets but cannot change admin-only configuration.
 - [ ] Allow authorized staff to create appointments for phone, message, or in-person requests.
 - [ ] Allow manual booking to search/select an existing patient account.
 - [ ] Attach manual booking to selected patient account when one exists.
@@ -380,8 +400,8 @@ This phase owns staff appointment operations inside `/dashboard`.
 - [ ] Build mark completed action.
 - [ ] Track no-show and cancellation counts for dashboard reporting.
 - [ ] Add audit logs for status changes.
-- [ ] Ensure clinic users can access only their clinic-scoped records.
-- [ ] Ensure webhook processing cannot mutate unrelated clinic/order records.
+- [ ] Ensure staff users can access only records owned by the local practice.
+- [ ] Ensure webhook processing cannot mutate unrelated practice/order records.
 - [ ] Add audit events for sensitive role/access changes.
 - [ ] Add tests for staff scoping, manual bookings, status changes, payment/appointment state separation, and audit events.
 
@@ -410,13 +430,13 @@ This phase owns outbound notifications and idempotent notification logging.
 
 This phase owns cancellation request policy and refund workflows.
 
-- [ ] Implement patient cancellation-request evaluation using the policy already stored through clinic settings; do not introduce a second policy source.
+- [ ] Implement patient cancellation-request evaluation using the policy already stored through practice settings; do not introduce a second policy source.
 - [ ] Support request cancellation only N days/hours before appointment.
 - [ ] Support request cancellation anytime.
 - [ ] Support patient cancellation requests disabled.
 - [ ] Name patient action `Request cancellation`, not `Cancel and refund`.
 - [ ] Ensure patient cancellation request does not create a refund request.
-- [ ] Notify clinic/admin when cancellation requires attention.
+- [ ] Notify the practice admin when cancellation requires attention.
 - [ ] Notify patient of request outcome if implemented.
 - [ ] Keep rescheduling out of scope unless explicitly added later.
 - [ ] Ensure patients cannot request or self-initiate refunds.
@@ -426,15 +446,15 @@ This phase owns cancellation request policy and refund workflows.
 - [ ] Keep paid appointment history visible after refunds.
 - [ ] Store refund status and Stripe refund ID if Stripe refund issuing is implemented.
 - [ ] Confirm admin refund permissions.
-- [ ] Confirm receptionist and doctor cannot issue money refunds by default.
+- [ ] Confirm receptionists cannot issue money refunds by default.
 - [ ] Add tests for cancellation policy evaluation, no patient refund initiation, admin refund authorization, and audit logging.
 
 ## Phase 16 - Privacy, Security, Legal, And Abuse Prevention
 
 This phase audits the security, privacy, legal, and abuse boundaries implemented in the owning workflow phases.
 
-- [ ] Verify all clinic data queries are scoped by organization/clinic ownership.
-- [ ] Verify no cross-clinic switching or shared multi-clinic access exists in MVP.
+- [ ] Verify all practice data queries are scoped by organization/practice ownership.
+- [ ] Verify no cross-practice switching or shared multi-practice access exists in MVP.
 - [ ] Verify patients cannot access another patient's appointments.
 - [ ] Verify webhook processing cannot modify unrelated orders.
 - [ ] Verify payment amount is calculated server-side.
@@ -456,7 +476,7 @@ Focused component and logic tests must already have been added with every implem
 
 - [ ] Audit focused test coverage from earlier phases and close any documented gaps.
 - [ ] Review duplicated staff invitation activation calls in patient/admin layouts and decide whether to replace them with a shared authenticated-session preparation helper.
-- [ ] Add cross-feature integration coverage for authentication, clinic scoping, patient ownership, and staff permissions.
+- [ ] Add cross-feature integration coverage for authentication, practice scoping, patient ownership, and staff permissions.
 - [ ] Add cross-feature integration coverage for holds, availability, pending-payment conversion, cleanup, and double-booking prevention.
 - [ ] Add cross-feature integration coverage for Stripe webhook idempotency, Google Calendar sync/retry, and notification idempotency.
 - [ ] Add cross-feature integration coverage for manual bookings, cancellation requests, refunds, and payment/appointment state separation.
@@ -483,9 +503,9 @@ Focused component and logic tests must already have been added with every implem
 - [ ] Confirm no sensitive health data is written to Google Calendar.
 - [ ] Confirm dashboard routes are protected.
 - [ ] Confirm patient routes are protected.
-- [ ] Confirm clinic/organization scoping is enforced.
+- [ ] Confirm practice/organization scoping is enforced.
 - [ ] Confirm patient ownership scoping is enforced.
 - [ ] Confirm secrets are not committed.
 - [ ] Confirm lint, typecheck, tests, and build pass.
 - [ ] Prepare pilot demo script.
-- [ ] Prepare clinic onboarding checklist.
+- [ ] Prepare independent-practice onboarding checklist.

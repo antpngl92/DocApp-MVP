@@ -2,11 +2,11 @@
 
 ## Project
 
-DocApp is an MVP for small private clinics and appointment-based healthcare practices. It lets clinic owners/admins configure doctors, staff, cabinets/rooms, services, availability, patient accounts, and deposit-based bookings that sync to Google Calendar after successful payment.
+DocApp is an MVP for an independent healthcare professional operating one or more cabinets/offices. It lets the practice owner configure cabinets, services, availability, patient accounts, and deposit-based bookings that sync to the cabinet's mapped Google Calendar after successful payment.
 
-DocApp is not a public doctor marketplace, medical-record system, prescription system, or hospital-management platform. The MVP focuses on a stable booking, deposit, and Google Calendar workflow.
+DocApp is not a clinic workforce-management system, public doctor marketplace, medical-record system, prescription system, or hospital-management platform. The MVP focuses on a stable cabinet-based booking, deposit, and Google Calendar workflow.
 
-MVP deployment is single-clinic. Each clinic receives its own app deployment, database, Prisma configuration, and integration credentials. Do not build cross-clinic switching, marketplace behavior, or shared-database multi-tenant operations unless a later decision explicitly changes the product architecture.
+MVP deployment is single-practice. Each independent practice receives its own app deployment, database, Prisma configuration, Stripe configuration, and Google integration credentials. Do not build cross-practice switching, clinic workforce management, marketplace behavior, or shared-database multi-tenant operations unless a later decision explicitly changes the product architecture.
 
 ## Current phase
 
@@ -30,15 +30,17 @@ Do not add production complexity before the MVP scope is clear, but build the pa
 - Keep patient-facing and admin-facing code clearly separated.
 - Patient accounts are part of the MVP. They are for booking, appointment history, payment/deposit status, and cancellation requests only.
 - Support trusted owner/admin provisioning through the Clerk Dashboard or controlled database setup, staff invitation/approved assignment, and patient registration/login in the foundation.
-- Treat `Organization` as the single local clinic profile/source of truth for this deployment, not one tenant among many active clinics.
-- Do not create a public clinic owner/admin registration route or trust user-controlled role metadata.
-- Staff must join a clinic only through owner/admin invitation or explicit admin approval. Do not allow open public self-registration into arbitrary clinic staff roles.
+- Treat `Organization` as the technical ownership root for the single local practice, not one tenant among many active practices.
+- Treat `Cabinet` as the primary bookable operational entity. Do not add a separate operational `Doctor` model to the target architecture.
+- Use only `admin`, `receptionist`, and patient access in the target MVP. The owner/professional uses `admin`; do not add a staff `doctor` role.
+- Do not create a public owner/admin registration route or trust user-controlled role metadata.
+- Receptionists must join the practice only through owner/admin invitation or explicit admin approval.
 - Do not store medical notes, symptoms, diagnoses, documents, or other health details unless explicitly added to scope later.
 - Do not place sensitive appointment details in Google Calendar event titles.
 - Payment finalization must happen through Stripe webhooks only.
 - Checkout success and cancel pages must be read-only status/convenience pages, not the source of truth.
-- Patients must not be able to request or self-initiate refunds. Refunds are privileged clinic-side actions only.
-- Patient cancellation request behavior is configurable per clinic, but cancellation requests must not imply refund requests.
+- Patients must not be able to request or self-initiate refunds. Refunds are privileged practice-side actions only.
+- Patient cancellation request behavior is configurable per practice, but cancellation requests must not imply refund requests.
 - Temporary slot holds should start with polling for MVP. Full realtime infrastructure requires an explicit decision.
 - Use two-stage slot locking: a short temporary hold when a slot/form is opened, then a longer pending-payment appointment lock after form submission and Checkout creation.
 - Temporary hold release on modal close is a best-effort convenience; expiry and cleanup are the source of truth.
@@ -60,7 +62,7 @@ Do not add production complexity before the MVP scope is clear, but build the pa
 - Prisma
 - PostgreSQL
 - Clerk
-- Stripe Checkout for the clinic deployment; Stripe Connect only if a later approved architecture changes DocApp into shared multi-clinic SaaS
+- Stripe Checkout for the practice deployment; Stripe Connect only if a later approved architecture changes DocApp into shared multi-practice SaaS
 - Google Calendar API
 - Tailwind CSS
 - FullCalendar where useful for MVP calendar views

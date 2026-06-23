@@ -61,7 +61,7 @@ Avoid committing:
 - large unreviewed exports
 - duplicate exploratory ZIPs
 - throwaway generated variants
-- files containing real patient data, credentials, tokens, or private clinic information
+- files containing real patient data, credentials, tokens, or private practice information
 
 ## DocApp SuperDesign Workflow
 
@@ -86,7 +86,7 @@ Use this workflow for Phase 3 and later UI implementation:
 
 Every SuperDesign session for DocApp should include these rules:
 
-- DocApp is a clinic booking and deposit-management product.
+- DocApp is a cabinet-based booking and deposit-management product for one independent healthcare practice.
 - It is not a public doctor marketplace.
 - It is not a medical-record system.
 - Patients can register, book appointments, view appointments, and request cancellation only where policy allows.
@@ -96,7 +96,8 @@ Every SuperDesign session for DocApp should include these rules:
 - Checkout success pages are read-only.
 - Google Calendar events are created after webhook-confirmed payment or authorized manual confirmation.
 - Google Calendar sync failure must not erase or cancel a paid booking.
-- Manual bookings are clinic-side only.
+- Patients choose a cabinet, then a service and time; there is no doctor-selection step.
+- Manual bookings are staff-side only.
 - No ads anywhere in the app.
 - No Radix/shadcn or old prototype UI components should be ported.
 

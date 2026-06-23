@@ -4,7 +4,15 @@ This document records product and technical decisions for the DocApp MVP.
 
 The source of scope is `docs/MVP.md`. Decisions here should prevent the team from repeatedly reopening the same questions while building the first usable MVP.
 
-## 001 - Build A Clinic-Focused MVP, Not A Generic Booking App
+## Current Product Direction
+
+Decision `048` is the current product boundary and supersedes earlier clinic-workforce or doctor-resource assumptions wherever they conflict.
+
+DocApp targets one independent healthcare professional operating one or more cabinets/offices. Each deployment represents one practice. `Cabinet` is the primary bookable entity; the target architecture has no separate operational `Doctor` model or staff `doctor` role. The professional uses the `admin` role, optional invited staff use `receptionist`, and patients use patient profiles.
+
+Earlier completed implementation remains visible in task and Git history, but it must be removed or adapted through the cabinet-focused reset before new booking features are built.
+
+## 001 - Build A Clinic-Focused MVP, Not A Generic Booking App (Superseded By 048)
 
 **Decision**
 
@@ -201,7 +209,7 @@ Avoid titles like:
 Anton - cardiology chest pain
 ```
 
-## 012 - Use A Single-Clinic Deployment And Database For MVP
+## 012 - Use A Single-Clinic Deployment And Database For MVP (Terminology Superseded By 048)
 
 **Decision**
 
@@ -219,7 +227,7 @@ The product is sold to clinics individually, and each clinic operates its own is
 
 Every deployment should normally have one local `Organization` record representing the clinic profile and product source of truth. Do not add UI or backend logic for switching between clinics or querying across clinics.
 
-## 013 - Keep Organization IDs For Local Clinic Ownership, Not Cross-Clinic Operations
+## 013 - Keep Organization IDs For Local Clinic Ownership, Not Cross-Clinic Operations (Terminology Superseded By 048)
 
 **Decision**
 
@@ -654,7 +662,7 @@ Authenticated patient ownership makes booking status pages, appointment history,
 
 Patients can register/login, manage basic contact details, book appointments, view their own appointments, view deposit/payment state, and request cancellation when clinic policy allows it. Do not build medical records, diagnosis history, prescriptions, chat, file uploads, or treatment notes.
 
-## 036 - Role-Based Access Starts In The Foundation
+## 036 - Role-Based Access Starts In The Foundation (Role Set Superseded By 048)
 
 **Decision**
 
@@ -684,7 +692,7 @@ Doctor-role staff require a linked `Doctor` operational profile before normal do
 
 Authorization helpers should check both role and target scope. For appointment-related actions, evaluate the actor role, actor doctor profile ID where applicable, and target doctor profile ID.
 
-## 037 - Google Calendar Foundation Comes Early
+## 037 - Google Calendar Foundation Comes Early (Mapping Target Superseded By 048)
 
 **Decision**
 
@@ -735,7 +743,7 @@ Without hold ownership validation, one user could accidentally or intentionally 
 
 Checkout creation is rejected if the hold is invalid, expired, mismatched, or already converted.
 
-## 040 - Google Calendar IDs Live In Integration Records
+## 040 - Google Calendar IDs Live In Integration Records (Mapping Target Superseded By 048)
 
 **Decision**
 
@@ -779,7 +787,7 @@ Browser close, modal close, page unload, and cancel-page visits are best-effort 
 
 Choose a cleanup path such as Vercel Cron, a protected cleanup route, a database scheduled job, or a background worker later. Availability logic must also ignore expired holds/pending appointments even before cleanup deletes or marks them.
 
-## 043 - Timezone Policy Is Clinic-Centered
+## 043 - Timezone Policy Is Clinic-Centered (Terminology Superseded By 048)
 
 **Decision**
 
@@ -807,7 +815,7 @@ Rescheduling introduces another availability, payment, notification, and calenda
 
 Do not build rescheduling during MVP foundation unless a later decision adds it.
 
-## 045 - Clinic Owner And Admin Accounts Are Provisioned Privately
+## 045 - Clinic Owner And Admin Accounts Are Provisioned Privately (Terminology Superseded By 048)
 
 **Decision**
 
@@ -821,7 +829,7 @@ Owner/admin accounts can create or control clinic-scoped access to operational, 
 
 Owner/admin roles and organization memberships are assigned only through trusted administrative processes. A directly provisioned local database record must be linked to a trusted Clerk identity before authentication. Public input, self-selected roles, and user-controlled Clerk metadata must never grant owner/admin access.
 
-## 046 - A Clinic Owns A Google Connection But Is Not A Google Account
+## 046 - A Clinic Owns A Google Connection But Is Not A Google Account (Mapping Target Superseded By 048)
 
 **Decision**
 
@@ -848,3 +856,30 @@ DocApp workflows cross authentication, clinic scoping, availability, slot lockin
 **Implication**
 
 The task roadmap must place local organization and operational records before external integration setup, Stripe Checkout redirection after server-side Checkout Session creation, and scheduled/rate-limit foundations before features depend on them. Focused tests are added with each implementation task; the final testing phase audits and extends coverage rather than postponing it.
+
+## 048 - Target Independent Practices And Make Cabinet The Bookable Entity
+
+**Decision**
+
+DocApp MVP targets an independent healthcare professional operating one or more cabinets/offices. Each customer receives a separate single-practice deployment. The existing local `Organization` remains the technical ownership root, but product language should call it a practice.
+
+`Cabinet` is the primary bookable operational entity. It represents the professional/location combination patients choose and owns or references its public identity, address, contact details, services, pricing, deposits, availability, blocked time, booking settings, calendar mapping, and appointments.
+
+The target architecture must not contain a separate operational `Doctor` model or staff `doctor` role. The professional uses `admin`, optional invited staff use `receptionist`, and patients use patient profiles.
+
+One practice-owned Stripe account receives deposits for all cabinets. One practice-owned Google account may expose multiple calendars, normally one calendar mapped to each cabinet. Payments and calendars do not create separate practice ownership boundaries.
+
+**Reason**
+
+The strongest initial use case is a doctor or healthcare professional who works in multiple places on different days and needs cabinet-specific availability, deposits, and calendars. A clinic-workforce model introduces salaried doctors, room rental, split revenue, and management concerns that do not serve this initial customer and substantially increase product complexity.
+
+**Implication**
+
+- Remove the existing `Doctor` model, doctor onboarding/approval flow, doctor role, doctor-specific navigation, and doctor-scoped authorization before building the booking domain.
+- Keep completed historical tasks visible, but add explicit reset tasks and do not build new features on obsolete doctor assumptions.
+- Model services, availability, holds, appointments, and Google Calendar mappings around `Cabinet`.
+- Scope admin and receptionist operations to the single practice and its cabinets.
+- Present cabinet names clearly enough to identify both professional and location, for example `Dr. Anton - Pleven`.
+- Do not add clinic payroll, doctor compensation, room-rental accounting, revenue sharing, multi-doctor workforce management, or Stripe Connect to MVP.
+
+This decision supersedes Decisions `001`, `012`, `013`, `036`, `037`, `040`, `043`, `045`, and `046` only where their clinic, doctor, resource, role, or terminology assumptions conflict with this cabinet-focused direction. Their unaffected security, integration, payment, and dependency principles still apply.

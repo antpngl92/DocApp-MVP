@@ -1,5 +1,7 @@
 # SuperDesign Review
 
+> Historical design record: drafts below preserve the terminology used when they were created. Decision `048` supersedes clinic-workforce, doctor/provider-selection, and doctor-resource assumptions. New implementation must adapt the approved visual language to the cabinet-centered practice model and must not restore a Doctor domain model.
+
 This file records the Phase 3 SuperDesign exploration for DocApp.
 
 SuperDesign output is design reference only. Approved implementation must still follow `docs/MVP.md`, `docs/DECISIONS.md`, `docs/project-documentation/project-structure.md`, and `docs/project-documentation/code-style.md`.

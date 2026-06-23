@@ -79,8 +79,7 @@ src/app/
 │   ├── support/
 │   │   └── page.tsx
 │   ├── booking/
-│   │   └── [clinicSlug]/
-│   │       └── page.tsx
+│   │   └── page.tsx
 │   └── checkout/
 │       ├── success/
 │       │   └── page.tsx
@@ -96,9 +95,7 @@ src/app/
 │   ├── layout.tsx
 │   └── dashboard/
 │       ├── page.tsx
-│       ├── doctors/
-│       │   └── page.tsx
-│       ├── resources/
+│       ├── cabinets/
 │       │   └── page.tsx
 │       ├── services/
 │       │   └── page.tsx
@@ -252,9 +249,8 @@ Recommended feature folders:
 ```txt
 src/features/
 ├── auth/
-├── organizations/
-├── doctors/
-├── resources/
+├── practice/
+├── cabinets/
 ├── services/
 ├── availability/
 ├── booking/

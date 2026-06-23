@@ -12,7 +12,7 @@ It should not feel like a flashy marketplace, generic landing-page template, exp
 
 ## Visual Direction
 
-Use a neutral healthcare-adjacent clinic application direction:
+Use a neutral healthcare-adjacent practice application direction:
 
 - light background
 - white or off-white surfaces
@@ -37,7 +37,7 @@ Avoid:
 
 ## Approved Theme Direction
 
-Phase 7 approves a more modern version of the existing calm clinic direction:
+Phase 7 approves a more modern version of the existing calm practice direction:
 
 - Use `Inter` or a similarly neutral modern sans-serif as the implementation target.
 - Keep the current blue/green clinical palette but use it with stronger hierarchy and cleaner composition.
@@ -80,7 +80,7 @@ SuperDesign output must not override:
 
 - Stripe webhook-only payment finalization
 - Google Calendar creation after payment/manual confirmation only
-- clinic and patient data scoping
+- practice and patient data scoping
 - minimal patient data collection
 - no medical records in MVP
 - no ads
@@ -105,7 +105,7 @@ Create and review explorations for:
 - patient dashboard
 - patient appointment detail
 - patient cancellation request state
-- admin clinic dashboard
+- admin practice dashboard
 - admin daily agenda
 - admin appointment details
 - manual booking flow
@@ -115,15 +115,15 @@ Create and review explorations for:
 
 The patient flow should emphasize:
 
-- clinic identity
+- practice and selected cabinet identity
 - selected service
-- doctor/resource if relevant
+- cabinet/location
 - available dates and times
 - current slot hold state
 - patient contact details
 - full price
 - deposit due now
-- remaining balance at clinic
+- remaining balance at the appointment
 - cancellation/refund policy
 - secure payment handoff
 
@@ -131,15 +131,16 @@ Patients should register or log in before final booking submission and Checkout 
 
 Mobile booking should show fewer days and fewer time columns. Desktop can show a wider weekly view when useful.
 
-The public booking wizard should visually use three main steps:
+The public booking wizard should visually use four main steps:
 
+- Cabinet
 - Service
 - Time
 - Details
 
 Service and Time must be separate wizard pages or must visually behave like separate pages in a one-page wizard. Do not combine service selection and time selection into one screen.
 
-Use the accepted Details page header direction across public booking steps: clinic logo/name, plus simple `Services` and `About` navigation. Do not replace this with a phone-number header unless explicitly approved later.
+Use the accepted Details page header direction across public booking steps: practice logo/name, simple public navigation, and the language selector.
 
 For the booking Time step, desktop should show the current week as seven day columns from Monday to Sunday, with arrow icon buttons to move to the previous or next week. Each day column should list all available slots as clickable time-slot buttons.
 
@@ -171,11 +172,11 @@ Use clear copy:
 
 - "Full appointment price"
 - "Deposit due now"
-- "Remaining balance at clinic"
+- "Remaining balance at appointment"
 - "Deposit paid"
 - "Payment pending"
 - "This deposit is non-refundable by default if you do not attend."
-- "Clinics choose policy text appropriate to their business and jurisdiction."
+- "The practice chooses policy text appropriate to its business and jurisdiction."
 - "Request cancellation"
 
 Avoid:
@@ -224,7 +225,7 @@ The patient account should emphasize:
 - past appointments
 - payment/deposit status
 - remaining balance
-- clinic cancellation policy
+- practice cancellation policy
 - request-cancellation action when allowed
 - appointment status
 
@@ -237,7 +238,7 @@ Do not show:
 - chat
 - file uploads
 - treatment notes
-- clinic admin-only payment internals
+- practice admin-only payment internals
 
 Manual bookings can appear in the patient dashboard when attached to that patient account and visibility rules allow it.
 
@@ -251,7 +252,7 @@ The admin UI should emphasize:
 - pending payments
 - paid deposits
 - remaining balances
-- doctors/resources
+- cabinets and cabinet schedules
 - failed Google Calendar syncs
 - cancellation requests
 - no-shows
@@ -262,9 +263,9 @@ Staff dashboard routes under `/dashboard` should use a dedicated dashboard layou
 
 Sidebar items should be role-aware from the start:
 
-- Admin sees clinic-wide dashboard, staff members, notifications, logs placeholder, manual booking, and settings.
-- Doctor sees own dashboard, profile, notifications, manual booking for their own linked doctor profile, and settings after admin approval.
-- Receptionist sees schedule view, manual booking across doctors, and profile.
+- Admin sees practice dashboard, cabinets, services, schedule, staff members, notifications, manual booking, integrations, homepage content, and settings.
+- Receptionist sees schedule, appointments/manual booking across cabinets, relevant notifications, and profile.
+- There is no doctor-role sidebar or doctor onboarding surface in the target MVP.
 
 Dashboard navigation should still use real Next.js routes so content changes like a SPA transition while routes remain bookmarkable, refresh-safe, and server-authorizable.
 
@@ -281,13 +282,13 @@ Pilot dashboard cards should include:
 
 ## Manual Booking UI
 
-Manual booking should be clearly clinic-side only.
+Manual booking should be clearly staff-side only.
 
 The admin manual booking flow should support:
 
 - selecting an existing patient account
 - entering patient name, email, and phone when no patient account exists
-- selecting service, doctor/resource, date, and time
+- selecting cabinet, service, date, and time
 - showing availability conflicts
 - showing payment mode options such as pay at clinic, paid externally, no deposit required, or internal/free
 - warning and reason capture if an authorized override is allowed
@@ -304,7 +305,7 @@ Use calm, specific states:
 - Empty service list: create the first service before enabling booking.
 - Loading availability: checking available times.
 - Slot conflict: this slot is no longer available.
-- Checkout error: payment setup failed; try again or contact the clinic.
+- Checkout error: payment setup failed; try again or contact the practice.
 - Calendar sync failure: appointment is confirmed, but calendar sync failed and can be retried by staff.
 
 ## Forms

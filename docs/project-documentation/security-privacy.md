@@ -1,174 +1,70 @@
 # Security And Privacy
 
-## Overview
+## Principles
 
-DocApp handles healthcare-adjacent booking data, patient contact information, appointment payments, and calendar sync. The MVP should collect minimal patient data and avoid medical-record scope.
+- collect only data required for appointment booking and operations
+- enforce authorization on the server
+- keep practice ownership explicit even in a single-practice database
+- keep payment, identity, and calendar secrets server-side
+- avoid medical data throughout the MVP
+- audit sensitive administrative and lifecycle actions
 
-MVP deployment is single-clinic: each clinic has its own app deployment and database. Still keep local clinic ownership explicit with `organizationId` where records belong to the clinic so server checks and future migrations stay clear.
+## Access Boundaries
 
-## Privacy Principles
+- admin controls the practice, cabinets, integrations, staff, settings, appointments, and authorized refunds
+- receptionist receives only explicitly allowed booking operations across cabinets
+- patient accesses only their own profile and appointments
 
-- Collect only what is needed for booking and payment.
-- Avoid medical details in MVP.
-- Do not store symptoms, diagnoses, documents, prescriptions, insurance data, or medical history.
-- Do not put sensitive details in Google Calendar.
-- Do not put sensitive details in Stripe metadata.
-- Keep secrets server-side only.
-- Enforce local organization/clinic ownership everywhere.
-- Enforce patient ownership for patient account pages and appointment status pages.
+The target architecture has no doctor role or Doctor ownership scope.
 
-## Patient Data In MVP
+Every server action, route, and query must derive the actor from the authenticated session and verify local `OrganizationMember` or `PatientProfile` state. Never trust client-provided roles, organization IDs, patient IDs, or cabinet ownership.
 
-Allowed MVP patient data:
+## Practice And Cabinet Scoping
 
-- name
-- email
-- phone
-- selected service
-- selected doctor/resource/time
-- payment/order status
-- optional non-sensitive note
+Each deployment contains one practice, represented technically by `Organization`. Practice-owned records should be constrained/scoped by `organizationId`; cabinet-owned records must also verify the cabinet belongs to that practice.
 
-Patient accounts are in MVP, but only for appointment management. They must not become medical records.
+This protects against IDOR mistakes and untrusted webhook/action input even without cross-practice UI.
 
-Manual admin-created bookings may store the same minimal contact details when a patient account does not exist. If an existing patient account is selected, access still depends on patient ownership and appointment visibility rules.
+## Patient Data
 
-Avoid collecting:
+Allowed data is minimal identity/contact and appointment-management information. Do not store symptoms, diagnoses, treatment notes, prescriptions, lab results, insurance data, medical files, or chat in MVP.
 
-- medical symptoms
-- diagnoses
-- treatment details
-- medical files
-- prescriptions
-- insurance numbers
-- national IDs unless explicitly required and legally reviewed
+Optional booking notes must explicitly discourage medical details.
 
-## Cancellation And Refund Boundaries
+## Integrations
 
-Patients may be allowed to request cancellation only according to clinic policy.
+Stripe metadata must use opaque local references and no medical details. Stripe webhook signatures and server-side amount validation are mandatory.
 
-Supported clinic policy options:
+Google credentials are server-only. Calendar titles/descriptions must contain only safe operational details. A cabinet mapping must be validated locally before event creation.
 
-- cancellation request allowed only N days/hours before appointment
-- cancellation request allowed anytime
-- cancellation request not allowed
+Clerk authenticates identities; local membership/profile records authorize access. Public or user-controlled metadata must never grant staff permissions.
 
-Patients must not be able to request or self-initiate refunds through the app. Refunds are clinic-side privileged actions only.
+## Slot-Hold Abuse Prevention
 
-Patient-facing pages and emails should clearly state that the online deposit is non-refundable by default if the patient does not attend.
+Use persisted short holds plus:
 
-The default non-refundable deposit behavior is a product default, not universal legal advice. Clinics are responsible for choosing policy text appropriate to their business and jurisdiction.
+- one active hold per anonymous browser/session by default
+- replacement/release when selecting another slot
+- conservative IP-hash active-hold limits
+- creation rate limits
+- automatic expiry and cleanup
+- no patient/contact data in holds
+- transaction/constraint protection during conversion
 
-## Optional Note Copy
+## Refund And Cancellation Boundary
 
-Use copy such as:
+Patient cancellation requests are policy-controlled and do not initiate refunds. Admin-only refund operations require authorization, reason, and audit history. Receptionists cannot issue money refunds by default.
 
-> Optional note for the clinic. Do not include medical details, symptoms, diagnoses, or sensitive information here.
+## Audit And Logs
 
-## Google Calendar Privacy
+Audit staff invitations, role/status changes, cabinet/settings changes, manual bookings, appointment state changes, payment/refund actions, and calendar retries. Avoid secrets and unnecessary patient data in audit payloads.
 
-Google Calendar event titles/descriptions must be minimal.
-
-Do not include symptoms, diagnoses, or medical notes.
-
-## Stripe Privacy
-
-Stripe metadata should contain internal references only, such as:
-
-```txt
-appointmentOrderId
-organizationId if needed
-```
-
-Do not include medical details or long patient notes.
+Do not store every backend request in the application database. Evaluate an external observability service after release for request logs, errors, and alerts.
 
 ## Secrets
 
-Never commit:
+Never commit `.env`, Clerk/Stripe secrets, Google credentials, refresh tokens, database URLs, webhook secrets, or API keys. Never print them in logs or expose them to client bundles.
 
-- `.env` values
-- local credential JSON files such as `Google Calendar API Credentials.json`
-- Clerk secrets
-- Stripe secret keys
-- Stripe webhook secrets
-- Google client secrets
-- Google refresh tokens
-- database URLs
-- Resend/API email keys
+## Legal Pages
 
-## Authorization
-
-Every clinic-scoped query and mutation must check organization membership and role.
-
-Public booking routes must only expose availability and booking actions that are safe for public use.
-
-Patient routes must check that the signed-in user owns the patient profile or appointment being accessed. A patient must never be able to access another patient's appointments, payment status, cancellation request, or contact details by changing an ID in the URL.
-
-Checkout status pages should use a public-safe reference or token. Do not expose raw internal IDs where that would allow enumeration.
-
-Dashboard routes must require authenticated users with active staff membership.
-
-Manual booking creation must require an authorized clinic-side user. Receptionists can create manual bookings and review booking details for each doctor. Doctors can create manual bookings and review booking details only for their own linked `Doctor` profile. Admin can perform these actions across the clinic. Manual override of availability or double-booking rules, if allowed, should require elevated admin permission, a visible warning, an override reason, and audit logging.
-
-Doctor profile and booking-setting access must check both role and target scope. A doctor can edit only their own profile/settings after admin approval. Receptionists cannot edit doctor profiles or booking settings. Admin controls doctor approval, clinic settings, Google Calendar connection, and doctor/resource calendar mappings.
-
-Webhook routes must verify provider signatures and never trust arbitrary user input.
-
-Clerk user-sync webhooks must verify with the Clerk/Svix signing secret before touching the local `User` table. The handler may create or update identity fields only; it must not assign clinic roles, activate staff membership, or mutate appointment/payment records from Clerk payload data alone.
-
-## Audit Logging
-
-Audit important actions:
-
-- service price/deposit changes
-- availability changes
-- appointment creation/cancellation
-- manual booking creation
-- manual booking payment marking
-- manual booking availability override
-- no-show/completed status changes
-- payment/order status changes
-- Google Calendar sync retries
-- admin role/membership changes
-- refund actions
-- patient cancellation requests
-
-Keep audit metadata minimal and avoid unnecessary patient details.
-
-Audit metadata must not store secrets, raw provider credential material, raw webhook payloads, medical details, or long patient notes. Prefer stable internal IDs, short reason codes, before/after role/status values, and user-safe summaries.
-
-Audit events, user-facing notifications, and infrastructure/backend request logs are separate concerns. MVP audit events should record important business/security actions inside the app. User-facing notifications may need their own notification records later. Full backend request/event logging should be evaluated after release through an external logging or observability service, not by storing every request in the product database by default.
-
-## Rate Limiting
-
-Add basic rate limiting where appropriate:
-
-- public booking submission
-- temporary slot hold creation/release
-- checkout session creation
-- public checkout/status token lookups
-- admin login-sensitive workflows if relevant
-- webhook endpoint monitoring/logging
-
-Prevent one anonymous browser/session/IP from holding many slots at once. MVP slot-hold abuse prevention should include:
-
-- one active hold per anonymous browser/session by default
-- release or expire the previous active hold when the same browser/session selects a different slot
-- conservative IP-hash based active hold limits, such as a small number of active holds per IP hash
-- rate limits on hold creation/release attempts
-
-Add user-based limits later only if needed. CAPTCHA can be considered later if abuse appears, but basic abuse prevention should be planned from the MVP.
-
-## Production Checklist
-
-Before pilot:
-
-- verify all sensitive env values are server-only
-- verify no patient health details are stored in calendar events
-- verify webhook signature verification works
-- verify admin data is clinic-scoped
-- verify logs do not leak secrets or sensitive patient data
-- verify privacy policy and cancellation/refund policy exist
-- verify patient ownership checks on patient account pages
-- verify public status references cannot be enumerated
-- verify rate limits or abuse controls around slot holds and Checkout creation
+Before pilot, provide privacy, terms, cancellation, refund, and cookie policy content. Add cookie consent only when non-essential cookies, analytics, tracking pixels, or third-party embeds actually require it.
