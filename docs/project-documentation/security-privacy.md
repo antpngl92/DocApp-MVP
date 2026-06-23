@@ -15,7 +15,7 @@
 - receptionist receives only explicitly allowed booking operations across cabinets
 - patient accesses only their own profile and appointments
 
-The target architecture has no doctor role or Doctor ownership scope.
+The target architecture has no separate provider role or provider-profile ownership scope.
 
 Every server action, route, and query must derive the actor from the authenticated session and verify local `OrganizationMember` or `PatientProfile` state. Never trust client-provided roles, organization IDs, patient IDs, or cabinet ownership.
 

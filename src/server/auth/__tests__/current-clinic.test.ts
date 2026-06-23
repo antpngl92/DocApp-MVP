@@ -99,7 +99,7 @@ describe("current clinic access", () => {
     const database = buildDatabase({
       membership: {
         organizationId: "org_staff",
-        role: "doctor",
+        role: "receptionist",
         status: "active",
       },
     });

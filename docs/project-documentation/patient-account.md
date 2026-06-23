@@ -32,7 +32,7 @@ Do not build the following patient-account features in MVP:
 - prescriptions
 - lab results
 - insurance data
-- doctor-patient chat
+- clinical chat
 - file uploads
 - treatment notes
 - health questionnaires unless explicitly added later

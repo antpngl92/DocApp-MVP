@@ -31,8 +31,8 @@ Do not add production complexity before the MVP scope is clear, but build the pa
 - Patient accounts are part of the MVP. They are for booking, appointment history, payment/deposit status, and cancellation requests only.
 - Support trusted owner/admin provisioning through the Clerk Dashboard or controlled database setup, staff invitation/approved assignment, and patient registration/login in the foundation.
 - Treat `Organization` as the technical ownership root for the single local practice, not one tenant among many active practices.
-- Treat `Cabinet` as the primary bookable operational entity. Do not add a separate operational `Doctor` model to the target architecture.
-- Use only `admin`, `receptionist`, and patient access in the target MVP. The owner/professional uses `admin`; do not add a staff `doctor` role.
+- Treat `Cabinet` as the primary bookable operational entity.
+- Use only `admin`, `receptionist`, and patient access in the target MVP. The owner/professional uses `admin`; do not add another provider staff role.
 - Do not create a public owner/admin registration route or trust user-controlled role metadata.
 - Receptionists must join the practice only through owner/admin invitation or explicit admin approval.
 - Do not store medical notes, symptoms, diagnoses, documents, or other health details unless explicitly added to scope later.

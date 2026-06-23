@@ -16,7 +16,7 @@ Contact email: hello@example-practice.test
 - one invited receptionist
 - two patient accounts
 
-There is no doctor staff account or Doctor profile in target demo data.
+There is no separate provider staff account or provider profile in target demo data.
 
 ## Demo Cabinets
 

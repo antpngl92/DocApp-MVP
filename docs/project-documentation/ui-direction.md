@@ -265,7 +265,6 @@ Sidebar items should be role-aware from the start:
 
 - Admin sees practice dashboard, cabinets, services, schedule, staff members, notifications, manual booking, integrations, homepage content, and settings.
 - Receptionist sees schedule, appointments/manual booking across cabinets, relevant notifications, and profile.
-- There is no doctor-role sidebar or doctor onboarding surface in the target MVP.
 
 Dashboard navigation should still use real Next.js routes so content changes like a SPA transition while routes remain bookmarkable, refresh-safe, and server-authorizable.
 

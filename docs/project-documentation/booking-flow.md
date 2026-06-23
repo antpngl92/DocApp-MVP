@@ -8,7 +8,7 @@ The booking flow is cabinet-centered. Patients choose where they want the appoin
 Cabinet -> Service -> Date and time -> Sign in/register -> Details -> Deposit -> Status
 ```
 
-There is no doctor-selection step in the target MVP.
+There is no separate provider-selection step in the target MVP.
 
 ## Public Patient Flow
 

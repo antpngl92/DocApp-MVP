@@ -34,20 +34,14 @@ const OWNER_BOOTSTRAP_STATUS = {
 
 const STAFF_MEMBER_ROLE = {
   admin: "admin",
-  doctor: "doctor",
   receptionist: "receptionist",
 } as const;
 
-const STAFF_MEMBER_ROLE_VALUES = [
-  STAFF_MEMBER_ROLE.admin,
-  STAFF_MEMBER_ROLE.receptionist,
-  STAFF_MEMBER_ROLE.doctor,
-] as const;
+const STAFF_MEMBER_ROLE_VALUES = [STAFF_MEMBER_ROLE.admin, STAFF_MEMBER_ROLE.receptionist] as const;
 
 const STAFF_INVITABLE_ROLE_VALUES = [
   STAFF_MEMBER_ROLE.admin,
   STAFF_MEMBER_ROLE.receptionist,
-  STAFF_MEMBER_ROLE.doctor,
 ] as const;
 
 const STAFF_OWNER_ADMIN_ROLE_VALUES = [STAFF_MEMBER_ROLE.admin] as const;
@@ -99,57 +93,9 @@ const STAFF_INVITATION_AUDIT_ACTION = "staff_invitation_created";
 const STAFF_INVITATION_AUDIT_SOURCE = "admin_staff_invitation";
 const STAFF_INVITATION_AUDIT_TARGET_TYPE = "OrganizationMember";
 
-const DOCTOR_PROFILE_ONBOARDING_STATUS = {
-  approved: "approved",
-  pendingAdminApproval: "pending_admin_approval",
-  rejected: "rejected",
-} as const;
-
-const DOCTOR_PROFILE_ACCESS_STATUS = {
-  inactive: "inactive",
-  missingLocalUser: "missing_local_user",
-  notDoctorStaff: "not_doctor_staff",
-  pendingAdminApproval: "pending_admin_approval",
-  profileRequired: "profile_required",
-  ready: "ready",
-  rejected: "rejected",
-  signedOut: "signed_out",
-} as const;
-
-const DOCTOR_PROFILE_CREATION_RESULT_STATUS = {
-  alreadyExists: "already_exists",
-  created: "created",
-  invalidName: "invalid_name",
-  unauthorized: "unauthorized",
-} as const;
-
-const DOCTOR_PROFILE_APPROVAL_RESULT_STATUS = {
-  alreadyApproved: "already_approved",
-  approved: "approved",
-  notFound: "not_found",
-  unauthorized: "unauthorized",
-} as const;
-
-const DOCTOR_PROFILE_CREATED_AUDIT_ACTION = "doctor_profile_created";
-const DOCTOR_PROFILE_CREATED_AUDIT_SOURCE = "doctor_profile_onboarding";
-const DOCTOR_PROFILE_CREATED_AUDIT_TARGET_TYPE = "Doctor";
-const DOCTOR_PROFILE_APPROVED_AUDIT_ACTION = "doctor_profile_approved";
-const DOCTOR_PROFILE_APPROVED_AUDIT_SOURCE = "admin_doctor_profile_approval";
-const DOCTOR_PROFILE_APPROVED_AUDIT_TARGET_TYPE = "Doctor";
-
 export {
   CLERK_INVITATION_STATUS,
   CURRENT_AUTHENTICATED_USER_STATUS,
-  DOCTOR_PROFILE_APPROVAL_RESULT_STATUS,
-  DOCTOR_PROFILE_APPROVED_AUDIT_ACTION,
-  DOCTOR_PROFILE_APPROVED_AUDIT_SOURCE,
-  DOCTOR_PROFILE_APPROVED_AUDIT_TARGET_TYPE,
-  DOCTOR_PROFILE_ACCESS_STATUS,
-  DOCTOR_PROFILE_CREATED_AUDIT_ACTION,
-  DOCTOR_PROFILE_CREATED_AUDIT_SOURCE,
-  DOCTOR_PROFILE_CREATED_AUDIT_TARGET_TYPE,
-  DOCTOR_PROFILE_CREATION_RESULT_STATUS,
-  DOCTOR_PROFILE_ONBOARDING_STATUS,
   OWNER_BOOTSTRAP_AUDIT_ACTION,
   OWNER_BOOTSTRAP_AUDIT_SOURCE,
   OWNER_BOOTSTRAP_AUDIT_TARGET_TYPE,

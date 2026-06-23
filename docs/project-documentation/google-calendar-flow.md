@@ -17,7 +17,7 @@ Store separately:
 - explicit cabinet-to-calendar mappings
 - per-appointment sync records and external event IDs
 
-Do not model the practice as a Google account. Do not store calendar IDs on a Doctor model; the target architecture has no operational Doctor model.
+Do not model the practice as a Google account or attach calendar IDs to a separate provider profile. Map calendars explicitly to cabinets.
 
 ## Configuration Flow
 

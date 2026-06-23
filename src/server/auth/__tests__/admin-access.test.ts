@@ -50,7 +50,7 @@ describe("hasOwnerAdminAccess", () => {
     ).toBe(true);
     expect(
       hasOwnerAdminAccess({
-        role: STAFF_MEMBER_ROLE.doctor,
+        role: STAFF_MEMBER_ROLE.receptionist,
         status: STAFF_MEMBER_STATUS.active,
       }),
     ).toBe(false);
@@ -88,7 +88,7 @@ describe("requireActiveStaffAccess", () => {
     expect(() =>
       requireActiveStaffAccess({
         membership: {
-          role: STAFF_MEMBER_ROLE.doctor,
+          role: STAFF_MEMBER_ROLE.receptionist,
           status: STAFF_MEMBER_STATUS.active,
         },
       }),

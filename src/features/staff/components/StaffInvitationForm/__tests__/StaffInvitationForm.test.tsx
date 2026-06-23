@@ -22,7 +22,6 @@ const content: StaffInvitationFormContent = {
 const roleOptions: readonly StaffInvitationRoleOption[] = [
   { label: "Admin", value: STAFF_MEMBER_ROLE.admin },
   { label: "Receptionist", value: STAFF_MEMBER_ROLE.receptionist },
-  { label: "Doctor", value: STAFF_MEMBER_ROLE.doctor },
 ];
 
 describe("StaffInvitationForm", () => {
@@ -58,12 +57,12 @@ describe("StaffInvitationForm", () => {
     render(<StaffInvitationForm content={content} onInvite={onInvite} roleOptions={roleOptions} />);
 
     await user.type(screen.getByLabelText("Staff email"), " Reception@Example.COM ");
-    await user.selectOptions(screen.getByLabelText("Role"), STAFF_MEMBER_ROLE.doctor);
+    await user.selectOptions(screen.getByLabelText("Role"), STAFF_MEMBER_ROLE.receptionist);
     await user.click(screen.getByRole("button", { name: "Invite staff" }));
 
     expect(onInvite).toHaveBeenCalledWith({
       email: "reception@example.com",
-      role: STAFF_MEMBER_ROLE.doctor,
+      role: STAFF_MEMBER_ROLE.receptionist,
     });
     expect(screen.getByText("Invitation sent.")).toBeInTheDocument();
   });

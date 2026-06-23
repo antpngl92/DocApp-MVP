@@ -16,7 +16,6 @@ enum OrganizationStatus {
 enum OrganizationMemberRole {
   admin
   receptionist
-  doctor
 }
 
 enum OrganizationMemberStatus {
@@ -33,12 +32,6 @@ enum ClerkInvitationStatus {
   expired
 }
 
-enum DoctorOnboardingStatus {
-  pending_admin_approval
-  approved
-  rejected
-}
-
 model User {
   id                 String              @id @default(cuid())
   clerkUserId        String              @unique
@@ -46,7 +39,6 @@ model User {
   name               String?
   organizationMember OrganizationMember?
   patientProfile     PatientProfile?
-  doctorProfile      Doctor?
   auditEvents        AuditEvent[]        @relation("AuditEventActor")
   createdAt          DateTime            @default(now())
   updatedAt          DateTime            @updatedAt
@@ -62,7 +54,6 @@ model Organization {
   defaultCurrency String               @default("BGN")
   status          OrganizationStatus   @default(active)
   members         OrganizationMember[]
-  doctors         Doctor[]
   auditEvents     AuditEvent[]
   createdAt       DateTime             @default(now())
   updatedAt       DateTime             @updatedAt
@@ -84,7 +75,6 @@ model OrganizationMember {
 
   organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   user         User?        @relation(fields: [userId], references: [id], onDelete: SetNull)
-  doctor       Doctor?
 
   @@unique([userId])
   @@index([organizationId])
@@ -109,32 +99,6 @@ model PatientProfile {
 
   @@index([email])
   @@index([phone])
-}
-
-model Doctor {
-  id                   String                 @id @default(cuid())
-  organizationId       String
-  userId               String?                @unique
-  organizationMemberId String?                @unique
-  name                 String
-  email                String
-  phone                String?
-  specialty            String?
-  onboardingStatus     DoctorOnboardingStatus @default(pending_admin_approval)
-  isActive             Boolean                @default(false)
-  isBookable           Boolean                @default(false)
-  createdAt            DateTime               @default(now())
-  updatedAt            DateTime               @updatedAt
-
-  organization       Organization        @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  user               User?               @relation(fields: [userId], references: [id], onDelete: SetNull)
-  organizationMember OrganizationMember? @relation(fields: [organizationMemberId], references: [id], onDelete: SetNull)
-
-  @@index([organizationId])
-  @@index([organizationId, onboardingStatus])
-  @@index([organizationId, isActive])
-  @@index([organizationId, isBookable])
-  @@index([email])
 }
 
 model AuditEvent {

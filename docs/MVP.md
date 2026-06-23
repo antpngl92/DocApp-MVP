@@ -33,7 +33,7 @@ A cabinet represents the public identity and location where the professional acc
 
 The English UI may use `Office` or `Practice location` where that is clearer to patients, while the internal domain model may use `Cabinet`.
 
-There is no separate operational `Doctor` model in the target MVP architecture. The practice owner/admin is the healthcare professional, and the cabinet's public name identifies the professional/location combination.
+There is no separate operational provider-profile model in the target MVP architecture. The practice owner/admin is the healthcare professional, and the cabinet's public name identifies the professional/location combination.
 
 ## Deployment Model
 
@@ -100,7 +100,7 @@ Typical needs:
 - track deposits and remaining balances
 - create manual appointments
 
-The owner/admin is the professional. A second operational `Doctor` profile is not required.
+The owner/admin is the professional. A second operational provider profile is not required.
 
 ### Secondary User: Receptionist
 
@@ -137,7 +137,7 @@ MVP roles are:
 - `receptionist`: invited by the admin
 - patient access through `PatientProfile`
 
-The target MVP does not require a `doctor` staff role, doctor invitation, doctor onboarding, doctor approval, or linked `Doctor` profile.
+The target MVP does not require another provider staff role, provider invitation, onboarding approval, or linked provider profile.
 
 Patients may register publicly. Admin accounts are provisioned through a trusted process. Receptionists join only through invitation or explicit admin approval.
 

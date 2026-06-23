@@ -41,7 +41,6 @@ Feature-specific documentation lives in `docs/project-documentation/`:
 
 - The primary customer is an independent doctor or healthcare professional with one or more cabinets/offices.
 - `Cabinet` is the primary public bookable entity. A cabinet can be named for the professional and location, such as `Dr. Anton - Pleven` or `Dr. Anton - Pordim`.
-- Do not create or depend on a separate operational `Doctor` table in the target model.
 - The existing local `Organization` record remains the technical ownership root for the single practice deployment.
 - The practice owner uses the `admin` role. An invited `receptionist` may manage bookings as permitted. Patients use patient profiles, not staff memberships.
 - Payment finalization happens only through Stripe webhooks.

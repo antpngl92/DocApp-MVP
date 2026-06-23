@@ -19,7 +19,7 @@ describe("clinic scope guards", () => {
 
   it("allows records that belong to the expected organization", () => {
     const record = {
-      id: "doctor_123",
+      id: "record_123",
       organizationId: "org_123",
     };
 

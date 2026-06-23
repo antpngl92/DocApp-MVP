@@ -71,7 +71,7 @@
       "clinics": {
         "title": "Para clínicas",
         "description": "Crea una capa operativa más tranquila alrededor de los calendarios.",
-        "item1": "Configura servicios, médicos, salas y disponibilidad",
+        "item1": "Configura consultorios, servicios y disponibilidad",
         "item2": "Controla depósitos, ausencias y saldos restantes",
         "item3": "Mantén visible y recuperable la sincronización con Google Calendar"
       }
@@ -223,54 +223,16 @@
       "successMessage": "Invitación enviada.",
       "roles": {
         "admin": "Administrador",
-        "receptionist": "Recepcionista",
-        "doctor": "Doctor"
+        "receptionist": "Recepcionista"
       },
       "serverError": "No se pudo enviar la invitación. Revisa el correo e inténtalo de nuevo."
-    }
-  },
-  "doctorOnboarding": {
-    "profileRequired": {
-      "eyebrow": "Alta de doctor",
-      "title": "Crea tu perfil de doctor",
-      "description": "Tu acceso de personal está activo. Completa tu perfil de doctor antes de usar el panel médico.",
-      "pendingTitle": "Esperando aprobación del administrador",
-      "pendingDescription": "Tu perfil de doctor ha sido enviado. Un administrador debe aprobarlo antes de que puedas usar el panel médico.",
-      "pendingPanelTitle": "Perfil enviado",
-      "pendingPanelDescription": "No necesitas enviar nada más por ahora. La administración de la clínica revisará y activará tu perfil de doctor.",
-      "form": {
-        "emailHelp": "El email de tu cuenta se usa para identidad y no se puede cambiar aquí.",
-        "emailLabel": "Email de la cuenta",
-        "nameError": "Introduce tu nombre visible.",
-        "nameLabel": "Nombre visible",
-        "namePlaceholder": "Dra. Elena Petrova",
-        "phoneLabel": "Teléfono",
-        "phonePlaceholder": "+359 2 000 0000",
-        "serverError": "No se pudo enviar el perfil. Revisa los datos e inténtalo de nuevo.",
-        "specialtyLabel": "Especialidad",
-        "specialtyPlaceholder": "Medicina general",
-        "submitLabel": "Enviar perfil de doctor",
-        "successMessage": "Perfil enviado. Esperando aprobación del administrador."
-      }
     }
   },
   "dashboardPages": {
     "dashboard": {
       "eyebrow": "Panel",
       "title": "Panel operativo",
-      "description": "Este panel de personal está listo para resúmenes de clínica y tarjetas de trabajo según el rol.",
-      "pendingApprovals": {
-        "heading": "Aprobaciones de doctores pendientes",
-        "emptyTitle": "No hay aprobaciones pendientes",
-        "emptyDescription": "Aquí aparecerán los perfiles de doctores que necesitan revisión de administración.",
-        "emailLabel": "Email",
-        "phoneLabel": "Teléfono",
-        "specialtyLabel": "Especialidad",
-        "createdLabel": "Enviado",
-        "approveLabel": "Aprobar",
-        "phoneFallback": "No indicado",
-        "specialtyFallback": "No indicada"
-      }
+      "description": "Este panel de personal está preparado para resúmenes de la consulta y flujos operativos."
     },
     "staffMembers": {
       "eyebrow": "Personal",
@@ -295,7 +257,7 @@
     "settings": {
       "eyebrow": "Ajustes",
       "title": "Ajustes de reservas",
-      "description": "Aquí estarán los ajustes de reservas de la clínica o del doctor según el rol activo."
+      "description": "Aquí se gestionarán los ajustes de reservas de la consulta y sus consultorios."
     },
     "profile": {
       "eyebrow": "Perfil",
@@ -305,7 +267,7 @@
     "schedule": {
       "eyebrow": "Agenda",
       "title": "Agenda",
-      "description": "Aquí recepción verá la agenda de la clínica para todos los doctores."
+      "description": "Aquí recepción verá la agenda de todos los consultorios."
     }
   },
   "patient": {

@@ -71,7 +71,7 @@
       "clinics": {
         "title": "For clinics",
         "description": "Create a calmer operational layer around clinic calendars.",
-        "item1": "Configure services, doctors, rooms, and availability",
+        "item1": "Configure cabinets, services, and availability",
         "item2": "Track deposits, no-shows, and remaining balances",
         "item3": "Keep Google Calendar sync visible and recoverable"
       }
@@ -223,54 +223,16 @@
       "successMessage": "Invitation sent.",
       "roles": {
         "admin": "Admin",
-        "receptionist": "Receptionist",
-        "doctor": "Doctor"
+        "receptionist": "Receptionist"
       },
       "serverError": "The invitation could not be sent. Check the email and try again."
-    }
-  },
-  "doctorOnboarding": {
-    "profileRequired": {
-      "eyebrow": "Doctor onboarding",
-      "title": "Create your doctor profile",
-      "description": "Your staff access is active. Complete your doctor profile before using the doctor dashboard.",
-      "pendingTitle": "Waiting for admin approval",
-      "pendingDescription": "Your doctor profile has been submitted. An admin must approve it before you can use the doctor dashboard.",
-      "pendingPanelTitle": "Profile submitted",
-      "pendingPanelDescription": "You do not need to submit anything else right now. Clinic administration will review and activate your doctor profile.",
-      "form": {
-        "emailHelp": "Your account email is used for identity and cannot be changed here.",
-        "emailLabel": "Account email",
-        "nameError": "Enter your display name.",
-        "nameLabel": "Display name",
-        "namePlaceholder": "Dr. Elena Petrova",
-        "phoneLabel": "Phone",
-        "phonePlaceholder": "+359 2 000 0000",
-        "serverError": "The profile could not be submitted. Check the details and try again.",
-        "specialtyLabel": "Specialty",
-        "specialtyPlaceholder": "General practice",
-        "submitLabel": "Submit doctor profile",
-        "successMessage": "Profile submitted. Waiting for admin approval."
-      }
     }
   },
   "dashboardPages": {
     "dashboard": {
       "eyebrow": "Dashboard",
       "title": "Operational dashboard",
-      "description": "This staff dashboard shell is ready for role-specific clinic summaries and workflow cards.",
-      "pendingApprovals": {
-        "heading": "Pending doctor approvals",
-        "emptyTitle": "No pending doctor approvals",
-        "emptyDescription": "Doctor profiles that need admin review will appear here.",
-        "emailLabel": "Email",
-        "phoneLabel": "Phone",
-        "specialtyLabel": "Specialty",
-        "createdLabel": "Submitted",
-        "approveLabel": "Approve",
-        "phoneFallback": "Not provided",
-        "specialtyFallback": "Not provided"
-      }
+      "description": "This staff dashboard shell is ready for practice summaries and operational workflow cards."
     },
     "staffMembers": {
       "eyebrow": "Staff",
@@ -295,7 +257,7 @@
     "settings": {
       "eyebrow": "Settings",
       "title": "Booking settings",
-      "description": "This area will hold clinic-wide or doctor-scoped booking settings based on the active staff role."
+      "description": "This area will hold admin-managed practice and cabinet booking settings."
     },
     "profile": {
       "eyebrow": "Profile",
@@ -305,7 +267,7 @@
     "schedule": {
       "eyebrow": "Schedule",
       "title": "Schedule View",
-      "description": "This area will give receptionists a clinic schedule view across doctors."
+      "description": "This area will give receptionists a schedule view across cabinets."
     }
   },
   "patient": {

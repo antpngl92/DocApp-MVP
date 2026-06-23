@@ -71,7 +71,7 @@
       "clinics": {
         "title": "Für Kliniken",
         "description": "Schaffen Sie eine ruhigere operative Ebene rund um Klinikkalender.",
-        "item1": "Services, Ärzte, Räume und Verfügbarkeit konfigurieren",
+        "item1": "Praxen, Leistungen und Verfügbarkeiten konfigurieren",
         "item2": "Anzahlungen, Nichterscheinen und Restbeträge verfolgen",
         "item3": "Google-Kalender-Synchronisierung sichtbar und wiederherstellbar halten"
       }
@@ -223,54 +223,16 @@
       "successMessage": "Einladung gesendet.",
       "roles": {
         "admin": "Admin",
-        "receptionist": "Rezeption",
-        "doctor": "Arzt"
+        "receptionist": "Rezeption"
       },
       "serverError": "Die Einladung konnte nicht gesendet werden. Prüfen Sie die E-Mail-Adresse und versuchen Sie es erneut."
-    }
-  },
-  "doctorOnboarding": {
-    "profileRequired": {
-      "eyebrow": "Arzt-Onboarding",
-      "title": "Arztprofil erstellen",
-      "description": "Ihr Mitarbeiterzugang ist aktiv. Vervollständigen Sie Ihr Arztprofil, bevor Sie das Arzt-Dashboard verwenden.",
-      "pendingTitle": "Warten auf Admin-Freigabe",
-      "pendingDescription": "Ihr Arztprofil wurde eingereicht. Ein Admin muss es freigeben, bevor Sie das Arzt-Dashboard verwenden können.",
-      "pendingPanelTitle": "Profil eingereicht",
-      "pendingPanelDescription": "Sie müssen im Moment nichts weiter einreichen. Die Klinikverwaltung prüft und aktiviert Ihr Arztprofil.",
-      "form": {
-        "emailHelp": "Ihre Konto-E-Mail wird für die Identität verwendet und kann hier nicht geändert werden.",
-        "emailLabel": "Konto-E-Mail",
-        "nameError": "Geben Sie Ihren Anzeigenamen ein.",
-        "nameLabel": "Anzeigename",
-        "namePlaceholder": "Dr. Elena Petrova",
-        "phoneLabel": "Telefon",
-        "phonePlaceholder": "+359 2 000 0000",
-        "serverError": "Das Profil konnte nicht eingereicht werden. Prüfen Sie die Angaben und versuchen Sie es erneut.",
-        "specialtyLabel": "Fachgebiet",
-        "specialtyPlaceholder": "Allgemeinmedizin",
-        "submitLabel": "Arztprofil einreichen",
-        "successMessage": "Profil eingereicht. Warten auf Admin-Freigabe."
-      }
     }
   },
   "dashboardPages": {
     "dashboard": {
       "eyebrow": "Dashboard",
       "title": "Operatives Dashboard",
-      "description": "Diese Mitarbeiteransicht ist bereit für rollenbezogene Klinikübersichten und Arbeitskarten.",
-      "pendingApprovals": {
-        "heading": "Ausstehende Arztfreigaben",
-        "emptyTitle": "Keine ausstehenden Arztfreigaben",
-        "emptyDescription": "Arztprofile, die eine Admin-Prüfung benötigen, erscheinen hier.",
-        "emailLabel": "E-Mail",
-        "phoneLabel": "Telefon",
-        "specialtyLabel": "Fachgebiet",
-        "createdLabel": "Eingereicht",
-        "approveLabel": "Freigeben",
-        "phoneFallback": "Nicht angegeben",
-        "specialtyFallback": "Nicht angegeben"
-      }
+      "description": "Dieses Mitarbeiter-Dashboard ist für Praxisübersichten und operative Abläufe vorbereitet."
     },
     "staffMembers": {
       "eyebrow": "Mitarbeiter",
@@ -295,7 +257,7 @@
     "settings": {
       "eyebrow": "Einstellungen",
       "title": "Buchungseinstellungen",
-      "description": "Hier werden klinikweite oder arztbezogene Buchungseinstellungen je nach aktiver Rolle verwaltet."
+      "description": "Hier verwaltet der Admin die Buchungseinstellungen der Praxis und ihrer Standorte."
     },
     "profile": {
       "eyebrow": "Profil",
@@ -305,7 +267,7 @@
     "schedule": {
       "eyebrow": "Terminplan",
       "title": "Terminplan",
-      "description": "Hier erhalten Rezeptionisten eine klinikweite Terminansicht über Ärzte hinweg."
+      "description": "Hier sieht der Empfang den Zeitplan aller Praxisstandorte."
     }
   },
   "patient": {

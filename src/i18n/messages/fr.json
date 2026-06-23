@@ -71,7 +71,7 @@
       "clinics": {
         "title": "Pour les cliniques",
         "description": "Créez une couche opérationnelle plus sereine autour des agendas.",
-        "item1": "Configurer services, médecins, salles et disponibilités",
+        "item1": "Configurer les cabinets, les services et les disponibilités",
         "item2": "Suivre acomptes, absences et soldes restants",
         "item3": "Garder la synchronisation Google Agenda visible et récupérable"
       }
@@ -223,54 +223,16 @@
       "successMessage": "Invitation envoyée.",
       "roles": {
         "admin": "Admin",
-        "receptionist": "Réceptionniste",
-        "doctor": "Médecin"
+        "receptionist": "Réceptionniste"
       },
       "serverError": "L’invitation n’a pas pu être envoyée. Vérifiez l’e-mail et réessayez."
-    }
-  },
-  "doctorOnboarding": {
-    "profileRequired": {
-      "eyebrow": "Intégration médecin",
-      "title": "Créer votre profil médecin",
-      "description": "Votre accès au personnel est actif. Complétez votre profil médecin avant d’utiliser le tableau de bord médecin.",
-      "pendingTitle": "En attente d’approbation admin",
-      "pendingDescription": "Votre profil médecin a été envoyé. Un admin doit l’approuver avant que vous puissiez utiliser le tableau de bord médecin.",
-      "pendingPanelTitle": "Profil envoyé",
-      "pendingPanelDescription": "Vous n’avez rien d’autre à envoyer pour le moment. L’administration de la clinique examinera et activera votre profil médecin.",
-      "form": {
-        "emailHelp": "L’e-mail de votre compte sert à l’identité et ne peut pas être modifié ici.",
-        "emailLabel": "E-mail du compte",
-        "nameError": "Saisissez votre nom affiché.",
-        "nameLabel": "Nom affiché",
-        "namePlaceholder": "Dr Elena Petrova",
-        "phoneLabel": "Téléphone",
-        "phonePlaceholder": "+359 2 000 0000",
-        "serverError": "Le profil n’a pas pu être envoyé. Vérifiez les informations et réessayez.",
-        "specialtyLabel": "Spécialité",
-        "specialtyPlaceholder": "Médecine générale",
-        "submitLabel": "Envoyer le profil médecin",
-        "successMessage": "Profil envoyé. En attente d’approbation admin."
-      }
     }
   },
   "dashboardPages": {
     "dashboard": {
       "eyebrow": "Tableau de bord",
       "title": "Tableau de bord opérationnel",
-      "description": "Cette interface du personnel est prête pour les résumés de clinique et les cartes de travail selon le rôle.",
-      "pendingApprovals": {
-        "heading": "Approbations médecin en attente",
-        "emptyTitle": "Aucune approbation en attente",
-        "emptyDescription": "Les profils médecin nécessitant une revue admin apparaîtront ici.",
-        "emailLabel": "E-mail",
-        "phoneLabel": "Téléphone",
-        "specialtyLabel": "Spécialité",
-        "createdLabel": "Soumis",
-        "approveLabel": "Approuver",
-        "phoneFallback": "Non renseigné",
-        "specialtyFallback": "Non renseignée"
-      }
+      "description": "Ce tableau de bord est prêt pour les synthèses du cabinet et les flux opérationnels."
     },
     "staffMembers": {
       "eyebrow": "Personnel",
@@ -295,7 +257,7 @@
     "settings": {
       "eyebrow": "Paramètres",
       "title": "Paramètres de réservation",
-      "description": "Cet espace contiendra les paramètres de réservation de la clinique ou du médecin selon le rôle actif."
+      "description": "Cette zone regroupera les paramètres de réservation du cabinet et de ses lieux de consultation."
     },
     "profile": {
       "eyebrow": "Profil",
@@ -305,7 +267,7 @@
     "schedule": {
       "eyebrow": "Planning",
       "title": "Planning",
-      "description": "Cet espace donnera aux réceptionnistes une vue du planning de la clinique par médecin."
+      "description": "Cette zone donnera à l'accueil une vue du planning de tous les cabinets."
     }
   },
   "patient": {
