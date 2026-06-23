@@ -388,6 +388,7 @@ export const ModelName = {
   Organization: 'Organization',
   OrganizationMember: 'OrganizationMember',
   PatientProfile: 'PatientProfile',
+  Cabinet: 'Cabinet',
   AuditEvent: 'AuditEvent'
 } as const
 
@@ -404,7 +405,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "organization" | "organizationMember" | "patientProfile" | "auditEvent"
+    modelProps: "user" | "organization" | "organizationMember" | "patientProfile" | "cabinet" | "auditEvent"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -704,6 +705,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Cabinet: {
+      payload: Prisma.$CabinetPayload<ExtArgs>
+      fields: Prisma.CabinetFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CabinetFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CabinetPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CabinetFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CabinetPayload>
+        }
+        findFirst: {
+          args: Prisma.CabinetFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CabinetPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CabinetFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CabinetPayload>
+        }
+        findMany: {
+          args: Prisma.CabinetFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CabinetPayload>[]
+        }
+        create: {
+          args: Prisma.CabinetCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CabinetPayload>
+        }
+        createMany: {
+          args: Prisma.CabinetCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CabinetCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CabinetPayload>[]
+        }
+        delete: {
+          args: Prisma.CabinetDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CabinetPayload>
+        }
+        update: {
+          args: Prisma.CabinetUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CabinetPayload>
+        }
+        deleteMany: {
+          args: Prisma.CabinetDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CabinetUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CabinetUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CabinetPayload>[]
+        }
+        upsert: {
+          args: Prisma.CabinetUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CabinetPayload>
+        }
+        aggregate: {
+          args: Prisma.CabinetAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCabinet>
+        }
+        groupBy: {
+          args: Prisma.CabinetGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CabinetGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CabinetCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CabinetCountAggregateOutputType> | number
+        }
+      }
+    }
     AuditEvent: {
       payload: Prisma.$AuditEventPayload<ExtArgs>
       fields: Prisma.AuditEventFieldRefs
@@ -872,6 +947,29 @@ export const PatientProfileScalarFieldEnum = {
 export type PatientProfileScalarFieldEnum = (typeof PatientProfileScalarFieldEnum)[keyof typeof PatientProfileScalarFieldEnum]
 
 
+export const CabinetScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  name: 'name',
+  slug: 'slug',
+  description: 'description',
+  addressLine1: 'addressLine1',
+  addressLine2: 'addressLine2',
+  city: 'city',
+  postalCode: 'postalCode',
+  countryCode: 'countryCode',
+  phone: 'phone',
+  email: 'email',
+  timezone: 'timezone',
+  isActive: 'isActive',
+  isBookingEnabled: 'isBookingEnabled',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CabinetScalarFieldEnum = (typeof CabinetScalarFieldEnum)[keyof typeof CabinetScalarFieldEnum]
+
+
 export const AuditEventScalarFieldEnum = {
   id: 'id',
   organizationId: 'organizationId',
@@ -1018,6 +1116,13 @@ export type ListEnumClerkInvitationStatusFieldRefInput<$PrismaModel> = FieldRefI
 
 
 /**
+ * Reference to a field of type 'Boolean'
+ */
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+/**
  * Reference to a field of type 'Json'
  */
 export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
@@ -1158,6 +1263,7 @@ export type GlobalOmitConfig = {
   organization?: Prisma.OrganizationOmit
   organizationMember?: Prisma.OrganizationMemberOmit
   patientProfile?: Prisma.PatientProfileOmit
+  cabinet?: Prisma.CabinetOmit
   auditEvent?: Prisma.AuditEventOmit
 }
 

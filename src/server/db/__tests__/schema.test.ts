@@ -141,6 +141,39 @@ describe("Prisma schema patient profile model", () => {
   });
 });
 
+describe("Prisma schema cabinet model", () => {
+  it("models cabinets as practice-owned bookable locations", () => {
+    const schema = readFileSync(schemaPath, "utf8");
+    const cabinetModel = schema.match(/model Cabinet \{[\s\S]*?\n\}/)?.[0];
+
+    expect(cabinetModel).toBeDefined();
+    expect(cabinetModel).toMatch(/organizationId\s+String/);
+    expect(cabinetModel).toMatch(/name\s+String/);
+    expect(cabinetModel).toMatch(/slug\s+String/);
+    expect(cabinetModel).toMatch(/addressLine1\s+String/);
+    expect(cabinetModel).toMatch(/city\s+String/);
+    expect(cabinetModel).toMatch(/countryCode\s+String\s+@default\("BG"\)/);
+    expect(cabinetModel).toMatch(/timezone\s+String\?/);
+    expect(cabinetModel).toMatch(/isActive\s+Boolean\s+@default\(true\)/);
+    expect(cabinetModel).toMatch(/isBookingEnabled\s+Boolean\s+@default\(false\)/);
+  });
+
+  it("scopes cabinet slugs and operational lookups to the practice", () => {
+    const schema = readFileSync(schemaPath, "utf8");
+    const cabinetModel = schema.match(/model Cabinet \{[\s\S]*?\n\}/)?.[0];
+
+    expect(cabinetModel).toBeDefined();
+    expect(cabinetModel).toMatch(
+      /organization\s+Organization\s+@relation\(fields: \[organizationId\], references: \[id\], onDelete: Cascade\)/,
+    );
+    expect(cabinetModel).toContain("@@unique([organizationId, slug])");
+    expect(cabinetModel).toContain("@@index([organizationId])");
+    expect(cabinetModel).toContain("@@index([organizationId, city])");
+    expect(cabinetModel).toContain("@@index([organizationId, isActive, isBookingEnabled])");
+    expect(schema).toMatch(/cabinets\s+Cabinet\[\]/);
+  });
+});
+
 describe("Prisma schema audit event model", () => {
   it("models clinic-owned audit events for identity, membership, and role changes", () => {
     const schema = readFileSync(schemaPath, "utf8");
