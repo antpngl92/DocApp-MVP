@@ -1,10 +1,10 @@
 # DocApp Documentation Pack
 
-This documentation pack defines a clean MVP foundation for DocApp.
+This documentation pack defines the DocApp MVP foundation.
 
-DocApp is a deposit-based appointment booking and Google Calendar management tool for small private clinics.
+DocApp is a deposit-based appointment booking and Google Calendar management tool for an independent healthcare professional operating one or more cabinets/offices.
 
-MVP deployment is single-clinic: each clinic gets its own app deployment, database, Prisma configuration, and integration credentials. DocApp does not support cross-clinic operations, clinic switching, or shared multi-tenant database behavior in the MVP.
+Each practice receives its own deployment, database, Prisma configuration, Stripe configuration, and Google integration credentials. The MVP does not support cross-practice switching, shared multi-tenant data, clinic workforce management, or marketplace behavior.
 
 ## Start Here
 
@@ -39,26 +39,24 @@ Feature-specific documentation lives in `docs/project-documentation/`:
 
 ## Critical Rules
 
+- The primary customer is an independent doctor or healthcare professional with one or more cabinets/offices.
+- `Cabinet` is the primary public bookable entity. A cabinet can be named for the professional and location, such as `Dr. Anton - Pleven` or `Dr. Anton - Pordim`.
+- Do not create or depend on a separate operational `Doctor` table in the target model.
+- The existing local `Organization` record remains the technical ownership root for the single practice deployment.
+- The practice owner uses the `admin` role. An invited `receptionist` may manage bookings as permitted. Patients use patient profiles, not staff memberships.
 - Payment finalization happens only through Stripe webhooks.
-- Checkout success page is read-only and must not mark orders paid.
-- Google Calendar event creation happens after payment confirmation.
-- Google Calendar sync failures must not erase a paid booking.
-- A clinic is the single local organization for its deployment, not a Google account; for MVP it may connect one active Google account and map its calendars to local doctors/resources.
-- Do not build cross-clinic switching or shared-database multi-tenant behavior in MVP.
-- Availability must exclude confirmed appointments and non-expired pending locks.
-- Clinic owner/admin accounts are provisioned only through the Clerk Dashboard or a controlled database process; public owner/admin registration is not allowed.
-- Staff-user and patient registration are part of MVP.
-- Staff joins clinics only through invitation or approved clinic assignment.
-- Prefer Clerk Invitations for staff-user onboarding, but local `OrganizationMember` records remain the source of clinic roles and permissions.
-- Invited doctors must complete a linked `Doctor` profile before normal doctor dashboard access; the profile starts inactive, not bookable, and pending admin approval.
-- Admin can act clinic-wide; receptionists can manage manual bookings and booking details for each doctor; doctors can do that only for their own linked doctor profile.
-- Doctors may manage their own booking settings after admin approval, but admin owns Google Calendar connection and doctor/resource calendar mappings.
-- Patients can register publicly and manage their own appointments.
-- Authorized clinic staff can create manual bookings from the admin panel for existing patient accounts or for people without accounts using manually entered contact details.
-- Patient accounts are in MVP and are appointment-management only.
-- Patients can request cancellation only when clinic policy allows it.
+- Checkout success pages are read-only and must not mark orders paid.
+- Google Calendar events are created only after confirmed payment or authorized manual confirmation.
+- Google Calendar sync failures must not erase paid bookings.
+- One practice-owned Google account may contain multiple calendars, normally mapped to individual cabinets.
+- One practice-owned Stripe account receives appointment deposits for every cabinet in that deployment.
+- Availability must exclude confirmed appointments, active holds, and non-expired pending-payment locks.
+- Owner/admin accounts are provisioned only through Clerk Dashboard or another controlled process; there is no public owner registration.
+- Receptionists join only through owner/admin invitation or approved assignment.
+- Patients can register publicly and manage only their own appointments.
+- Authorized staff may create manual bookings for existing patients or people without accounts.
+- Patients may request cancellation only when practice policy allows it.
 - Patients cannot request or self-initiate refunds.
-- Patient data must be minimal.
-- Do not store medical records in MVP.
+- Collect only minimal booking/contact data. Do not store medical records, symptoms, diagnoses, prescriptions, documents, or treatment notes.
 - Do not put sensitive medical information in Google Calendar.
-- Keep all clinic data organization-scoped.
+- Do not build payroll, room-rental accounting, multi-doctor clinic management, or a public doctor marketplace in MVP.

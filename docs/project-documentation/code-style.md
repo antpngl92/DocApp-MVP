@@ -315,13 +315,13 @@ Server-side effects should live in server-side modules, server actions, route ha
 
 Never finalize payment in a React component or checkout success page.
 
-Never trust client-provided price, deposit, duration, clinic ID, doctor ID, resource ID, or slot availability without server-side validation.
+Never trust client-provided price, deposit, duration, practice/organization ID, cabinet ID, service ID, or slot availability without server-side validation.
 
 Before creating a Stripe Checkout Session, server code must re-check:
 
-- organization/clinic ownership
+- organization/practice ownership
 - active service
-- active doctor/resource
+- active cabinet and cabinet-service assignment
 - service price/deposit
 - slot availability
 - pending lock rules

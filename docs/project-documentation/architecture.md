@@ -2,213 +2,95 @@
 
 ## Overview
 
-DocApp is a Next.js App Router application for clinic appointment booking, deposit payment, and Google Calendar sync.
+DocApp is a single-practice appointment application for an independent healthcare professional operating one or more cabinets/offices.
 
-The app has four major surfaces:
+Each customer receives a separate deployment, database, Prisma configuration, Clerk instance/configuration, Stripe configuration, and Google integration. The application does not switch between practices and does not share operational data across customers.
 
-1. Public/marketing pages.
-2. Public booking and checkout status pages.
-3. Authenticated patient account pages.
-4. Authenticated clinic admin pages.
+## Domain Shape
 
-The database is the source of truth for clinics, users, services, appointments, payment orders, and sync state. Stripe and Google Calendar are external systems.
+The main ownership chain is:
 
-## Prototype Reference
+```txt
+Organization (technical practice root)
+  -> Cabinet
+    -> CabinetService / service assignment
+    -> AvailabilityRule / blocked time
+    -> SlotHold
+    -> Appointment
+    -> Google calendar mapping
+```
 
-The existing `D:\Projects\DocApp` prototype uses:
+`Organization` remains the internal ownership root because it already provides durable scoping for users, memberships, audit events, and future records. Product copy should call it a practice.
 
-- Next.js App Router without a `src/` directory.
-- Prisma with PostgreSQL.
-- Clerk middleware and a local `User` table synced by Clerk webhooks.
-- Stripe Checkout for one-time BGN appointment payments.
-- Google Calendar API for calendar listing, calendar creation, and event creation.
-- Resend for admin email notification when Google Calendar creation fails.
-- Tailwind CSS, shadcn/Radix-style UI primitives, lucide icons, React Hook Form, Zod, Sonner, and Zustand.
+`Cabinet` is the primary bookable entity. It identifies the professional/location combination patients select, for example `Dr. Anton - Pleven` or `Dr. Anton - Pordim`.
 
-The rebuild may reuse stable ideas, environment variable names, scripts, UI patterns, and integration setup from the prototype, but it should not copy the fragile lifecycle behavior directly.
-
-The prototype's shadcn/Radix UI component setup and reusable UI components are not approved for migration. New UI should be guided by approved SuperDesign explorations.
-
-Prototype issues that the MVP architecture must correct:
-
-- Payment is finalized from `/checkout/success`; the rebuild must finalize only through Stripe webhooks.
-- Google Calendar event creation is triggered from the success page; the rebuild must trigger it after webhook-confirmed payment or authorized manual confirmation.
-- Appointment status, payment status, and calendar sync state are not cleanly separated.
-- Pending slot locks do not have explicit expiration.
-- Calendar/payment side effects are not fully idempotent.
-- Some prototype route paths and actions drifted out of sync.
-- Some Prisma action types drifted from the schema.
-- Admin authorization uses Clerk metadata, but organization/clinic scoping is not modeled yet.
-
-## Architecture Principles
-
-- Keep the app clinic/organization-scoped inside a single-clinic deployment from the beginning.
-- Keep route/page files thin.
-- Keep business logic in feature services, validators, mappers, and server modules.
-- Keep payment fulfillment webhook-driven.
-- Keep Google Calendar as a sync target, not the source of truth.
-- Keep patient data minimal and privacy-conscious.
-- Keep patient account access ownership-checked.
-- Keep server-only code out of client components.
-- Prefer production-shaped foundations over fragile prototype shortcuts.
+The target architecture has no operational `Doctor` model. The practice owner is represented by an active `OrganizationMember` with role `admin`. Optional invited staff use role `receptionist`. Patients use `PatientProfile` and are not staff members.
 
 ## Main Domains
 
-- Authentication and organization membership
-- Patient accounts and patient ownership
-- Clinic configuration
-- Doctors
-- Cabinets/rooms/resources
-- Services and pricing/deposits
-- Availability and slot generation
-- Public booking
-- Patient appointment dashboard
-- Appointment lifecycle
-- Stripe payment lifecycle
-- Google Calendar sync lifecycle
-- Notifications
-- Audit logs
+- identity: Clerk identity sync, local users, staff memberships, patient profiles
+- practice: technical ownership, public practice settings, homepage content
+- cabinets: cabinet identity, location, contact data, service assignments, availability
+- booking: slot generation, holds, pending appointments, confirmed appointments
+- payments: Stripe Checkout, orders, webhook fulfillment, refunds
+- calendar: one practice Google connection, cabinet calendar mappings, sync attempts
+- notifications: booking email delivery and idempotency
+- audit: sensitive administrative and lifecycle actions
 
-## Suggested Route Groups
+## Route Surfaces
 
 ```txt
 src/app/
-├── (public)/
-│   ├── layout.tsx
-│   ├── page.tsx
-│   ├── support/
-│   ├── booking/
-│   └── checkout/
-├── (patient)/
-│   └── account/
-└── (admin)/
-    └── admin/
+  (public)/       public practice pages and booking discovery
+  (auth)/         sign-in, sign-up, and post-auth routing
+  (patient)/      authenticated patient account
+  (admin)/        authenticated staff dashboard
+  api/            Clerk, Stripe, cleanup, and integration webhooks/routes
 ```
 
-## Implemented App Foundation Routes
+Route groups organize layouts and do not change URLs. Public practice routes belong under one `(public)` group; do not split them into marketing and clinic-public groups.
 
-Phase 4 establishes these route foundations:
+## Authorization
 
-```txt
-/
-/support
-/booking/[clinicSlug]
-/checkout/success
-/checkout/cancel
-/checkout/expired
-/checkout/status/[reference]
-/dashboard
-/account
-```
+Authorization is enforced server-side:
 
-The staff dashboard and patient route groups are prepared for authentication boundaries, but route protection is implemented in the authentication phase.
+- `admin`: full control over the practice, cabinets, integrations, settings, staff, and appointments
+- `receptionist`: only explicitly allowed operational appointment access across cabinets
+- patient: only their own profile and appointments
 
-A standalone public `/services` informational route is not part of the MVP foundation. Public service selection belongs inside the clinic-branded booking flow unless a later product decision adds a separate services page.
-
-Checkout success, cancel, expired, and status routes are read-only UI foundations. They must not mutate appointment, order, payment, or calendar state.
-
-## App Foundation State Strategy
-
-The Phase 4 foundation includes organization-scoped cache-tag helpers for future server-state caching.
-
-Do not add a global client state store until a concrete UI-state need exists. Server state remains in the database/server layer, and later feature work should use scoped invalidation/refetch behavior after webhooks or external sync updates.
-
-## Internationalization Foundation
-
-The app uses `next-intl` with Bulgarian, English, Spanish, German, French, and Italian message catalogs.
-
-The selected locale is stored in a first-party `docapp-locale` cookie and applies without locale-prefixed URLs. The shared navigation contains the language selector, Server Components load translated copy through `next-intl/server`, and Client Components receive translation context from the root provider.
-
-## Server-Side Boundaries
-
-Server-only code should live in `src/server` or server-only feature modules.
-
-Examples:
-
-- Stripe client creation
-- Stripe webhook signature verification
-- Google Calendar client creation
-- Prisma database access
-- authorization helpers
-- audit logging
-- sensitive environment variable access
-
-Client components must not import these modules.
-
-## Authentication Dependency Order
-
-Clerk identity/session setup comes before local database authorization. The minimum Prisma identity foundation (`User`, `Organization`, `OrganizationMember`, and `PatientProfile`) must exist before implementing Clerk webhook user sync, trusted owner/admin provisioning, staff invitations, clinic membership checks, role authorization, or patient ownership authorization.
-
-Clerk route protection proves that a request is signed in. Local database authorization determines whether that signed-in user may access a clinic, staff action, patient profile, or appointment.
-
-## Single-Clinic Deployment Shape
-
-DocApp MVP uses one deployment and one database per clinic. Each clinic also has its own Prisma configuration and integration credentials.
-
-The local `Organization` is the clinic profile and product source of truth for that deployment. It is not one tenant among many active clinics in a shared database.
-
-Do not build cross-clinic switching, marketplace behavior, or shared-database multi-tenant operations in the MVP. `organizationId` remains useful on clinic-owned records as a local ownership boundary and consistency check.
-
-## Clinic And Google Calendar Dependency Order
-
-An `Organization` is the local clinic profile and must exist before Google Calendar can be connected. The organization is not a Google account. For MVP, an existing authorized clinic may connect one active Google account, then discover and map that account's calendars to existing local `Doctor` and `Resource` records.
-
-The dependency order is:
-
-```txt
-Organization and authorized membership
-Doctor and resource records
-Calendar integration/mapping records
-Google account connection and calendar discovery
-Doctor/resource calendar mappings
-Owner/admin booking settings UI
-```
-
-Doctor, resource, service, availability, and booking policy settings remain local. Disconnecting or replacing the Google account must not remove the clinic or its operational records.
+UI visibility follows these permissions but never replaces server checks. Every practice-owned query must be scoped through the local `Organization` even though each deployment contains one practice.
 
 ## Source Of Truth
 
-DocApp database is the source of truth for:
+- local PostgreSQL records are the source of truth for practice settings, cabinets, services, availability, appointments, payments, and permissions
+- Clerk is the identity provider, not the role/permission source of truth
+- Stripe webhooks are the payment-finalization source of truth
+- Google Calendar is a synchronization target, not the appointment source of truth
 
-- organizations/clinics
-- users/memberships/roles
-- doctors/resources/services
-- availability rules
-- appointments
-- orders and payment state
-- Google Calendar sync state
-- notification state
-- audit logs
+## External Integrations
 
-Stripe is the source of truth for payment settlement, but local state should mirror relevant payment events after verified webhooks.
+One practice-owned Stripe account receives deposits for all cabinets. Split payments and Stripe Connect are outside MVP.
 
-Google Calendar is a sync target. Failed sync should not erase or invalidate a paid appointment.
+One practice-owned Google account may contain multiple calendars. Each cabinet can map to one calendar. Local booking remains available when Google integration is not configured or temporarily fails.
 
-Patient account pages read local appointment/order/sync state and must enforce patient ownership.
+External effects must be idempotent and durably tracked. A Google failure must not undo a paid local appointment.
 
-## External Side Effects
+## State Strategy
 
-External side effects should be idempotent where practical:
+Use server-rendered data and server-state caching for authoritative records. Keep short-lived UI state local to components. Do not mirror the database in a global client store.
 
-- Stripe webhook fulfillment
-- Google Calendar event creation
-- Google Calendar retry
-- email notification sending
+Persist slot holds because double-booking prevention must work across browsers and server instances. A hold identifies the cabinet, service, time interval, anonymous token/session, state, and expiry; it must not contain patient contact or medical data.
 
-Persist external IDs and sync attempt state for traceability.
+## Prototype Reference
 
-Expired short holds and pending-payment locks need a concrete cleanup mechanism, such as a cron/job/service plus webhook handling for `checkout.session.expired`.
+The old `D:\Projects\DocApp` prototype may be inspected for integration names, scripts, and behavior. It is not the architecture source of truth and its doctor/clinic/resource assumptions must not be copied into the MVP.
 
-The same scheduled-job foundation may be reused for time-based notifications such as appointment reminders.
+## Dependency Order
 
-## Future Architecture Considerations
-
-Consider later only after the pilot workflow is stable:
-
-- shared multi-clinic SaaS architecture, if the product direction changes
-- Stripe Connect for real multi-clinic money movement
-- durable job queue for retries/background processing
-- SMS reminder provider
-- custom clinic domains
-- multi-language UI
-- advanced analytics
+1. Complete the cabinet-focused identity/domain reset.
+2. Model cabinets and cabinet service/availability configuration.
+3. Build cabinet-based slot generation and holds.
+4. Build authenticated pending appointment creation.
+5. Add Stripe Checkout and webhook fulfillment.
+6. Connect Google and map calendars to cabinets.
+7. Add patient and staff appointment-management pages.

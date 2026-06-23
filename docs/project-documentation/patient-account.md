@@ -12,15 +12,15 @@ Patients should be able to:
 
 - register/login
 - manage basic profile and contact details
-- browse clinic booking pages
+- browse practice and cabinet booking pages
 - book appointments
 - view upcoming appointments
 - view past appointments
 - view appointment detail
 - view payment/deposit status
-- view remaining balance due at clinic
-- view clinic cancellation/refund policy
-- request cancellation when clinic policy allows it
+- view remaining balance due at the appointment
+- view practice cancellation/refund policy
+- request cancellation when practice policy allows it
 - receive booking-related email notifications
 
 ## Out Of Scope
@@ -46,9 +46,9 @@ Patient-facing appointment views must enforce ownership:
 
 - patient can view only their own appointments
 - patient cannot view another patient's appointment by guessing IDs or status links
-- patient cannot access clinic admin records
+- patient cannot access practice admin records
 - patient cannot see admin-only payment internals
-- patient cannot see cross-clinic data
+- patient cannot see unrelated practice data
 
 ## Booking Flow Integration
 
@@ -69,7 +69,7 @@ Guest booking can be considered later, but MVP direction prioritizes patient acc
 
 ## Cancellation Requests
 
-Patient cancellation behavior is configurable per clinic:
+Patient cancellation behavior is configurable per practice:
 
 - cancellation request allowed only N days/hours before appointment
 - cancellation request allowed anytime
@@ -77,7 +77,7 @@ Patient cancellation behavior is configurable per clinic:
 
 The patient action should be named `Request cancellation`, not `Cancel and refund`.
 
-Patient cancellation request does not automatically mean refund request. Refund execution belongs only to authorized clinic-side users.
+Patient cancellation request does not automatically mean refund request. Refund execution belongs only to an authorized admin.
 
 ## Profile Data
 
@@ -107,7 +107,7 @@ Notification sending should be idempotent.
 Patient account pages must not expose:
 
 - another patient's appointment
-- another clinic's booking data
+- another practice's booking data
 - raw Stripe metadata unless explicitly safe
 - sensitive Google Calendar payloads
 - medical details

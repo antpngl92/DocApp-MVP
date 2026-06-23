@@ -1,125 +1,99 @@
 # Demo And Pilot Data
 
-This file defines safe demo data for local testing and pilot walkthroughs.
-
-Do not use real patient data in seeds, screenshots, demos, or SuperDesign prompts.
-
-## Demo Clinic
+## Demo Practice
 
 ```txt
-Clinic name: Sofia Care Clinic
+Practice name: Dr. Anton Practice
+Owner/admin: Dr. Anton
 Timezone: Europe/Sofia
 Currency: BGN
-Booking page slug: sofia-care
-Contact email: hello@example-clinic.test
-Contact phone: +359 2 000 0000
+Contact email: hello@example-practice.test
 ```
 
-## Demo Roles
+## Demo Staff
 
-```txt
-Owner: Clinic Owner
-Manager: Clinic Manager
-Receptionist: Front Desk
-Doctor: Dr. Elena Petrova
-Patient: Alex Ivanov
-```
+- one privately provisioned admin/owner
+- one invited receptionist
+- two patient accounts
 
-Use fake emails under reserved/example-style domains.
+There is no doctor staff account or Doctor profile in target demo data.
 
-## Demo Resources
+## Demo Cabinets
 
-```txt
-Room: Consultation Room 1
-Room: Consultation Room 2
-Calendar: Main Clinic Calendar
-Calendar: Dr. Petrova Calendar
-Calendar: Consultation Room 1 Calendar
-```
+### Dr. Anton - Pleven
+
+- active and publicly bookable
+- central Pleven address
+- works Monday, Tuesday, Thursday, and Friday
+- mapped to Google calendar `Dr. Anton - Pleven`
+
+### Dr. Anton - Pordim
+
+- active and publicly bookable
+- Pordim address
+- works Wednesday
+- mapped to Google calendar `Dr. Anton - Pordim`
+
+The two cabinets should use different availability so cabinet-specific slot generation is easy to verify.
 
 ## Demo Services
 
-```txt
-Service: Initial consultation
-Duration: 30 minutes
-Full price: 80 BGN
-Deposit due now: 20 BGN
-Remaining balance at clinic: 60 BGN
+### Initial consultation
 
-Service: Follow-up consultation
-Duration: 20 minutes
-Full price: 50 BGN
-Deposit due now: 15 BGN
-Remaining balance at clinic: 35 BGN
+- duration: 30 minutes
+- full price: 80 BGN
+- deposit: 20 BGN
+- remaining balance: 60 BGN
+- assigned to both cabinets
 
-Service: Physiotherapy session
-Duration: 45 minutes
-Full price: 90 BGN
-Deposit due now: 25 BGN
-Remaining balance at clinic: 65 BGN
-```
+### Follow-up consultation
 
-Every active demo service should have at least one valid bookable assignment.
+- duration: 20 minutes
+- full price: 50 BGN
+- deposit: 15 BGN
+- remaining balance: 35 BGN
+- assigned to both cabinets
 
-## Demo Appointment States
+### Extended consultation
 
-Include examples for:
+- duration: 45 minutes
+- full price: 100 BGN
+- deposit: 30 BGN
+- remaining balance: 70 BGN
+- assigned only to Pleven
 
+## Demo States
+
+Include examples of:
+
+- available slot
+- active anonymous hold
+- hold expiring soon
 - pending payment
-- confirmed with deposit paid
-- confirmed with pay-at-clinic manual booking
+- confirmed paid appointment
+- manual pay-at-appointment booking
+- failed Google sync awaiting retry
 - cancellation requested
 - cancelled
 - no-show
 - completed
-- confirmed with failed Google Calendar sync
-
-## Demo Slot Hold States
-
-Include examples for:
-
-- available slot
-- selected in this browser/session
-- active hold in this browser/session
-- this browser/session's hold expiring soon
-- this browser/session's hold expired
-- held by another browser/session
-- pending payment lock
+- refunded order with retained appointment history
 
 ## Pilot Setup Checklist
 
-Before a real pilot clinic uses DocApp:
+- confirm legal/business display name
+- configure admin identity and invited receptionist if needed
+- create every cabinet with accurate address/contact information
+- configure services and cabinet assignments
+- configure cabinet working days, breaks, closures, and holidays
+- confirm timezone, currency, deposit, cancellation, and refund policy
+- connect the practice Stripe account
+- connect the practice Google account if desired
+- map each cabinet to the correct Google calendar
+- verify public homepage and booking copy
+- run end-to-end test bookings for every cabinet
+- verify confirmation email and calendar retry behavior
 
-- Confirm clinic legal/business name.
-- Confirm clinic timezone.
-- Confirm default currency.
-- Confirm public booking page slug.
-- Confirm clinic contact email and phone.
-- Confirm owner/admin account.
-- Confirm staff invitation process.
-- Confirm doctors and resources.
-- Confirm Google Calendar mapping strategy.
-- Confirm services, durations, prices, deposits, and remaining balances.
-- Confirm cancellation policy text.
-- Confirm refund policy text.
-- Confirm non-refundable deposit copy shown to patients.
-- Confirm manual booking payment modes allowed for staff.
-- Confirm whether manual override is allowed and which roles can use it.
-- Confirm support/contact email.
-- Run booking, payment, webhook, and calendar sync test in test mode.
+## Admin Handoff
 
-## Admin Handoff Notes
-
-Pilot clinic admins should understand:
-
-- Patient bookings require deposit payment unless the clinic creates an approved manual booking mode.
-- Checkout success pages are read-only status pages.
-- Stripe webhooks confirm payment.
-- Google Calendar events are created only after payment confirmation or authorized manual confirmation.
-- If Google Calendar sync fails, the appointment remains confirmed locally and staff can retry sync.
-- Patients can request cancellation only when clinic policy allows it.
-- Patients cannot request or self-initiate refunds in DocApp.
-- Refunds are privileged clinic-side actions and should be audited.
-- Manual bookings can be attached to existing patient accounts or created with manually entered contact details.
-- Medical records, diagnoses, prescriptions, chat, and file uploads are not part of the MVP.
-
+The admin should understand that local appointments remain authoritative, payments finalize only through Stripe webhooks, Google sync may be retried without losing a paid appointment, holds expire automatically, patients cannot initiate refunds, and every cabinet has independent booking settings/calendar mapping.

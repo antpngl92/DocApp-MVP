@@ -2,370 +2,108 @@
 
 ## Overview
 
-DocApp uses Clerk for authentication and local Prisma records for app-specific user, organization, membership, and role state.
+Clerk authenticates identities. The local database authorizes access.
 
-Authentication proves who the user is. Authorization decides what clinic data and actions they can access.
+Never grant practice permissions from public form input, client-visible metadata, invitation metadata alone, or route visibility. Local `OrganizationMember` status and role are authoritative for staff access.
 
-MVP deployment is single-clinic. Each clinic has its own app deployment and database, so local membership represents access to this deployment's clinic only. The app should not expose cross-clinic switching or multiple clinic memberships for one local user in MVP.
+## Identity Flows
 
-## Implementation Order
+### Owner/Admin
 
-Authentication and authorization must be implemented in dependency order:
+The independent professional uses role `admin` and is provisioned through Clerk Dashboard or another controlled server/database process. There is no public owner/admin registration.
 
-1. Configure Clerk identity, login, logout, session handling, and basic signed-in route boundaries.
-2. Configure Prisma/database access and create the minimum local identity models: `User`, `Organization`, `OrganizationMember`, and `PatientProfile`.
-3. Sync Clerk identities into the local `User` table through unique `User.clerkUserId`.
-4. Implement trusted owner/admin provisioning, staff invitations, clinic membership, roles, and patient ownership.
-5. Enforce local membership/role/ownership authorization on private routes and server-side operations.
+On authenticated access, DocApp resolves the Clerk user to local `User`, verifies an active local admin membership, and scopes access to the deployment's single `Organization` practice record.
 
-Clerk authentication can exist before the local identity schema, but local-user lookup, clinic membership checks, role checks, invitations, and patient ownership checks cannot be implemented safely until their database models exist.
+### Receptionist
 
-## Goals
+An admin invites a receptionist by email through the app. The server uses Clerk's Backend Invitation API and creates/tracks a pending local membership.
 
-- Support trusted clinic owner/admin provisioning and secure admin login.
-- Support one staff-user registration/onboarding flow through clinic invitation or approved clinic assignment, with admin, receptionist, and doctor represented as roles.
-- Support patient registration/login for booking and appointment management.
-- Sync Clerk users into a local `User` table.
-- Scope all admin data to the local organization/clinic.
-- Support admin/receptionist/doctor/patient access boundaries.
-- Enforce access control on the server.
+Invitation acceptance is matched against normalized invited email and local membership state. Clerk invitation metadata is unnecessary for MVP and must never be authoritative.
 
-## Local User Sync
+After acceptance:
 
-The app should store a local user record mapped to the Clerk user ID.
+1. synchronize/find the local `User`
+2. find the matching invited local membership
+3. link it to the user
+4. mark it active and invitation accepted
+5. create an audit event
 
-The mapping must use a unique `User.clerkUserId` and webhook processing must be idempotent so repeated Clerk events update the same local user instead of creating duplicates.
+The target MVP has no staff `doctor` role and no doctor-profile onboarding or approval gate.
 
-Minimum local fields:
+### Patient
 
-- id
-- clerkUserId
-- email
-- name
-- createdAt
-- updatedAt
+Patients may register publicly. They receive a local `User` and `PatientProfile`, not an `OrganizationMember`. Patient access is limited to their own profile and appointments.
 
-Clerk webhook sync should create/update local users.
+## Target Roles
 
-Implemented MVP behavior:
+- `admin`: full practice, cabinet, integration, staff, settings, appointment, and authorized refund control
+- `receptionist`: permitted appointment operations across cabinets; no staff administration, payment credential management, Google connection management, or admin-only settings
+- patient access: own profile and appointments only
 
-- `POST /api/clerk/webhook` verifies Clerk/Svix signatures with `@clerk/nextjs/webhooks`.
-- Use `CLERK_WEBHOOK_SIGNING_SECRET` for the webhook secret. `CLERK_WEBHOOK_SECRET` is kept only as a legacy compatibility fallback.
-- `user.created` and `user.updated` events upsert a local `User` by unique `User.clerkUserId`.
-- The primary Clerk email is normalized to lowercase before storing locally. If Clerk does not provide a primary email, the first email address is used.
-- Duplicate webhook deliveries are idempotent because they update the same `User.clerkUserId` instead of creating another local user.
-- Unsupported Clerk events are acknowledged but ignored.
-- `user.deleted` must not delete local appointment, payment, patient, or audit history until a dedicated retention/anonymization policy is implemented.
-- Do not log raw Clerk webhook payloads, signing secrets, or full provider headers.
+Fine-grained permissions should be checked for the action and target record, not inferred only from navigation.
 
-Identity sync does not grant staff permissions. Staff/admin access still requires a trusted local `OrganizationMember` record and role validation in later tasks.
+## Shared Server Helpers
 
-## Current Authenticated User Helper
+The server auth layer should provide focused helpers for:
 
-Server-side code can use the current-authenticated-user helper to connect the active Clerk session to the local `User` table.
+- current authenticated Clerk/local user
+- required local user
+- current practice/organization
+- active staff membership
+- required admin access
+- allowed receptionist operation
+- required patient profile ownership
+- required patient appointment ownership
+- practice-owned record scoping
 
-Implemented MVP behavior:
-
-- The helper reads the active session with Clerk's App Router server `auth()` helper.
-- If no Clerk user is signed in, it returns `signed_out`.
-- If Clerk has a signed-in user but the local `User` row does not exist yet, it returns `missing_local_user`.
-- If the local row exists, it returns `authenticated` with the local user record.
-- The helper looks up local users by unique `User.clerkUserId`.
-- The helper does not create missing users, assign roles, activate memberships, or grant patient ownership.
-
-Later route guards should decide how to handle `signed_out` and `missing_local_user` for each surface. Staff/admin authorization still requires an active local `OrganizationMember`; patient ownership still requires `PatientProfile` and appointment ownership checks.
-
-## Local User Lookup Helper
-
-Server-side identity and authorization code should reuse the local-user lookup helper when resolving a Clerk identity to the local `User` table.
-
-Implemented MVP behavior:
-
-- The helper accepts a Clerk user ID.
-- The helper queries the local `User` table by unique `User.clerkUserId`.
-- The helper returns the local user record or `null`.
-- The helper does not create users, assign permissions, activate staff memberships, or create patient profiles.
-
-This keeps the Prisma query shape centralized for current-user resolution, trusted owner/admin provisioning, staff invitation acceptance, membership guards, and patient ownership guards.
-
-## Current Clinic Helper
-
-Because MVP is a single-clinic deployment, the current clinic helper resolves the active local `Organization` for the signed-in local user. Staff access additionally requires an active `OrganizationMember`; patient account access can resolve the active clinic without staff membership.
-
-Use current-clinic helpers for server-side code that needs the active local organization boundary before querying clinic-owned records. Do not rely on client-side route visibility or navigation links as authorization.
-
-## Patient Profile Ownership Guard
-
-Patient account routes must require:
-
-- an authenticated Clerk session
-- a synced local `User`
-- no active clinic-side staff membership for that patient surface
-- a local `PatientProfile` owned by the current local `User`
-
-If the local `PatientProfile` is missing on first account access, the guard may create the minimal profile from the local user email/name. This keeps public registration usable while still making patient profile ownership explicit. Future appointment queries must separately check that the appointment belongs to the current patient profile.
-
-## Organization/Clinic Membership
-
-Staff users access clinic data through membership records.
-
-Suggested model:
-
-```txt
-Organization
-User
-OrganizationMember
-```
-
-`OrganizationMember` should include:
-
-- organizationId
-- userId, nullable while an invitation is pending
-- role
-- status
-- invitedEmail
-- createdAt
-- updatedAt
-
-Possible roles:
-
-```txt
-admin
-receptionist
-doctor
-```
-
-Clinic-side MVP permissions start with a compact role set. A clinic business owner uses the `admin` role in the application.
-
-A linked local `User` should have at most one `OrganizationMember` in this deployment. Patients do not use `OrganizationMember`; a patient account should be represented locally and linked to appointments through `PatientProfile` or patient ownership fields.
-
-## Registration Flows
-
-MVP should support these flows:
-
-- clinic owner/admin authentication accounts are provisioned only through the Clerk Dashboard or a controlled database provisioning process
-- no public owner/admin registration route is exposed
-- owner/admin invites staff users, preferably through Clerk Invitations
-- staff user accepts invite and registers/logs in
-- staff user is attached to the clinic only through invitation or owner/admin approval
-- staff users cannot publicly self-register into arbitrary clinics or staff roles
-- patient registers/logs in before completing a paid booking
-- patient registration can be public
-- patient profile is created or updated from booking contact details
-
-### Clinic Owner And Admin Provisioning
-
-Clinic owner/admin accounts must not be created through a public registration form.
-
-For MVP, an owner/admin authentication identity is created through the Clerk Dashboard or another controlled administrative provisioning process. If a database record is provisioned directly, it must be linked to a trusted Clerk identity before the person can authenticate.
-
-Owner/admin roles, organization membership, and clinic access must be assigned through controlled server-side or administrative processes. User-controlled metadata, public form input, or a self-selected role must never grant clinic-side access.
-
-Implemented MVP bootstrap behavior:
-
-1. Create the trusted owner/admin identity in Clerk Dashboard.
-2. Add Clerk private metadata:
-
-```json
-{
-  "docapp": {
-    "bootstrapRole": "admin"
-  }
-}
-```
-
-Allowed bootstrap role is `admin` only. A clinic business owner/admin is represented by the local `admin` role.
-
-On authenticated admin app access, DocApp first resolves the Clerk identity to the local `User`. If the local `User` does not exist yet, DocApp may fetch the trusted Clerk Backend user, create or update the local `User` from Clerk ID, primary email, and display name, then continue bootstrap.
-
-DocApp reads Clerk private metadata server-side through Clerk's Backend API only when the local user has no existing `OrganizationMember`. If the local user has no existing membership and the deployment has an active local `Organization`, DocApp creates an active local admin membership and writes an audit event.
-
-The staff dashboard route shell must not render for a signed-in user unless bootstrap returns or finds an active local membership with an allowed staff role: `admin`, `doctor`, or `receptionist`. A regular patient user with no `OrganizationMember`, or a staff user with an inactive/removed status, must not be able to render `/dashboard`.
-
-Clerk private metadata is a one-time bootstrap hint only. Once a local membership exists, DocApp ignores the bootstrap metadata and keeps `OrganizationMember.role` and `OrganizationMember.status` as the source of truth for authorization. Do not expose private metadata in UI, API responses, logs, public metadata, or session claims.
-
-Patient accounts are appointment-management accounts only. They must not expose medical records, prescriptions, diagnoses, treatment notes, insurance workflows, chat, or file uploads.
-
-### Staff Invitations With Clerk
-
-Clerk Invitations are the preferred MVP mechanism for onboarding clinic-side staff users. Admin, receptionist, and doctor are roles under this staff-user flow, not separate onboarding products.
-
-Recommended flow:
-
-1. Authorized owner/admin creates a staff invitation from DocApp.
-2. The invitation form requires a staff email input and a role dropdown.
-3. Owner/admin selects the intended role: admin, receptionist, or doctor.
-4. DocApp validates that the inviting user can assign the selected role.
-5. DocApp creates a pending local invitation or `OrganizationMember` record with organization, intended role, status, invited email, and inviter/audit details.
-6. DocApp creates a Clerk Invitation for that email from a server-only action or route.
-7. Clerk sends the invitation email and handles account acceptance/sign-in.
-8. Clerk webhook sync creates or updates the local `User` by unique `User.clerkUserId`.
-9. DocApp validates the pending local invitation or membership before activating clinic access.
-10. DocApp activates the local `OrganizationMember` and assigns the intended role.
-
-A staff member with role `doctor` must eventually be linked to a `Doctor` operational profile before receiving normal doctor dashboard access. Receptionists and other non-doctor staff normally need only the `OrganizationMember` record unless the product later adds a separate operational profile for them.
-
-Implemented MVP foundation:
-
-- After a staff user accepts a Clerk invitation and the Clerk webhook has synced a local `User`, server-side onboarding can activate the pending local `OrganizationMember`.
-- Activation requires a signed-in Clerk session, an existing local `User`, a pending local membership with `status = invited`, and a normalized invited email matching the local user email.
-- Activation runs when the authenticated invited user reaches a protected app surface such as `/account` or `/dashboard` after sign-up/sign-in.
-- Activation links `OrganizationMember.userId` to the local user, changes membership status to `active`, changes `clerkInvitationStatus` to `accepted`, and writes an audit event.
-- If the user is signed out, missing locally, already active, disabled/removed, missing a pending invitation, mismatched by email, or assigned an invalid role, staff access is not activated.
-- A regular patient account with no pending local invitation remains a patient-only account and receives no clinic-side staff access.
-- The admin overview includes the staff invitation form with a staff email field and role dropdown. It validates input locally and submits through a server action.
-- Staff invitation role options are centralized and intentionally limited to `admin`, `receptionist`, and `doctor`.
-- The staff invitation server action validates the signed-in local user, active owner/admin membership, active local organization, invite email, and inviteable role before calling Clerk.
-- The staff invitation server action uses Clerk's Backend API `clerkClient().invitations.createInvitation` from `@clerk/nextjs/server`. This must remain server-only because it depends on the Clerk secret key.
-- The invitation `redirectUrl` must be an absolute application URL built from `NEXT_PUBLIC_APP_URL` and `NEXT_PUBLIC_CLERK_SIGN_UP_URL`. A relative path is resolved against Clerk's Account Portal domain, so the invitation email would send staff to the hosted portal sign-up instead of the app's sign-up page.
-- Sending a staff invitation creates the pending local `OrganizationMember` with `status = invited`, the normalized invited email, and the intended role, so Clerk invitation acceptance can activate into local membership.
-- The returned Clerk invitation ID is stored on the pending membership as unique `clerkInvitationId`, with `clerkInvitationStatus = pending`, and an audit event records the invitation creation.
-- If the email already has an `invited` or `active` membership in the organization, the server returns `already_invited` without calling Clerk. A database-level partial unique index also protects this rule under concurrent requests.
-- If the Clerk invitation call fails, the pending membership is removed so the email can be re-invited. If local tracking fails after Clerk creates an invitation, DocApp makes a best-effort attempt to revoke the Clerk invitation and remove the pending membership before surfacing the failure.
-- Invitation audit logging is best-effort after the invitation has been sent and tracked; audit failure must be monitored but must not report a failed invite to the admin.
-- Do not pass local organization, membership, invitation, or role metadata to Clerk invitations for MVP. Staff invitation acceptance is matched by normalized invited email against local `OrganizationMember` state only.
-
-### Doctor Profile Onboarding Gate
-
-When a staff invitation is accepted with role `doctor`, the app should not immediately grant unrestricted doctor dashboard access.
-
-Required doctor flow:
-
-1. Admin invites the doctor through the staff invitation flow.
-2. Doctor accepts the Clerk invitation, signs up or signs in, and DocApp activates the local `OrganizationMember`.
-3. If the active membership role is `doctor` and no linked `Doctor` profile exists, redirect the doctor to the required doctor-profile onboarding page at `/dashboard/onboarding/doctor-profile`.
-4. The doctor can access only the required onboarding surface, logout, and any explicitly safe account surfaces until the `Doctor` profile exists.
-5. Creating the profile links `Doctor` to the local organization, `OrganizationMember`, and local `User`.
-6. The new doctor profile starts inactive and pending admin approval. It must not be public/bookable immediately.
-7. Admin reviews the pending doctor onboarding request and marks the doctor active, while the doctor remains not bookable by default.
-8. After admin approval, the doctor can manage their own operational booking settings within clinic rules only after the required calendar mapping, service assignment, availability, and slot/bookable models exist.
-
-Doctor-managed settings after approval may include own services, own availability, slots/times, holidays, blocked time, and own bookable on/off state, but this workflow should be implemented after the calendar/availability/bookable-slot foundation is in place. Admin still manages clinic-level infrastructure, Google Calendar connection, and doctor/resource calendar mappings.
-
-Cabinets/rooms/resources remain clinic infrastructure. A doctor should not create or take over clinic resources during profile onboarding unless a later explicit task allows that.
-
-### Staff Permission Scope
-
-Permissions are role-based and scope-based.
-
-- `admin` can do what doctor and receptionist can do, plus clinic-level administration.
-- `doctor` can do receptionist-like appointment work only for appointments attached to their own linked `Doctor` profile. A doctor cannot manage another doctor's bookings/settings and cannot perform admin-only actions.
-- `receptionist` can create manual bookings and review booking details for each doctor. A receptionist cannot edit doctor profiles, doctor booking settings, clinic settings, staff invitations, calendar mappings, or admin-only actions.
-- `patient` access is separate from staff membership and must be limited to the patient's own profile and appointments.
-
-Future authorization helpers should check both role and target scope. For example, appointment permissions should be evaluated with the actor's role, actor doctor profile ID where applicable, and target doctor profile ID.
-
-Examples:
-
-- Admin can manage any doctor appointment or setting where admin permission is allowed.
-- Receptionist can manage manual booking and appointment details for any doctor, without editing doctor settings.
-- Doctor can manage manual booking and appointment details only when the target appointment belongs to that doctor's own linked profile.
-- Doctor can manage their own booking settings only after their profile is admin-approved and active and the required calendar/availability/bookable-slot foundation exists.
-- Patient cannot access staff appointment management surfaces.
-
-Implementation note:
-
-```ts
-await clerkClient.invitations.createInvitation({
-  emailAddress: staffEmail,
-  // Absolute URL from NEXT_PUBLIC_APP_URL + NEXT_PUBLIC_CLERK_SIGN_UP_URL,
-  // e.g. http://localhost:3000/sign-up in development.
-  redirectUrl: staffInvitationRedirectUrl,
-});
-```
-
-The Clerk Backend API endpoint is `POST /v1/invitations`. It requires the Clerk secret key and must never run in a client component. Clerk sends the invitation email by default. Store the returned Clerk invitation ID and status locally so DocApp can track pending, accepted, expired, and revoked invitations.
-
-Do not pass local organization, membership, invitation, or role metadata to Clerk invitations for MVP. If metadata is added later, it must be treated only as a hint. Local database records remain the source of truth for clinic membership, role, status, and permissions.
-
-Never grant staff permissions from user-controlled Clerk metadata, public form input, or invitation acceptance alone. If the local invitation is missing, expired, revoked, or mismatched, the signed-in user must not receive clinic-side access.
-
-## Refund Permissions
-
-Refunds are privileged clinic-side actions.
-
-Default permission guidance:
-
-- admin can issue refunds if explicitly granted permission
-- receptionist can cancel appointments or flag refund review, but cannot issue money refunds by default
-- doctor can mark appointment outcome where allowed for their own linked doctor profile, but cannot issue refunds by default
-
-Patients cannot request or self-initiate refunds.
+Use `practice` terminology in new helper names where practical. Existing `current-clinic` helpers should be renamed during the cabinet-focused reset without weakening their ownership checks.
 
 ## Route Protection
 
-The Phase 5 authentication foundation protects private routes in two places:
+- public routes: available without authentication
+- auth routes: sign-in, sign-up, and post-auth destination resolution
+- dashboard routes: active local staff membership plus action-specific authorization
+- patient routes: authenticated local user plus patient ownership
 
-- `clerkMiddleware` protects configured private route patterns before route rendering.
-- Private admin and account route-group layouts call a shared server-side session helper that delegates to Clerk's documented `auth.protect()` API before rendering shell content.
+Unauthenticated or unauthorized access must not rely on hidden links. Enforce it on the server through middleware/layout/route/action boundaries as appropriate.
 
-This is an authentication boundary only. Local user lookup, clinic membership, role checks, and patient ownership checks are added after the database identity models exist.
+Post-auth routing should send active staff to `/dashboard` and patients to `/account`. It must not create privileges from the destination request.
 
-Authenticated dashboard routes must require:
+## Clerk User Sync
 
-- signed-in user
-- active local user record
-- active organization membership
-- appropriate role for the action
+Clerk webhooks create/update local users idempotently through unique `User.clerkUserId`. Webhooks may synchronize identity fields but must not accept arbitrary practice IDs, memberships, roles, appointment IDs, or payment authority from untrusted payload data.
 
-Patient account routes must require:
+Public registration, staff invitation, invitation acceptance, role change, suspension/revocation, and trusted admin provisioning should create safe audit events.
 
-- signed-in user
-- active local user record
-- ownership of the patient profile/appointment being read or changed
+## Practice Scoping
 
-The public booking surface may allow browsing clinic availability, but final booking submission, Checkout Session creation, appointment status access, and cancellation requests should be tied to the authenticated patient account or a public-safe token/reference flow where explicitly documented.
+Even with one practice per deployment, every practice-owned server query should verify `organizationId` or follow a relation rooted in the current practice. This prevents accidental IDOR bugs and keeps webhook/action code from trusting client-provided ownership IDs.
 
-## Server-Side Authorization
+## Cabinet-Focused Reset
 
-Do not rely only on UI hiding.
+Remove from the current implementation:
 
-Every server action, route handler, and database query that reads or mutates clinic data must enforce organization ownership.
+- doctor membership role
+- doctor onboarding and approval helpers
+- Doctor-profile linkage requirements
+- doctor-specific post-auth destinations
+- doctor-scoped navigation and permissions
 
-Use the shared clinic-scope guard for clinic-owned records that expose `organizationId`. A record is accessible only when its `organizationId` matches the active local organization resolved for the signed-in staff user. In the single-clinic MVP this still matters because it prevents future code from accidentally trusting client-provided IDs or drifting toward shared multi-clinic assumptions.
+Preserve:
 
-Examples:
+- controlled admin provisioning
+- Clerk/local user mapping
+- receptionist invitation security
+- local membership authority
+- patient ownership guards
+- server-side practice scoping
+- audit history
 
-- creating a service
-- editing availability
-- viewing appointments
-- cancelling appointments
-- retrying calendar sync
-- reading payment order details
-- viewing patient appointment details
-- requesting cancellation as a patient
+## Security Rules
 
-## Webhook Authorization
-
-Stripe webhooks are not authenticated by Clerk. They must verify Stripe signatures and then resolve local order/appointment records through trusted metadata and database state.
-
-Webhook handlers must not accept arbitrary clinic/user IDs from untrusted input.
-
-The current Clerk webhook only syncs local users by Clerk user ID and can create a public-registration audit event against the active local organization. It must not accept clinic IDs, order IDs, appointment IDs, or role assignments from the webhook payload. Stripe/order webhook scoping is implemented later with the payment models.
-
-## Audit Events
-
-Create audit events for sensitive actions:
-
-- trusted admin bootstrap
-- staff invitation created
-- staff invitation accepted / membership activated
-- public account registration
-- doctor profile created
-- doctor profile approved
-- member added/removed
-- role changed
-- service price/deposit changed
-- availability changed
-- appointment cancelled
-- no-show marked
-- payment/order state changed
-- Google Calendar sync retried
-- patient cancellation requested
-- refund issued or recorded
-
-## Risks
-
-- Single-clinic deployment still requires explicit local ownership checks so future features do not accidentally read or mutate records outside the intended clinic profile.
-- Clerk auth does not automatically protect server actions if they query data without scoping.
-- Webhook handlers need separate validation and idempotency.
+- Never import Clerk secret APIs into client components.
+- Never expose private Clerk metadata or auth-provider implementation details in public copy.
+- Never authorize from user-controlled metadata.
+- Never trust a client-provided role, organization ID, patient ID, or cabinet ownership claim.
+- Do not rely on UI hiding as authorization.
+- Keep session and role checks server-side for protected operations.

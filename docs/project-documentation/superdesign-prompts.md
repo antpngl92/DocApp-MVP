@@ -1,192 +1,65 @@
 # SuperDesign Prompts
 
-This file provides DocApp-specific prompts for Phase 3 SuperDesign exploration.
+## Shared Context
 
-Use these prompts in SuperDesign as design references. Generated output must be reviewed against `docs/MVP.md`, `docs/DECISIONS.md`, `docs/project-documentation/ui-direction.md`, and all payment/privacy rules before implementation.
+Design DocApp as the public booking and operational application for one independent healthcare professional with one or more cabinets/offices.
 
-## Base Style Prompt
+Patients choose a cabinet such as `Dr. Anton - Pleven` or `Dr. Anton - Pordim`, then a service and available time. The product collects an appointment deposit, tracks the remaining balance, and optionally syncs each cabinet to its own Google calendar.
 
-```txt
-Design a calm, trustworthy clinic booking interface for DocApp.
+Do not design a clinic workforce platform, public doctor marketplace, medical-record system, SaaS marketing page, or hospital dashboard. Do not add doctor selection, doctor cards, payroll, room rental, revenue sharing, ads, diagnosis, prescriptions, medical files, chat, or insurance workflows.
 
-Product context:
-DocApp helps small private clinics configure services, doctors, rooms, availability, appointment deposits, patient accounts, and Google Calendar sync. It is not a public doctor marketplace and not a medical-record system.
+Use the approved modern clinical theme consistently. Keep colors purposeful rather than assigning random colors to sections. Public pages should feel calm, trustworthy, modern, and specific to the professional's practice.
 
-Visual direction:
-Use a light neutral background, white/off-white surfaces, soft borders, restrained shadows, readable typography, muted clinical blue and green accents, and clear status badges. The interface should feel operational, reliable, and healthcare-adjacent without looking like a hospital records system.
+## Public Homepage
 
-Avoid:
-ads, flashy marketplace styling, heavy gradients, decorative blobs, purple AI startup aesthetics, medical diagnosis imagery, chat/medical-record panels, and unnecessary visual noise.
-
-Core UI rules:
-Payment amounts must be obvious. Show "Deposit due now" and "Remaining balance at clinic." Patient cancellation is "Request cancellation", not "Cancel and refund." Calendar sync failure is a secondary sync state, not an appointment status.
-```
-
-## Public Booking Flow Prompt
-
-```txt
-Create a mobile-first public booking flow for DocApp using the approved calm clinic application style.
-
-Screens/states to include:
-1. Clinic-branded booking page
-2. Service selection where the patient chooses the service
-3. Doctor/resource selection where the patient chooses a doctor/provider or resource that can perform the selected service
-4. Date/time slot selection
-5. Slot selected in this browser/session
-6. Slot held by another browser/session
-7. Current hold expiring soon with countdown/warning
-8. Hold expired with clear recovery action
-9. Patient login/register step while preserving the selected hold
-10. Patient details review
-11. Price review with full price, deposit due now, and remaining balance
-12. Stripe Checkout handoff
-
-Constraints:
-Do not include medical records, symptoms, diagnosis fields, or ads. The optional note must be clearly non-sensitive. Use fewer day/time columns on mobile and more context on desktop.
-```
-
-## Booking Time Slot Picker Prompt
-
-```txt
-Create the Service and Time steps for the DocApp public booking flow.
-
-Step 1 - Service:
-The patient chooses a service, then chooses a doctor/provider or resource assigned to that service. Service cards should show duration, full appointment price, deposit due now, remaining balance at clinic, and assigned doctors/resources.
-
-Step 2 - Time:
-Create a calendar-style slot picker.
-
-Step 1 and Step 2 must be separate wizard pages or must visually behave like separate wizard pages in a one-page wizard. Do not combine service selection and time selection into one screen.
-
-Keep the public booking wizard stepper consistent with the accepted Details page direction:
-
-- Service
-- Time
-- Details
-
-Keep the booking header consistent with the accepted Details page direction: clinic logo/name plus simple `Services` and `About` navigation.
-
-Desktop:
-Show the current week. The first row is the days of the week from Monday to Sunday. Add arrow icon buttons on the left and right to move to previous/next week. Each day is a column. Under each day column, list all available slots as clickable slot buttons with the time text inside the slot.
-
-Mobile:
-Show exactly 3 columns instead of 7. The first column is today, the second is tomorrow, and the third is the day after tomorrow. Each column lists available slot buttons.
-
-Slot states:
-available, selected in this browser/session, held by another browser/session, current hold expiring soon, hold expired, no slots available.
-
-Constraints:
-Do not include booking fee, processing fee, platform fee, refund request, medical records, symptoms, diagnosis fields, chat, file uploads, ads, or rescheduling.
-```
-
-## Checkout Status Prompt
-
-```txt
-Create checkout status screens for DocApp.
-
-States:
-1. Payment pending
-2. Deposit paid and appointment confirmed
-3. Checkout cancelled
-4. Checkout expired
-5. Appointment confirmed but Google Calendar sync failed
-
-Rules:
-The success page is read-only and must not imply it finalizes payment. Make it clear that Stripe webhook/payment confirmation is the source of truth. Calendar sync failure must not imply the appointment is cancelled.
-
-Copy to include:
-"Deposit paid"
-"Remaining balance at clinic"
-"Appointment confirmed"
-"Payment is still processing"
-"Appointment is confirmed, but calendar sync failed"
-```
-
-## Patient Dashboard Prompt
-
-```txt
-Create a simple patient account dashboard for DocApp.
-
-Focus:
-upcoming appointments, past appointments, appointment status, payment/deposit status, remaining balance, cancellation policy, and request-cancellation action when clinic policy allows it.
-
-Constraints:
-Do not show medical records, prescriptions, diagnosis history, insurance workflows, chat, file uploads, treatment notes, clinic admin-only payment internals, or refund request actions.
+Design a responsive patient-facing homepage for the independent practice, not a DocApp product-marketing page.
 
 Include:
-An appointment detail state, empty upcoming appointments state, cancellation requested state, and manual booking attached to the patient account.
-```
 
-## Admin Dashboard Prompt
+- full-width image-led hero with configurable headline/supporting copy
+- prominent `Book an Appointment` action
+- `Contact Us` secondary action
+- language selector
+- concise professional/practice introduction
+- cabinet/location summary
+- service overview
+- deposit and attendance-policy summary
+- contact and working information
 
-```txt
-Create a desktop-friendly clinic admin dashboard for DocApp.
+The hero image and major copy are admin-configurable. Do not imply medical records or diagnosis.
 
-Dashboard cards:
-today's bookings, upcoming bookings, pending payments, active slot holds, failed syncs, paid deposits, cancellations, and no-shows.
+## Booking Wizard
 
-Views:
-daily agenda, appointment table, failed Google Calendar sync alert, and appointment detail panel.
+Design separate visual steps in one wizard:
 
-Rules:
-Use dense but readable operational UI. Do not use marketing hero sections. Show appointment status, payment status, deposit paid, remaining balance, and calendar sync status separately.
-```
+1. cabinet selection
+2. service selection for that cabinet
+3. date and time
+4. patient details/authentication where needed
+5. payment/review
 
-## Manual Booking Prompt
+Do not combine cabinet/service selection and calendar selection into one screen.
 
-```txt
-Create an admin-only manual booking flow for DocApp.
+The desktop calendar shows Monday-Sunday columns with previous/next week icon buttons and available time buttons. Mobile shows three day columns starting with today. Include available, selected, held-by-another, and own-hold-expiring states without shifting layout.
 
-Use case:
-Authorized clinic staff creates an appointment for a patient who contacted the clinic by phone, message, or in person.
+Always show cabinet/location, full price, deposit due now, remaining balance, and policy copy clearly.
 
-Flow:
-1. Search/select existing patient account
-2. Or enter minimal patient contact details: name, email, phone
-3. Select service
-4. Select doctor/resource
-5. Select date/time
-6. Show availability conflicts
-7. Select payment mode: pay at clinic, paid externally, no deposit required, internal/free
-8. Confirm booking
-9. Show Google Calendar sync status
+## Staff Dashboard
 
-Rules:
-Manual booking should respect availability by default. If override is allowed, show a warning and require a reason. Payment state must be separate from appointment state. Audit-sensitive actions should feel deliberate.
-```
+Design a desktop-oriented dashboard with a collapsible icon sidebar and logout at the bottom. The public navbar does not appear.
 
-## Failed Calendar Sync Prompt
+Admin navigation may include dashboard, cabinets, services, schedule, manual booking, staff, notifications, integrations, homepage content, and settings.
 
-```txt
-Create failed Google Calendar sync UI for DocApp.
+Receptionist navigation may include schedule, appointments/manual booking, notifications relevant to operations, and profile. Do not show admin-only integration, staff, payment, or configuration controls.
 
-Context:
-The appointment is paid and confirmed locally, but Google Calendar event creation failed.
+There is no doctor role or doctor onboarding surface.
 
-UI needs:
-clear warning, appointment remains confirmed, failed sync badge, retry action for authorized staff, last attempt timestamp, safe error summary, and no sensitive medical details.
+## Patient Account
 
-Do not:
-show raw credentials, tokens, sensitive patient notes, or imply the booking is lost.
-```
+Keep it simple and appointment-focused: upcoming/past appointments, cabinet/location, service/time, deposit/payment status, remaining balance, policy, and request-cancellation where allowed.
 
-## Design Review Checklist
+Do not show admin internals, refund initiation, medical records, prescriptions, diagnosis history, insurance, chat, files, or treatment notes.
 
-Use this checklist before accepting any generated design:
+## Status And Failure States
 
-- Matches calm clinic application direction.
-- No ads.
-- No medical-record features.
-- No patient refund request action.
-- Rescheduling is not introduced.
-- Deposit due now and remaining balance are clear.
-- Non-refundable default policy is visible where payment is shown.
-- Appointment, payment, hold, and sync states are separate.
-- Calendar sync failure does not cancel the appointment in the UI.
-- Patient account is appointment-management only.
-- Admin manual booking is clinic-side only.
-- Mobile booking is usable.
-- Admin dashboard is desktop-friendly.
-- Status is not communicated by color alone.
-- Generated HTML is treated as reference, not directly copied without adaptation.
-
+Design explicit empty, loading, validation, unavailable-slot, expired-hold, pending-payment, payment-failed, confirmed, calendar-sync-failed, and retry states. Calendar failure is secondary to the confirmed local appointment and must not look like payment failure.
