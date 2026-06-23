@@ -35,7 +35,6 @@ describe("routes", () => {
       "dashboardSchedule",
       "dashboardSettings",
       "dashboardStaff",
-      "doctorProfileOnboarding",
       "patientAccount",
     ]);
   });

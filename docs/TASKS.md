@@ -149,14 +149,14 @@ Complete tasks from top to bottom and one approved task/branch at a time. Do not
 The checked doctor/clinic tasks above record implementation history. Decision `048` changes the target product, so the reset below must be completed before Phase 8 or any new booking-domain work.
 
 - [ ] Rename current-clinic concepts and product-facing copy to current-practice concepts while keeping `Organization` as the technical ownership root.
-- [ ] Remove the `Doctor` Prisma model and all relations, migrations where appropriate, generated Prisma client references, seed data, and schema tests that depend on it.
-- [ ] Remove `doctor` from staff role enums, invitation options, validation, authorization, navigation, and audit logic.
-- [ ] Keep only `admin` and `receptionist` as staff membership roles; patients remain represented by `PatientProfile`, not `OrganizationMember`.
-- [ ] Remove doctor-profile onboarding, approval, activation, and bookable-state routes, components, server helpers, actions, tests, and documentation references.
-- [ ] Remove doctor-scoped dashboard navigation and permissions; admin operates the practice and all cabinets, while receptionist receives only explicitly allowed appointment operations.
-- [ ] Preserve secure Clerk invitation matching, local membership authority, patient ownership checks, audit events, and server-side practice scoping during the reset.
-- [ ] Add or update focused tests for the simplified admin, receptionist, and patient access model.
-- [ ] Run Prisma migration/generation and verify no stale `Doctor` or doctor-role symbols remain in source or generated client files.
+- [x] Remove the `Doctor` Prisma model and all relations, migrations where appropriate, generated Prisma client references, seed data, and schema tests that depend on it.
+- [x] Remove `doctor` from staff role enums, invitation options, validation, authorization, navigation, and audit logic.
+- [x] Keep only `admin` and `receptionist` as staff membership roles; patients remain represented by `PatientProfile`, not `OrganizationMember`.
+- [x] Remove doctor-profile onboarding, approval, activation, and bookable-state routes, components, server helpers, actions, tests, and documentation references.
+- [x] Remove doctor-scoped dashboard navigation and permissions; admin operates the practice and all cabinets, while receptionist receives only explicitly allowed appointment operations.
+- [x] Preserve secure Clerk invitation matching, local membership authority, patient ownership checks, audit events, and server-side practice scoping during the reset.
+- [x] Add or update focused tests for the simplified admin, receptionist, and patient access model.
+- [x] Run Prisma migration/generation and verify no stale `Doctor` or doctor-role symbols remain in source or generated client files.
 
 ## Phase 7 - Practice Patient Home Page
 

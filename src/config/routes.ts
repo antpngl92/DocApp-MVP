@@ -20,7 +20,6 @@ const PRIVATE_ROUTES = {
   dashboardSchedule: "/dashboard/schedule",
   dashboardSettings: "/dashboard/settings",
   dashboardStaff: "/dashboard/staff",
-  doctorProfileOnboarding: "/dashboard/onboarding/doctor-profile",
   patientAccount: "/account",
 } as const;
 

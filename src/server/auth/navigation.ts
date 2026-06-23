@@ -6,7 +6,7 @@ import {
 import { ROUTES } from "@/config/routes";
 
 import { hasActiveStaffAccess } from "./admin-access";
-import { CURRENT_AUTHENTICATED_USER_STATUS, STAFF_MEMBER_ROLE } from "./consts";
+import { CURRENT_AUTHENTICATED_USER_STATUS } from "./consts";
 import { getCurrentAuthenticatedUser } from "./current-user";
 import type { GetPublicNavigationForCurrentUserOptions, PublicNavigationDatabase } from "./type";
 
@@ -69,29 +69,7 @@ const getAuthenticatedHomeForCurrentUser = async ({
     return ROUTES.patientAccount;
   }
 
-  if (membership.role !== STAFF_MEMBER_ROLE.doctor) {
-    return ROUTES.dashboard;
-  }
-
-  if (!membership.id || !membership.organizationId) {
-    return ROUTES.dashboard;
-  }
-
-  const doctor = await publicNavigationDatabase.doctor.findFirst({
-    where: {
-      OR: [
-        {
-          organizationMemberId: membership.id,
-        },
-        {
-          userId: currentUser.user.id,
-        },
-      ],
-      organizationId: membership.organizationId,
-    },
-  });
-
-  return doctor ? ROUTES.dashboard : ROUTES.doctorProfileOnboarding;
+  return ROUTES.dashboard;
 };
 
 export {

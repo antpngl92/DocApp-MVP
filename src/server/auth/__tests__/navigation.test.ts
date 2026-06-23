@@ -17,57 +17,34 @@ import type { LocalUserRecord, PublicNavigationDatabase } from "../type";
 
 const prismaMock = vi.hoisted(() => ({
   prisma: {
-    doctor: {
-      findFirst: vi.fn(),
-    },
-    organizationMember: {
-      findUnique: vi.fn(),
-    },
-    user: {
-      findUnique: vi.fn(),
-    },
+    organizationMember: { findUnique: vi.fn() },
+    user: { findUnique: vi.fn() },
   },
 }));
 
 vi.mock("@/lib/prisma", () => prismaMock);
 
-const createLocalUser = (overrides: Partial<LocalUserRecord> = {}): LocalUserRecord => {
-  const now = new Date("2026-06-13T08:00:00.000Z");
-
-  return {
-    clerkUserId: "user_clerk_123",
-    createdAt: now,
-    email: "user@example.com",
-    id: "user_local_123",
-    name: "Current User",
-    updatedAt: now,
-    ...overrides,
-  };
-};
+const createLocalUser = (): LocalUserRecord => ({
+  clerkUserId: "user_clerk_123",
+  createdAt: new Date("2026-06-13T08:00:00.000Z"),
+  email: "user@example.com",
+  id: "user_local_123",
+  name: "Current User",
+  updatedAt: new Date("2026-06-13T08:00:00.000Z"),
+});
 
 const createDatabase = ({
-  doctor = null,
   localUser = createLocalUser(),
   membership = null,
 }: {
-  doctor?: { id: string } | null;
   localUser?: LocalUserRecord | null;
-  membership?: { id?: string; organizationId?: string; role: string; status: string } | null;
-} = {}): PublicNavigationDatabase => {
-  return {
-    doctor: {
-      findFirst: vi.fn().mockResolvedValue(doctor),
-    },
-    organizationMember: {
-      findUnique: vi.fn().mockResolvedValue(membership),
-    },
-    user: {
-      findUnique: vi.fn().mockResolvedValue(localUser),
-    },
-  };
-};
+  membership?: { role: string; status: string } | null;
+} = {}): PublicNavigationDatabase => ({
+  organizationMember: { findUnique: vi.fn().mockResolvedValue(membership) },
+  user: { findUnique: vi.fn().mockResolvedValue(localUser) },
+});
 
-describe("getPublicNavigationForCurrentUser", () => {
+describe("public navigation", () => {
   it("returns public navigation for signed-out users", async () => {
     await expect(
       getPublicNavigationForCurrentUser({
@@ -77,7 +54,7 @@ describe("getPublicNavigationForCurrentUser", () => {
     ).resolves.toBe(PUBLIC_NAVIGATION);
   });
 
-  it("returns account navigation for signed-in users without local admin access", async () => {
+  it("returns patient navigation without active staff access", async () => {
     await expect(
       getPublicNavigationForCurrentUser({
         authReader: async () => ({ userId: "user_clerk_123" }),
@@ -86,7 +63,7 @@ describe("getPublicNavigationForCurrentUser", () => {
     ).resolves.toBe(PUBLIC_SIGNED_IN_PATIENT_NAVIGATION);
   });
 
-  it("returns account navigation for signed-in users before local user sync completes", async () => {
+  it("returns patient navigation while local user synchronization is pending", async () => {
     await expect(
       getPublicNavigationForCurrentUser({
         authReader: async () => ({ userId: "user_clerk_123" }),
@@ -95,39 +72,25 @@ describe("getPublicNavigationForCurrentUser", () => {
     ).resolves.toBe(PUBLIC_SIGNED_IN_PATIENT_NAVIGATION);
   });
 
-  it("returns admin navigation for signed-in users with active non-admin staff access", async () => {
-    await expect(
-      getPublicNavigationForCurrentUser({
-        authReader: async () => ({ userId: "user_clerk_123" }),
-        database: createDatabase({
-          membership: {
-            role: "doctor",
-            status: OWNER_BOOTSTRAP_MEMBERSHIP_STATUS.active,
-          },
+  it.each([OWNER_BOOTSTRAP_ROLE.admin, "receptionist"])(
+    "returns dashboard navigation for active %s staff",
+    async (role) => {
+      await expect(
+        getPublicNavigationForCurrentUser({
+          authReader: async () => ({ userId: "user_clerk_123" }),
+          database: createDatabase({
+            membership: { role, status: OWNER_BOOTSTRAP_MEMBERSHIP_STATUS.active },
+          }),
         }),
-      }),
-    ).resolves.toBe(PUBLIC_SIGNED_IN_ADMIN_NAVIGATION);
-  });
-
-  it("returns admin navigation for signed-in users with active owner/admin access", async () => {
-    await expect(
-      getPublicNavigationForCurrentUser({
-        authReader: async () => ({ userId: "user_clerk_123" }),
-        database: createDatabase({
-          membership: {
-            role: OWNER_BOOTSTRAP_ROLE.admin,
-            status: OWNER_BOOTSTRAP_MEMBERSHIP_STATUS.active,
-          },
-        }),
-      }),
-    ).resolves.toBe(PUBLIC_SIGNED_IN_ADMIN_NAVIGATION);
-  });
+      ).resolves.toBe(PUBLIC_SIGNED_IN_ADMIN_NAVIGATION);
+    },
+  );
 
   it("returns the default database", async () => {
     await expect(getDefaultPublicNavigationDatabase()).resolves.toBe(prismaMock.prisma);
   });
 
-  it("uses the default database when no navigation database is provided", async () => {
+  it("uses the default database for public navigation", async () => {
     prismaMock.prisma.user.findUnique.mockResolvedValueOnce(null);
 
     await expect(
@@ -138,8 +101,8 @@ describe("getPublicNavigationForCurrentUser", () => {
   });
 });
 
-describe("getAuthenticatedHomeForCurrentUser", () => {
-  it("returns the patient account for signed-out users", async () => {
+describe("authenticated home", () => {
+  it("returns the patient account without an authenticated local staff user", async () => {
     await expect(
       getAuthenticatedHomeForCurrentUser({
         authReader: async () => ({ userId: null }),
@@ -148,16 +111,21 @@ describe("getAuthenticatedHomeForCurrentUser", () => {
     ).resolves.toBe(ROUTES.patientAccount);
   });
 
-  it("returns the patient account before local user sync completes", async () => {
-    await expect(
-      getAuthenticatedHomeForCurrentUser({
-        authReader: async () => ({ userId: "user_clerk_123" }),
-        database: createDatabase({ localUser: null }),
-      }),
-    ).resolves.toBe(ROUTES.patientAccount);
-  });
+  it.each([OWNER_BOOTSTRAP_ROLE.admin, "receptionist"])(
+    "returns the dashboard for active %s staff",
+    async (role) => {
+      await expect(
+        getAuthenticatedHomeForCurrentUser({
+          authReader: async () => ({ userId: "user_clerk_123" }),
+          database: createDatabase({
+            membership: { role, status: OWNER_BOOTSTRAP_MEMBERSHIP_STATUS.active },
+          }),
+        }),
+      ).resolves.toBe(ROUTES.dashboard);
+    },
+  );
 
-  it("returns the patient account for signed-in users without active staff access", async () => {
+  it("returns the patient account for a local user without active staff access", async () => {
     await expect(
       getAuthenticatedHomeForCurrentUser({
         authReader: async () => ({ userId: "user_clerk_123" }),
@@ -166,88 +134,8 @@ describe("getAuthenticatedHomeForCurrentUser", () => {
     ).resolves.toBe(ROUTES.patientAccount);
   });
 
-  it("returns dashboard for signed-in users with active admin access", async () => {
-    await expect(
-      getAuthenticatedHomeForCurrentUser({
-        authReader: async () => ({ userId: "user_clerk_123" }),
-        database: createDatabase({
-          membership: {
-            role: OWNER_BOOTSTRAP_ROLE.admin,
-            status: OWNER_BOOTSTRAP_MEMBERSHIP_STATUS.active,
-          },
-        }),
-      }),
-    ).resolves.toBe(ROUTES.dashboard);
-  });
-
-  it("returns dashboard for signed-in users with active receptionist staff access", async () => {
-    await expect(
-      getAuthenticatedHomeForCurrentUser({
-        authReader: async () => ({ userId: "user_clerk_123" }),
-        database: createDatabase({
-          membership: {
-            role: "receptionist",
-            status: OWNER_BOOTSTRAP_MEMBERSHIP_STATUS.active,
-          },
-        }),
-      }),
-    ).resolves.toBe(ROUTES.dashboard);
-  });
-
-  it("returns doctor profile onboarding for signed-in doctor staff without a linked profile", async () => {
-    const database = createDatabase({
-      membership: {
-        id: "member_123",
-        organizationId: "org_123",
-        role: "doctor",
-        status: OWNER_BOOTSTRAP_MEMBERSHIP_STATUS.active,
-      },
-    });
-
-    await expect(
-      getAuthenticatedHomeForCurrentUser({
-        authReader: async () => ({ userId: "user_clerk_123" }),
-        database,
-      }),
-    ).resolves.toBe(ROUTES.doctorProfileOnboarding);
-
-    expect(database.doctor.findFirst).toHaveBeenCalledWith({
-      where: {
-        OR: [
-          {
-            organizationMemberId: "member_123",
-          },
-          {
-            userId: "user_local_123",
-          },
-        ],
-        organizationId: "org_123",
-      },
-    });
-  });
-
-  it("returns dashboard for signed-in doctor staff with a linked profile", async () => {
-    await expect(
-      getAuthenticatedHomeForCurrentUser({
-        authReader: async () => ({ userId: "user_clerk_123" }),
-        database: createDatabase({
-          doctor: {
-            id: "doctor_123",
-          },
-          membership: {
-            id: "member_123",
-            organizationId: "org_123",
-            role: "doctor",
-            status: OWNER_BOOTSTRAP_MEMBERSHIP_STATUS.active,
-          },
-        }),
-      }),
-    ).resolves.toBe(ROUTES.dashboard);
-  });
-
-  it("uses the default database when no redirect database is provided", async () => {
+  it("uses the default database", async () => {
     prismaMock.prisma.user.findUnique.mockResolvedValueOnce(null);
-
     await expect(
       getAuthenticatedHomeForCurrentUser({
         authReader: async () => ({ userId: "user_clerk_123" }),

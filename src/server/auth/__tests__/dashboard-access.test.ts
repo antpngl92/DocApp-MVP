@@ -1,10 +1,22 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { requireDashboardRoleAccess } from "../dashboard-access";
+import {
+  getDefaultDashboardRoleAccessDatabase,
+  requireDashboardRoleAccess,
+} from "../dashboard-access";
 
 const navigationState = vi.hoisted(() => ({
   notFound: vi.fn(),
 }));
+
+const prismaMock = vi.hoisted(() => ({
+  prisma: {
+    organizationMember: { findUnique: vi.fn() },
+    user: { findUnique: vi.fn() },
+  },
+}));
+
+vi.mock("@/lib/prisma", () => prismaMock);
 
 vi.mock("next/navigation", () => ({
   notFound: navigationState.notFound,
@@ -37,6 +49,35 @@ describe("requireDashboardRoleAccess", () => {
     vi.clearAllMocks();
   });
 
+  it("returns the default dashboard access database", async () => {
+    await expect(getDefaultDashboardRoleAccessDatabase()).resolves.toBe(prismaMock.prisma);
+  });
+
+  it("uses the default database when no database is supplied", async () => {
+    prismaMock.prisma.user.findUnique.mockResolvedValueOnce({
+      clerkUserId: "clerk_123",
+      createdAt: new Date("2026-01-01T00:00:00.000Z"),
+      email: "admin@example.com",
+      id: "user_123",
+      name: "Admin User",
+      updatedAt: new Date("2026-01-01T00:00:00.000Z"),
+    });
+    prismaMock.prisma.organizationMember.findUnique.mockResolvedValueOnce({
+      role: "admin",
+      status: "active",
+    });
+
+    await expect(
+      requireDashboardRoleAccess({
+        allowedRoles: ["admin"],
+        authReader: async () => ({ userId: "clerk_123" }),
+      }),
+    ).resolves.toMatchObject({
+      membership: { role: "admin" },
+      user: { id: "user_123" },
+    });
+  });
+
   it("returns active staff membership when the role is allowed", async () => {
     const database = buildDatabase({
       membership: {
@@ -66,15 +107,15 @@ describe("requireDashboardRoleAccess", () => {
   it("returns not found when the role is not allowed", async () => {
     const database = buildDatabase({
       membership: {
-        role: "doctor",
+        role: "receptionist",
         status: "active",
       },
       user: {
         clerkUserId: "clerk_123",
         createdAt: new Date("2026-01-01T00:00:00.000Z"),
-        email: "doctor@example.com",
+        email: "receptionist@example.com",
         id: "user_123",
-        name: "Doctor User",
+        name: "Receptionist User",
         updatedAt: new Date("2026-01-01T00:00:00.000Z"),
       },
     });

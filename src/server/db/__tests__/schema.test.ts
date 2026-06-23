@@ -48,7 +48,7 @@ describe("Prisma schema organization membership model", () => {
     expect(memberRoleEnum).toBeDefined();
     expect(memberRoleEnum).toContain("admin");
     expect(memberRoleEnum).toContain("receptionist");
-    expect(memberRoleEnum).toContain("doctor");
+    expect(memberRoleEnum).not.toContain("doctor");
     expect(memberRoleEnum).not.toContain("owner");
     expect(memberRoleEnum).not.toContain("manager");
     expect(memberRoleEnum).not.toContain("patient");
@@ -142,58 +142,6 @@ describe("Prisma schema patient profile model", () => {
   });
 });
 
-describe("Prisma schema doctor profile model", () => {
-  it("models doctor onboarding and provider readiness separately from staff membership", () => {
-    const schema = readFileSync(schemaPath, "utf8");
-    const doctorModel = schema.match(/model Doctor \{[\s\S]*?\n\}/)?.[0];
-
-    expect(schema).toContain("enum DoctorOnboardingStatus");
-    expect(schema).toContain("pending_admin_approval");
-    expect(schema).toContain("approved");
-    expect(schema).toContain("rejected");
-    expect(doctorModel).toBeDefined();
-    expect(doctorModel).toMatch(/organizationId\s+String/);
-    expect(doctorModel).toMatch(/userId\s+String\?\s+@unique/);
-    expect(doctorModel).toMatch(/organizationMemberId\s+String\?\s+@unique/);
-    expect(doctorModel).toMatch(
-      /onboardingStatus\s+DoctorOnboardingStatus\s+@default\(pending_admin_approval\)/,
-    );
-    expect(doctorModel).toMatch(/isActive\s+Boolean\s+@default\(false\)/);
-    expect(doctorModel).toMatch(/isBookable\s+Boolean\s+@default\(false\)/);
-  });
-
-  it("links doctor profiles to organization, optional local user, and optional staff membership", () => {
-    const schema = readFileSync(schemaPath, "utf8");
-    const doctorModel = schema.match(/model Doctor \{[\s\S]*?\n\}/)?.[0];
-
-    expect(doctorModel).toBeDefined();
-    expect(doctorModel).toMatch(
-      /organization\s+Organization\s+@relation\(fields: \[organizationId\], references: \[id\], onDelete: Cascade\)/,
-    );
-    expect(doctorModel).toMatch(
-      /user\s+User\?\s+@relation\(fields: \[userId\], references: \[id\], onDelete: SetNull\)/,
-    );
-    expect(doctorModel).toMatch(
-      /organizationMember\s+OrganizationMember\?\s+@relation\(fields: \[organizationMemberId\], references: \[id\], onDelete: SetNull\)/,
-    );
-    expect(schema).toMatch(/doctorProfile\s+Doctor\?/);
-    expect(schema).toMatch(/doctors\s+Doctor\[\]/);
-    expect(schema).toMatch(/doctor\s+Doctor\?/);
-  });
-
-  it("indexes doctor profiles for clinic approval and booking-readiness checks", () => {
-    const schema = readFileSync(schemaPath, "utf8");
-    const doctorModel = schema.match(/model Doctor \{[\s\S]*?\n\}/)?.[0];
-
-    expect(doctorModel).toBeDefined();
-    expect(doctorModel).toContain("@@index([organizationId])");
-    expect(doctorModel).toContain("@@index([organizationId, onboardingStatus])");
-    expect(doctorModel).toContain("@@index([organizationId, isActive])");
-    expect(doctorModel).toContain("@@index([organizationId, isBookable])");
-    expect(doctorModel).toContain("@@index([email])");
-  });
-});
-
 describe("Prisma schema audit event model", () => {
   it("models clinic-owned audit events for identity, membership, and role changes", () => {
     const schema = readFileSync(schemaPath, "utf8");
@@ -244,5 +192,13 @@ describe("Prisma schema cleanup", () => {
     for (const modelName of removedModelNames) {
       expect(schema).not.toContain(`model ${modelName}`);
     }
+  });
+
+  it("does not retain the superseded doctor domain", () => {
+    const schema = readFileSync(schemaPath, "utf8");
+
+    expect(schema).not.toContain("model Doctor");
+    expect(schema).not.toContain("enum DoctorOnboardingStatus");
+    expect(schema).not.toMatch(/doctorProfile\s+Doctor/);
   });
 });

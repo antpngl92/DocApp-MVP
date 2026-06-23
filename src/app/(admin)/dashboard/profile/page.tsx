@@ -5,7 +5,7 @@ import { getTranslations } from "next-intl/server";
 
 const DashboardProfilePage = async () => {
   await requireDashboardRoleAccess({
-    allowedRoles: [STAFF_MEMBER_ROLE.doctor, STAFF_MEMBER_ROLE.receptionist],
+    allowedRoles: [STAFF_MEMBER_ROLE.receptionist],
   });
 
   const t = await getTranslations("dashboardPages.profile");

@@ -224,7 +224,6 @@ export type OrganizationMemberWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"OrganizationMember"> | Date | string
   organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
   user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
-  doctor?: Prisma.XOR<Prisma.DoctorNullableScalarRelationFilter, Prisma.DoctorWhereInput> | null
 }
 
 export type OrganizationMemberOrderByWithRelationInput = {
@@ -240,7 +239,6 @@ export type OrganizationMemberOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   organization?: Prisma.OrganizationOrderByWithRelationInput
   user?: Prisma.UserOrderByWithRelationInput
-  doctor?: Prisma.DoctorOrderByWithRelationInput
 }
 
 export type OrganizationMemberWhereUniqueInput = Prisma.AtLeast<{
@@ -259,7 +257,6 @@ export type OrganizationMemberWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"OrganizationMember"> | Date | string
   organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
   user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
-  doctor?: Prisma.XOR<Prisma.DoctorNullableScalarRelationFilter, Prisma.DoctorWhereInput> | null
 }, "id" | "clerkInvitationId" | "userId">
 
 export type OrganizationMemberOrderByWithAggregationInput = {
@@ -305,7 +302,6 @@ export type OrganizationMemberCreateInput = {
   updatedAt?: Date | string
   organization: Prisma.OrganizationCreateNestedOneWithoutMembersInput
   user?: Prisma.UserCreateNestedOneWithoutOrganizationMemberInput
-  doctor?: Prisma.DoctorCreateNestedOneWithoutOrganizationMemberInput
 }
 
 export type OrganizationMemberUncheckedCreateInput = {
@@ -319,7 +315,6 @@ export type OrganizationMemberUncheckedCreateInput = {
   clerkInvitationStatus?: $Enums.ClerkInvitationStatus | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  doctor?: Prisma.DoctorUncheckedCreateNestedOneWithoutOrganizationMemberInput
 }
 
 export type OrganizationMemberUpdateInput = {
@@ -333,7 +328,6 @@ export type OrganizationMemberUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutMembersNestedInput
   user?: Prisma.UserUpdateOneWithoutOrganizationMemberNestedInput
-  doctor?: Prisma.DoctorUpdateOneWithoutOrganizationMemberNestedInput
 }
 
 export type OrganizationMemberUncheckedUpdateInput = {
@@ -347,7 +341,6 @@ export type OrganizationMemberUncheckedUpdateInput = {
   clerkInvitationStatus?: Prisma.NullableEnumClerkInvitationStatusFieldUpdateOperationsInput | $Enums.ClerkInvitationStatus | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  doctor?: Prisma.DoctorUncheckedUpdateOneWithoutOrganizationMemberNestedInput
 }
 
 export type OrganizationMemberCreateManyInput = {
@@ -527,22 +520,6 @@ export type NullableEnumClerkInvitationStatusFieldUpdateOperationsInput = {
   set?: $Enums.ClerkInvitationStatus | null
 }
 
-export type OrganizationMemberCreateNestedOneWithoutDoctorInput = {
-  create?: Prisma.XOR<Prisma.OrganizationMemberCreateWithoutDoctorInput, Prisma.OrganizationMemberUncheckedCreateWithoutDoctorInput>
-  connectOrCreate?: Prisma.OrganizationMemberCreateOrConnectWithoutDoctorInput
-  connect?: Prisma.OrganizationMemberWhereUniqueInput
-}
-
-export type OrganizationMemberUpdateOneWithoutDoctorNestedInput = {
-  create?: Prisma.XOR<Prisma.OrganizationMemberCreateWithoutDoctorInput, Prisma.OrganizationMemberUncheckedCreateWithoutDoctorInput>
-  connectOrCreate?: Prisma.OrganizationMemberCreateOrConnectWithoutDoctorInput
-  upsert?: Prisma.OrganizationMemberUpsertWithoutDoctorInput
-  disconnect?: Prisma.OrganizationMemberWhereInput | boolean
-  delete?: Prisma.OrganizationMemberWhereInput | boolean
-  connect?: Prisma.OrganizationMemberWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.OrganizationMemberUpdateToOneWithWhereWithoutDoctorInput, Prisma.OrganizationMemberUpdateWithoutDoctorInput>, Prisma.OrganizationMemberUncheckedUpdateWithoutDoctorInput>
-}
-
 export type OrganizationMemberCreateWithoutUserInput = {
   id?: string
   role: $Enums.OrganizationMemberRole
@@ -553,7 +530,6 @@ export type OrganizationMemberCreateWithoutUserInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   organization: Prisma.OrganizationCreateNestedOneWithoutMembersInput
-  doctor?: Prisma.DoctorCreateNestedOneWithoutOrganizationMemberInput
 }
 
 export type OrganizationMemberUncheckedCreateWithoutUserInput = {
@@ -566,7 +542,6 @@ export type OrganizationMemberUncheckedCreateWithoutUserInput = {
   clerkInvitationStatus?: $Enums.ClerkInvitationStatus | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  doctor?: Prisma.DoctorUncheckedCreateNestedOneWithoutOrganizationMemberInput
 }
 
 export type OrganizationMemberCreateOrConnectWithoutUserInput = {
@@ -595,7 +570,6 @@ export type OrganizationMemberUpdateWithoutUserInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutMembersNestedInput
-  doctor?: Prisma.DoctorUpdateOneWithoutOrganizationMemberNestedInput
 }
 
 export type OrganizationMemberUncheckedUpdateWithoutUserInput = {
@@ -608,7 +582,6 @@ export type OrganizationMemberUncheckedUpdateWithoutUserInput = {
   clerkInvitationStatus?: Prisma.NullableEnumClerkInvitationStatusFieldUpdateOperationsInput | $Enums.ClerkInvitationStatus | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  doctor?: Prisma.DoctorUncheckedUpdateOneWithoutOrganizationMemberNestedInput
 }
 
 export type OrganizationMemberCreateWithoutOrganizationInput = {
@@ -621,7 +594,6 @@ export type OrganizationMemberCreateWithoutOrganizationInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   user?: Prisma.UserCreateNestedOneWithoutOrganizationMemberInput
-  doctor?: Prisma.DoctorCreateNestedOneWithoutOrganizationMemberInput
 }
 
 export type OrganizationMemberUncheckedCreateWithoutOrganizationInput = {
@@ -634,7 +606,6 @@ export type OrganizationMemberUncheckedCreateWithoutOrganizationInput = {
   clerkInvitationStatus?: $Enums.ClerkInvitationStatus | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  doctor?: Prisma.DoctorUncheckedCreateNestedOneWithoutOrganizationMemberInput
 }
 
 export type OrganizationMemberCreateOrConnectWithoutOrganizationInput = {
@@ -679,74 +650,6 @@ export type OrganizationMemberScalarWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"OrganizationMember"> | Date | string
 }
 
-export type OrganizationMemberCreateWithoutDoctorInput = {
-  id?: string
-  role: $Enums.OrganizationMemberRole
-  status?: $Enums.OrganizationMemberStatus
-  invitedEmail?: string | null
-  clerkInvitationId?: string | null
-  clerkInvitationStatus?: $Enums.ClerkInvitationStatus | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  organization: Prisma.OrganizationCreateNestedOneWithoutMembersInput
-  user?: Prisma.UserCreateNestedOneWithoutOrganizationMemberInput
-}
-
-export type OrganizationMemberUncheckedCreateWithoutDoctorInput = {
-  id?: string
-  organizationId: string
-  userId?: string | null
-  role: $Enums.OrganizationMemberRole
-  status?: $Enums.OrganizationMemberStatus
-  invitedEmail?: string | null
-  clerkInvitationId?: string | null
-  clerkInvitationStatus?: $Enums.ClerkInvitationStatus | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-}
-
-export type OrganizationMemberCreateOrConnectWithoutDoctorInput = {
-  where: Prisma.OrganizationMemberWhereUniqueInput
-  create: Prisma.XOR<Prisma.OrganizationMemberCreateWithoutDoctorInput, Prisma.OrganizationMemberUncheckedCreateWithoutDoctorInput>
-}
-
-export type OrganizationMemberUpsertWithoutDoctorInput = {
-  update: Prisma.XOR<Prisma.OrganizationMemberUpdateWithoutDoctorInput, Prisma.OrganizationMemberUncheckedUpdateWithoutDoctorInput>
-  create: Prisma.XOR<Prisma.OrganizationMemberCreateWithoutDoctorInput, Prisma.OrganizationMemberUncheckedCreateWithoutDoctorInput>
-  where?: Prisma.OrganizationMemberWhereInput
-}
-
-export type OrganizationMemberUpdateToOneWithWhereWithoutDoctorInput = {
-  where?: Prisma.OrganizationMemberWhereInput
-  data: Prisma.XOR<Prisma.OrganizationMemberUpdateWithoutDoctorInput, Prisma.OrganizationMemberUncheckedUpdateWithoutDoctorInput>
-}
-
-export type OrganizationMemberUpdateWithoutDoctorInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  role?: Prisma.EnumOrganizationMemberRoleFieldUpdateOperationsInput | $Enums.OrganizationMemberRole
-  status?: Prisma.EnumOrganizationMemberStatusFieldUpdateOperationsInput | $Enums.OrganizationMemberStatus
-  invitedEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  clerkInvitationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  clerkInvitationStatus?: Prisma.NullableEnumClerkInvitationStatusFieldUpdateOperationsInput | $Enums.ClerkInvitationStatus | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  organization?: Prisma.OrganizationUpdateOneRequiredWithoutMembersNestedInput
-  user?: Prisma.UserUpdateOneWithoutOrganizationMemberNestedInput
-}
-
-export type OrganizationMemberUncheckedUpdateWithoutDoctorInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
-  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumOrganizationMemberRoleFieldUpdateOperationsInput | $Enums.OrganizationMemberRole
-  status?: Prisma.EnumOrganizationMemberStatusFieldUpdateOperationsInput | $Enums.OrganizationMemberStatus
-  invitedEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  clerkInvitationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  clerkInvitationStatus?: Prisma.NullableEnumClerkInvitationStatusFieldUpdateOperationsInput | $Enums.ClerkInvitationStatus | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-}
-
 export type OrganizationMemberCreateManyOrganizationInput = {
   id?: string
   userId?: string | null
@@ -769,7 +672,6 @@ export type OrganizationMemberUpdateWithoutOrganizationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneWithoutOrganizationMemberNestedInput
-  doctor?: Prisma.DoctorUpdateOneWithoutOrganizationMemberNestedInput
 }
 
 export type OrganizationMemberUncheckedUpdateWithoutOrganizationInput = {
@@ -782,7 +684,6 @@ export type OrganizationMemberUncheckedUpdateWithoutOrganizationInput = {
   clerkInvitationStatus?: Prisma.NullableEnumClerkInvitationStatusFieldUpdateOperationsInput | $Enums.ClerkInvitationStatus | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  doctor?: Prisma.DoctorUncheckedUpdateOneWithoutOrganizationMemberNestedInput
 }
 
 export type OrganizationMemberUncheckedUpdateManyWithoutOrganizationInput = {
@@ -812,7 +713,6 @@ export type OrganizationMemberSelect<ExtArgs extends runtime.Types.Extensions.In
   updatedAt?: boolean
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   user?: boolean | Prisma.OrganizationMember$userArgs<ExtArgs>
-  doctor?: boolean | Prisma.OrganizationMember$doctorArgs<ExtArgs>
 }, ExtArgs["result"]["organizationMember"]>
 
 export type OrganizationMemberSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -862,7 +762,6 @@ export type OrganizationMemberOmit<ExtArgs extends runtime.Types.Extensions.Inte
 export type OrganizationMemberInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   user?: boolean | Prisma.OrganizationMember$userArgs<ExtArgs>
-  doctor?: boolean | Prisma.OrganizationMember$doctorArgs<ExtArgs>
 }
 export type OrganizationMemberIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
@@ -878,7 +777,6 @@ export type $OrganizationMemberPayload<ExtArgs extends runtime.Types.Extensions.
   objects: {
     organization: Prisma.$OrganizationPayload<ExtArgs>
     user: Prisma.$UserPayload<ExtArgs> | null
-    doctor: Prisma.$DoctorPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1287,7 +1185,6 @@ export interface Prisma__OrganizationMemberClient<T, Null = never, ExtArgs exten
   readonly [Symbol.toStringTag]: "PrismaPromise"
   organization<T extends Prisma.OrganizationDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OrganizationDefaultArgs<ExtArgs>>): Prisma.Prisma__OrganizationClient<runtime.Types.Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   user<T extends Prisma.OrganizationMember$userArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OrganizationMember$userArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-  doctor<T extends Prisma.OrganizationMember$doctorArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OrganizationMember$doctorArgs<ExtArgs>>): Prisma.Prisma__DoctorClient<runtime.Types.Result.GetResult<Prisma.$DoctorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1744,25 +1641,6 @@ export type OrganizationMember$userArgs<ExtArgs extends runtime.Types.Extensions
    */
   include?: Prisma.UserInclude<ExtArgs> | null
   where?: Prisma.UserWhereInput
-}
-
-/**
- * OrganizationMember.doctor
- */
-export type OrganizationMember$doctorArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Doctor
-   */
-  select?: Prisma.DoctorSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Doctor
-   */
-  omit?: Prisma.DoctorOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.DoctorInclude<ExtArgs> | null
-  where?: Prisma.DoctorWhereInput
 }
 
 /**

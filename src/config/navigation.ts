@@ -63,7 +63,7 @@ const DASHBOARD_NAVIGATION: readonly DashboardNavigationItem[] = [
     href: ROUTES.dashboard,
     iconKey: "layoutDashboard",
     labelKey: "dashboard",
-    roles: [STAFF_MEMBER_ROLE.admin, STAFF_MEMBER_ROLE.doctor],
+    roles: [STAFF_MEMBER_ROLE.admin],
   },
   {
     href: ROUTES.dashboardSchedule,
@@ -81,7 +81,7 @@ const DASHBOARD_NAVIGATION: readonly DashboardNavigationItem[] = [
     href: ROUTES.dashboardNotifications,
     iconKey: "bell",
     labelKey: "notifications",
-    roles: [STAFF_MEMBER_ROLE.admin, STAFF_MEMBER_ROLE.doctor],
+    roles: [STAFF_MEMBER_ROLE.admin],
   },
   {
     href: ROUTES.dashboardLogs,
@@ -93,19 +93,19 @@ const DASHBOARD_NAVIGATION: readonly DashboardNavigationItem[] = [
     href: ROUTES.dashboardManualBooking,
     iconKey: "clipboardPlus",
     labelKey: "manualBooking",
-    roles: [STAFF_MEMBER_ROLE.admin, STAFF_MEMBER_ROLE.doctor, STAFF_MEMBER_ROLE.receptionist],
+    roles: [STAFF_MEMBER_ROLE.admin, STAFF_MEMBER_ROLE.receptionist],
   },
   {
     href: ROUTES.dashboardSettings,
     iconKey: "settings",
     labelKey: "settings",
-    roles: [STAFF_MEMBER_ROLE.admin, STAFF_MEMBER_ROLE.doctor],
+    roles: [STAFF_MEMBER_ROLE.admin],
   },
   {
     href: ROUTES.dashboardProfile,
     iconKey: "stethoscope",
     labelKey: "profile",
-    roles: [STAFF_MEMBER_ROLE.doctor, STAFF_MEMBER_ROLE.receptionist],
+    roles: [STAFF_MEMBER_ROLE.receptionist],
   },
 ];
 

@@ -20,7 +20,7 @@ describe("createStaffInvitationAction", () => {
     await expect(
       createStaffInvitationAction({
         email: "staff@example.com",
-        role: "doctor",
+        role: "receptionist",
       }),
     ).resolves.toBeUndefined();
   });
@@ -36,7 +36,7 @@ describe("createStaffInvitationAction", () => {
     await expect(
       createStaffInvitationAction({
         email: "staff@example.com",
-        role: "doctor",
+        role: "receptionist",
       }),
     ).rejects.toThrow("Staff invitation could not be sent.");
   });

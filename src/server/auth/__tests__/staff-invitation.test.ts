@@ -63,7 +63,7 @@ const createPendingMembership = (
     id: "member_pending",
     invitedEmail: "staff@example.com",
     organizationId: "org_123",
-    role: STAFF_MEMBER_ROLE.doctor,
+    role: STAFF_MEMBER_ROLE.receptionist,
     status: STAFF_MEMBER_STATUS.invited,
     ...overrides,
   };
@@ -135,7 +135,7 @@ describe("createStaffInvitation", () => {
         database,
         email: " Staff@Example.COM ",
         invitationCreator,
-        role: STAFF_MEMBER_ROLE.doctor,
+        role: STAFF_MEMBER_ROLE.receptionist,
       }),
     ).resolves.toEqual({
       clerkInvitationId: "inv_123",
@@ -152,7 +152,7 @@ describe("createStaffInvitation", () => {
       data: {
         invitedEmail: "staff@example.com",
         organizationId: "org_123",
-        role: STAFF_MEMBER_ROLE.doctor,
+        role: STAFF_MEMBER_ROLE.receptionist,
         status: STAFF_MEMBER_STATUS.invited,
       },
     });
@@ -224,7 +224,7 @@ describe("createStaffInvitation", () => {
         database,
         email: "staff@example.com",
         invitationCreator,
-        role: STAFF_MEMBER_ROLE.doctor,
+        role: STAFF_MEMBER_ROLE.receptionist,
       }),
     ).resolves.toEqual({
       clerkInvitationId: "inv_existing",
@@ -268,7 +268,7 @@ describe("createStaffInvitation", () => {
         database,
         email: "staff@example.com",
         invitationCreator,
-        role: STAFF_MEMBER_ROLE.doctor,
+        role: STAFF_MEMBER_ROLE.receptionist,
       }),
     ).resolves.toEqual({
       clerkInvitationId: "inv_concurrent",
@@ -293,7 +293,7 @@ describe("createStaffInvitation", () => {
         database,
         email: "staff@example.com",
         invitationCreator,
-        role: STAFF_MEMBER_ROLE.doctor,
+        role: STAFF_MEMBER_ROLE.receptionist,
       }),
     ).rejects.toThrow("database down");
 
@@ -310,7 +310,7 @@ describe("createStaffInvitation", () => {
         database,
         email: "staff@example.com",
         invitationCreator,
-        role: STAFF_MEMBER_ROLE.doctor,
+        role: STAFF_MEMBER_ROLE.receptionist,
       }),
     ).rejects.toThrow("Clerk unavailable");
 
@@ -339,7 +339,7 @@ describe("createStaffInvitation", () => {
         email: "staff@example.com",
         invitationCreator,
         invitationRevoker,
-        role: STAFF_MEMBER_ROLE.doctor,
+        role: STAFF_MEMBER_ROLE.receptionist,
       }),
     ).rejects.toThrow("tracking failed");
 
@@ -364,7 +364,7 @@ describe("createStaffInvitation", () => {
         database,
         email: "staff@example.com",
         invitationCreator,
-        role: STAFF_MEMBER_ROLE.doctor,
+        role: STAFF_MEMBER_ROLE.receptionist,
       }),
     ).resolves.toEqual({
       clerkInvitationId: "inv_123",
@@ -383,7 +383,7 @@ describe("createStaffInvitation", () => {
         database: createDatabase(),
         email: "nope",
         invitationCreator,
-        role: STAFF_MEMBER_ROLE.doctor,
+        role: STAFF_MEMBER_ROLE.receptionist,
       }),
     ).resolves.toEqual({
       clerkInvitationId: null,
@@ -398,7 +398,7 @@ describe("createStaffInvitation", () => {
         database: createDatabase(),
         email: "staff@example.com",
         invitationCreator,
-        role: "owner" as typeof STAFF_MEMBER_ROLE.doctor,
+        role: "owner" as typeof STAFF_MEMBER_ROLE.receptionist,
       }),
     ).resolves.toEqual({
       clerkInvitationId: null,
@@ -413,7 +413,7 @@ describe("createStaffInvitation", () => {
         database: createDatabase(),
         email: "staff@example.com",
         invitationCreator,
-        role: "patient" as typeof STAFF_MEMBER_ROLE.doctor,
+        role: "patient" as typeof STAFF_MEMBER_ROLE.receptionist,
       }),
     ).resolves.toEqual({
       clerkInvitationId: null,
@@ -444,7 +444,7 @@ describe("createStaffInvitation", () => {
       createStaffInvitation({
         authReader: async () => ({ userId: "user_clerk_owner" }),
         database: createDatabase({
-          membership: { role: STAFF_MEMBER_ROLE.doctor, status: "active" },
+          membership: { role: STAFF_MEMBER_ROLE.receptionist, status: "active" },
         }),
         email: "staff@example.com",
         invitationCreator,
