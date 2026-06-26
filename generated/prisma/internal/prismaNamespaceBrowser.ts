@@ -55,6 +55,7 @@ export const ModelName = {
   Organization: 'Organization',
   OrganizationMember: 'OrganizationMember',
   PatientProfile: 'PatientProfile',
+  Cabinet: 'Cabinet',
   AuditEvent: 'AuditEvent'
 } as const
 
@@ -127,6 +128,29 @@ export const PatientProfileScalarFieldEnum = {
 } as const
 
 export type PatientProfileScalarFieldEnum = (typeof PatientProfileScalarFieldEnum)[keyof typeof PatientProfileScalarFieldEnum]
+
+
+export const CabinetScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  name: 'name',
+  slug: 'slug',
+  description: 'description',
+  addressLine1: 'addressLine1',
+  addressLine2: 'addressLine2',
+  city: 'city',
+  postalCode: 'postalCode',
+  countryCode: 'countryCode',
+  phone: 'phone',
+  email: 'email',
+  timezone: 'timezone',
+  isActive: 'isActive',
+  isBookingEnabled: 'isBookingEnabled',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CabinetScalarFieldEnum = (typeof CabinetScalarFieldEnum)[keyof typeof CabinetScalarFieldEnum]
 
 
 export const AuditEventScalarFieldEnum = {

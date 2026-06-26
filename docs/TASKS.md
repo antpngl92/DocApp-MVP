@@ -194,8 +194,8 @@ This phase owns the public home page for the deployed independent practice. It i
 
 This phase creates the cabinet-centered booking domain before the public booking page depends on it.
 
-- [ ] Model cabinets as the primary bookable entity owned by the local practice/`Organization`.
-- [ ] Store cabinet public name, slug, address/location, contact details, timezone where needed, active state, and booking-enabled state.
+- [x] Model cabinets as the primary bookable entity owned by the local practice/`Organization`.
+- [x] Store cabinet public name, slug, address/location, contact details, timezone where needed, active state, and booking-enabled state.
 - [ ] Build admin cabinet list and create/edit forms.
 - [ ] Model services.
 - [ ] Model cabinet-service assignments so each cabinet explicitly defines the services it offers.
