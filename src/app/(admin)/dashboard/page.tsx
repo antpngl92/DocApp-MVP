@@ -1,13 +1,13 @@
 import { LocalizedFoundationOverview } from "@/features/app-foundation/components";
 import { ADMIN_PANEL_DEFINITIONS } from "@/features/app-foundation/constants";
 import { DashboardPlaceholder } from "@/features/dashboard/components";
-import { STAFF_MEMBER_ROLE } from "@/server/auth/consts";
+import { STAFF_DASHBOARD_ROLE_VALUES } from "@/server/auth/consts";
 import { requireDashboardRoleAccess } from "@/server/auth/dashboard-access";
 import { getTranslations } from "next-intl/server";
 
 const AdminPage = async () => {
   await requireDashboardRoleAccess({
-    allowedRoles: [STAFF_MEMBER_ROLE.admin],
+    allowedRoles: STAFF_DASHBOARD_ROLE_VALUES,
   });
   const t = await getTranslations("dashboardPages.dashboard");
 

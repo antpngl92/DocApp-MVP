@@ -37,13 +37,16 @@ describe("navigation", () => {
   it("defines role-aware dashboard navigation links", () => {
     expect(getDashboardNavigationForRole("admin").map((item) => item.href)).toEqual([
       ROUTES.dashboard,
+      ROUTES.dashboardSchedule,
       ROUTES.dashboardStaff,
       ROUTES.dashboardNotifications,
       ROUTES.dashboardLogs,
       ROUTES.dashboardManualBooking,
       ROUTES.dashboardSettings,
+      ROUTES.dashboardProfile,
     ]);
     expect(getDashboardNavigationForRole("receptionist").map((item) => item.href)).toEqual([
+      ROUTES.dashboard,
       ROUTES.dashboardSchedule,
       ROUTES.dashboardManualBooking,
       ROUTES.dashboardProfile,
