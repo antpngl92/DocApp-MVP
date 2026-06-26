@@ -1,4 +1,8 @@
-import { STAFF_MEMBER_ROLE } from "@/server/auth/consts";
+import {
+  STAFF_APPOINTMENT_OPERATOR_ROLE_VALUES,
+  STAFF_DASHBOARD_ROLE_VALUES,
+  STAFF_OWNER_ADMIN_ROLE_VALUES,
+} from "@/server/auth/consts";
 import type { StaffMemberRole } from "@/server/auth/type";
 
 import { ROUTES } from "./routes";
@@ -63,49 +67,49 @@ const DASHBOARD_NAVIGATION: readonly DashboardNavigationItem[] = [
     href: ROUTES.dashboard,
     iconKey: "layoutDashboard",
     labelKey: "dashboard",
-    roles: [STAFF_MEMBER_ROLE.admin],
+    roles: STAFF_DASHBOARD_ROLE_VALUES,
   },
   {
     href: ROUTES.dashboardSchedule,
     iconKey: "calendar",
     labelKey: "schedule",
-    roles: [STAFF_MEMBER_ROLE.receptionist],
+    roles: STAFF_APPOINTMENT_OPERATOR_ROLE_VALUES,
   },
   {
     href: ROUTES.dashboardStaff,
     iconKey: "users",
     labelKey: "staffMembers",
-    roles: [STAFF_MEMBER_ROLE.admin],
+    roles: STAFF_OWNER_ADMIN_ROLE_VALUES,
   },
   {
     href: ROUTES.dashboardNotifications,
     iconKey: "bell",
     labelKey: "notifications",
-    roles: [STAFF_MEMBER_ROLE.admin],
+    roles: STAFF_OWNER_ADMIN_ROLE_VALUES,
   },
   {
     href: ROUTES.dashboardLogs,
     iconKey: "fileText",
     labelKey: "logs",
-    roles: [STAFF_MEMBER_ROLE.admin],
+    roles: STAFF_OWNER_ADMIN_ROLE_VALUES,
   },
   {
     href: ROUTES.dashboardManualBooking,
     iconKey: "clipboardPlus",
     labelKey: "manualBooking",
-    roles: [STAFF_MEMBER_ROLE.admin, STAFF_MEMBER_ROLE.receptionist],
+    roles: STAFF_APPOINTMENT_OPERATOR_ROLE_VALUES,
   },
   {
     href: ROUTES.dashboardSettings,
     iconKey: "settings",
     labelKey: "settings",
-    roles: [STAFF_MEMBER_ROLE.admin],
+    roles: STAFF_OWNER_ADMIN_ROLE_VALUES,
   },
   {
     href: ROUTES.dashboardProfile,
     iconKey: "stethoscope",
     labelKey: "profile",
-    roles: [STAFF_MEMBER_ROLE.receptionist],
+    roles: STAFF_DASHBOARD_ROLE_VALUES,
   },
 ];
 

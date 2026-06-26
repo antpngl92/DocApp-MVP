@@ -1,4 +1,4 @@
-import { STAFF_MEMBER_ROLE } from "@/server/auth/consts";
+import { STAFF_OWNER_ADMIN_ROLE_VALUES } from "@/server/auth/consts";
 import { requireDashboardRoleAccess } from "@/server/auth/dashboard-access";
 import { DashboardPlaceholder } from "@/features/dashboard/components";
 import { createStaffInvitationAction } from "@/features/staff/actions";
@@ -8,7 +8,7 @@ import { getTranslations } from "next-intl/server";
 
 const DashboardStaffPage = async () => {
   await requireDashboardRoleAccess({
-    allowedRoles: [STAFF_MEMBER_ROLE.admin],
+    allowedRoles: STAFF_OWNER_ADMIN_ROLE_VALUES,
   });
 
   const pageTranslations = await getTranslations("dashboardPages.staffMembers");

@@ -1,11 +1,11 @@
 import { DashboardPlaceholder } from "@/features/dashboard/components";
-import { STAFF_MEMBER_ROLE } from "@/server/auth/consts";
+import { STAFF_DASHBOARD_ROLE_VALUES } from "@/server/auth/consts";
 import { requireDashboardRoleAccess } from "@/server/auth/dashboard-access";
 import { getTranslations } from "next-intl/server";
 
 const DashboardProfilePage = async () => {
   await requireDashboardRoleAccess({
-    allowedRoles: [STAFF_MEMBER_ROLE.receptionist],
+    allowedRoles: STAFF_DASHBOARD_ROLE_VALUES,
   });
 
   const t = await getTranslations("dashboardPages.profile");

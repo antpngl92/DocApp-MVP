@@ -21,7 +21,7 @@ vi.mock("@/server/auth/current-user", () => ({
 }));
 
 vi.mock("@/server/auth/utils", () => ({
-  getLocalUserDisplayName: () => "Dr. Test User",
+  getLocalUserDisplayName: () => "Test User",
 }));
 
 vi.mock("../../DashboardSidebar", () => ({
@@ -58,8 +58,10 @@ describe("AdminShell", () => {
     render(await AdminShell({ children: <div>Admin content</div>, membershipRole: "admin" }));
 
     expect(screen.getByText("dashboardShell.navigation.dashboard")).toBeInTheDocument();
+    expect(screen.getByText("dashboardShell.navigation.schedule")).toBeInTheDocument();
     expect(screen.getByText("dashboardShell.navigation.staffMembers")).toBeInTheDocument();
     expect(screen.getByText("dashboardShell.navigation.logs")).toBeInTheDocument();
+    expect(screen.getByText("dashboardShell.navigation.profile")).toBeInTheDocument();
     expect(screen.getByText("Admin content")).toBeInTheDocument();
   });
 
@@ -79,10 +81,13 @@ describe("AdminShell", () => {
       }),
     );
 
+    expect(screen.getByText("dashboardShell.navigation.dashboard")).toBeInTheDocument();
     expect(screen.getByText("dashboardShell.navigation.schedule")).toBeInTheDocument();
     expect(screen.getByText("dashboardShell.navigation.manualBooking")).toBeInTheDocument();
+    expect(screen.getByText("dashboardShell.navigation.profile")).toBeInTheDocument();
     expect(screen.queryByText("dashboardShell.navigation.staffMembers")).not.toBeInTheDocument();
     expect(screen.queryByText("dashboardShell.navigation.logs")).not.toBeInTheDocument();
+    expect(screen.queryByText("dashboardShell.navigation.settings")).not.toBeInTheDocument();
   });
 
   it("renders without a current user name when the local user is unavailable", async () => {

@@ -172,9 +172,9 @@
     "panels": {
       "service": {
         "title": "Service",
-        "description": "Choose the appointment type and provider.",
+        "description": "Choose the appointment type for the selected cabinet.",
         "item1": "Separate wizard step",
-        "item2": "Clinic-assigned providers",
+        "item2": "Cabinet-specific services",
         "item3": "Clear pricing"
       },
       "time": {
